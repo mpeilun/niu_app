@@ -13,6 +13,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'Components/Drawer.dart';
+import 'FlutterDownloaderUtil.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -113,7 +114,7 @@ class _MyAppState extends State<MyApp> {
                         key: webViewKey,
                         initialUrlRequest: URLRequest(
                             url: Uri.parse(
-                                "https://eschool.niu.edu.tw/mooc/login.php")),
+                                "https://cdn.discordapp.com/attachments/858287178718248964/860863705024561152/image0.jpg")),
                         initialOptions: options,
                         pullToRefreshController: pullToRefreshController,
                         onWebViewCreated: (controller) {
@@ -162,6 +163,10 @@ class _MyAppState extends State<MyApp> {
                             this.url = url.toString();
                             urlController.text = this.url;
                           });
+
+                          //Test
+                          _download('https://cdn.discordapp.com/attachments/858287178718248964/860863705024561152/image0.jpg');
+
                         },
                         onLoadError: (controller, url, code, message) {
                           pullToRefreshController.endRefreshing();
@@ -203,15 +208,29 @@ void _download(String url) async {
   final status = await Permission.storage.request();
 
   if (status.isGranted) {
-    final externalDir = await getApplicationSupportDirectory();
+
+    String externalDir;
+    if (Platform.isAndroid) {
+      externalDir = "/sdcard/download/";
+    } else {
+      externalDir = (await getApplicationDocumentsDirectory()).path;
+    }
+
     print('----下載網址----' + url);
-    print('----下載位置----' + externalDir.path);
+    print('----下載位置----' + externalDir);
+
     final id = await FlutterDownloader.enqueue(
       url: url,
-      savedDir: externalDir.path,
+      savedDir: externalDir,
       showNotification: true,
       openFileFromNotification: true,
     );
+
+    await Future.delayed(Duration(seconds: 15));
+
+    await FlutterDownloader.open(taskId: id!);
+    print('--------------------true--------------------');
+
   } else {
     print('Permission Denied');
   }
