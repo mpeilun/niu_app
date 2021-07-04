@@ -1,116 +1,218 @@
+import 'dart:async';
+import 'dart:collection';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:isolate';
+import 'dart:typed_data';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'Components/Drawer.dart';
 
-void main() {
-  runApp(MyApp());
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  if (Platform.isAndroid) {
+    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+  }
+
+  await FlutterDownloader.initialize();
+  await Permission.storage.request();
+
+  runApp(new MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => new _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final GlobalKey webViewKey = GlobalKey();
+
+  InAppWebViewController? webViewController;
+  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
+      crossPlatform: InAppWebViewOptions(
+        useOnDownloadStart: true,
+        useShouldOverrideUrlLoading: true,
+        mediaPlaybackRequiresUserGesture: false,
+      ),
+      android: AndroidInAppWebViewOptions(
+        useHybridComposition: true,
+      ),
+      ios: IOSInAppWebViewOptions(
+        allowsInlineMediaPlayback: true,
+      ));
+
+  late PullToRefreshController pullToRefreshController;
+  String url = "";
+  double progress = 0;
+  final urlController = TextEditingController();
+
+  ReceivePort _port = ReceivePort();
+
+  @override
+  void initState() {
+    super.initState();
+
+    IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+    _port.listen((dynamic data) {
+      String id = data[0];
+      DownloadTaskStatus status = data[1];
+      int progress = data[2];
+      setState(() {});
+    });
+
+    FlutterDownloader.registerCallback(downloadCallback);
+
+    pullToRefreshController = PullToRefreshController(
+      options: PullToRefreshOptions(
+        color: Colors.blue,
+      ),
+      onRefresh: () async {
+        if (Platform.isAndroid) {
+          webViewController?.reload();
+        } else if (Platform.isIOS) {
+          webViewController?.loadUrl(
+              urlRequest: URLRequest(url: await webViewController?.getUrl()));
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort send =
+    IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    send.send([id, status, progress]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Scaffold(
+          appBar: AppBar(title: Text("Website")),
+          drawer: MyDrawer(),
+          body: SafeArea(
+              child: Column(children: <Widget>[
+                Expanded(
+                  child: Stack(
+                    children: [
+                      InAppWebView(
+                        key: webViewKey,
+                        initialUrlRequest: URLRequest(
+                            url: Uri.parse(
+                                "https://eschool.niu.edu.tw/mooc/login.php")),
+                        initialOptions: options,
+                        pullToRefreshController: pullToRefreshController,
+                        onWebViewCreated: (controller) {
+                          webViewController = controller;
+                        },
+                        onLoadStart: (controller, url) {
+                          setState(() {
+                            this.url = url.toString();
+                            urlController.text = this.url;
+                          });
+                        },
+                        androidOnPermissionRequest:
+                            (controller, origin, resources) async {
+                          return PermissionRequestResponse(
+                              resources: resources,
+                              action: PermissionRequestResponseAction.GRANT);
+                        },
+                        shouldOverrideUrlLoading:
+                            (controller, navigationAction) async {
+                          var uri = navigationAction.request.url!;
+
+                          if (![
+                            "http",
+                            "https",
+                            "file",
+                            "chrome",
+                            "data",
+                            "javascript",
+                            "about"
+                          ].contains(uri.scheme)) {
+                            if (await canLaunch(url)) {
+                              // Launch the App
+                              await launch(
+                                url,
+                              );
+                              // and cancel the request
+                              return NavigationActionPolicy.CANCEL;
+                            }
+                          }
+
+                          return NavigationActionPolicy.ALLOW;
+                        },
+                        onLoadStop: (controller, url) async {
+                          pullToRefreshController.endRefreshing();
+                          setState(() {
+                            this.url = url.toString();
+                            urlController.text = this.url;
+                          });
+                        },
+                        onLoadError: (controller, url, code, message) {
+                          pullToRefreshController.endRefreshing();
+                        },
+                        onProgressChanged: (controller, progress) {
+                          if (progress == 100) {
+                            pullToRefreshController.endRefreshing();
+                          }
+                          setState(() {
+                            this.progress = progress / 100;
+                            urlController.text = this.url;
+                          });
+                        },
+                        onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                          setState(() {
+                            this.url = url.toString();
+                            urlController.text = this.url;
+                          });
+                        },
+                        onConsoleMessage: (controller, consoleMessage) {
+                          print(consoleMessage);
+                        },
+                        onDownloadStart: (controller, url) {
+                          _download(url.toString());
+                        },
+                      ),
+                      progress < 1.0
+                          ? LinearProgressIndicator(value: progress)
+                          : Container(),
+                    ],
+                  ),
+                ),
+              ]))),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+void _download(String url) async {
+  final status = await Permission.storage.request();
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      drawer: MyDrawer(),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+  if (status.isGranted) {
+    final externalDir = await getApplicationSupportDirectory();
+    print('----下載網址----' + url);
+    print('----下載位置----' + externalDir.path);
+    final id = await FlutterDownloader.enqueue(
+      url: url,
+      savedDir: externalDir.path,
+      showNotification: true,
+      openFileFromNotification: true,
     );
+  } else {
+    print('Permission Denied');
   }
 }
