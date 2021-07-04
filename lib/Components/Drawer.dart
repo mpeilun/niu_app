@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MyDrawer extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
+
+    Size size = MediaQuery.of(context).size;
     return Drawer(
       child: MediaQuery.removePadding(
         context: context,
@@ -36,12 +37,13 @@ class MyDrawer extends StatelessWidget {
               child: ListView(
                 children: <Widget>[
                   ListTile(
-                    leading: const Icon(Icons.add),
-                    title: const Text('Add account'),
+                    leading: Icon(Icons.add),
+                    title: Text('Add account1111111111111111111111'),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: const Text('Manage accounts'),
+                    leading: Icon(Icons.settings),
+                    title: Text('Manage accounts'),
+
                   ),
                 ],
               ),
