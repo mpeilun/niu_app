@@ -114,7 +114,7 @@ class _MyAppState extends State<MyApp> {
                         key: webViewKey,
                         initialUrlRequest: URLRequest(
                             url: Uri.parse(
-                                "https://cdn.discordapp.com/attachments/858287178718248964/860863705024561152/image0.jpg")),
+                                "https://eschool.niu.edu.tw/learn/index.php")),
                         initialOptions: options,
                         pullToRefreshController: pullToRefreshController,
                         onWebViewCreated: (controller) {
@@ -165,7 +165,7 @@ class _MyAppState extends State<MyApp> {
                           });
 
                           //Test
-                          _download('https://cdn.discordapp.com/attachments/858287178718248964/860863705024561152/image0.jpg');
+                          //_download('https://cdn.discordapp.com/attachments/858287178718248964/860863705024561152/image0.jpg');
 
                         },
                         onLoadError: (controller, url, code, message) {
@@ -216,17 +216,19 @@ void _download(String url) async {
       externalDir = (await getApplicationDocumentsDirectory()).path;
     }
 
+    String fileName = await _extractFileName(url);
     print('----下載網址----' + url);
     print('----下載位置----' + externalDir);
 
     final id = await FlutterDownloader.enqueue(
+      fileName: fileName,
       url: url,
       savedDir: externalDir,
       showNotification: true,
       openFileFromNotification: true,
     );
 
-    await Future.delayed(Duration(seconds: 15));
+    await Future.delayed(Duration(seconds: 5));
 
     await FlutterDownloader.open(taskId: id!);
     print('--------------------true--------------------');
@@ -234,4 +236,10 @@ void _download(String url) async {
   } else {
     print('Permission Denied');
   }
+}
+
+Future<String> _extractFileName(String url) async {
+int start = url.lastIndexOf('/') + 1;
+int end = url.length;
+return url.substring(start, end);
 }
