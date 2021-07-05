@@ -34,6 +34,7 @@ dependencies:
   permission_handler: ^8.1.2
   url_launcher: ^6.0.8
   open_file: ^3.2.1
+  dio: ^4.0.0
 
 dev_dependencies:
   flutter_test:

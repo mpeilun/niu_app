@@ -5,6 +5,9 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'dart:convert' show utf8;
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -14,7 +17,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'Components/Drawer.dart';
 import 'FlutterDownloaderUtil.dart';
-
+//我是呂紹
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -63,11 +66,21 @@ class _MyAppState extends State<MyApp> {
 
     IsolateNameServer.registerPortWithName(
         _port.sendPort, 'downloader_send_port');
+
     _port.listen((dynamic data) {
       String id = data[0];
       DownloadTaskStatus status = data[1];
       int progress = data[2];
       setState(() {});
+      //監聽下載完成
+      // if (status == DownloadTaskStatus.complete) {
+      //   //程序休眠1s,保证下载事项处理完成
+      //   sleep(Duration(seconds: 2));
+      //   print('---下載成功---');
+      //   FlutterDownloader.open(taskId: data[0]);
+      // } else if (status == DownloadTaskStatus.failed) {
+      //   print('---下載失敗---');
+      // }
     });
 
     FlutterDownloader.registerCallback(downloadCallback);
@@ -90,12 +103,13 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     super.dispose();
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
   }
 
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
     final SendPort send =
-    IsolateNameServer.lookupPortByName('downloader_send_port')!;
+        IsolateNameServer.lookupPortByName('downloader_send_port')!;
     send.send([id, status, progress]);
   }
 
@@ -107,99 +121,96 @@ class _MyAppState extends State<MyApp> {
           drawer: MyDrawer(),
           body: SafeArea(
               child: Column(children: <Widget>[
-                Expanded(
-                  child: Stack(
-                    children: [
-                      InAppWebView(
-                        key: webViewKey,
-                        initialUrlRequest: URLRequest(
-                            url: Uri.parse(
-                                "https://eschool.niu.edu.tw/learn/index.php")),
-                        initialOptions: options,
-                        pullToRefreshController: pullToRefreshController,
-                        onWebViewCreated: (controller) {
-                          webViewController = controller;
-                        },
-                        onLoadStart: (controller, url) {
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        androidOnPermissionRequest:
-                            (controller, origin, resources) async {
-                          return PermissionRequestResponse(
-                              resources: resources,
-                              action: PermissionRequestResponseAction.GRANT);
-                        },
-                        shouldOverrideUrlLoading:
-                            (controller, navigationAction) async {
-                          var uri = navigationAction.request.url!;
+            Expanded(
+              child: Stack(
+                children: [
+                  InAppWebView(
+                    key: webViewKey,
+                    initialUrlRequest: URLRequest(
+                        url: Uri.parse(
+                            "https://eschool.niu.edu.tw/learn/index.php")),
+                    initialOptions: options,
+                    pullToRefreshController: pullToRefreshController,
+                    onWebViewCreated: (controller) {
+                      webViewController = controller;
+                    },
+                    onLoadStart: (controller, url) {
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    androidOnPermissionRequest:
+                        (controller, origin, resources) async {
+                      return PermissionRequestResponse(
+                          resources: resources,
+                          action: PermissionRequestResponseAction.GRANT);
+                    },
+                    shouldOverrideUrlLoading:
+                        (controller, navigationAction) async {
+                      var uri = navigationAction.request.url!;
 
-                          if (![
-                            "http",
-                            "https",
-                            "file",
-                            "chrome",
-                            "data",
-                            "javascript",
-                            "about"
-                          ].contains(uri.scheme)) {
-                            if (await canLaunch(url)) {
-                              // Launch the App
-                              await launch(
-                                url,
-                              );
-                              // and cancel the request
-                              return NavigationActionPolicy.CANCEL;
-                            }
-                          }
+                      if (![
+                        "http",
+                        "https",
+                        "file",
+                        "chrome",
+                        "data",
+                        "javascript",
+                        "about"
+                      ].contains(uri.scheme)) {
+                        if (await canLaunch(url)) {
+                          // Launch the App
+                          await launch(
+                            url,
+                          );
+                          // and cancel the request
+                          return NavigationActionPolicy.CANCEL;
+                        }
+                      }
 
-                          return NavigationActionPolicy.ALLOW;
-                        },
-                        onLoadStop: (controller, url) async {
-                          pullToRefreshController.endRefreshing();
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-
-                          //Test
-                          //_download('https://cdn.discordapp.com/attachments/858287178718248964/860863705024561152/image0.jpg');
-
-                        },
-                        onLoadError: (controller, url, code, message) {
-                          pullToRefreshController.endRefreshing();
-                        },
-                        onProgressChanged: (controller, progress) {
-                          if (progress == 100) {
-                            pullToRefreshController.endRefreshing();
-                          }
-                          setState(() {
-                            this.progress = progress / 100;
-                            urlController.text = this.url;
-                          });
-                        },
-                        onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        onConsoleMessage: (controller, consoleMessage) {
-                          print(consoleMessage);
-                        },
-                        onDownloadStart: (controller, url) {
-                          _download(url.toString());
-                        },
-                      ),
-                      progress < 1.0
-                          ? LinearProgressIndicator(value: progress)
-                          : Container(),
-                    ],
+                      return NavigationActionPolicy.ALLOW;
+                    },
+                    onLoadStop: (controller, url) async {
+                      pullToRefreshController.endRefreshing();
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    onLoadError: (controller, url, code, message) {
+                      pullToRefreshController.endRefreshing();
+                    },
+                    onProgressChanged: (controller, progress) {
+                      if (progress == 100) {
+                        pullToRefreshController.endRefreshing();
+                      }
+                      setState(() {
+                        this.progress = progress / 100;
+                        urlController.text = this.url;
+                      });
+                    },
+                    onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    onConsoleMessage: (controller, consoleMessage) {
+                      print(consoleMessage);
+                    },
+                    onDownloadStart: (controller, url) {
+                      _download(url.toString());
+                      //_download('https://cdn.discordapp.com/attachments/858287178718248964/860863705024561152/image0.jpg');
+                    },
                   ),
-                ),
-              ]))),
+                  progress < 1.0
+                      ? LinearProgressIndicator(value: progress)
+                      : Container(),
+                ],
+              ),
+            ),
+          ]))),
     );
   }
 }
@@ -216,30 +227,51 @@ void _download(String url) async {
       externalDir = (await getApplicationDocumentsDirectory()).path;
     }
 
-    String fileName = await _extractFileName(url);
-    print('----下載網址----' + url);
-    print('----下載位置----' + externalDir);
+    String filenameRaw = url.substring(url.lastIndexOf("/") + 1);
+    externalDir += "/" + utf8.decode(filenameRaw.runes.toList());
 
-    final id = await FlutterDownloader.enqueue(
-      fileName: fileName,
-      url: url,
-      savedDir: externalDir,
-      showNotification: true,
-      openFileFromNotification: true,
-    );
+    print('---下載網址---' + url);
+    print('---下載位置---' + externalDir);
 
-    await Future.delayed(Duration(seconds: 5));
-
-    await FlutterDownloader.open(taskId: id!);
-    print('--------------------true--------------------');
-
+    download(url,externalDir);
+    // final id = await FlutterDownloader.enqueue(
+    //   url: url,
+    //   savedDir: externalDir,
+    //   showNotification: true,
+    //   openFileFromNotification: false,
+    // );
   } else {
     print('Permission Denied');
   }
 }
 
-Future<String> _extractFileName(String url) async {
-int start = url.lastIndexOf('/') + 1;
-int end = url.length;
-return url.substring(start, end);
+Future download(String url, String savePath) async {
+  var dio = Dio();
+  try {
+    Response response = await dio.get(
+      url,
+      onReceiveProgress: showDownloadProgress,
+      //Received data with List<int>
+      options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          validateStatus: (status) {
+            return status! < 500;
+          }),
+    );
+    print(response.headers);
+    File file = File(savePath);
+    var raf = file.openSync(mode: FileMode.write);
+    // response.data is List<int> type
+    raf.writeFromSync(response.data);
+    await raf.close();
+  } catch (e) {
+    print(e);
+  }
+}
+
+void showDownloadProgress(received, total) {
+  if (total != -1) {
+    print((received / total * 100).toStringAsFixed(0) + "%");
+  }
 }
