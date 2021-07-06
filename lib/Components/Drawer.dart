@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'StudentInfo.dart';
 
 class MyDrawer extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+
+    final StudentID = "B0943014";
+    final StudentName = "賴宥蓁";
 
     Size size = MediaQuery.of(context).size;
     return Drawer(
@@ -22,13 +27,14 @@ class MyDrawer extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: ClipOval(
                         child: Image.network(
-                          "https://nimg.ws.126.net/?url=http%3A%2F%2Fdingyue.ws.126.net%2F2020%2F1216%2Feb2eeb72j00qlf0nn001dd000hs00gap.jpg&thumbnail=650x2147483647&quality=80&type=jpg",
-                          width: 80,
+                          "https://acade.niu.edu.tw/NIU/Application/stdphoto.aspx?stno=" + StudentID ,
+                          width: 75,
+                          height: 75,
                         ),
                       ),
                     ),
                     Text(
-                      "小黃",
+                      StudentName,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )
                   ],
