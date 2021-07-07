@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io' as dartCookies;
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:typed_data';
 import 'dart:ui';
-import 'dart:convert' show utf8;
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart' as dioCookieManager;
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -17,11 +19,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'Components/Drawer.dart';
 import 'FlutterDownloaderUtil.dart';
-//我是呂紹
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (Platform.isAndroid) {
+  if (dartCookies.Platform.isAndroid) {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
 
@@ -90,9 +92,9 @@ class _MyAppState extends State<MyApp> {
         color: Colors.blue,
       ),
       onRefresh: () async {
-        if (Platform.isAndroid) {
+        if (dartCookies.Platform.isAndroid) {
           webViewController?.reload();
-        } else if (Platform.isIOS) {
+        } else if (dartCookies.Platform.isIOS) {
           webViewController?.loadUrl(
               urlRequest: URLRequest(url: await webViewController?.getUrl()));
         }
@@ -201,7 +203,7 @@ class _MyAppState extends State<MyApp> {
                     },
                     onDownloadStart: (controller, url) {
                       _download(url.toString());
-                      //_download('https://cdn.discordapp.com/attachments/858287178718248964/860863705024561152/image0.jpg');
+                      //_download('https://upload.wikimedia.org/wikipedia/commons/c/c3/%E5%90%89%E7%A5%A5%E7%89%A9-%E6%B3%A2%E6%AF%94.jpg');
                     },
                   ),
                   progress < 1.0
@@ -219,21 +221,21 @@ void _download(String url) async {
   final status = await Permission.storage.request();
 
   if (status.isGranted) {
-
     String externalDir;
-    if (Platform.isAndroid) {
-      externalDir = "/sdcard/download/";
+    if (dartCookies.Platform.isAndroid) {
+      externalDir = '/storage/emulated/0/Download/';
     } else {
-      externalDir = (await getApplicationDocumentsDirectory()).path;
+      externalDir = (await getLibraryDirectory()).path;
     }
 
-    String filenameRaw = url.substring(url.lastIndexOf("/") + 1);
-    externalDir += "/" + utf8.decode(filenameRaw.runes.toList());
+    externalDir +=
+        Uri.decodeComponent(url.substring(url.lastIndexOf("/") + 1));
 
-    print('---下載網址---' + url);
-    print('---下載位置---' + externalDir);
+    print('---下載網址--- ' + url);
+    print('---下載位置--- ' + externalDir);
 
-    download(url,externalDir);
+    List<Cookie> cookies = await CookieManager.instance().getCookies(url: Uri.parse(url));
+    download(url, externalDir, cookies);
     // final id = await FlutterDownloader.enqueue(
     //   url: url,
     //   savedDir: externalDir,
@@ -245,8 +247,19 @@ void _download(String url) async {
   }
 }
 
-Future download(String url, String savePath) async {
+Future download(String url, String savePath, List<Cookie> cookies) async {
   var dio = Dio();
+  var cookieJar = new CookieJar();
+  List<dartCookies.Cookie> dioCookies = [];
+  cookies.forEach((element) {dioCookies.add(new dartCookies.Cookie(element.name, element.value)
+    ..httpOnly = false
+    ..expires = DateTime.now().add(const Duration(hours: 1))
+    ..path = '/'
+    ..secure = true);});
+  cookieJar.saveFromResponse(Uri.parse(url), dioCookies);
+  dio.interceptors.add(dioCookieManager.CookieManager(cookieJar));
+  print('---Cookies---');
+  print(dioCookies);
   try {
     Response response = await dio.get(
       url,
@@ -260,8 +273,8 @@ Future download(String url, String savePath) async {
           }),
     );
     print(response.headers);
-    File file = File(savePath);
-    var raf = file.openSync(mode: FileMode.write);
+    dartCookies.File file = dartCookies.File(savePath);
+    var raf = file.openSync(mode: dartCookies.FileMode.write);
     // response.data is List<int> type
     raf.writeFromSync(response.data);
     await raf.close();
