@@ -11,14 +11,13 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart' as dioCookieManager;
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'Components/Drawer.dart';
-import 'FlutterDownloaderUtil.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +26,6 @@ Future main() async {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
 
-  await FlutterDownloader.initialize();
   await Permission.storage.request();
 
   runApp(new MyApp());
@@ -66,27 +64,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    IsolateNameServer.registerPortWithName(
-        _port.sendPort, 'downloader_send_port');
-
-    _port.listen((dynamic data) {
-      String id = data[0];
-      DownloadTaskStatus status = data[1];
-      int progress = data[2];
-      setState(() {});
-      //監聽下載完成
-      // if (status == DownloadTaskStatus.complete) {
-      //   //程序休眠1s,保证下载事项处理完成
-      //   sleep(Duration(seconds: 2));
-      //   print('---下載成功---');
-      //   FlutterDownloader.open(taskId: data[0]);
-      // } else if (status == DownloadTaskStatus.failed) {
-      //   print('---下載失敗---');
-      // }
-    });
-
-    FlutterDownloader.registerCallback(downloadCallback);
-
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(
         color: Colors.blue,
@@ -105,14 +82,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     super.dispose();
-    IsolateNameServer.removePortNameMapping('downloader_send_port');
-  }
-
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port')!;
-    send.send([id, status, progress]);
   }
 
   @override
@@ -217,34 +186,31 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-void _download(String url) async {
+Future _download(String url) async {
   final status = await Permission.storage.request();
 
   if (status.isGranted) {
     String externalDir;
     if (dartCookies.Platform.isAndroid) {
-      externalDir = '/storage/emulated/0/Download/';
+      externalDir = '/storage/emulated/0/Download';
     } else {
-      externalDir = (await getLibraryDirectory()).path;
+      externalDir = (await getApplicationDocumentsDirectory()).path;
     }
 
     externalDir +=
-        Uri.decodeComponent(url.substring(url.lastIndexOf("/") + 1));
+        '/' + Uri.decodeComponent(url.substring(url.lastIndexOf("/") + 1));
 
     print('---下載網址--- ' + url);
     print('---下載位置--- ' + externalDir);
 
     List<Cookie> cookies = await CookieManager.instance().getCookies(url: Uri.parse(url));
-    download(url, externalDir, cookies);
-    // final id = await FlutterDownloader.enqueue(
-    //   url: url,
-    //   savedDir: externalDir,
-    //   showNotification: true,
-    //   openFileFromNotification: false,
-    // );
+    await download(url, externalDir, cookies).then((value) => openFile(value));
+
   } else {
     print('Permission Denied');
   }
+
+  return url;
 }
 
 Future download(String url, String savePath, List<Cookie> cookies) async {
@@ -281,6 +247,12 @@ Future download(String url, String savePath, List<Cookie> cookies) async {
   } catch (e) {
     print(e);
   }
+  return savePath;
+}
+
+Future openFile(savePath) async{
+  print('---開啟檔案---');
+  OpenFile.open(savePath);
 }
 
 void showDownloadProgress(received, total) {
