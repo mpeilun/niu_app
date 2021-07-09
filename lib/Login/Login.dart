@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
+  final String title;
+  LoginPage({Key? key, required this.title}) : super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: Text(widget.title),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
