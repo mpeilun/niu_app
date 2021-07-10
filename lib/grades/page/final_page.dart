@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:niu_app/grades/custom_cards.dart';
 
-
 class FinalPage extends StatefulWidget {
   const FinalPage({Key? key}) : super(key: key);
 
@@ -10,9 +9,9 @@ class FinalPage extends StatefulWidget {
 }
 
 class _FinalPageState extends State<FinalPage> {
-
   @override
-  Widget build(BuildContext context) {
-    return CustomGradeCard(grade: grades,);
-  }
+  Widget build(BuildContext context) => CustomGradeCard(
+        key: PageStorageKey<String>('final'),
+        grade: grades2,
+      );
 }

@@ -8,7 +8,6 @@ import 'package:niu_app/grades/page/warn_page.dart';
 
 class Grades extends StatefulWidget {
   final String title;
-
   Grades({Key? key, required this.title}) : super(key: key);
 
   @override

@@ -9,9 +9,9 @@ class MidPage extends StatefulWidget {
 }
 
 class _MidPageState extends State<MidPage> {
-
   @override
-  Widget build(BuildContext context) {
-    return CustomWarnCard(grade: grades,);
-  }
+  Widget build(BuildContext context) => CustomGradeCard(
+        key: PageStorageKey<String>('mid'),
+        grade: grades2,
+      );
 }
