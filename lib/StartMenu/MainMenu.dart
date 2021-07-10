@@ -128,8 +128,8 @@ class _StartMenu extends State<StartMenu> {
                 ),
               ]),
         ),
-        Expanded(flex: 1, child: SizedBox()),
-        Expanded(flex: 3, child: Image.asset('assets/niu_background.png'))
+        //Expanded(flex: 0, child: SizedBox()),
+        Expanded(flex: 4, child: Image.asset('assets/niu_background.png'))
       ])),
     );
   }

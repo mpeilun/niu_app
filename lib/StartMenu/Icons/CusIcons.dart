@@ -23,9 +23,9 @@ class CusIcons extends StatelessWidget {
             ),
           ),
         ),
+        SizedBox(height: 2),
         Text(
           text,
-          style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ],
     );
