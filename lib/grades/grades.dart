@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/grades/page/final_page.dart';
+import 'package:niu_app/grades/page/mid_page.dart';
+import 'package:niu_app/grades/page/warn_page.dart';
 
 class Grades extends StatefulWidget {
   final String title;
@@ -41,6 +44,9 @@ class _GradesState extends State<Grades> {
     Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Tab(
+          icon: Icon(Icons.whatshot_rounded),
+        ),
         SizedBox(
           width: 5.0,
         ),
@@ -63,10 +69,7 @@ class _GradesState extends State<Grades> {
           ),
         ),
         body: TabBarView(
-          children: [
-            Text('test'),
-            Text('test'),
-            Text('test'),
+          children: <Widget>[WarmPage(),MidPage(),FinalPage(),
           ],
         ),
       ),
