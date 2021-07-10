@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:niu_app/Components/circle.dart';
 
-class CusIcons extends StatelessWidget {
+class CustomIcons extends StatelessWidget {
   final String text;
   final IconData icons;
   final VoidCallback press;
-  const CusIcons({
+  const CustomIcons({
     Key? key, required this.text, required this.icons, required this.press,
   }) : super(key: key);
 

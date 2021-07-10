@@ -30,6 +30,7 @@ class _StartMenu extends State<StartMenu> {
   Widget build(BuildContext context) {
     //Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text(widget.title),
         titleSpacing: 0.0,
@@ -53,7 +54,7 @@ class _StartMenu extends State<StartMenu> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    CusIcons(
+                    CustomIcons(
                       text: '數位園區',
                       icons: MenuIcon.icon_eschool,
                       press: () {
@@ -66,7 +67,7 @@ class _StartMenu extends State<StartMenu> {
                                 maintainState: false));
                       },
                     ),
-                    CusIcons(
+                    CustomIcons(
                       text: '成績',
                       icons: MenuIcon.icon_grades,
                       press: () {
@@ -79,7 +80,7 @@ class _StartMenu extends State<StartMenu> {
                                 maintainState: false));
                       },
                     ),
-                    CusIcons(
+                    CustomIcons(
                       text: '課表',
                       icons: MenuIcon.icon_timetable,
                       press: () {},
@@ -89,17 +90,17 @@ class _StartMenu extends State<StartMenu> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    CusIcons(
+                    CustomIcons(
                       text: '活動報名',
                       icons: MenuIcon.icon_event,
                       press: () {},
                     ),
-                    CusIcons(
+                    CustomIcons(
                       text: 'ZUVIO',
                       icons: MenuIcon.icon_zuvio,
                       press: () {},
                     ),
-                    CusIcons(
+                    CustomIcons(
                       text: '畢業門檻',
                       icons: MenuIcon.icon_graduation,
                       press: () {},
@@ -109,17 +110,17 @@ class _StartMenu extends State<StartMenu> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    CusIcons(
+                    CustomIcons(
                       text: '選課系統',
                       icons: MenuIcon.icon_e_school,
                       press: () {},
                     ),
-                    CusIcons(
+                    CustomIcons(
                       text: '公車',
                       icons: MenuIcon.icon_bus,
                       press: () {},
                     ),
-                    CusIcons(
+                    CustomIcons(
                       text: '帳號設定',
                       icons: MenuIcon.icon_account,
                       press: () {},
