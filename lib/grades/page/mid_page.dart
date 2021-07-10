@@ -19,21 +19,25 @@ class _MidPageState extends State<MidPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: grades.length,
-      itemBuilder: (BuildContext context, int index) => ListTile(
-        title: Text(
-          grades[index].lesson,
-          style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      child: ListView.separated(
+        itemCount: grades.length,
+        itemBuilder: (BuildContext context, int index) => ListTile(
+          title: Text(
+            grades[index].lesson,
+            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(
+            '分數：${grades[index].score}',
+            style: TextStyle(fontSize: 18.0,),
+          ),
         ),
-        subtitle: Text(
-          '分數：${grades[index].score}',
-          style: TextStyle(fontSize: 18.0,),
+        separatorBuilder: (BuildContext context, int index) => Divider(
+          thickness: 1.0,
+
+          color: Colors.black,
         ),
-      ),
-      separatorBuilder: (BuildContext context, int index) => Divider(
-        thickness: 1.0,
-        color: Colors.black,
       ),
     );
   }
