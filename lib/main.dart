@@ -1,8 +1,7 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:niu_app/menu/menu_page.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:niu_app/StartMenu/MainMenu.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();

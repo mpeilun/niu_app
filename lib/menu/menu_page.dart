@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:niu_app/Components/Circle.dart';
-import 'package:niu_app/Grades/Grades.dart';
-import 'package:niu_app/StartMenu/Icons/CusIcons.dart';
+import 'package:niu_app/Components/circle.dart';
+import 'package:niu_app/grades/grades.dart';
+import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menuIcon.dart';
-import 'package:niu_app/Login/Login.dart';
+import 'package:niu_app/login/login_page.dart';
 
 class StartMenu extends StatefulWidget {
   final String title;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'StudentInfo.dart';
+import 'studentInfo.dart';
 
 class MyDrawer extends StatelessWidget {
 

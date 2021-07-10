@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:niu_app/Components/Circle.dart';
+import 'package:niu_app/Components/circle.dart';
 
 class CusIcons extends StatelessWidget {
   final String text;
@@ -23,6 +23,7 @@ class CusIcons extends StatelessWidget {
             ),
           ),
         ),
+        SizedBox(height: 3.0,),
         Text(
           text,
           style: TextStyle(fontWeight: FontWeight.bold),
