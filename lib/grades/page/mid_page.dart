@@ -12,6 +12,6 @@ class _MidPageState extends State<MidPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomGradeCard(grade: grades,);
+    return CustomWarnCard(grade: grades,);
   }
 }
