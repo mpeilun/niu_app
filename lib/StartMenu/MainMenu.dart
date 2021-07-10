@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:niu_app/Components/Circle.dart';
 import 'package:niu_app/Grades/Grades.dart';
 import 'package:niu_app/StartMenu/Icons/CusIcons.dart';
 import 'package:niu_app/menuIcon.dart';
@@ -7,6 +8,7 @@ import 'package:niu_app/Login/Login.dart';
 
 class StartMenu extends StatefulWidget {
   final String title;
+
   StartMenu({Key? key, required this.title}) : super(key: key);
 
   @override
@@ -58,18 +60,24 @@ class _StartMenu extends State<StartMenu> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginPage(title: '登入',),
+                                builder: (context) => LoginPage(
+                                      title: '登入',
+                                    ),
                                 maintainState: false));
                       },
                     ),
                     CusIcons(
                       text: '成績',
                       icons: MenuIcon.icon_grades,
-                      press: () {Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Grades(title: '成績查詢',),
-                              maintainState: false));},
+                      press: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Grades(
+                                      title: '成績查詢',
+                                    ),
+                                maintainState: false));
+                      },
                     ),
                     CusIcons(
                       text: '課表',

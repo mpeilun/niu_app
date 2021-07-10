@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:niu_app/Components/Circle.dart';
 
 class CusIcons extends StatelessWidget {
   final String text;
@@ -12,10 +13,15 @@ class CusIcons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        IconButton(
-          iconSize: 40,
-          icon: Icon(icons, color: Colors.black),
-          onPressed: press,
+        SizedBox(
+          child: CustomPaint(
+            painter: CirclePainter(),
+            child: IconButton(
+              iconSize: 40,
+              icon: Icon(icons, color: Colors.black),
+              onPressed: press,
+            ),
+          ),
         ),
         Text(
           text,
