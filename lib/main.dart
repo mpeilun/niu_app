@@ -13,7 +13,7 @@ Future main() async {
     theme: new ThemeData(
       // primarySwatch: Colors.blue,
       primaryColor: Colors.blue[900],
-      scaffoldBackgroundColor: Colors.white,
+      scaffoldBackgroundColor: Colors.grey[200],
     ),
     home: StartMenu(
       title: '功能列表',

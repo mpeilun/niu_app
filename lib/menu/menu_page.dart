@@ -5,6 +5,9 @@ import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
+import 'package:niu_app/testwebview_headless.dart';
+
+import '../testwebview.dart';
 
 class StartMenu extends StatefulWidget {
   final String title;
@@ -30,7 +33,6 @@ class _StartMenu extends State<StartMenu> {
   Widget build(BuildContext context) {
     //Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text(widget.title),
         titleSpacing: 0.0,
@@ -118,12 +120,24 @@ class _StartMenu extends State<StartMenu> {
                     CustomIcons(
                       text: '公車',
                       icons: MenuIcon.icon_bus,
-                      press: () {},
+                      press: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => WebTest_Headless(),
+                                maintainState: false));
+                      },
                     ),
                     CustomIcons(
                       text: '帳號設定',
                       icons: MenuIcon.icon_account,
-                      press: () {},
+                      press: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => WebTest(),
+                                maintainState: false));
+                      },
                     ),
                   ],
                 ),

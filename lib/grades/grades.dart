@@ -59,7 +59,6 @@ class _GradesState extends State<Grades> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: Colors.grey[200],
         appBar: AppBar(
           elevation: 0.0,
           title: Text(widget.title),
@@ -70,7 +69,10 @@ class _GradesState extends State<Grades> {
           ),
         ),
         body: TabBarView(
-          children: <Widget>[WarmPage(),MidPage(),FinalPage(),
+          children: <Widget>[
+            WarmPage(),
+            MidPage(),
+            FinalPage(),
           ],
         ),
       ),
