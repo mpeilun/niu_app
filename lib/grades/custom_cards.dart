@@ -9,16 +9,16 @@ class Quote {
 }
 
 final List<Quote> grades = [
-  Quote(lesson: '課程一', score: 80.0, teacher: 'CCCC'),
+  Quote(lesson: '課程一', score: 80.0, teacher: 'CC'),
   Quote(lesson: '課程二', score: 85.0),
-  Quote(lesson: '課程3', score: 75.0),
+  Quote(lesson: '課程3', score: 75.0, teacher: 'BB'),
   Quote(lesson: '課程4', score: 65.0),
   Quote(lesson: '課程5', score: 95.0),
+  Quote(lesson: '課程5', score: 95.0, teacher: 'RR'),
   Quote(lesson: '課程5', score: 95.0),
+  Quote(lesson: '課程5', score: 95.0, teacher: 'VVV'),
   Quote(lesson: '課程5', score: 95.0),
-  Quote(lesson: '課程5', score: 95.0),
-  Quote(lesson: '課程5', score: 95.0),
-  Quote(lesson: '課程5', score: 95.0),
+  Quote(lesson: '課程5', score: 95.0, teacher: 'AA'),
 ];
 
 final List<Quote> grades2 = [
@@ -39,7 +39,7 @@ final List<Quote> grades2 = [
 class CustomGradeCard extends StatelessWidget {
 
   final List<Quote> grade;
-  const CustomGradeCard({Key? key, required this.grade}) : super(key: key);
+    const CustomGradeCard({Key? key, required this.grade}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -117,12 +117,13 @@ class CustomWarnCard extends StatelessWidget {
               margin: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 8.0),
               child: Padding(
                 padding: const EdgeInsets.all(6.0),
-                child: Column(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    Column(
                       children: <Widget>[
                         Text(
+
                             '')
                       ],
                     ),
