@@ -118,7 +118,7 @@ class CustomWarnCard extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(6.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Column(
                       children: <Widget>[
