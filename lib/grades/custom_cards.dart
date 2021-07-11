@@ -5,7 +5,7 @@ class Quote {
   final double score;
   final String? teacher;
 
-  Quote({required this.lesson, required this.score, this.teacher ,});
+  Quote({required this.lesson, required this.score, String? teacher ,}) : this.teacher = teacher;
 }
 
 final List<Quote> grades = [
