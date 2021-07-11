@@ -78,23 +78,15 @@ class _StartMenu extends State<StartMenu> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Grades(
-                                  title: '成績查詢',
-                                ),
+                                      title: '成績查詢',
+                                    ),
                                 maintainState: false));
                       },
                     ),
                     CustomIcons(
                       text: '課表',
                       icons: MenuIcon.icon_timetable,
-                      press: () {
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                        builder: (context) => semesterDate(
-                        title: '課表',
-                        ),
-                        maintainState: false));
-                      },
+                      press: () {},
                     ),
                   ],
                 ),

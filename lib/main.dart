@@ -6,17 +6,25 @@ import 'package:permission_handler/permission_handler.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Permission.storage.request();
+  runApp(MyApp());
+}
 
-  runApp(new MaterialApp(
-    debugShowCheckedModeBanner: false,
-    title: 'NIU app',
-    theme: new ThemeData(
-      // primarySwatch: Colors.blue,
-      primaryColor: Colors.blue[900],
-      scaffoldBackgroundColor: Colors.grey[200],
-    ),
-    home: StartMenu(
-      title: '功能列表',
-    ),
-  ));
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'NIU app',
+      theme: ThemeData(
+        // primarySwatch: Colors.blue,
+        primaryColor: Colors.blue[900],
+        scaffoldBackgroundColor: Colors.grey[200],
+      ),
+      home: StartMenu(
+        title: '功能列表',
+      ),
+    );
+  }
 }
