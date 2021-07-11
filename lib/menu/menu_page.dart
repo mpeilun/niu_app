@@ -6,6 +6,7 @@ import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/testwebview_headless.dart';
+import 'package:niu_app/semesterDate/semesterDate.dart';
 
 import '../testwebview.dart';
 
@@ -77,15 +78,23 @@ class _StartMenu extends State<StartMenu> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Grades(
-                                      title: '成績查詢',
-                                    ),
+                                  title: '成績查詢',
+                                ),
                                 maintainState: false));
                       },
                     ),
                     CustomIcons(
                       text: '課表',
                       icons: MenuIcon.icon_timetable,
-                      press: () {},
+                      press: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => semesterDate(
+                        title: '課表',
+                        ),
+                        maintainState: false));
+                      },
                     ),
                   ],
                 ),
