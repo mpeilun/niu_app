@@ -64,7 +64,7 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="niu_app"
+        android:label="宜大學生APP"
         android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
