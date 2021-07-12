@@ -6,6 +6,7 @@ import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/testwebview_headless.dart';
+import 'package:niu_app/semesterDate/semesterDate.dart';
 
 import '../testwebview.dart';
 
@@ -70,7 +71,7 @@ class _StartMenu extends State<StartMenu> {
                       },
                     ),
                     CustomIcons(
-                      text: '成績',
+                      text: '成績查詢',
                       icons: MenuIcon.icon_grades,
                       press: () {
                         Navigator.push(
@@ -83,7 +84,7 @@ class _StartMenu extends State<StartMenu> {
                       },
                     ),
                     CustomIcons(
-                      text: '課表',
+                      text: '每周課表',
                       icons: MenuIcon.icon_timetable,
                       press: () {},
                     ),
@@ -118,7 +119,7 @@ class _StartMenu extends State<StartMenu> {
                       press: () {},
                     ),
                     CustomIcons(
-                      text: '公車',
+                      text: '公車動態',
                       icons: MenuIcon.icon_bus,
                       press: () {
                         Navigator.push(
@@ -143,7 +144,6 @@ class _StartMenu extends State<StartMenu> {
                 ),
               ]),
         ),
-        //Expanded(flex: 0, child: SizedBox()),
         Expanded(flex: 4, child: Image.asset('assets/niu_background.png'))
       ])),
     );

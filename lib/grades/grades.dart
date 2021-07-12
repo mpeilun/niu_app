@@ -8,6 +8,7 @@ import 'package:niu_app/grades/page/warn_page.dart';
 
 class Grades extends StatefulWidget {
   final String title;
+
   Grades({Key? key, required this.title}) : super(key: key);
 
   @override
@@ -22,22 +23,21 @@ class _GradesState extends State<Grades> {
         Tab(
           icon: Icon(Icons.warning_amber_rounded),
         ),
-        SizedBox(
-          width: 5.0,
-        ),
-        Text('期中預警'),
+        //SizedBox(width: 5.0,),
+        //Text('期中預警'),
       ],
     ),
     Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Tab(
-          icon: Icon(Icons.grading_rounded),
+          icon: Icon(
+            Icons.grading_rounded,
+          ),
+          text: '期中成績',
         ),
-        SizedBox(
-          width: 5.0,
-        ),
-        Text('期中成績'),
+        //SizedBox(width: 5.0,),
+        //Text('期中成績'),
       ],
     ),
     Row(
@@ -46,10 +46,8 @@ class _GradesState extends State<Grades> {
         Tab(
           icon: Icon(Icons.whatshot_rounded),
         ),
-        SizedBox(
-          width: 5.0,
-        ),
-        Text('期末成績'),
+        //SizedBox(width: 5.0,),
+        //Text('期末成績'),
       ],
     ),
   ];
@@ -57,7 +55,7 @@ class _GradesState extends State<Grades> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: myTabs.length,
       child: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
