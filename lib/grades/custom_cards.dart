@@ -167,19 +167,19 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                   CGWIcon(
                     isWarnList: isGradeList,
                     title: '期中成績',
-                    icon: Icons.check,
+                    icon: Icons.clear_rounded,
                     index: index,
                   ),
                   CGWIcon(
                     isWarnList: isAttendanceList,
                     title: '出席率',
-                    icon: Icons.check,
+                    icon: Icons.clear_rounded,
                     index: index,
                   ),
                   CGWIcon(
                     isWarnList: isPresentList,
                     title: '報告/其他',
-                    icon: Icons.check,
+                    icon: Icons.clear_rounded,
                     index: index,
                   ),
                 ],
