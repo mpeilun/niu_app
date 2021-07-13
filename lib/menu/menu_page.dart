@@ -60,8 +60,8 @@ class _StartMenu extends State<StartMenu> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CustomIcons(
-                      text: '數位園區',
-                      icons: MenuIcon.icon_eschool,
+                      title: '數位園區',
+                      icon: MenuIcon.icon_eschool,
                       press: () {
                         Navigator.push(
                             context,
@@ -73,8 +73,8 @@ class _StartMenu extends State<StartMenu> {
                       },
                     ),
                     CustomIcons(
-                      text: '成績查詢',
-                      icons: MenuIcon.icon_grades,
+                      title: '成績查詢',
+                      icon: MenuIcon.icon_grades,
                       press: () {
                         Navigator.push(
                             context,
@@ -86,7 +86,7 @@ class _StartMenu extends State<StartMenu> {
                       },
                     ),
                     CustomIcons(
-                      text: '每周課表',
+                      title: '每周課表',
                       icons: MenuIcon.icon_timetable,
                       press: () {
                         Navigator.push(
@@ -102,18 +102,18 @@ class _StartMenu extends State<StartMenu> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CustomIcons(
-                      text: '活動報名',
-                      icons: MenuIcon.icon_event,
+                      title: '活動報名',
+                      icon: MenuIcon.icon_event,
                       press: () {},
                     ),
                     CustomIcons(
-                      text: 'ZUVIO',
-                      icons: MenuIcon.icon_zuvio,
+                      title: 'ZUVIO',
+                      icon: MenuIcon.icon_zuvio,
                       press: () {},
                     ),
                     CustomIcons(
-                      text: '畢業門檻',
-                      icons: MenuIcon.icon_graduation,
+                      title: '畢業門檻',
+                      icon: MenuIcon.icon_graduation,
                       press: () {},
                     ),
                   ],
@@ -122,13 +122,13 @@ class _StartMenu extends State<StartMenu> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CustomIcons(
-                      text: '選課系統',
-                      icons: MenuIcon.icon_e_school,
+                      title: '選課系統',
+                      icon: MenuIcon.icon_e_school,
                       press: () {},
                     ),
                     CustomIcons(
-                      text: '公車動態',
-                      icons: MenuIcon.icon_bus,
+                      title: '公車動態',
+                      icon: MenuIcon.icon_bus,
                       press: () {
                         Navigator.push(
                             context,
@@ -138,8 +138,8 @@ class _StartMenu extends State<StartMenu> {
                       },
                     ),
                     CustomIcons(
-                      text: '帳號設定',
-                      icons: MenuIcon.icon_account,
+                      title: '帳號設定',
+                      icon: MenuIcon.icon_account,
                       press: () {
                         Navigator.push(
                             context,

@@ -12,6 +12,6 @@ class _FinalPageState extends State<FinalPage> {
   @override
   Widget build(BuildContext context) => CustomGradeCard(
         key: PageStorageKey<String>('final'),
-        grade: grades2,
+        grade: grades,
       );
 }

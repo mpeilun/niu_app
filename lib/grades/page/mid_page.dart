@@ -12,6 +12,6 @@ class _MidPageState extends State<MidPage> {
   @override
   Widget build(BuildContext context) => CustomGradeCard(
         key: PageStorageKey<String>('mid'),
-        grade: grades2,
+        grade: grades,
       );
 }
