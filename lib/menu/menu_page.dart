@@ -87,7 +87,7 @@ class _StartMenu extends State<StartMenu> {
                     ),
                     CustomIcons(
                       title: '每周課表',
-                      icons: MenuIcon.icon_timetable,
+                      icon: MenuIcon.icon_timetable,
                       press: () {
                         Navigator.push(
                             context,
