@@ -6,7 +6,9 @@ import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/testwebview_headless.dart';
-import 'package:niu_app/semesterDate/semesterDate.dart';
+import 'package:niu_app/TimeTable/TimeTable.dart';
+
+import 'package:niu_app/service/SemesterDate.dart';
 
 import '../testwebview.dart';
 
@@ -86,7 +88,13 @@ class _StartMenu extends State<StartMenu> {
                     CustomIcons(
                       text: '每周課表',
                       icons: MenuIcon.icon_timetable,
-                      press: () {},
+                      press: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TimeTable(),
+                                maintainState: false));
+                      },
                     ),
                   ],
                 ),

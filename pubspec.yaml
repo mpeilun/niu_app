@@ -38,6 +38,7 @@ dependencies:
   cookie_jar: ^3.0.1
   flutter_launcher_icons: ^0.9.0
   google_fonts: ^2.1.0
+  week_of_year: ^2.0.0
 
 dev_dependencies:
   flutter_test:
