@@ -5,6 +5,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/grades/page/final_page.dart';
 import 'package:niu_app/grades/page/mid_page.dart';
 import 'package:niu_app/grades/page/warn_page.dart';
+import 'package:niu_app/menu/icons/custom_icons.dart';
 
 class Grades extends StatefulWidget {
   final String title;
@@ -17,39 +18,9 @@ class Grades extends StatefulWidget {
 
 class _GradesState extends State<Grades> {
   final List<Widget> myTabs = [
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Tab(
-          icon: Icon(Icons.warning_amber_rounded),
-        ),
-        //SizedBox(width: 5.0,),
-        //Text('期中預警'),
-      ],
-    ),
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Tab(
-          icon: Icon(
-            Icons.grading_rounded,
-          ),
-          text: '期中成績',
-        ),
-        //SizedBox(width: 5.0,),
-        //Text('期中成績'),
-      ],
-    ),
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Tab(
-          icon: Icon(Icons.whatshot_rounded),
-        ),
-        //SizedBox(width: 5.0,),
-        //Text('期末成績'),
-      ],
-    ),
+    CustomTabBar(title: '期中預警', icon: Icons.warning_amber_rounded,),
+    CustomTabBar(title: '期中成績', icon: Icons.grading_rounded,),
+    CustomTabBar(title: '期末成績', icon: Icons.whatshot_rounded,),
   ];
 
   @override
@@ -59,11 +30,17 @@ class _GradesState extends State<Grades> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          title: Text(widget.title),
+          title: Text(widget.title, style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600),),
           centerTitle: true,
-          bottom: TabBar(
-            indicatorWeight: 5.0,
-            tabs: myTabs,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(65.0),
+            child: Container(
+              height: 65.0,
+              child: TabBar(
+                indicatorWeight: 5.0,
+                tabs: myTabs,
+              ),
+            ),
           ),
         ),
         body: TabBarView(
