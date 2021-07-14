@@ -83,10 +83,15 @@ class CGWIcon extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 20.0,
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
           ),
         ),
         SizedBox(

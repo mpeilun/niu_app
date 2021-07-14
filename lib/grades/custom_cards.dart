@@ -45,6 +45,7 @@ final List<Quote> grades = [
     teacher: 'RR',
     warn: true,
     gradeWarn: true,
+    attendanceWarn: true,
     presentWarn: true,
   ),
   Quote(lesson: '課程5', score: 95.0),
