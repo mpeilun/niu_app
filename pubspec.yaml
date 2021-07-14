@@ -45,10 +45,10 @@ dev_dependencies:
     sdk: flutter
 
 flutter_icons:
+  android: false
   ios: true
-  android: true
-  image_path_ios: "assets/ic_launcher_niu.png"
-  image_path_android: "assets/ic_launcher_niu_round.png"
+  remove_alpha_ios: true
+  image_path: "assets/ic_launcher_niu.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
