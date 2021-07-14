@@ -157,12 +157,16 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
             margin: const EdgeInsets.fromLTRB(15.0, 4.0, 15.0, 12.0),
             child: Padding(
               padding: const EdgeInsets.all(6.0),
-              child: Flex(direction: Axis.horizontal, children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    key: PageStorageKey<String>('card$index'),
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
+              child: LayoutBuilder(builder:
+                  (BuildContext context, BoxConstraints viewportConstraints) {
+                return SingleChildScrollView(
+                  key: PageStorageKey<String>('card$index'),
+                  physics: BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: viewportConstraints.maxWidth,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -202,8 +206,8 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                       ],
                     ),
                   ),
-                ),
-              ],),
+                );
+              }),
             ),
           ),
         ],
