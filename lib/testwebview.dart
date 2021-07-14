@@ -86,96 +86,96 @@ class _WebTestState extends State<WebTest> {
           drawer: MyDrawer(),
           body: SafeArea(
               child: Column(children: <Widget>[
-                Expanded(
-                  child: Stack(
-                    children: [
-                      InAppWebView(
-                        key: webViewKey,
-                        initialUrlRequest: URLRequest(
-                            url: Uri.parse(
-                                "https://eschool.niu.edu.tw/learn/index.php")),
-                        initialOptions: options,
-                        pullToRefreshController: pullToRefreshController,
-                        onWebViewCreated: (controller) {
-                          webViewController = controller;
-                        },
-                        onLoadStart: (controller, url) {
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        androidOnPermissionRequest:
-                            (controller, origin, resources) async {
-                          return PermissionRequestResponse(
-                              resources: resources,
-                              action: PermissionRequestResponseAction.GRANT);
-                        },
-                        shouldOverrideUrlLoading:
-                            (controller, navigationAction) async {
-                          var uri = navigationAction.request.url!;
+            Expanded(
+              child: Stack(
+                children: [
+                  InAppWebView(
+                    key: webViewKey,
+                    initialUrlRequest: URLRequest(
+                        url: Uri.parse(
+                            "https://eschool.niu.edu.tw/learn/index.php")),
+                    initialOptions: options,
+                    pullToRefreshController: pullToRefreshController,
+                    onWebViewCreated: (controller) {
+                      webViewController = controller;
+                    },
+                    onLoadStart: (controller, url) {
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    androidOnPermissionRequest:
+                        (controller, origin, resources) async {
+                      return PermissionRequestResponse(
+                          resources: resources,
+                          action: PermissionRequestResponseAction.GRANT);
+                    },
+                    shouldOverrideUrlLoading:
+                        (controller, navigationAction) async {
+                      var uri = navigationAction.request.url!;
 
-                          if (![
-                            "http",
-                            "https",
-                            "file",
-                            "chrome",
-                            "data",
-                            "javascript",
-                            "about"
-                          ].contains(uri.scheme)) {
-                            if (await canLaunch(url)) {
-                              // Launch the App
-                              await launch(
-                                url,
-                              );
-                              // and cancel the request
-                              return NavigationActionPolicy.CANCEL;
-                            }
-                          }
+                      if (![
+                        "http",
+                        "https",
+                        "file",
+                        "chrome",
+                        "data",
+                        "javascript",
+                        "about"
+                      ].contains(uri.scheme)) {
+                        if (await canLaunch(url)) {
+                          // Launch the App
+                          await launch(
+                            url,
+                          );
+                          // and cancel the request
+                          return NavigationActionPolicy.CANCEL;
+                        }
+                      }
 
-                          return NavigationActionPolicy.ALLOW;
-                        },
-                        onLoadStop: (controller, url) async {
-                          pullToRefreshController.endRefreshing();
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        onLoadError: (controller, url, code, message) {
-                          pullToRefreshController.endRefreshing();
-                        },
-                        onProgressChanged: (controller, progress) {
-                          if (progress == 100) {
-                            pullToRefreshController.endRefreshing();
-                          }
-                          setState(() {
-                            this.progress = progress / 100;
-                            urlController.text = this.url;
-                          });
-                        },
-                        onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        onConsoleMessage: (controller, consoleMessage) {
-                          print(consoleMessage);
-                        },
-                        onDownloadStart: (controller, url) {
-                          _download(url.toString());
-                          //_download('https://upload.wikimedia.org/wikipedia/commons/c/c3/%E5%90%89%E7%A5%A5%E7%89%A9-%E6%B3%A2%E6%AF%94.jpg');
-                        },
-                      ),
-                      progress < 1.0
-                          ? LinearProgressIndicator(value: progress)
-                          : Container(),
-                    ],
+                      return NavigationActionPolicy.ALLOW;
+                    },
+                    onLoadStop: (controller, url) async {
+                      pullToRefreshController.endRefreshing();
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    onLoadError: (controller, url, code, message) {
+                      pullToRefreshController.endRefreshing();
+                    },
+                    onProgressChanged: (controller, progress) {
+                      if (progress == 100) {
+                        pullToRefreshController.endRefreshing();
+                      }
+                      setState(() {
+                        this.progress = progress / 100;
+                        urlController.text = this.url;
+                      });
+                    },
+                    onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    onConsoleMessage: (controller, consoleMessage) {
+                      print(consoleMessage);
+                    },
+                    onDownloadStart: (controller, url) {
+                      _download(url.toString());
+                      //_download('https://upload.wikimedia.org/wikipedia/commons/c/c3/%E5%90%89%E7%A5%A5%E7%89%A9-%E6%B3%A2%E6%AF%94.jpg');
+                    },
                   ),
-                ),
-              ]))),
+                  progress < 1.0
+                      ? LinearProgressIndicator(value: progress)
+                      : Container(),
+                ],
+              ),
+            ),
+          ]))),
     );
   }
 }
@@ -197,10 +197,11 @@ Future _download(String url) async {
     print('---下載網址--- ' + url);
     print('---下載位置--- ' + externalDir);
 
-    List<Cookie> cookies = await CookieManager.instance().getCookies(url: Uri.parse(url));
+    List<Cookie> cookies =
+        await CookieManager.instance().getCookies(url: Uri.parse(url));
     await download(url, externalDir, cookies).then((value) => openFile(value));
-
   } else {
+    await Permission.storage.request();
     print('Permission Denied');
   }
 
@@ -211,11 +212,13 @@ Future download(String url, String savePath, List<Cookie> cookies) async {
   var dio = Dio();
   var cookieJar = new CookieJar();
   List<dartCookies.Cookie> dioCookies = [];
-  cookies.forEach((element) {dioCookies.add(new dartCookies.Cookie(element.name, element.value)
-    ..httpOnly = false
-    ..expires = DateTime.now().add(const Duration(hours: 1))
-    ..path = '/'
-    ..secure = true);});
+  cookies.forEach((element) {
+    dioCookies.add(new dartCookies.Cookie(element.name, element.value)
+      ..httpOnly = false
+      ..expires = DateTime.now().add(const Duration(hours: 1))
+      ..path = '/'
+      ..secure = true);
+  });
   cookieJar.saveFromResponse(Uri.parse(url), dioCookies);
   dio.interceptors.add(dioCookieManager.CookieManager(cookieJar));
   print('---Cookies---');
@@ -244,7 +247,7 @@ Future download(String url, String savePath, List<Cookie> cookies) async {
   return savePath;
 }
 
-Future openFile(savePath) async{
+Future openFile(savePath) async {
   print('---開啟檔案---');
   OpenFile.open(savePath);
 }
