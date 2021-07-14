@@ -156,34 +156,42 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
             margin: const EdgeInsets.fromLTRB(15.0, 4.0, 15.0, 12.0),
             child: Padding(
               padding: const EdgeInsets.all(6.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CGWIcon(
-                    isWarnList: isWarnList,
-                    title: '期中警示',
-                    icon: MyFlutterApp.exclamation,
-                    index: index,
+              child: Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      CGWIcon(
+                        isWarnList: isWarnList,
+                        title: '期中警示',
+                        icon: MyFlutterApp.exclamation,
+                        index: index,
+                      ),
+                      SizedBox(width: 15.0,),
+                      CGWIcon(
+                        isWarnList: isGradeList,
+                        title: '期中成績',
+                        icon: Icons.clear_rounded,
+                        index: index,
+                      ),
+                      SizedBox(width: 15.0,),
+                      CGWIcon(
+                        isWarnList: isAttendanceList,
+                        title: '出席率',
+                        icon: Icons.clear_rounded,
+                        index: index,
+                      ),
+                      SizedBox(width: 15.0,),
+                      CGWIcon(
+                        isWarnList: isPresentList,
+                        title: '報告/其他',
+                        icon: Icons.clear_rounded,
+                        index: index,
+                      ),
+                    ],
                   ),
-                  CGWIcon(
-                    isWarnList: isGradeList,
-                    title: '期中成績',
-                    icon: Icons.clear_rounded,
-                    index: index,
-                  ),
-                  CGWIcon(
-                    isWarnList: isAttendanceList,
-                    title: '出席率',
-                    icon: Icons.clear_rounded,
-                    index: index,
-                  ),
-                  CGWIcon(
-                    isWarnList: isPresentList,
-                    title: '報告/其他',
-                    icon: Icons.clear_rounded,
-                    index: index,
-                  ),
-                ],
+                ),
               ),
             ),
           ),
