@@ -160,6 +160,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
               child: Flex(direction: Axis.horizontal, children: [
                 Expanded(
                   child: SingleChildScrollView(
+                    key: PageStorageKey<String>('card$index'),
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     child: Row(
