@@ -7,11 +7,13 @@ import 'dart:isolate';
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart' as dioCookieManager;
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -180,10 +182,10 @@ class _WebTestState extends State<WebTest> {
   }
 }
 
-Future _download(String url) async {
-  final status = await Permission.storage.request();
+void _download(String url) async {
+  await Permission.storage.request();
 
-  if (status.isGranted) {
+  if (await Permission.storage.request().isGranted) {
     String externalDir;
     if (dartCookies.Platform.isAndroid) {
       externalDir = '/storage/emulated/0/Download';
@@ -201,11 +203,17 @@ Future _download(String url) async {
         await CookieManager.instance().getCookies(url: Uri.parse(url));
     await download(url, externalDir, cookies).then((value) => openFile(value));
   } else {
-    await Permission.storage.request();
-    print('Permission Denied');
+    Fluttertoast.showToast(
+        msg: "請點選 => 權限  => 允許\"檔案和媒體\"權限",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.red,
+        fontSize: 20.0);
+    AppSettings.openAppSettings();
+    print('無權限存取目錄');
   }
-
-  return url;
 }
 
 Future download(String url, String savePath, List<Cookie> cookies) async {
