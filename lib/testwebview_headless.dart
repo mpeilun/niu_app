@@ -48,6 +48,8 @@ class _WebTestHeadlessState extends State<WebTestHeadless> {
         });
       },
     );
+
+    headlessWebView?.run();
   }
 
   @override
@@ -61,43 +63,50 @@ class _WebTestHeadlessState extends State<WebTestHeadless> {
     return Scaffold(
         appBar: AppBar(
             title: Text(
-          "HeadlessInAppWebView",
+          "簡單爬蟲",
         )),
         body: SafeArea(
             child: Column(children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(20.0),
-            child: Text(
-                "CURRENT URL\n${(url.length > 50) ? url.substring(0, 50) + "..." : url}"),
+          Center(
+            child: ElevatedButton(
+                onPressed: () async {
+                  await headlessWebView?.webViewController.evaluateJavascript(
+                      source:
+                          'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'b0943034\';');
+                  await headlessWebView?.webViewController.evaluateJavascript(
+                      source:
+                          'document.querySelector("#M_PW").value=\'a1309237\';');
+                },
+                child: Text("輸入帳號密碼")),
           ),
           Center(
             child: ElevatedButton(
                 onPressed: () async {
-                  await headlessWebView?.dispose();
-                  await headlessWebView?.run();
+                  await headlessWebView?.webViewController.evaluateJavascript(
+                      source: 'document.querySelector("#LGOIN_BTN").click();');
                 },
-                child: Text("Run HeadlessInAppWebView")),
+                child: Text("登入")),
           ),
           Center(
             child: ElevatedButton(
                 onPressed: () async {
-                  print(await headlessWebView?.webViewController.getHtml());
-                  try {
-                    await headlessWebView?.webViewController.evaluateJavascript(
-                        source: """console.log('Here is the message!');""");
-                  } on MissingPluginException {
-                    print(
-                        "HeadlessInAppWebView is not running. Click on \"Run HeadlessInAppWebView\"!");
-                  }
+                  await headlessWebView?.webViewController.loadUrl(
+                      urlRequest: URLRequest(
+                          url: Uri.parse(
+                              "https://acade.niu.edu.tw/NIU/Application/ENR/ENR30/ENR3040_01.aspx")));
                 },
-                child: Text("Send console.log message")),
+                child: Text("跳轉個人資料頁面")),
           ),
           Center(
             child: ElevatedButton(
-                onPressed: () {
-                  headlessWebView?.dispose();
+                onPressed: () async {
+                  var result = await headlessWebView?.webViewController
+                      .evaluateJavascript(
+                          source:
+                              'document.querySelector("#M_RESIDENCE_ADDR").value;');
+                  print(result);
                 },
-                child: Text("Dispose HeadlessInAppWebView")),
+                child: Text("獲取個人資料")),
           )
         ])));
   }
