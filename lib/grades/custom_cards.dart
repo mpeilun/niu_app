@@ -177,7 +177,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                         CGWIcon(
                           isWarnList: isGradeList,
                           title: '期中成績',
-                          icon: Icons.clear_rounded,
+                          icon: MyFlutterApp.times_circle,
                           index: index,
                         ),
                         SizedBox(
@@ -186,7 +186,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                         CGWIcon(
                           isWarnList: isAttendanceList,
                           title: '出席率',
-                          icon: Icons.clear_rounded,
+                          icon: MyFlutterApp.times_circle,
                           index: index,
                         ),
                         SizedBox(
@@ -195,7 +195,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                         CGWIcon(
                           isWarnList: isPresentList,
                           title: '報告/其他',
-                          icon: Icons.clear_rounded,
+                          icon: MyFlutterApp.times_circle,
                           index: index,
                         ),
                       ],

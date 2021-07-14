@@ -25,5 +25,6 @@ class MyFlutterApp {
   static const _kFontFam = 'MyFlutterApp';
   static const String? _kFontPkg = null;
 
+  static const IconData times_circle = IconData(0xf057, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData exclamation = IconData(0xf12a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
