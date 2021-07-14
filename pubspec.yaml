@@ -40,6 +40,8 @@ dependencies:
   google_fonts: ^2.1.0
   week_of_year: ^2.0.0
   shared_preferences: ^2.0.6
+  app_settings: ^4.1.1
+  fluttertoast: ^8.0.7
 
 dev_dependencies:
   flutter_test:
