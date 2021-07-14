@@ -24,7 +24,7 @@ class Quote {
         this.warn = warn ?? false,
         this.gradeWarn = gradeWarn ?? false,
         this.attendanceWarn = attendanceWarn ?? false,
-        this.presentWarn =  presentWarn ?? false;
+        this.presentWarn = presentWarn ?? false;
 }
 
 final List<Quote> grades = [
@@ -112,7 +112,8 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
   Widget build(BuildContext context) {
     isWarnList = widget.grade.map((g) => g.warn ?? false).toList();
     isGradeList = widget.grade.map((g) => g.gradeWarn ?? false).toList();
-    isAttendanceList = widget.grade.map((g) => g.attendanceWarn ?? false).toList();
+    isAttendanceList =
+        widget.grade.map((g) => g.attendanceWarn ?? false).toList();
     isPresentList = widget.grade.map((g) => g.presentWarn ?? false).toList();
 
     return ListView.separated(
@@ -156,43 +157,52 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
             margin: const EdgeInsets.fromLTRB(15.0, 4.0, 15.0, 12.0),
             child: Padding(
               padding: const EdgeInsets.all(6.0),
-              child: Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      CGWIcon(
-                        isWarnList: isWarnList,
-                        title: '期中警示',
-                        icon: MyFlutterApp.exclamation,
-                        index: index,
-                      ),
-                      SizedBox(width: 15.0,),
-                      CGWIcon(
-                        isWarnList: isGradeList,
-                        title: '期中成績',
-                        icon: Icons.clear_rounded,
-                        index: index,
-                      ),
-                      SizedBox(width: 15.0,),
-                      CGWIcon(
-                        isWarnList: isAttendanceList,
-                        title: '出席率',
-                        icon: Icons.clear_rounded,
-                        index: index,
-                      ),
-                      SizedBox(width: 15.0,),
-                      CGWIcon(
-                        isWarnList: isPresentList,
-                        title: '報告/其他',
-                        icon: Icons.clear_rounded,
-                        index: index,
-                      ),
-                    ],
+              child: Flex(direction: Axis.horizontal, children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CGWIcon(
+                          isWarnList: isWarnList,
+                          title: '期中警示',
+                          icon: MyFlutterApp.exclamation,
+                          index: index,
+                        ),
+                        SizedBox(
+                          width: 15.0,
+                        ),
+                        CGWIcon(
+                          isWarnList: isGradeList,
+                          title: '期中成績',
+                          icon: Icons.clear_rounded,
+                          index: index,
+                        ),
+                        SizedBox(
+                          width: 15.0,
+                        ),
+                        CGWIcon(
+                          isWarnList: isAttendanceList,
+                          title: '出席率',
+                          icon: Icons.clear_rounded,
+                          index: index,
+                        ),
+                        SizedBox(
+                          width: 15.0,
+                        ),
+                        CGWIcon(
+                          isWarnList: isPresentList,
+                          title: '報告/其他',
+                          icon: Icons.clear_rounded,
+                          index: index,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+              ],),
             ),
           ),
         ],
@@ -200,5 +210,3 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
     );
   }
 }
-
-
