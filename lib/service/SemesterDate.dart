@@ -4,6 +4,7 @@ import 'dart:convert';
 
 class SemesterDate{
 
+  ///<--Json的索引列-->///
   List<String> index = [
     "start_year",
     "start_month",
@@ -14,21 +15,28 @@ class SemesterDate{
     "final_semester"
   ];
 
+  ///<--現在的日期-->///
   int? nowYear;
   int? nowMonths;
   int? nowDay;
 
-  String? nowSemester;
+  ///<--現在的學期-->///
+  /// null=沒初始化 ///
+  /// out=不在學期中///
+  String nowSemester = "null";
 
-  int? semesterStartYear;
-  int? semesterStartMonths;
-  int? semesterStartDay;
+  ///<--學期起迄-->///
+  /// -1=不在學期中///
+  /// -2=尚未初始化///
+  int semesterStartYear = -2;
+  int semesterStartMonths = -2;
+  int semesterStartDay = -2;
 
-  int? semesterEndYear;
-  int? semesterEndMonths;
-  int? semesterEndDay;
+  int semesterEndYear = -2;
+  int semesterEndMonths = -2;
+  int semesterEndDay = -2;
 
-  int semesterWeek = -2;  //-1代表不在學期中 -2代表還沒初始化
+  int semesterWeek = -2;
 
   SemesterDate(){
     DateTime now = DateTime.now();
@@ -69,14 +77,23 @@ class SemesterDate{
       semesterWeek = now.weekOfYear - semesterStartTime.weekOfYear + 1;
       if(semesterWeek < 0)
         semesterWeek += 52;
-
     }else if( now.isBefore(semesterStartTime) ){
-      semesterWeek = -1;
+      outOfSemester();
     }else if( semesterJSON[thisSemester][index[6]] == "false" ){
       getNowWeek(semesterJSON, year, semester+1);
     }else{
-      semesterWeek = -1;
+      outOfSemester();
     }
     return;
+  }
+  void outOfSemester(){
+    semesterStartYear = -1;
+    semesterStartMonths = -1;
+    semesterStartDay = -1;
+    semesterEndYear = -1;
+    semesterEndMonths = -1;
+    semesterEndDay = -1;
+    semesterWeek = -1;
+    nowSemester = "out";
   }
 }
