@@ -27,7 +27,7 @@ class CustomIcons extends StatelessWidget {
         SizedBox(height: 2.0,),
         Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          // style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ],
     );

@@ -5,6 +5,7 @@ import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
+import 'package:niu_app/schoolEvent/schoolEvent.dart';
 import 'package:niu_app/testwebview_headless.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 
@@ -104,7 +105,15 @@ class _StartMenu extends State<StartMenu> {
                     CustomIcons(
                       title: '活動報名',
                       icon: MenuIcon.icon_event,
-                      press: () {},
+                      press: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SchoolEvent(
+                                  title: '活動報名',
+                                ),
+                                maintainState: false));
+                      },
                     ),
                     CustomIcons(
                       title: 'ZUVIO',
