@@ -16,6 +16,6 @@ class _TimeTableState extends State<TimeTable> {
   var a = SemesterDate;
   @override
   Widget build(BuildContext context) {
-    return ViewPage.extent();
+    return ViewPage.build();
   }
 }
