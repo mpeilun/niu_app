@@ -103,8 +103,8 @@ class _StartMenu extends State<StartMenu> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CustomIcons(
-                      text: '活動報名',
-                      icons: MenuIcon.icon_event,
+                      title: '活動報名',
+                      icon: MenuIcon.icon_event,
                       press: () {
                         Navigator.push(
                             context,
