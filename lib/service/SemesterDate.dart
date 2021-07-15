@@ -37,6 +37,10 @@ class SemesterDate{
   int semesterEndDay = -2;
 
   int semesterWeek = -2;
+  Future<int> getSemesterWeek() async {
+    await semester();
+    return semesterWeek;
+  }
 
   SemesterDate(){
     DateTime now = DateTime.now();
@@ -45,7 +49,7 @@ class SemesterDate{
     nowDay = now.day;
     semester();
   }
-  void semester() async{
+  Future<void> semester() async{
     var jsonString = await Dio().get('https://my-json-server.typicode.com/ken6078/NiuSemesterJSON/db');
     Map<String, dynamic> semesterJSON = json.decode(jsonString.toString());
     getNowWeek(semesterJSON,109,1);
