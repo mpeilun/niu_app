@@ -1,39 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:niu_app/service/SemesterDate.dart';
-
-import './BuildTimeTable/Tile.dart' as Tile;
-/*  SpannableExtentCountPage */
-/*  EdgeInsets.all(5)        */
-/*  crossAxisCount: 5        */
-class TimeTable extends StatefulWidget {
-  final String title = '課表';
-  TimeTable({Key? key}) : super(key: key);
-
-  @override
-  _TimeTableState createState() => _TimeTableState();
-}
-
-class _TimeTableState extends State<TimeTable> {
-  var a = SemesterDate;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('example 01'),
-        ),
-        body: Padding(
-            padding: EdgeInsets.all(5),
-            child: StaggeredGridView.count(
-              crossAxisCount: 5,
-              staggeredTiles: _staggeredTiles,
-              mainAxisSpacing: 4,
-              crossAxisSpacing: 4,
-              children: _tiles,
-            )));
-  }
-}
-
 
 const List<StaggeredTile> _staggeredTiles = <StaggeredTile>[
   StaggeredTile.count(2, 2),
@@ -106,4 +72,3 @@ class _Example01Tile extends StatelessWidget {
     );
   }
 }
-

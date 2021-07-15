@@ -38,7 +38,8 @@ class SemesterDate{
 
   int semesterWeek = -2;
   Future<int> getSemesterWeek() async {
-    await semester();
+    if(semesterWeek == -2)
+      await semester();
     return semesterWeek;
   }
 
