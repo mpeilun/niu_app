@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:niu_app/schoolEvent/custom_cards.dart';
+import 'package:niu_app/school_event/custom_cards.dart';
 
 class EventSignedPage extends StatefulWidget {
   const EventSignedPage({Key? key}) : super(key: key);
