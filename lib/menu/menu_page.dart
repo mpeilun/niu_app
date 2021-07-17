@@ -69,7 +69,7 @@ class _StartMenu extends State<StartMenu> {
           trailing:
               Text("暑假結束", style: TextStyle(color: Colors.red, fontSize: 18)),
           percent: goal,
-          center: Text((goal * 100).toStringAsFixed(1),
+          center: Text((goal * 100).toStringAsFixed(1) + '%',
               style: TextStyle(color: Colors.blue, fontSize: 16)),
           linearStrokeCap: LinearStrokeCap.butt,
           progressColor: Colors.amber,
