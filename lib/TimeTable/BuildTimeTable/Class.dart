@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class Class{
   //課名
-  String name = "Default name";
+  String? name = "Default name";
   //老師
-  String teacher = "Default teacher";
+  String? teacher = "Default teacher";
   //教室
-  String classroom = "Default classroom";
+  String? classroom = "Default classroom";
   //課的星期
   int weekDay = -1;
   //課的起迄

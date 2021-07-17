@@ -6,7 +6,7 @@ class NullClassCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(4),
-      child: Text("空堂"),
+      child: Text(""),
     );
   }
 

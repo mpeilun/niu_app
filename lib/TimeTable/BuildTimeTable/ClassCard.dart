@@ -8,7 +8,7 @@ class ClassCard extends StatelessWidget {
   Class thisClass;
   @override
   Widget build(BuildContext context) {
-    String classInfo = thisClass.name + "\n" + thisClass.teacher + "\n" + thisClass.classroom;
+    String classInfo = thisClass.name.toString() + "\n" + thisClass.teacher.toString() + "\n" + thisClass.classroom.toString();
     return Card(
       color: thisClass.getColor(),
       child: InkWell(
@@ -17,7 +17,7 @@ class ClassCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(4),
             //child: Text("生態與環境變遷\n徐頭疼\n教101"),
-            child: Text(classInfo);
+            child: Text(classInfo),
           ),
         ),
       ),

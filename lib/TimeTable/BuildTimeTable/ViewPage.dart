@@ -22,21 +22,23 @@ class ViewPage extends StatelessWidget {
             crossAxisCount: 5,
             mainAxisSpacing: 4,
             crossAxisSpacing: 4,
-            //staggeredTiles: _re.getStaggeredTile(),
-            staggeredTiles: _staggeredTiles,
+            staggeredTiles: _re.getStaggeredTile(),
+            //staggeredTiles: _staggeredTiles,
             //size
-            //children: _re.getTiles(), //物件
-            children: _tiles, //物件
+            children: _re.getTiles(), //物件
+            //children: _tiles, //物件
           )
       ),
     );
   }
 }
 
+Class nullClass = new Class(null,null,null,-1,-1,-1);
 Class temp = new Class("生態與環境變遷","徐明藤","101",1,1,1);
 Class temp1 = new Class("生態與環境變遷1","徐明藤","101",1,1,1);
+Class temp2 = new Class("國文","陳頭疼","102",1,1,1);
 List<Class> _list = <Class>[
-  temp,temp,temp,temp1
+  temp,nullClass,temp2,temp,temp1
 ];
 
 
