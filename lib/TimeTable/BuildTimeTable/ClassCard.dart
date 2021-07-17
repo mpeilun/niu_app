@@ -6,17 +6,18 @@ class ClassCard extends StatelessWidget {
     required this.thisClass,
   });
   Class thisClass;
-
   @override
   Widget build(BuildContext context) {
+    String classInfo = thisClass.name + "\n" + thisClass.teacher + "\n" + thisClass.classroom;
     return Card(
-      color: thisClass.getColor(),  //TODO:課專屬顏色
+      color: thisClass.getColor(),
       child: InkWell(
         onTap: () {},
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(4),
-            child: Text("生態與環境變遷\n徐頭疼\n教101"),  //TODO:課名 老師 教室
+            //child: Text("生態與環境變遷\n徐頭疼\n教101"),
+            child: Text(classInfo);
           ),
         ),
       ),
