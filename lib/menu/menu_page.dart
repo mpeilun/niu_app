@@ -55,6 +55,7 @@ class _StartMenu extends State<StartMenu> {
       ),
       body: SafeArea(
           child: Column(children: [
+        //今天想混搬家累了
         Image.network(
             'https://thumbs.gfycat.com/EminentRecentAplomadofalcon-max-1mb.gif'),
         SizedBox(height: 10),
