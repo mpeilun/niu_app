@@ -10,7 +10,7 @@ class ViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _re = ClassList(_list);
+    var _re = ClassList(myTable);
     return Scaffold(
       appBar: AppBar(
         title: Text("課表"),
@@ -32,6 +32,22 @@ class ViewPage extends StatelessWidget {
     );
   }
 }
+
+
+List<Class> myTable = <Class>[
+  Class("電子電路","朱志明","教416",1,2,4),
+  Class("工程數學","黃朝曦","教102",1,5,5),
+  Class("英文聽講","待聘教師","綜105",1,7,8),
+  Class("人工智慧導論","林斯寅","格406",1,9,9),
+  Class("GC服務管理","黃麗君","教214",2,3,4),
+  Class("人工智慧導論","林斯寅","格406",2,5,6),
+  Class("工程數學","黃朝曦","教102",3,3,4),
+  Class("離散數學","吳汶涓","綜202",3,7,9),
+  Class("GB台灣開發史","陳政吉","教105",3,10,11),
+  Class("資訊安全導論","陳麒元","格406",4,5,7),
+  Class("微處理器系統","卓信宏","教416",5,2,4)
+];
+
 
 Class nullClass = new Class(null,null,null,-1,-1,-1);
 Class temp = new Class("生態與環境變遷","徐明藤","101",1,1,1);
