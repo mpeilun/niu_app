@@ -6,7 +6,10 @@ class CustomIcons extends StatelessWidget {
   final IconData icon;
   final VoidCallback press;
   const CustomIcons({
-    Key? key, required this.title, required this.icon, required this.press,
+    Key? key,
+    required this.title,
+    required this.icon,
+    required this.press,
   }) : super(key: key);
 
   @override
@@ -19,21 +22,22 @@ class CustomIcons extends StatelessWidget {
             painter: CirclePainter(),
             child: IconButton(
               iconSize: 40,
-              icon: Icon(icon, color: Colors.black),
+              icon: Icon(icon, color: Colors.white),
               onPressed: press,
             ),
           ),
         ),
-        SizedBox(height: 2.0,),
+        SizedBox(
+          height: 2.0,
+        ),
         Text(
           title,
-          // style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ],
     );
   }
 }
-
 
 class CustomTabBar extends StatelessWidget {
   final String title;
@@ -57,13 +61,21 @@ class CustomTabBar extends StatelessWidget {
               icon: Icon(icon),
             ),
           ),
-          SizedBox(width: 3.0,),
-          Flexible(flex: 3, child: Text(title, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),)),
+          SizedBox(
+            width: 3.0,
+          ),
+          Flexible(
+              flex: 3,
+              child: Text(
+                title,
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+              )),
         ],
       ),
     );
   }
 }
+
 class CGWIcon extends StatelessWidget {
   const CGWIcon({
     Key? key,
@@ -97,10 +109,10 @@ class CGWIcon extends StatelessWidget {
           height: 35.0,
           child: isWarnList[index]
               ? Icon(
-            icon,
-            color: Colors.red,
-            size: 30.0,
-          )
+                  icon,
+                  color: Colors.red,
+                  size: 30.0,
+                )
               : null,
           decoration: BoxDecoration(
             border: isWarnList[index] ? null : Border.all(color: Colors.grey),

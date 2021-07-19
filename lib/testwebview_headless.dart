@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'main.dart';
 
@@ -18,8 +19,8 @@ class _WebTestHeadlessState extends State<WebTestHeadless> {
     super.initState();
 
     headlessWebView = new HeadlessInAppWebView(
-      initialUrlRequest:
-          URLRequest(url: Uri.parse("https://acade.niu.edu.tw/NIU/")),
+      initialUrlRequest: URLRequest(
+          url: Uri.parse("https://acade.niu.edu.tw/NIU/logout.aspx")),
       initialOptions: InAppWebViewGroupOptions(
         crossPlatform: InAppWebViewOptions(),
       ),
@@ -37,9 +38,6 @@ class _WebTestHeadlessState extends State<WebTestHeadless> {
       },
       onLoadStop: (controller, url) async {
         print("onLoadStop $url");
-        setState(() {
-          this.url = url.toString();
-        });
       },
       onUpdateVisitedHistory: (controller, url, androidIsReload) {
         print("onUpdateVisitedHistory $url");

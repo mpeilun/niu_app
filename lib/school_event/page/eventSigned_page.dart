@@ -11,7 +11,7 @@ class EventSignedPage extends StatefulWidget {
 class _EventSignedPageState extends State<EventSignedPage> {
   @override
   Widget build(BuildContext context) => CustomEventSignedCard(
-    key: PageStorageKey<String>('eventSigned'),
-    grade: grades2,
-  );
+        key: PageStorageKey<String>('eventSigned'),
+        grade: grades2,
+      );
 }

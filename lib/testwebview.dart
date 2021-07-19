@@ -95,7 +95,7 @@ class _WebTestState extends State<WebTest> {
                     key: webViewKey,
                     initialUrlRequest: URLRequest(
                         url: Uri.parse(
-                            "https://eschool.niu.edu.tw/learn/index.php")),
+                            "https://acade.niu.edu.tw/NIU/MainFrame.aspx")),
                     initialOptions: options,
                     pullToRefreshController: pullToRefreshController,
                     onWebViewCreated: (controller) {
