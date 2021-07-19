@@ -22,6 +22,7 @@ class ClassList{
 
 
   ClassList(this._classList){
+    colorIndex = 0;
     ///<--執行前對list的sort&tableInfo的初始化-->///
     //排序
     _classList.sort((left,right)=>left.weekDay.compareTo(right.weekDay));
