@@ -9,21 +9,13 @@ class TimeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Card(
-      color: thisColor,
-      child: InkWell(
-        //onTap: () {},
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(11),  //2*5課表+1時間
-            //child: Text("生態與環境變遷\n徐頭疼\n教101"),
-            child: Text(
-              timeName[thisTime],
-              style: TextStyle(
-                fontSize: 12,
-              ),
-            ),
-          )
+    return Padding(
+      padding: const EdgeInsets.all(11),  //2*5課表+1時間
+      //child: Text("生態與環境變遷\n徐頭疼\n教101"),
+      child: Text(
+        timeName[thisTime],
+        style: TextStyle(
+          fontSize: 12,
         ),
       ),
     );

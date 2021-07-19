@@ -59,6 +59,7 @@ class ClassList{
       for(int j = _classList[i].startTime; j <= _classList[i].endTime; j++){
         tableInfo[_classList[i].weekDay][j] = true;
       }
+      //todo: 最後一節偵測 補完課名
     }
   }
 
@@ -72,16 +73,16 @@ class ClassList{
       thisClass.setColor( colorList[thisClass.name] );
     }
     _tiles.add(ClassCard.build(thisClass : thisClass));
-    _staggeredTiles.add(StaggeredTile.count(2, (thisClass.endTime - thisClass.startTime + 1).toDouble()*2 )); //*2ㄉ寬高
+    _staggeredTiles.add(StaggeredTile.count(2, (thisClass.endTime - thisClass.startTime + 1).toDouble()*2.1 )); //*2ㄉ寬 *2.1高
   }
   ///<--沒課程新增NullClassCard到list裡-->///
   void putNullClass(){
     _tiles.add(NullClassCard.build());
-    _staggeredTiles.add(StaggeredTile.count(2,2)); //*2ㄉ寬高
+    _staggeredTiles.add(StaggeredTile.count(2,2.1)); //*2ㄉ寬 *2.1高
   }
   void putTimeClass(int time){
     _tiles.add(TimeCard.build( thisTime: time,thisColor: Colors.teal,));
-    _staggeredTiles.add(StaggeredTile.count(1,2)); //*2ㄉ高
+    _staggeredTiles.add(StaggeredTile.count(1,2.1)); //*2.1高
   }
 
 }

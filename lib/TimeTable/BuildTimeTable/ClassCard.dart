@@ -8,7 +8,15 @@ class ClassCard extends StatelessWidget {
   Class thisClass;
   @override
   Widget build(BuildContext context) {
-    String classInfo = thisClass.name.toString() + "\n" + thisClass.teacher.toString() + "\n" + thisClass.classroom.toString();
+    String classInfo = "";
+    if(thisClass.endTime-thisClass.startTime >= 2){
+      classInfo = thisClass.name.toString() + "\n\n" + thisClass.teacher.toString() + "\n\n" + thisClass.classroom.toString();
+    }else if(thisClass.endTime-thisClass.startTime == 1){
+      classInfo = thisClass.name.toString() + "\n\n" + thisClass.classroom.toString();
+    }else {
+      classInfo = thisClass.name.toString();
+    }
+
     return Card(
       color: thisClass.getColor(),
       child: InkWell(
