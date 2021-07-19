@@ -274,7 +274,9 @@ class _StartMenu extends State<StartMenu> {
             'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
     await headlessWebView?.webViewController.evaluateJavascript(
         source: 'document.querySelector("#M_PW").value=\'$pwd\';');
-    await headlessWebView?.webViewController.evaluateJavascript(
-        source: 'document.querySelector("#LGOIN_BTN").click();');
+    Future.delayed(Duration(seconds: 1), () async {
+      await headlessWebView?.webViewController.evaluateJavascript(
+          source: 'document.querySelector("#LGOIN_BTN").click();');
+    });
   }
 }
