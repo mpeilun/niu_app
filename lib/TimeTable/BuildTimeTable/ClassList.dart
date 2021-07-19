@@ -5,6 +5,7 @@ import 'package:niu_app/TimeTable/BuildTimeTable/NullClassCard.dart';
 
 import 'ClassCard.dart';
 import 'Class.dart';
+import 'TimeCard.dart';
 
 class ClassList{
   List<dynamic> _classList;
@@ -32,6 +33,7 @@ class ClassList{
     ///<--產生pageList-->///
     int weekDay = 1;
     int time = 0;
+    putTimeClass(0);
     for(int i = 0; i < _classList.length; i++){
       //換行
       while(time != _classList[i].startTime){
@@ -42,6 +44,7 @@ class ClassList{
         }
         time++;
         weekDay = 1;
+        putTimeClass(time);
       }
       //同行空格
       for(int j = weekDay; j < _classList[i].weekDay;j++){
@@ -69,12 +72,16 @@ class ClassList{
       thisClass.setColor( colorList[thisClass.name] );
     }
     _tiles.add(ClassCard.build(thisClass : thisClass));
-    _staggeredTiles.add(StaggeredTile.count(1, (thisClass.endTime - thisClass.startTime + 1).toDouble() ));
+    _staggeredTiles.add(StaggeredTile.count(2, (thisClass.endTime - thisClass.startTime + 1).toDouble()*2 )); //*2ㄉ寬高
   }
   ///<--沒課程新增NullClassCard到list裡-->///
   void putNullClass(){
     _tiles.add(NullClassCard.build());
-    _staggeredTiles.add(StaggeredTile.count(1,1));
+    _staggeredTiles.add(StaggeredTile.count(2,2)); //*2ㄉ寬高
+  }
+  void putTimeClass(int time){
+    _tiles.add(TimeCard.build( thisTime: time,thisColor: Colors.teal,));
+    _staggeredTiles.add(StaggeredTile.count(1,2)); //*2ㄉ高
   }
 
 }

@@ -17,11 +17,11 @@ class ViewPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Padding(
-          padding: const EdgeInsets.all(5),
+          padding: const EdgeInsets.all(11),  //2*5課表+1時間
           child: StaggeredGridView.count(
-            crossAxisCount: 5,
-            mainAxisSpacing: 4,
-            crossAxisSpacing: 4,
+            crossAxisCount: 11,
+            mainAxisSpacing: 0,
+            crossAxisSpacing: 0,
             staggeredTiles: _re.getStaggeredTile(),
             //staggeredTiles: _staggeredTiles,
             //size

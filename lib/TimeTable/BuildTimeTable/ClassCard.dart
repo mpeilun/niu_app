@@ -15,9 +15,14 @@ class ClassCard extends StatelessWidget {
         onTap: () {},
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(11),  //2*5課表+1時間
             //child: Text("生態與環境變遷\n徐頭疼\n教101"),
-            child: Text(classInfo),
+            child: Text(
+              classInfo,
+              style: TextStyle(
+                fontSize: 12,
+              ),
+            ),
           ),
         ),
       ),
