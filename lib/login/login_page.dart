@@ -116,6 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                     onChanged: (String value) async {
                       pwd = value;
                     },
+                    obscureText: true,
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.lock),
                       suffixIcon: Icon(Icons.remove_red_eye),

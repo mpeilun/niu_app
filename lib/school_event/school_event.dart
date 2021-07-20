@@ -5,7 +5,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/grades/page/final_page.dart';
 import 'package:niu_app/grades/page/mid_page.dart';
 import 'package:niu_app/grades/page/warn_page.dart';
-import 'package:niu_app/school_event/page/eventSigned_page.dart';
+import 'package:niu_app/school_event/page/event_signed_page.dart';
 import 'package:niu_app/school_event/page/event_page.dart';
 
 class SchoolEvent extends StatefulWidget {
