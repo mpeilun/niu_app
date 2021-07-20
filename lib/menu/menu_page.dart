@@ -192,6 +192,9 @@ class _StartMenu extends State<StartMenu> {
                             ),
                           ],
                         ),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Expanded(
                           flex: 4,
                           child: Image.asset('assets/niu_background.png'),
