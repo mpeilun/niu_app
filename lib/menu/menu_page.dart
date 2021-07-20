@@ -28,6 +28,7 @@ class StartMenu extends StatefulWidget {
 class _StartMenu extends State<StartMenu> {
   HeadlessInAppWebView? headlessWebView;
   String url = "";
+  bool loginState = false;
 
   @override
   void initState() {
@@ -61,149 +62,146 @@ class _StartMenu extends State<StartMenu> {
         ),
       ),
       body: SafeArea(
-          child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-                "https://i.pinimg.com/originals/12/6a/8f/126a8f49264261264d29865449fb4ba1.gif"),
-            fit: BoxFit.cover,
+        child: Container(
+          child: Column(
+            children: [
+              Visibility(
+                visible: !loginState,
+                child: Expanded(
+                  child: Image.network(
+                      'https://i.pinimg.com/originals/6b/67/cb/6b67cb8a166c0571c1290f205c513321.gif'),
+                ),
+              ),
+              Visibility(
+                visible: loginState,
+                child: Expanded(
+                  flex: 6,
+                  child:
+                      Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CustomIcons(
+                              title: '數位園區',
+                              icon: MenuIcon.icon_eschool,
+                              press: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginPage(
+                                              title: '登入',
+                                            ),
+                                        maintainState: false));
+                              },
+                            ),
+                            CustomIcons(
+                              title: '成績查詢',
+                              icon: MenuIcon.icon_grades,
+                              press: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Grades(
+                                              title: '成績查詢',
+                                            ),
+                                        maintainState: false));
+                              },
+                            ),
+                            CustomIcons(
+                              title: '每周課表',
+                              icon: MenuIcon.icon_timetable,
+                              press: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TimeTable(),
+                                        maintainState: false));
+                              },
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CustomIcons(
+                              title: '活動報名',
+                              icon: MenuIcon.icon_event,
+                              press: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SchoolEvent(
+                                              title: '活動報名',
+                                            ),
+                                        maintainState: false));
+                              },
+                            ),
+                            CustomIcons(
+                              title: 'ZUVIO',
+                              icon: MenuIcon.icon_zuvio,
+                              press: () {},
+                            ),
+                            CustomIcons(
+                              title: '畢業門檻',
+                              icon: MenuIcon.icon_graduation,
+                              press: () {},
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CustomIcons(
+                              title: '選課系統',
+                              icon: MenuIcon.icon_e_school,
+                              press: () {},
+                            ),
+                            CustomIcons(
+                              title: '公車動態',
+                              icon: MenuIcon.icon_bus,
+                              press: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => WebTestHeadless(),
+                                        maintainState: false));
+                              },
+                            ),
+                            CustomIcons(
+                              title: '帳號設定',
+                              icon: MenuIcon.icon_account,
+                              press: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => WebTest(),
+                                        maintainState: false));
+                              },
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Image.asset('assets/niu_background.png'),
+                        )
+                      ]),
+                ),
+              ),
+            ],
           ),
         ),
-        child: Column(children: [
-          SizedBox(height: 10),
-          LinearPercentIndicator(
-            alignment: MainAxisAlignment.center,
-            width: 200.0,
-            animation: true,
-            animationDuration: 5000,
-            lineHeight: 25,
-            leading: Text("暑假開始",
-                style: TextStyle(color: Colors.green, fontSize: 18)),
-            trailing:
-                Text("暑假結束", style: TextStyle(color: Colors.red, fontSize: 18)),
-            percent: goal,
-            center: Text((goal * 100).toStringAsFixed(1) + '%',
-                style: TextStyle(color: Colors.blue, fontSize: 16)),
-            linearStrokeCap: LinearStrokeCap.butt,
-            progressColor: Colors.amber,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text("剩下$day天",
-              style: TextStyle(color: Colors.pinkAccent, fontSize: 18)),
-          Expanded(
-            flex: 6,
-            child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CustomIcons(
-                        title: '數位園區',
-                        icon: MenuIcon.icon_eschool,
-                        press: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginPage(
-                                        title: '登入',
-                                      ),
-                                  maintainState: false));
-                        },
-                      ),
-                      CustomIcons(
-                        title: '成績查詢',
-                        icon: MenuIcon.icon_grades,
-                        press: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Grades(
-                                        title: '成績查詢',
-                                      ),
-                                  maintainState: false));
-                        },
-                      ),
-                      CustomIcons(
-                        title: '每周課表',
-                        icon: MenuIcon.icon_timetable,
-                        press: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TimeTable(),
-                                  maintainState: false));
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CustomIcons(
-                        title: '活動報名',
-                        icon: MenuIcon.icon_event,
-                        press: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SchoolEvent(
-                                        title: '活動報名',
-                                      ),
-                                  maintainState: false));
-                        },
-                      ),
-                      CustomIcons(
-                        title: 'ZUVIO',
-                        icon: MenuIcon.icon_zuvio,
-                        press: () {},
-                      ),
-                      CustomIcons(
-                        title: '畢業門檻',
-                        icon: MenuIcon.icon_graduation,
-                        press: () {},
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CustomIcons(
-                        title: '選課系統',
-                        icon: MenuIcon.icon_e_school,
-                        press: () {},
-                      ),
-                      CustomIcons(
-                        title: '公車動態',
-                        icon: MenuIcon.icon_bus,
-                        press: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => WebTestHeadless(),
-                                  maintainState: false));
-                        },
-                      ),
-                      CustomIcons(
-                        title: '帳號設定',
-                        icon: MenuIcon.icon_account,
-                        press: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => WebTest(),
-                                  maintainState: false));
-                        },
-                      ),
-                    ],
-                  ),
-                ]),
-          ),
-          //Expanded(flex: 4, child: Image.asset('assets/niu_background.png'))
-        ]),
-      )),
+      ),
     );
   }
 
@@ -251,6 +249,12 @@ class _StartMenu extends State<StartMenu> {
           });
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/Default.aspx') {
             login();
+          }
+          if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
+            print('登入成功');
+            setState(() {
+              loginState = true;
+            });
           }
         },
         onUpdateVisitedHistory: (controller, url, androidIsReload) {

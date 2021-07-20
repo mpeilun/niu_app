@@ -22,7 +22,7 @@ class CustomIcons extends StatelessWidget {
             painter: CirclePainter(),
             child: IconButton(
               iconSize: 40,
-              icon: Icon(icon, color: Colors.white),
+              icon: Icon(icon, color: Colors.black),
               onPressed: press,
             ),
           ),
@@ -32,7 +32,7 @@ class CustomIcons extends StatelessWidget {
         ),
         Text(
           title,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ],
     );
