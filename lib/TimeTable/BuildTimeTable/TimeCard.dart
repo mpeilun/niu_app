@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 class TimeCard extends StatelessWidget {
   TimeCard.build({
     required this.thisTime,
-    required this.thisColor,
   });
-  Color thisColor;
   int thisTime;
   @override
   Widget build(BuildContext context) {

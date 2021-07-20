@@ -6,7 +6,7 @@ import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
-import 'package:niu_app/school_event/schoolEvent.dart';
+import 'package:niu_app/school_event/school_event.dart';
 import 'package:niu_app/testwebview_headless.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 
