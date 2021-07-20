@@ -81,7 +81,7 @@ class _StartMenu extends State<StartMenu> {
                           //crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                         SizedBox(
-                          height: 10,
+                          height: 20,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -221,8 +221,10 @@ class _StartMenu extends State<StartMenu> {
                     title: '登入',
                   ),
               maintainState: false));
-      setState(() {
-        loginState = true;
+      Future.delayed(Duration(seconds: 3), () async {
+        setState(() {
+          loginState = true;
+        });
       });
     } else {
       headlessWebView = new HeadlessInAppWebView(

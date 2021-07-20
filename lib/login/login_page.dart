@@ -162,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
     });
-    Future.delayed(Duration(seconds: 3), () async {
+    Future.delayed(Duration(seconds: 5), () async {
       setState(() {
         loadState = true;
       });
