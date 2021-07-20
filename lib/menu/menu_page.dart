@@ -28,6 +28,7 @@ class StartMenu extends StatefulWidget {
 class _StartMenu extends State<StartMenu> {
   HeadlessInAppWebView? headlessWebView;
   String url = "";
+  String title = '登入中';
   bool loginState = false;
 
   @override
@@ -49,7 +50,7 @@ class _StartMenu extends State<StartMenu> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
         titleSpacing: 0.0,
         elevation: 0.0,
         actions: [
@@ -222,9 +223,7 @@ class _StartMenu extends State<StartMenu> {
                   ),
               maintainState: false));
       Future.delayed(Duration(seconds: 3), () async {
-        setState(() {
-          loginState = true;
-        });
+        loginFinished();
       });
     } else {
       headlessWebView = new HeadlessInAppWebView(
@@ -257,9 +256,7 @@ class _StartMenu extends State<StartMenu> {
           }
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
             print('登入成功');
-            setState(() {
-              loginState = true;
-            });
+            loginFinished();
           }
         },
         onUpdateVisitedHistory: (controller, url, androidIsReload) {
@@ -286,6 +283,13 @@ class _StartMenu extends State<StartMenu> {
     Future.delayed(Duration(seconds: 1), () async {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
+    });
+  }
+
+  void loginFinished() {
+    setState(() {
+      loginState = true;
+      title = '功能列表';
     });
   }
 }
