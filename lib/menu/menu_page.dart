@@ -221,6 +221,9 @@ class _StartMenu extends State<StartMenu> {
                     title: '登入',
                   ),
               maintainState: false));
+      setState(() {
+        loginState = true;
+      });
     } else {
       headlessWebView = new HeadlessInAppWebView(
         initialUrlRequest: URLRequest(
