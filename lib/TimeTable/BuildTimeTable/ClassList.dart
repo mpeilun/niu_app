@@ -6,6 +6,7 @@ import 'package:niu_app/TimeTable/BuildTimeTable/NullClassCard.dart';
 import 'ClassCard.dart';
 import 'Class.dart';
 import 'TimeCard.dart';
+import 'WeekDayCard.dart';
 
 class ClassList{
   List<dynamic> _classList;
@@ -34,7 +35,13 @@ class ClassList{
     ///<--產生pageList-->///
     int weekDay = 1;
     int time = 0;
-    putTimeClass(0);
+    //星期
+    _tiles.add(NullClassCard.build());
+    _staggeredTiles.add(StaggeredTile.count(1,2.1));
+    for(int i = 0; i < 5; i++){
+      putWeekDay(i);
+    }
+    putTime(0);
     for(int i = 0; i < _classList.length; i++){
       //換行
       while(time != _classList[i].startTime){
@@ -45,7 +52,7 @@ class ClassList{
         }
         time++;
         weekDay = 1;
-        putTimeClass(time);
+        putTime(time);
       }
       //同行空格
       for(int j = weekDay; j < _classList[i].weekDay;j++){
@@ -60,7 +67,7 @@ class ClassList{
       for(int j = _classList[i].startTime; j <= _classList[i].endTime; j++){
         tableInfo[_classList[i].weekDay][j] = true;
       }
-      //todo: 最後一節偵測 補完課名
+      //todo: 最後一節偵測 補完時間
     }
   }
 
@@ -81,9 +88,13 @@ class ClassList{
     _tiles.add(NullClassCard.build());
     _staggeredTiles.add(StaggeredTile.count(2,2.1)); //*2ㄉ寬 *2.1高
   }
-  void putTimeClass(int time){
-    _tiles.add(TimeCard.build( thisTime: time,thisColor: Colors.teal,));
+  void putTime(int time){
+    _tiles.add(TimeCard.build( thisTime: time));
     _staggeredTiles.add(StaggeredTile.count(1,2.1)); //*2.1高
+  }
+  void putWeekDay(int day){
+    _tiles.add(WeekDayCard.build( thisDay: day));
+    _staggeredTiles.add(StaggeredTile.count(2,2.1)); //*2.1高
   }
 
 }
