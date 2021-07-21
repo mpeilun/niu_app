@@ -47,7 +47,7 @@ class _SchoolEventState extends State<SchoolEvent> {
 
 
 
-  //123４５６45787
+  //123
 
   @override
   Widget build(BuildContext context) {
