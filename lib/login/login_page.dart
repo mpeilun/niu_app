@@ -73,76 +73,63 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     return WillPopScope(
       onWillPop: () async => false,
-      child: MaterialApp(
-        theme: ThemeData(
-          primaryColor: Colors.blue[900],
-          scaffoldBackgroundColor: Colors.grey[200],
-          textTheme: GoogleFonts.notoSansTextTheme(textTheme).copyWith(
-            headline1: GoogleFonts.oswald(textStyle: textTheme.headline1),
-          ),
-        ),
-        home: Scaffold(
-          appBar: AppBar(
+      child: Scaffold(
+        appBar: AppBar(
             title: Text(widget.title),
             centerTitle: true,
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-                  child: TextFormField(
-                    controller: _controllerID,
-                    onChanged: (String value) async {
-                      id = value;
+            automaticallyImplyLeading: false),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                child: TextFormField(
+                  controller: _controllerID,
+                  onChanged: (String value) async {
+                    id = value;
+                  },
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.person),
+                    labelText: "學號 *",
+                    hintText: "輸入您的的學號",
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                child: TextFormField(
+                  controller: _controllerPWD,
+                  onChanged: (String value) async {
+                    pwd = value;
+                  },
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    suffixIcon: Icon(Icons.remove_red_eye),
+                    labelText: "密碼 *",
+                    hintText: "預設身分證前八碼",
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 52.0,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width - 48.0,
+                height: 48.0,
+                child: Visibility(
+                  visible: loadState,
+                  child: ElevatedButton(
+                    child: Text("登入"),
+                    onPressed: () async {
+                      await login();
                     },
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      labelText: "學號 *",
-                      hintText: "輸入您的的學號",
-                    ),
                   ),
                 ),
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-                  child: TextFormField(
-                    controller: _controllerPWD,
-                    onChanged: (String value) async {
-                      pwd = value;
-                    },
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.lock),
-                      suffixIcon: Icon(Icons.remove_red_eye),
-                      labelText: "密碼 *",
-                      hintText: "預設身分證前八碼",
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 52.0,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width - 48.0,
-                  height: 48.0,
-                  child: Visibility(
-                    visible: loadState,
-                    child: ElevatedButton(
-                      child: Text("Login"),
-                      onPressed: () async {
-                        await login();
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

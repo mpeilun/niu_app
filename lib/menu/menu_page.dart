@@ -40,6 +40,7 @@ class _StartMenu extends State<StartMenu> {
   @override
   void dispose() {
     super.dispose();
+    print('menu dispose');
   }
 
   @override
@@ -81,8 +82,11 @@ class _StartMenu extends State<StartMenu> {
                       Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           //crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                        SizedBox(
-                          height: 20,
+                        Expanded(
+                          flex: 1,
+                          child: SizedBox(
+                            height: 20,
+                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -192,8 +196,11 @@ class _StartMenu extends State<StartMenu> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 20,
+                        Expanded(
+                          flex: 2,
+                          child: SizedBox(
+                            height: 20,
+                          ),
                         ),
                         Expanded(
                           flex: 4,
