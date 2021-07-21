@@ -14,6 +14,19 @@ class _EventPageState extends State<EventPage> {
   String url = "";
   String temp = "";
 
+  List<String> data = [];
+
+  getValue() async {
+    for(int i = 2; await headlessWebView?.webViewController.evaluateJavascript(
+        source:
+        'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText') != null; i++){
+      this.data.add(await headlessWebView?.webViewController.evaluateJavascript(
+          source:
+          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4) > div").innerText'));
+    }
+    print(this.data);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +51,7 @@ class _EventPageState extends State<EventPage> {
       },
       onLoadStop: (controller, url) async {
         print("onLoadStop $url");
+        getValue();
       },
       onUpdateVisitedHistory: (controller, url, androidIsReload) {
         print("onUpdateVisitedHistory $url");
@@ -48,13 +62,6 @@ class _EventPageState extends State<EventPage> {
     );
 
     headlessWebView?.run();
-
-    getValue() async {
-      await headlessWebView?.webViewController.evaluateJavascript(
-          source:
-          'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'b0943034\';');
-      this.temp = "545";
-    }
   }
 
   @override
