@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.person),
-                      labelText: "Username *",
+                      labelText: "學號 *",
                       hintText: "輸入您的的學號",
                     ),
                   ),
@@ -116,10 +116,11 @@ class _LoginPageState extends State<LoginPage> {
                     onChanged: (String value) async {
                       pwd = value;
                     },
+                    obscureText: true,
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.lock),
                       suffixIcon: Icon(Icons.remove_red_eye),
-                      labelText: "Password *",
+                      labelText: "密碼 *",
                       hintText: "預設身分證前八碼",
                     ),
                   ),
@@ -149,7 +150,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   login() async {
-    loadState = false;
+    setState(() {
+      loadState = false;
+    });
     await headlessWebView?.webViewController.evaluateJavascript(
         source:
             'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
@@ -159,7 +162,11 @@ class _LoginPageState extends State<LoginPage> {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
     });
-    loadState = true;
+    Future.delayed(Duration(seconds: 5), () async {
+      setState(() {
+        loadState = true;
+      });
+    });
   }
 
   _saveData(String id, String pwd) async {
