@@ -37,7 +37,7 @@ class ClassList{
     int time = 0;
     //星期
     _tiles.add(NullClassCard.build());
-    _staggeredTiles.add(StaggeredTile.count(1,2.1));
+    _staggeredTiles.add(StaggeredTile.count(1,1.1));
     for(int i = 0; i < 5; i++){
       putWeekDay(i);
     }
@@ -94,7 +94,7 @@ class ClassList{
   }
   void putWeekDay(int day){
     _tiles.add(WeekDayCard.build( thisDay: day));
-    _staggeredTiles.add(StaggeredTile.count(2,2.1)); //*2.1高
+    _staggeredTiles.add(StaggeredTile.count(2,1.1)); //*2.1高
   }
 
 }
