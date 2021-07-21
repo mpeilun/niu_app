@@ -16,9 +16,16 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _controllerPWD = TextEditingController();
   HeadlessInAppWebView? headlessWebView;
   bool loadState = false;
+  bool eye = true;
   String url = "";
   String id = "";
   String pwd = "";
+
+  void _displayPassword(){
+    setState(() {
+      this.eye = !this.eye;
+    });
+  }
 
   @override
   void initState() {
@@ -131,10 +138,15 @@ class _LoginPageState extends State<LoginPage> {
                           onChanged: (String value) async {
                             pwd = value;
                           },
-                          obscureText: true,
-                          decoration: const InputDecoration(
+                          obscureText: eye,
+                          decoration: InputDecoration(
                             prefixIcon: Icon(Icons.lock),
-                            suffixIcon: Icon(Icons.remove_red_eye),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.remove_red_eye),
+                              onPressed: (){
+                                _displayPassword();
+                              },
+                            ),
                             labelText: "密碼 *",
                             hintText: "預設身分證前八碼",
                           ),

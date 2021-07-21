@@ -76,11 +76,11 @@ final List<Quote> grades2 = [
 ];
 
 class CustomEventCard extends StatefulWidget {
-  final List<Quote> grade;
+  final List<Quote> data;
 
   const CustomEventCard({
     Key? key,
-    required this.grade,
+    required this.data,
   }) : super(key: key);
 
   @override
@@ -94,7 +94,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
   Widget build(BuildContext context) {
     return ListView.separated(
       physics: BouncingScrollPhysics(),
-      itemCount: widget.grade.length,
+      itemCount: widget.data.length,
       separatorBuilder: (BuildContext context, int index) => Divider(
         thickness: 1.5,
         indent: 12,
@@ -109,7 +109,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.grade[index].lesson,
+                    widget.data[index].lesson,
                     style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.black,
@@ -117,7 +117,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                     ),
                   ),
                   Text(
-                    '${widget.grade[index].teacher}',
+                    '${widget.data[index].teacher}',
                     style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.grey,
@@ -175,15 +175,15 @@ class _CustomEventCardState extends State<CustomEventCard> {
 }
 
 class CustomEventSignedCard extends StatelessWidget {
-  final List<Quote> grade;
+  final List<Quote> data;
 
-  const CustomEventSignedCard({Key? key, required this.grade}) : super(key: key);
+  const CustomEventSignedCard({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: BouncingScrollPhysics(),
-      itemCount: grade.length,
+      itemCount: data.length,
       itemBuilder: (BuildContext context, int index) => Card(
         elevation: 1.5,
         margin: const EdgeInsets.fromLTRB(12.0, 10.0, 12.0, 4.0),
@@ -193,13 +193,13 @@ class CustomEventSignedCard extends StatelessWidget {
             title: Row(
               children: [
                 Text(
-                  grade[index].lesson,
+                  data[index].lesson,
                   style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700),
                 ),
               ],
             ),
             subtitle: Text(
-              '分數：${grade[index].score}',
+              '分數：${data[index].score}',
               style: TextStyle(
                 fontSize: 18.0,
               ),
