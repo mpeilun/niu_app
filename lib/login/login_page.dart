@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   String id = "";
   String pwd = "";
 
-  void _displayPassword(){
+  void _displayPassword() {
     setState(() {
       this.eye = !this.eye;
     });
@@ -36,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
             url: Uri.parse("https://acade.niu.edu.tw/NIU/logout.aspx")),
         initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
+            useOnLoadResource: true,
             javaScriptCanOpenWindowsAutomatically: true,
           ),
         ),
@@ -80,6 +81,10 @@ class _LoginPageState extends State<LoginPage> {
           JsAlertResponseAction action =
               await createAlertDialog(context, '帳號或密碼錯誤，請查明後再登入!');
           return JsAlertResponse(handledByClient: true, action: action);
+        },
+        onLoadResource:
+            (InAppWebViewController controller, LoadedResource resource) {
+          print(resource.toString());
         });
 
     headlessWebView?.run();
@@ -143,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                             prefixIcon: Icon(Icons.lock),
                             suffixIcon: IconButton(
                               icon: Icon(Icons.remove_red_eye),
-                              onPressed: (){
+                              onPressed: () {
                                 _displayPassword();
                               },
                             ),
