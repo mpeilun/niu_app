@@ -201,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
 
   _saveData(String id, String pwd) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("id", id);
+    prefs.setString("id", id.toLowerCase());
     prefs.setString("pwd", pwd);
     Navigator.pop(context);
   }
