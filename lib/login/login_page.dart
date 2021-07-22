@@ -97,6 +97,7 @@ class _LoginPageState extends State<LoginPage> {
     _controllerID.dispose();
     _controllerPWD.dispose();
     headlessWebView?.dispose();
+    print('login dispose');
   }
 
   @override
@@ -116,9 +117,9 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: 24.0, vertical: 16.0),
-                        child: TextFormField(
+                        child: TextField(
                           controller: _controllerID,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             prefixIcon: Icon(Icons.person),
                             labelText: "學號 *",
                             hintText: "輸入您的的學號",
@@ -128,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: 24.0, vertical: 16.0),
-                        child: TextFormField(
+                        child: TextField(
                           controller: _controllerPWD,
                           obscureText: hidePassword,
                           decoration: InputDecoration(
@@ -180,7 +181,8 @@ class _LoginPageState extends State<LoginPage> {
         source:
             'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'${_controllerID.text}\';');
     await headlessWebView?.webViewController.evaluateJavascript(
-        source: 'document.querySelector("#M_PW").value=\'${_controllerPWD.text}\';');
+        source:
+            'document.querySelector("#M_PW").value=\'${_controllerPWD.text}\';');
     Future.delayed(Duration(seconds: 1), () async {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
