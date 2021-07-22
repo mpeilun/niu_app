@@ -95,6 +95,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     super.dispose();
+    _controllerID.dispose();
+    _controllerPWD.dispose();
     headlessWebView?.dispose();
   }
 
@@ -148,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 52.0,
+                      height: 48.0,
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width - 48.0,
@@ -159,6 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text("登入"),
                           onPressed: () async {
                             await login();
+                            FocusScope.of(context).unfocus();
                           },
                         ),
                       ),
