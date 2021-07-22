@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'NIU app',
       theme: ThemeData(
-        primaryColor: Colors.blue,
+        primaryColor: Colors.blue[900],
         backgroundColor: Colors.grey[200],
         textTheme: GoogleFonts.notoSansTextTheme(textTheme).copyWith(
           headline1: GoogleFonts.oswald(textStyle: textTheme.headline1),

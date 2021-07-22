@@ -161,60 +161,58 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
               borderRadius: BorderRadius.circular(15),
             ),
             elevation: 1.5,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: LayoutBuilder(builder:
-                  (BuildContext context, BoxConstraints viewportConstraints) {
-                return SingleChildScrollView(
-                  key: PageStorageKey<String>('card$index'),
-                  physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minWidth: viewportConstraints.maxWidth,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CGWIcon(
-                          isWarnList: isWarnList,
-                          title: '期中警示',
-                          icon: MyFlutterApp.exclamation,
-                          index: index,
-                        ),
-                        SizedBox(
-                          width: 15.0,
-                        ),
-                        CGWIcon(
-                          isWarnList: isGradeList,
-                          title: '期中成績',
-                          icon: MyFlutterApp.times_circle,
-                          index: index,
-                        ),
-                        SizedBox(
-                          width: 15.0,
-                        ),
-                        CGWIcon(
-                          isWarnList: isAttendanceList,
-                          title: '出席率',
-                          icon: MyFlutterApp.times_circle,
-                          index: index,
-                        ),
-                        SizedBox(
-                          width: 15.0,
-                        ),
-                        CGWIcon(
-                          isWarnList: isPresentList,
-                          title: '報告/其他',
-                          icon: MyFlutterApp.times_circle,
-                          index: index,
-                        ),
-                      ],
-                    ),
+            child: LayoutBuilder(builder:
+                (BuildContext context, BoxConstraints viewportConstraints) {
+              return SingleChildScrollView(
+                padding: EdgeInsets.all(8.0),
+                key: PageStorageKey<String>('card$index'),
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: viewportConstraints.maxWidth,
                   ),
-                );
-              }),
-            ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      CGWIcon(
+                        isWarnList: isWarnList,
+                        title: '期中警示',
+                        icon: MyFlutterApp.exclamation,
+                        index: index,
+                      ),
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      CGWIcon(
+                        isWarnList: isGradeList,
+                        title: '期中成績',
+                        icon: MyFlutterApp.times_circle,
+                        index: index,
+                      ),
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      CGWIcon(
+                        isWarnList: isAttendanceList,
+                        title: '出席率',
+                        icon: MyFlutterApp.times_circle,
+                        index: index,
+                      ),
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      CGWIcon(
+                        isWarnList: isPresentList,
+                        title: '報告/其他',
+                        icon: MyFlutterApp.times_circle,
+                        index: index,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
           ),
         ],
       ),

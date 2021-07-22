@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:niu_app/menu/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   final String title;
+
   LoginPage({Key? key, required this.title}) : super(key: key);
 
   @override
@@ -100,83 +102,72 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: Scaffold(
-        appBar: AppBar(
-            title: Text(widget.title),
-            centerTitle: true,
-            automaticallyImplyLeading: false),
-        body: Column(
-          children: <Widget>[
-            Visibility(
-              visible: !loadState,
-              child: Expanded(
-                child: Image.network(
-                    'https://i.pinimg.com/originals/6b/67/cb/6b67cb8a166c0571c1290f205c513321.gif'),
-              ),
-            ),
-            Visibility(
-              visible: loadState,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 24.0, vertical: 16.0),
-                    child: TextFormField(
-                      controller: _controllerID,
-                      onChanged: (String value) async {
-                        id = value;
-                      },
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.person),
-                        labelText: "學號 *",
-                        hintText: "輸入您的的學號",
+      child: loadState
+          ? Scaffold(
+              body: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 24.0, vertical: 16.0),
+                      child: TextFormField(
+                        controller: _controllerID,
+                        onChanged: (String value) async {
+                          id = value;
+                        },
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.person),
+                          labelText: "學號 *",
+                          hintText: "輸入您的的學號",
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 24.0, vertical: 16.0),
-                    child: TextFormField(
-                      controller: _controllerPWD,
-                      onChanged: (String value) async {
-                        pwd = value;
-                      },
-                      obscureText: hidePassword,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        suffixIcon: IconButton(
-                          icon: Icon(hidePassword ? Icons.visibility_off : Icons.visibility),
-                          onPressed: () {
-                            _displayPassword();
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 24.0, vertical: 16.0),
+                      child: TextFormField(
+                        controller: _controllerPWD,
+                        onChanged: (String value) async {
+                          pwd = value;
+                        },
+                        obscureText: hidePassword,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            icon: Icon(hidePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility),
+                            onPressed: () {
+                              _displayPassword();
+                            },
+                          ),
+                          labelText: "密碼 *",
+                          hintText: "預設身分證前八碼",
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 52.0,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 48.0,
+                      height: 48.0,
+                      child: Visibility(
+                        visible: loadState,
+                        child: ElevatedButton(
+                          child: Text("登入"),
+                          onPressed: () async {
+                            await login();
                           },
                         ),
-                        labelText: "密碼 *",
-                        hintText: "預設身分證前八碼",
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 52.0,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 48.0,
-                    height: 48.0,
-                    child: Visibility(
-                      visible: loadState,
-                      child: ElevatedButton(
-                        child: Text("登入"),
-                        onPressed: () async {
-                          await login();
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ))
+          : Loading(),
     );
   }
 
