@@ -28,7 +28,7 @@ class Quote {
 }
 
 final List<Quote> grades = [
-  Quote(lesson: '課程一', score: 80.0, teacher: 'CC', warn: false),
+  Quote(lesson: '課程一', score: 80.0, teacher: 'CC', warn: true),
   Quote(lesson: '課程二', score: 85.0),
   Quote(
     lesson: '課程3',
@@ -61,17 +61,23 @@ class CustomGradeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
+      padding: const EdgeInsets.all(8.0),
       physics: BouncingScrollPhysics(),
       itemCount: grade.length,
+      separatorBuilder: (BuildContext context, int index) {
+        return SizedBox(
+          height: 8,
+        );
+      },
       itemBuilder: (BuildContext context, int index) => Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
         elevation: 1.5,
-        margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
+        //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
         child: Padding(
-          padding: const EdgeInsets.all(6.0),
+          padding: const EdgeInsets.all(8.0),
           child: ListTile(
             title: Text(
               grade[index].lesson,
@@ -117,6 +123,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
     isPresentList = widget.grade.map((g) => g.presentWarn ?? false).toList();
 
     return ListView.separated(
+      padding: const EdgeInsets.all(8.0),
       physics: BouncingScrollPhysics(),
       itemCount: widget.grade.length,
       separatorBuilder: (BuildContext context, int index) => Divider(
@@ -127,7 +134,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
       itemBuilder: (BuildContext context, int index) => Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(18.0, 2.0, 18.0, 0.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -154,9 +161,8 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
               borderRadius: BorderRadius.circular(15),
             ),
             elevation: 1.5,
-            margin: const EdgeInsets.fromLTRB(15.0, 4.0, 15.0, 12.0),
             child: Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.all(8.0),
               child: LayoutBuilder(builder:
                   (BuildContext context, BoxConstraints viewportConstraints) {
                 return SingleChildScrollView(

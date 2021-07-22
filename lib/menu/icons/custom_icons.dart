@@ -39,7 +39,7 @@ class CustomIcons extends StatelessWidget {
   }
 }
 
-class CustomTabBar extends StatelessWidget {
+class CustomTabBar extends StatefulWidget {
   final String title;
   final IconData icon;
   const CustomTabBar({
@@ -49,29 +49,74 @@ class CustomTabBar extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _CustomTabBarState createState() => _CustomTabBarState();
+}
+
+class _CustomTabBarState extends State<CustomTabBar> {
+  bool isLargeScreen = false;
+
+  @override
   Widget build(BuildContext context) {
+    if (MediaQuery.of(context).size.width > 320) {
+      isLargeScreen = true;
+    } else {
+      isLargeScreen = false;
+    }
     return Container(
       height: 65.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Flexible(
-            flex: 2,
-            child: Tab(
-              icon: Icon(icon),
-            ),
-          ),
-          SizedBox(
-            width: 3.0,
-          ),
-          Flexible(
-              flex: 3,
-              child: Text(
-                title,
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
-              )),
-        ],
-      ),
+      child: isLargeScreen ? TabBarL(title: widget.title, icon: widget.icon) : TabBarS(title: widget.title,),
+    );
+  }
+}
+
+class TabBarL extends StatelessWidget {
+  final String title;
+  final IconData icon;
+
+  const TabBarL({
+    Key? key,
+    required this.title,
+    required this.icon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Tab(
+          icon: Icon(icon),
+        ),
+        SizedBox(
+          width: 3.0,
+        ),
+        Text(
+          title,
+          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+        ),
+      ],
+    );
+  }
+}
+
+class TabBarS extends StatelessWidget {
+  final String title;
+
+  const TabBarS({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          title,
+          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+        ),
+      ],
     );
   }
 }

@@ -29,6 +29,7 @@ class _GradesState extends State<Grades> {
       length: myTabs.length,
       child: Scaffold(
         appBar: AppBar(
+          titleSpacing: 0.0,
           elevation: 0.0,
           title: Text(widget.title, style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600),),
           centerTitle: true,
@@ -37,6 +38,7 @@ class _GradesState extends State<Grades> {
             child: Container(
               height: 65.0,
               child: TabBar(
+                labelPadding: EdgeInsets.zero,
                 indicatorWeight: 5.0,
                 tabs: myTabs,
               ),

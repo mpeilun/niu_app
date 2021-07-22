@@ -16,14 +16,14 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _controllerPWD = TextEditingController();
   HeadlessInAppWebView? headlessWebView;
   bool loadState = false;
-  bool eye = true;
+  bool hidePassword = true;
   String url = "";
   String id = "";
   String pwd = "";
 
   void _displayPassword() {
     setState(() {
-      this.eye = !this.eye;
+      this.hidePassword = !this.hidePassword;
     });
   }
 
@@ -116,66 +116,62 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Visibility(
               visible: loadState,
-              child: Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 24.0, vertical: 16.0),
-                        child: TextFormField(
-                          controller: _controllerID,
-                          onChanged: (String value) async {
-                            id = value;
-                          },
-                          decoration: const InputDecoration(
-                            prefixIcon: Icon(Icons.person),
-                            labelText: "學號 *",
-                            hintText: "輸入您的的學號",
-                          ),
-                        ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 24.0, vertical: 16.0),
+                    child: TextFormField(
+                      controller: _controllerID,
+                      onChanged: (String value) async {
+                        id = value;
+                      },
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.person),
+                        labelText: "學號 *",
+                        hintText: "輸入您的的學號",
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 24.0, vertical: 16.0),
-                        child: TextFormField(
-                          controller: _controllerPWD,
-                          onChanged: (String value) async {
-                            pwd = value;
-                          },
-                          obscureText: eye,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.lock),
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.remove_red_eye),
-                              onPressed: () {
-                                _displayPassword();
-                              },
-                            ),
-                            labelText: "密碼 *",
-                            hintText: "預設身分證前八碼",
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 52.0,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width - 48.0,
-                        height: 48.0,
-                        child: Visibility(
-                          visible: loadState,
-                          child: ElevatedButton(
-                            child: Text("登入"),
-                            onPressed: () async {
-                              await login();
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 24.0, vertical: 16.0),
+                    child: TextFormField(
+                      controller: _controllerPWD,
+                      onChanged: (String value) async {
+                        pwd = value;
+                      },
+                      obscureText: hidePassword,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          icon: Icon(hidePassword ? Icons.visibility_off : Icons.visibility),
+                          onPressed: () {
+                            _displayPassword();
+                          },
+                        ),
+                        labelText: "密碼 *",
+                        hintText: "預設身分證前八碼",
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 52.0,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 48.0,
+                    height: 48.0,
+                    child: Visibility(
+                      visible: loadState,
+                      child: ElevatedButton(
+                        child: Text("登入"),
+                        onPressed: () async {
+                          await login();
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
