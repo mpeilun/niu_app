@@ -180,9 +180,9 @@ class _LoginPageState extends State<LoginPage> {
     });
     await headlessWebView?.webViewController.evaluateJavascript(
         source:
-            'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$_controllerID.text\';');
+            'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'${_controllerID.text}\';');
     await headlessWebView?.webViewController.evaluateJavascript(
-        source: 'document.querySelector("#M_PW").value=\'$_controllerPWD.text\';');
+        source: 'document.querySelector("#M_PW").value=\'${_controllerPWD.text}\';');
     Future.delayed(Duration(seconds: 1), () async {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
