@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:niu_app/menu/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -66,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
           }
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
             print('登入成功');
-            await _saveData(id, pwd);
+            await _saveData(_controllerID.text, _controllerPWD.text);
           }
         },
         onUpdateVisitedHistory: (controller, url, androidIsReload) {
@@ -119,9 +118,6 @@ class _LoginPageState extends State<LoginPage> {
                             horizontal: 24.0, vertical: 16.0),
                         child: TextFormField(
                           controller: _controllerID,
-                          onChanged: (String value) async {
-                            id = value;
-                          },
                           decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.person),
                             labelText: "學號 *",
@@ -134,9 +130,6 @@ class _LoginPageState extends State<LoginPage> {
                             horizontal: 24.0, vertical: 16.0),
                         child: TextFormField(
                           controller: _controllerPWD,
-                          onChanged: (String value) async {
-                            pwd = value;
-                          },
                           obscureText: hidePassword,
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.lock),
@@ -164,6 +157,8 @@ class _LoginPageState extends State<LoginPage> {
                           child: ElevatedButton(
                             child: Text("登入"),
                             onPressed: () async {
+                              print(_controllerPWD.text);
+                              print(_controllerID.text);
                               await login();
                               FocusScope.of(context).unfocus();
                             },
@@ -185,9 +180,9 @@ class _LoginPageState extends State<LoginPage> {
     });
     await headlessWebView?.webViewController.evaluateJavascript(
         source:
-            'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
+            'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$_controllerID.text\';');
     await headlessWebView?.webViewController.evaluateJavascript(
-        source: 'document.querySelector("#M_PW").value=\'$pwd\';');
+        source: 'document.querySelector("#M_PW").value=\'$_controllerPWD.text\';');
     Future.delayed(Duration(seconds: 1), () async {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
@@ -223,7 +218,6 @@ class _LoginPageState extends State<LoginPage> {
         );
       },
     );
-
     return action;
   }
 }
