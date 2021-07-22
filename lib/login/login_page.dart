@@ -14,20 +14,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _controllerID = TextEditingController();
-  final TextEditingController _controllerPWD = TextEditingController();
   HeadlessInAppWebView? headlessWebView;
   bool loadState = false;
   bool hidePassword = true;
   String url = "";
   String id = "";
   String pwd = "";
-
-  void _displayPassword() {
-    setState(() {
-      this.hidePassword = !this.hidePassword;
-    });
-  }
 
   @override
   void initState() {
@@ -95,8 +87,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     super.dispose();
-    _controllerID.dispose();
-    _controllerPWD.dispose();
     headlessWebView?.dispose();
   }
 
@@ -114,11 +104,10 @@ class _LoginPageState extends State<LoginPage> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 24.0, vertical: 16.0),
                       child: TextFormField(
-                        controller: _controllerID,
                         onChanged: (String value) async {
                           id = value;
                         },
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           prefixIcon: Icon(Icons.person),
                           labelText: "學號 *",
                           hintText: "輸入您的的學號",
@@ -129,8 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 24.0, vertical: 16.0),
                       child: TextFormField(
-                        controller: _controllerPWD,
-                        onChanged: (String value) async {
+                        onChanged: (String value) {
                           pwd = value;
                         },
                         obscureText: hidePassword,
@@ -141,7 +129,9 @@ class _LoginPageState extends State<LoginPage> {
                                 ? Icons.visibility_off
                                 : Icons.visibility),
                             onPressed: () {
-                              _displayPassword();
+                              setState(() {
+                                this.hidePassword = !this.hidePassword;
+                              });
                             },
                           ),
                           labelText: "密碼 *",
@@ -159,9 +149,8 @@ class _LoginPageState extends State<LoginPage> {
                         visible: loadState,
                         child: ElevatedButton(
                           child: Text("登入"),
-                          onPressed: () async {
-                            await login();
-                            FocusScope.of(context).unfocus();
+                          onPressed: () {
+                            login();
                           },
                         ),
                       ),
