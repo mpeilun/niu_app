@@ -92,75 +92,72 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: loadState
-          ? Scaffold(
-              body: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 24.0, vertical: 16.0),
-                      child: TextFormField(
-                        onChanged: (String value) async {
-                          id = value;
-                        },
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.person),
-                          labelText: "學號 *",
-                          hintText: "輸入您的的學號",
-                        ),
+    return loadState
+        ? Scaffold(
+            body: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                    child: TextFormField(
+                      onChanged: (String value) {
+                        id = value;
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.person),
+                        labelText: "學號 *",
+                        hintText: "輸入您的的學號",
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 24.0, vertical: 16.0),
-                      child: TextFormField(
-                        onChanged: (String value) {
-                          pwd = value;
-                        },
-                        obscureText: hidePassword,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.lock),
-                          suffixIcon: IconButton(
-                            icon: Icon(hidePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility),
-                            onPressed: () {
-                              setState(() {
-                                this.hidePassword = !this.hidePassword;
-                              });
-                            },
-                          ),
-                          labelText: "密碼 *",
-                          hintText: "預設身分證前八碼",
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 48.0,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 48.0,
-                      height: 48.0,
-                      child: Visibility(
-                        visible: loadState,
-                        child: ElevatedButton(
-                          child: Text("登入"),
+                  ),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                    child: TextFormField(
+                      onChanged: (String value) {
+                        pwd = value;
+                      },
+                      obscureText: hidePassword,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          icon: Icon(hidePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility),
                           onPressed: () {
-                            login();
+                            setState(() {
+                              this.hidePassword = !this.hidePassword;
+                            });
                           },
                         ),
+                        labelText: "密碼 *",
+                        hintText: "預設身分證前八碼",
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    height: 48.0,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 48.0,
+                    height: 48.0,
+                    child: Visibility(
+                      visible: loadState,
+                      child: ElevatedButton(
+                        child: Text("登入"),
+                        onPressed: () {
+                          login();
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ))
-          : Loading(),
-    );
+            ),
+          ))
+        : Loading();
   }
 
   login() async {
