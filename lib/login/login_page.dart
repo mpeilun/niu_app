@@ -157,8 +157,6 @@ class _LoginPageState extends State<LoginPage> {
                           child: ElevatedButton(
                             child: Text("登入"),
                             onPressed: () async {
-                              print(_controllerPWD.text);
-                              print(_controllerID.text);
                               await login();
                               FocusScope.of(context).unfocus();
                             },
