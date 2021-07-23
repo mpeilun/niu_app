@@ -53,6 +53,7 @@ class _StartMenu extends State<StartMenu> {
 
     return loginState
         ? Scaffold(
+            backgroundColor: Theme.of(context).backgroundColor,
             appBar: AppBar(
               title: Text(title),
               titleSpacing: 0.0,
@@ -71,6 +72,7 @@ class _StartMenu extends State<StartMenu> {
               builder:
                   (BuildContext context, BoxConstraints viewportConstraints) {
                 return SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
                       maxHeight: MediaQuery.of(context).size.height - 80,

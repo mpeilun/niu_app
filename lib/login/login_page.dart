@@ -14,14 +14,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _controllerID = TextEditingController();
-  final TextEditingController _controllerPWD = TextEditingController();
+  final TextEditingController controllerID = TextEditingController();
+  final TextEditingController controllerPWD = TextEditingController();
+  final passwdFocus = FocusNode();
   HeadlessInAppWebView? headlessWebView;
   bool loadState = false;
   bool hidePassword = true;
   String url = "";
-  String id = "";
-  String pwd = "";
 
   void _displayPassword() {
     setState(() {
@@ -66,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
           }
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
             print('登入成功');
-            await _saveData(_controllerID.text, _controllerPWD.text);
+            await _saveData(controllerID.text, controllerPWD.text);
           }
         },
         onUpdateVisitedHistory: (controller, url, androidIsReload) {
@@ -95,8 +94,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     super.dispose();
-    _controllerID.dispose();
-    _controllerPWD.dispose();
+    controllerID.dispose();
+    controllerPWD.dispose();
+    passwdFocus.dispose();
     headlessWebView?.dispose();
     //SystemChannels.textInput.invokeMethod(method)
     print('login dispose');
@@ -107,67 +107,84 @@ class _LoginPageState extends State<LoginPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: loadState
-          ? GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: Scaffold(
-                  body: Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 24.0, vertical: 16.0),
-                        child: TextField(
-                          controller: _controllerID,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.person),
-                            labelText: "學號 *",
-                            hintText: "輸入您的的學號",
+          ? Scaffold(
+              backgroundColor: Theme.of(context).backgroundColor,
+              body: SafeArea(child: LayoutBuilder(
+                builder:
+                    (BuildContext context, BoxConstraints viewportConstraints) {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: viewportConstraints.maxHeight,
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                        },
+                        child: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 24.0, vertical: 16.0),
+                                child: TextField(
+                                  controller: controllerID,
+                                  onSubmitted: (_) => FocusScope.of(context)
+                                      .requestFocus(passwdFocus),
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.person),
+                                    labelText: "學號 *",
+                                    hintText: "輸入您的的學號",
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 24.0, vertical: 16.0),
+                                child: TextField(
+                                  controller: controllerPWD,
+                                  obscureText: hidePassword,
+                                  focusNode: passwdFocus,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.lock),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(hidePassword
+                                          ? Icons.visibility_off
+                                          : Icons.visibility),
+                                      onPressed: () {
+                                        _displayPassword();
+                                      },
+                                    ),
+                                    labelText: "密碼 *",
+                                    hintText: "預設身分證前八碼",
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 48.0,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width - 48.0,
+                                height: 48.0,
+                                child: Visibility(
+                                  visible: loadState,
+                                  child: ElevatedButton(
+                                    child: Text("登入"),
+                                    onPressed: () async {
+                                      await login();
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 24.0, vertical: 16.0),
-                        child: TextField(
-                          controller: _controllerPWD,
-                          obscureText: hidePassword,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.lock),
-                            suffixIcon: IconButton(
-                              icon: Icon(hidePassword
-                                  ? Icons.visibility_off
-                                  : Icons.visibility),
-                              onPressed: () {
-                                _displayPassword();
-                              },
-                            ),
-                            labelText: "密碼 *",
-                            hintText: "預設身分證前八碼",
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 48.0,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width - 48.0,
-                        height: 48.0,
-                        child: Visibility(
-                          visible: loadState,
-                          child: ElevatedButton(
-                            child: Text("登入"),
-                            onPressed: () async {
-                              await login();
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               )),
             )
           : Loading(),
@@ -175,16 +192,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   login() async {
-    if (_controllerPWD.text.length > 0) {
+    if (controllerPWD.text.length > 0) {
       setState(() {
         loadState = false;
       });
       await headlessWebView?.webViewController.evaluateJavascript(
           source:
-              'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'${_controllerID.text}\';');
+              'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'${controllerID.text}\';');
       await headlessWebView?.webViewController.evaluateJavascript(
           source:
-              'document.querySelector("#M_PW").value=\'${_controllerPWD.text}\';');
+              'document.querySelector("#M_PW").value=\'${controllerPWD.text}\';');
       Future.delayed(Duration(seconds: 1), () async {
         await headlessWebView?.webViewController.evaluateJavascript(
             source: 'document.querySelector("#LGOIN_BTN").click();');
