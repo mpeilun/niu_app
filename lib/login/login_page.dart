@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/external_lib/flutter_login/flutter_login.dart';
@@ -5,6 +7,10 @@ import 'package:niu_app/menu/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
+  final bool willPop;
+
+  LoginPage({Key? key, required this.willPop}) : super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -12,7 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   HeadlessInAppWebView? headlessWebView;
   bool loadState = false;
-  String loginState = '';
+  String loginState = 'null';
   late String url;
   late String id;
   late String pwd;
@@ -20,21 +26,21 @@ class _LoginPageState extends State<LoginPage> {
   Future<String> _authUser(LoginData data) async {
     id = data.name;
     pwd = data.password;
+    loginState = 'null';
     await headlessWebView?.webViewController.evaluateJavascript(
         source:
             'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
     await headlessWebView?.webViewController.evaluateJavascript(
         source: 'document.querySelector("#M_PW").value=\'$pwd\';');
-    await Future.delayed(Duration(milliseconds: 1000), () async {
+    await Future.delayed(Duration(milliseconds: 200), () async {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
     });
-    return Future.delayed(Duration(milliseconds: 3000), () {
-      if (loginState == '登入成功') {
-        return '';
-      } else {
-        return loginState;
+    return await Future.delayed(Duration(milliseconds: 3000), () {
+      if (loginState == 'null') {
+        loginState = '網路異常，連線超時！';
       }
+      return loginState;
     });
   }
 
@@ -74,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
           }
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
             print('登入成功');
-            loginState = '登入成功';
+            loginState = '';
             await _saveData(id, pwd);
           }
         },
@@ -95,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
         },
         onLoadResource:
             (InAppWebViewController controller, LoadedResource resource) {
-          print(resource.toString());
+          //print(resource.toString());
         });
 
     headlessWebView?.run();
@@ -105,61 +111,47 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     super.dispose();
     headlessWebView?.dispose();
-    loginState = '';
+    loginState = 'null';
     loadState = false;
     print('login dispose');
   }
 
   @override
   Widget build(BuildContext context) {
-    return loadState
-        ? FlutterLogin(
-            title: 'NIU',
-            logo: 'assets/niu_logo.png',
-            onLogin: _authUser,
-            hideForgotPasswordButton: true,
-            hideSignUpButton: true,
-            onSubmitAnimationCompleted: () {
-              Navigator.pop(context);
-            },
-            messages: LoginMessages(
-              userHint: '學號',
-              passwordHint: '密碼',
-              loginButton: '登入',
-              flushbarTitleError: '錯誤',
-            ),
-          )
-        : Loading();
+    return SafeArea(
+      child: WillPopScope(
+        onWillPop: () async {
+          return widget.willPop;
+        },
+        child: Container(
+          child: loadState
+              ? FlutterLogin(
+                  title: '宜大學生 APP',
+                  logo: 'assets/niu_logo.png',
+                  onLogin: _authUser,
+                  hideForgotPasswordButton: true,
+                  hideSignUpButton: true,
+                  onSubmitAnimationCompleted: () {
+                    Navigator.pop(context);
+                  },
+                  theme: LoginTheme(
+                      logoWidth: 0.3, titleStyle: TextStyle(fontSize: 30)),
+                  messages: LoginMessages(
+                    userHint: '學號',
+                    passwordHint: '密碼',
+                    loginButton: '登入',
+                    flushbarTitleError: '錯誤',
+                  ),
+                )
+              : Loading(),
+        ),
+      ),
+    );
   }
 
   _saveData(String id, String pwd) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("id", id.toLowerCase());
     prefs.setString("pwd", pwd);
-  }
-
-  Future<JsAlertResponseAction> createAlertDialog(
-      BuildContext context, String message) async {
-    late JsAlertResponseAction action;
-
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              child: Text("Ok"),
-              key: Key("AlertButtonOk"),
-              onPressed: () {
-                action = JsAlertResponseAction.CONFIRM;
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-    return action;
   }
 }

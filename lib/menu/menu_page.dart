@@ -30,13 +30,19 @@ class StartMenu extends StatefulWidget {
 class _StartMenu extends State<StartMenu> {
   HeadlessInAppWebView? headlessWebView;
   String url = "";
-  String title = '登入中';
+  String title = '功能列表';
   bool loginState = false;
 
   @override
   void initState() {
     super.initState();
     _checkAccount();
+  }
+
+  @override
+  void reassemble() {
+    super.reassemble();
+    print('menu back');
   }
 
   @override
@@ -90,13 +96,7 @@ class _StartMenu extends State<StartMenu> {
                                   CustomIcons(
                                     title: '數位園區',
                                     icon: MenuIcon.icon_eschool,
-                                    press: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => LoginPage(),
-                                              maintainState: false));
-                                    },
+                                    press: () {},
                                   ),
                                   CustomIcons(
                                     title: '成績查詢',
@@ -144,14 +144,7 @@ class _StartMenu extends State<StartMenu> {
                                   CustomIcons(
                                     title: 'ZUVIO',
                                     icon: MenuIcon.icon_zuvio,
-                                    press: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LoginScreen(),
-                                              maintainState: false));
-                                    },
+                                    press: () {},
                                   ),
                                   CustomIcons(
                                     title: '畢業門檻',
@@ -172,14 +165,7 @@ class _StartMenu extends State<StartMenu> {
                                   CustomIcons(
                                     title: '公車動態',
                                     icon: MenuIcon.icon_bus,
-                                    press: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  WebTestHeadless(),
-                                              maintainState: false));
-                                    },
+                                    press: () {},
                                   ),
                                   CustomIcons(
                                     title: '帳號設定',
@@ -188,7 +174,9 @@ class _StartMenu extends State<StartMenu> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => WebTest(),
+                                              builder: (context) => LoginPage(
+                                                    willPop: true,
+                                                  ),
                                               maintainState: false));
                                     },
                                   ),
@@ -223,7 +211,10 @@ class _StartMenu extends State<StartMenu> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => LoginPage(), maintainState: false));
+              builder: (context) => LoginPage(
+                    willPop: false,
+                  ),
+              maintainState: false));
       Future.delayed(Duration(seconds: 3), () async {
         loginFinished();
       });
@@ -267,6 +258,23 @@ class _StartMenu extends State<StartMenu> {
             this.url = url.toString();
           });
         },
+        onJsAlert: (InAppWebViewController controller,
+            JsAlertRequest jsAlertRequest) async {
+          print('form menu onJs');
+          print(jsAlertRequest.message!);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => LoginPage(
+                        willPop: false,
+                      ),
+                  maintainState: false));
+          Future.delayed(Duration(seconds: 3), () async {
+            loginFinished();
+          });
+          return JsAlertResponse(
+              handledByClient: true, action: JsAlertResponseAction.CONFIRM);
+        },
       );
 
       headlessWebView?.run();
@@ -282,7 +290,7 @@ class _StartMenu extends State<StartMenu> {
             'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
     await headlessWebView?.webViewController.evaluateJavascript(
         source: 'document.querySelector("#M_PW").value=\'$pwd\';');
-    Future.delayed(Duration(seconds: 1), () async {
+    Future.delayed(Duration(milliseconds: 200), () async {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
     });
@@ -291,7 +299,6 @@ class _StartMenu extends State<StartMenu> {
   void loginFinished() {
     setState(() {
       loginState = true;
-      title = '功能列表';
     });
   }
 }

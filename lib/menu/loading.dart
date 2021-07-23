@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loading extends StatelessWidget {
   const Loading({Key? key}) : super(key: key);
@@ -6,10 +7,15 @@ class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).backgroundColor,
-      child: Center(
-        child: Image.network(
-            'https://i.pinimg.com/originals/6b/67/cb/6b67cb8a166c0571c1290f205c513321.gif'),
+      color: Theme.of(context).primaryColor,
+      child: SafeArea(
+        child: Container(
+            child: Center(
+          child: const SpinKitSquareCircle(
+            color: Colors.white,
+            size: 60,
+          ),
+        )),
       ),
     );
   }
