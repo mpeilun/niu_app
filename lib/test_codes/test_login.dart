@@ -14,13 +14,7 @@ class LoginScreen extends StatelessWidget {
       hideForgotPasswordButton: true,
       hideSignUpButton: true,
       onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) {
-            return StartMenu(
-              title: '功能列表',
-            );
-          },
-        ));
+        Navigator.pop(context, );
       },
       messages: LoginMessages(
         userHint: 'Number',

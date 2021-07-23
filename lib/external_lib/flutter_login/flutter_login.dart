@@ -330,7 +330,7 @@ class FlutterLogin extends StatefulWidget {
   final bool navigateBackAfterRecovery;
 
   static final FormFieldValidator<String> defaultEmailValidator = (value) {
-    if (value!.isEmpty || !Regex.email.hasMatch(value)) {
+    if (value!.isEmpty || value.length < 2) {
       return 'Invalid number';
     }
     return null;
