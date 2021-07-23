@@ -11,6 +11,8 @@ class LoginScreen extends StatelessWidget {
       onLogin: (_) {
         print('login');
       },
+      hideForgotPasswordButton: true,
+      hideSignUpButton: true,
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) {
