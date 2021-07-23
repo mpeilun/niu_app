@@ -114,11 +114,11 @@ class _StartMenu extends State<StartMenu> {
                                     title: '每周課表',
                                     icon: MenuIcon.icon_timetable,
                                     press: () {
-// Navigator.push(
-//     context,
-//     MaterialPageRoute(
-//         builder: (context) => TimeTable(),
-//         maintainState: false));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => TimeTable(),
+                                              maintainState: false));
                                     },
                                   ),
                                 ],
