@@ -121,9 +121,9 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pop(context);
             },
             messages: LoginMessages(
-              userHint: 'Number',
-              passwordHint: 'Password',
-              loginButton: 'LOG IN',
+              userHint: '學號',
+              passwordHint: '密碼',
+              loginButton: '登入',
             ),
           )
         : Loading();
