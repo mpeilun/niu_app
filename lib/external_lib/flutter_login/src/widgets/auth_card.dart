@@ -2,12 +2,12 @@ library auth_card;
 
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:niu_app/external_lib/flutter_login%20/src/models/login_data.dart';
-import 'package:niu_app/external_lib/flutter_login%20/src/models/login_user_type.dart';
-import 'package:niu_app/external_lib/flutter_login%20/src/providers/auth.dart';
-import 'package:niu_app/external_lib/flutter_login%20/src/providers/login_messages.dart';
-import 'package:niu_app/external_lib/flutter_login%20/src/providers/login_theme.dart';
-import 'package:niu_app/external_lib/flutter_login%20/src/utils/text_field_utils.dart';
+import 'package:niu_app/external_lib/flutter_login/src/models/login_data.dart';
+import 'package:niu_app/external_lib/flutter_login/src/models/login_user_type.dart';
+import 'package:niu_app/external_lib/flutter_login/src/providers/auth.dart';
+import 'package:niu_app/external_lib/flutter_login/src/providers/login_messages.dart';
+import 'package:niu_app/external_lib/flutter_login/src/providers/login_theme.dart';
+import 'package:niu_app/external_lib/flutter_login/src/utils/text_field_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:another_transformer_page_view/another_transformer_page_view.dart';

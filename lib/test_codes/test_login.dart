@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:niu_app/external_lib/flutter_login%20/flutter_login.dart';
+import 'package:niu_app/external_lib/flutter_login/flutter_login.dart';
 import 'package:niu_app/menu/menu_page.dart';
 
 class LoginScreen extends StatelessWidget {

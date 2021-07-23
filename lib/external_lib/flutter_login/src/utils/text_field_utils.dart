@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:niu_app/external_lib/flutter_login%20/src/models/login_user_type.dart';
+import 'package:niu_app/external_lib/flutter_login/src/models/login_user_type.dart';
 
 class TextFieldUtils {
   static String getAutofillHints(LoginUserType userType) {
