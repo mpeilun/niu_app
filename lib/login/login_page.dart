@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/menu/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -97,6 +98,7 @@ class _LoginPageState extends State<LoginPage> {
     _controllerID.dispose();
     _controllerPWD.dispose();
     headlessWebView?.dispose();
+    //SystemChannels.textInput.invokeMethod(method)
     print('login dispose');
   }
 
@@ -159,7 +161,6 @@ class _LoginPageState extends State<LoginPage> {
                             child: Text("登入"),
                             onPressed: () async {
                               await login();
-                              FocusScope.of(context).unfocus();
                             },
                           ),
                         ),
@@ -174,19 +175,39 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   login() async {
-    setState(() {
-      loadState = false;
-    });
-    await headlessWebView?.webViewController.evaluateJavascript(
-        source:
-            'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'${_controllerID.text}\';');
-    await headlessWebView?.webViewController.evaluateJavascript(
-        source:
-            'document.querySelector("#M_PW").value=\'${_controllerPWD.text}\';');
-    Future.delayed(Duration(seconds: 1), () async {
+    if (_controllerPWD.text.length > 0) {
+      setState(() {
+        loadState = false;
+      });
       await headlessWebView?.webViewController.evaluateJavascript(
-          source: 'document.querySelector("#LGOIN_BTN").click();');
-    });
+          source:
+              'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'${_controllerID.text}\';');
+      await headlessWebView?.webViewController.evaluateJavascript(
+          source:
+              'document.querySelector("#M_PW").value=\'${_controllerPWD.text}\';');
+      Future.delayed(Duration(seconds: 1), () async {
+        await headlessWebView?.webViewController.evaluateJavascript(
+            source: 'document.querySelector("#LGOIN_BTN").click();');
+      });
+    } else {
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text('帳號或密碼錯誤，請查明後再登入!'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text("Ok"),
+                  key: Key("AlertButtonOk"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
   }
 
   _saveData(String id, String pwd) async {
