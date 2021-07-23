@@ -28,6 +28,7 @@ class _GradesState extends State<Grades> {
     return DefaultTabController(
       length: myTabs.length,
       child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           titleSpacing: 0.0,
           elevation: 0.0,
