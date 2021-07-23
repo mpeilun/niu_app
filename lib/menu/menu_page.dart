@@ -8,6 +8,7 @@ import 'package:niu_app/menu/loading.dart';
 import 'package:niu_app/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/school_event/school_event.dart';
+import 'package:niu_app/test_codes/test_login.dart';
 import 'package:niu_app/testwebview_headless.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 
@@ -143,7 +144,14 @@ class _StartMenu extends State<StartMenu> {
                                   CustomIcons(
                                     title: 'ZUVIO',
                                     icon: MenuIcon.icon_zuvio,
-                                    press: () {},
+                                    press: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginScreen(),
+                                              maintainState: false));
+                                    },
                                   ),
                                   CustomIcons(
                                     title: '畢業門檻',
