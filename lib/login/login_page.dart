@@ -12,6 +12,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   HeadlessInAppWebView? headlessWebView;
   bool loadState = false;
+  String loginState = '';
   late String url;
   late String id;
   late String pwd;
@@ -28,12 +29,11 @@ class _LoginPageState extends State<LoginPage> {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
     });
-    return Future.delayed(Duration(milliseconds: 2000), () {
-      if (headlessWebView?.webViewController.getUrl().toString() ==
-          'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
-        return '登入成功';
-      } else {
+    return Future.delayed(Duration(milliseconds: 3000), () {
+      if (loginState == '登入成功') {
         return '';
+      } else {
+        return loginState;
       }
     });
   }
@@ -74,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
           }
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
             print('登入成功');
+            loginState = '登入成功';
             await _saveData(id, pwd);
           }
         },
@@ -88,9 +89,9 @@ class _LoginPageState extends State<LoginPage> {
           await headlessWebView?.webViewController.loadUrl(
               urlRequest: URLRequest(
                   url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx")));
-          JsAlertResponseAction action =
-              await createAlertDialog(context, '帳號或密碼錯誤，請查明後再登入!');
-          return JsAlertResponse(handledByClient: true, action: action);
+          loginState = jsAlertRequest.message!;
+          return JsAlertResponse(
+              handledByClient: true, action: JsAlertResponseAction.CONFIRM);
         },
         onLoadResource:
             (InAppWebViewController controller, LoadedResource resource) {
@@ -104,6 +105,8 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     super.dispose();
     headlessWebView?.dispose();
+    loginState = '';
+    loadState = false;
     print('login dispose');
   }
 
@@ -113,7 +116,6 @@ class _LoginPageState extends State<LoginPage> {
         ? FlutterLogin(
             title: 'NIU',
             logo: 'assets/niu_logo.png',
-            userType: LoginUserType.name,
             onLogin: _authUser,
             hideForgotPasswordButton: true,
             hideSignUpButton: true,
@@ -124,6 +126,7 @@ class _LoginPageState extends State<LoginPage> {
               userHint: '學號',
               passwordHint: '密碼',
               loginButton: '登入',
+              flushbarTitleError: '錯誤',
             ),
           )
         : Loading();
