@@ -331,14 +331,14 @@ class FlutterLogin extends StatefulWidget {
 
   static final FormFieldValidator<String> defaultEmailValidator = (value) {
     if (value!.isEmpty || value.length < 2) {
-      return 'Invalid number';
+      return '  學號無效';
     }
     return null;
   };
 
   static final FormFieldValidator<String> defaultPasswordValidator = (value) {
     if (value!.isEmpty || value.length < 8) {
-      return 'Password is too short!';
+      return '密碼無效';
     }
     return null;
   };
