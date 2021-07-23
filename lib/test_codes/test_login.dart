@@ -6,7 +6,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
-      title: '',
+      title: 'NIU',
       logo: 'assets/niu_logo.png',
       onLogin: (_) {
         print('login');
@@ -23,18 +23,9 @@ class LoginScreen extends StatelessWidget {
         ));
       },
       messages: LoginMessages(
-        userHint: 'User',
-        passwordHint: 'Pass',
-        confirmPasswordHint: 'Confirm',
+        userHint: 'Number',
+        passwordHint: 'Password',
         loginButton: 'LOG IN',
-        signupButton: 'REGISTER',
-        forgotPasswordButton: 'Forgot huh?',
-        recoverPasswordButton: 'HELP ME',
-        goBackButton: 'GO BACK',
-        confirmPasswordError: 'Not match!',
-        recoverPasswordDescription:
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-        recoverPasswordSuccess: 'Password rescued successfully',
       ),
     );
   }
