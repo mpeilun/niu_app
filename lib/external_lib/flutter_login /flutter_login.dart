@@ -1,5 +1,3 @@
-library flutter_login;
-
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
