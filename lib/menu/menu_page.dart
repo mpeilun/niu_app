@@ -94,9 +94,7 @@ class _StartMenu extends State<StartMenu> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => LoginPage(
-                                                    title: '登入',
-                                                  ),
+                                              builder: (context) => LoginPage(),
                                               maintainState: false));
                                     },
                                   ),
@@ -225,10 +223,7 @@ class _StartMenu extends State<StartMenu> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => LoginPage(
-                    title: '登入',
-                  ),
-              maintainState: false));
+              builder: (context) => LoginPage(), maintainState: false));
       Future.delayed(Duration(seconds: 3), () async {
         loginFinished();
       });

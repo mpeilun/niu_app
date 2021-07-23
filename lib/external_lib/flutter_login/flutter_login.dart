@@ -330,15 +330,15 @@ class FlutterLogin extends StatefulWidget {
   final bool navigateBackAfterRecovery;
 
   static final FormFieldValidator<String> defaultEmailValidator = (value) {
-    if (value!.isEmpty || !Regex.email.hasMatch(value)) {
-      return 'Invalid number';
+    if (value!.isEmpty) {
+      return '學號不能為空！';
     }
     return null;
   };
 
   static final FormFieldValidator<String> defaultPasswordValidator = (value) {
-    if (value!.isEmpty || value.length < 8) {
-      return 'Password is too short!';
+    if (value!.isEmpty) {
+      return '密碼不能為空！';
     }
     return null;
   };

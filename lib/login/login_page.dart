@@ -1,37 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/external_lib/flutter_login/flutter_login.dart';
 import 'package:niu_app/menu/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
-  final String title;
-
-  LoginPage({Key? key, required this.title}) : super(key: key);
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController controllerID = TextEditingController();
-  final TextEditingController controllerPWD = TextEditingController();
-  final passwdFocus = FocusNode();
   HeadlessInAppWebView? headlessWebView;
   bool loadState = false;
-  bool hidePassword = true;
-  String url = "";
+  late String url;
+  late String id;
+  late String pwd;
 
-  void _displayPassword() {
-    setState(() {
-      this.hidePassword = !this.hidePassword;
+  Future<String> _authUser(LoginData data) async {
+    id = data.name;
+    pwd = data.password;
+    await headlessWebView?.webViewController.evaluateJavascript(
+        source:
+            'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
+    await headlessWebView?.webViewController.evaluateJavascript(
+        source: 'document.querySelector("#M_PW").value=\'$pwd\';');
+    await Future.delayed(Duration(milliseconds: 1000), () async {
+      await headlessWebView?.webViewController.evaluateJavascript(
+          source: 'document.querySelector("#LGOIN_BTN").click();');
+    });
+    return Future.delayed(Duration(milliseconds: 2000), () {
+      if (headlessWebView?.webViewController.getUrl().toString() ==
+          'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
+        return '登入成功';
+      } else {
+        return '';
+      }
     });
   }
 
   @override
   void initState() {
     super.initState();
-
     headlessWebView = new HeadlessInAppWebView(
         initialUrlRequest: URLRequest(
             url: Uri.parse("https://acade.niu.edu.tw/NIU/logout.aspx")),
@@ -65,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
           }
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
             print('登入成功');
-            await _saveData(controllerID.text, controllerPWD.text);
+            await _saveData(id, pwd);
           }
         },
         onUpdateVisitedHistory: (controller, url, androidIsReload) {
@@ -94,144 +103,36 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     super.dispose();
-    controllerID.dispose();
-    controllerPWD.dispose();
-    passwdFocus.dispose();
     headlessWebView?.dispose();
-    //SystemChannels.textInput.invokeMethod(method)
     print('login dispose');
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: loadState
-          ? Scaffold(
-              backgroundColor: Theme.of(context).backgroundColor,
-              body: SafeArea(child: LayoutBuilder(
-                builder:
-                    (BuildContext context, BoxConstraints viewportConstraints) {
-                  return SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: viewportConstraints.maxHeight,
-                      ),
-                      child: GestureDetector(
-                        onTap: () {
-                          FocusScope.of(context).unfocus();
-                        },
-                        child: Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 24.0, vertical: 16.0),
-                                child: TextField(
-                                  controller: controllerID,
-                                  onSubmitted: (_) => FocusScope.of(context)
-                                      .requestFocus(passwdFocus),
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.person),
-                                    labelText: "學號 *",
-                                    hintText: "輸入您的的學號",
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 24.0, vertical: 16.0),
-                                child: TextField(
-                                  controller: controllerPWD,
-                                  obscureText: hidePassword,
-                                  focusNode: passwdFocus,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.lock),
-                                    suffixIcon: IconButton(
-                                      icon: Icon(hidePassword
-                                          ? Icons.visibility_off
-                                          : Icons.visibility),
-                                      onPressed: () {
-                                        _displayPassword();
-                                      },
-                                    ),
-                                    labelText: "密碼 *",
-                                    hintText: "預設身分證前八碼",
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 48.0,
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width - 48.0,
-                                height: 48.0,
-                                child: Visibility(
-                                  visible: loadState,
-                                  child: ElevatedButton(
-                                    child: Text("登入"),
-                                    onPressed: () async {
-                                      await login();
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              )),
-            )
-          : Loading(),
-    );
-  }
-
-  login() async {
-    if (controllerPWD.text.length > 0) {
-      setState(() {
-        loadState = false;
-      });
-      await headlessWebView?.webViewController.evaluateJavascript(
-          source:
-              'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'${controllerID.text}\';');
-      await headlessWebView?.webViewController.evaluateJavascript(
-          source:
-              'document.querySelector("#M_PW").value=\'${controllerPWD.text}\';');
-      Future.delayed(Duration(seconds: 1), () async {
-        await headlessWebView?.webViewController.evaluateJavascript(
-            source: 'document.querySelector("#LGOIN_BTN").click();');
-      });
-    } else {
-      showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: Text('帳號或密碼錯誤，請查明後再登入!'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text("Ok"),
-                  key: Key("AlertButtonOk"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          });
-    }
+    return loadState
+        ? FlutterLogin(
+            title: 'NIU',
+            logo: 'assets/niu_logo.png',
+            userType: LoginUserType.name,
+            onLogin: _authUser,
+            hideForgotPasswordButton: true,
+            hideSignUpButton: true,
+            onSubmitAnimationCompleted: () {
+              Navigator.pop(context);
+            },
+            messages: LoginMessages(
+              userHint: 'Number',
+              passwordHint: 'Password',
+              loginButton: 'LOG IN',
+            ),
+          )
+        : Loading();
   }
 
   _saveData(String id, String pwd) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("id", id.toLowerCase());
     prefs.setString("pwd", pwd);
-    Navigator.pop(context);
   }
 
   Future<JsAlertResponseAction> createAlertDialog(
