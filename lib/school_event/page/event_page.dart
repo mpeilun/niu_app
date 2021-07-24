@@ -14,18 +14,29 @@ class _EventPageState extends State<EventPage> {
   String url = "";
   String temp = "";
 
-  List<String> data = [];
+  List<Event> data = [];
 
-  getValue() async {
+  void getValue() async {
     for(int i = 2; await headlessWebView?.webViewController.evaluateJavascript(
         source:
         'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText') != null; i++){
-      this.data.add(await headlessWebView?.webViewController.evaluateJavascript(
+      print(i);
+      String name = await headlessWebView?.webViewController.evaluateJavascript(
           source:
-          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4) > div").innerText'));
+          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText');
+      String department = await headlessWebView?.webViewController.evaluateJavascript(
+          source:
+          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
+      data.add(
+        Event(
+          name: name,
+          department: department,
+        )
+      );
     }
-    print(this.data);
-    //123
+    setState(() {
+      print(data);
+    });
   }
 
   @override
@@ -74,6 +85,6 @@ class _EventPageState extends State<EventPage> {
   @override
   Widget build(BuildContext context) => CustomEventCard(
     key: PageStorageKey<String>('event'),
-    data: grades2,
+    data: data,
   );
 }
