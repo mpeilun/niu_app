@@ -36,12 +36,17 @@ class _LoginPageState extends State<LoginPage> {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
     });
-    return await Future.delayed(Duration(milliseconds: 3000), () {
-      if (loginState == 'null') {
+    for (int i = 1; i <= 30; i++) {
+      await Future.delayed(Duration(milliseconds: 1000), () {});
+      print('計時器 $i');
+      if (loginState != 'null') {
+        break;
+      } else if (i == 30 && loginState == 'null') {
         loginState = '網路異常，連線超時！';
+        break;
       }
-      return loginState;
-    });
+    }
+    return loginState;
   }
 
   @override
