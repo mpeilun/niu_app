@@ -1,22 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:niu_app/Components/circle.dart';
+import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menu/loading.dart';
 import 'package:niu_app/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/school_event/school_event.dart';
-import 'package:niu_app/test_codes/test_login.dart';
-import 'package:niu_app/testwebview_headless.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 
-import 'package:niu_app/service/SemesterDate.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../testwebview.dart';
 
 class StartMenu extends StatefulWidget {
   final String title;
@@ -37,12 +31,6 @@ class _StartMenu extends State<StartMenu> {
   void initState() {
     super.initState();
     _checkAccount();
-  }
-
-  @override
-  void reassemble() {
-    super.reassemble();
-    print('menu back');
   }
 
   @override
@@ -96,7 +84,13 @@ class _StartMenu extends State<StartMenu> {
                                   CustomIcons(
                                     title: '數位園區',
                                     icon: MenuIcon.icon_eschool,
-                                    press: () {},
+                                    press: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ESchool(),
+                                              maintainState: false));
+                                    },
                                   ),
                                   CustomIcons(
                                     title: '成績查詢',
@@ -260,7 +254,6 @@ class _StartMenu extends State<StartMenu> {
         },
         onJsAlert: (InAppWebViewController controller,
             JsAlertRequest jsAlertRequest) async {
-          print('form menu onJs');
           print(jsAlertRequest.message!);
           Navigator.push(
               context,
@@ -290,7 +283,7 @@ class _StartMenu extends State<StartMenu> {
             'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
     await headlessWebView?.webViewController.evaluateJavascript(
         source: 'document.querySelector("#M_PW").value=\'$pwd\';');
-    Future.delayed(Duration(milliseconds: 200), () async {
+    Future.delayed(Duration(milliseconds: 1000), () async {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
     });
