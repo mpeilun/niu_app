@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/components/refresh.dart';
 import 'package:niu_app/school_event/custom_cards.dart';
 
 class EventPage extends StatefulWidget {
@@ -16,26 +17,32 @@ class _EventPageState extends State<EventPage> {
 
   List<Event> data = [];
 
-  void getValue() async {
-    for(int i = 2; await headlessWebView?.webViewController.evaluateJavascript(
-        source:
-        'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText') != null; i++){
+  final keyRefresh = GlobalKey<RefreshIndicatorState>();
+
+  Future<void> getValue() async {
+    List<Event> temp = [];
+    for (int i = 2;
+        await headlessWebView?.webViewController.evaluateJavascript(
+                source:
+                    'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText') !=
+            null;
+        i++) {
       print(i);
       String name = await headlessWebView?.webViewController.evaluateJavascript(
           source:
-          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText');
-      String department = await headlessWebView?.webViewController.evaluateJavascript(
-          source:
-          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
-      data.add(
-        Event(
-          name: name,
-          department: department,
-        )
-      );
+              'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText');
+      String department = await headlessWebView?.webViewController
+          .evaluateJavascript(
+              source:
+                  'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
+      temp.add(Event(
+        name: name,
+        department: department,
+      ));
     }
+    await Future.delayed(Duration(seconds: 1));
     setState(() {
-      print(data);
+      this.data = temp;
     });
   }
 
@@ -44,8 +51,8 @@ class _EventPageState extends State<EventPage> {
     super.initState();
 
     headlessWebView = new HeadlessInAppWebView(
-      initialUrlRequest: URLRequest(
-          url: Uri.parse("https://syscc.niu.edu.tw/activity/")),
+      initialUrlRequest:
+          URLRequest(url: Uri.parse("https://syscc.niu.edu.tw/activity/")),
       initialOptions: InAppWebViewGroupOptions(
         crossPlatform: InAppWebViewOptions(),
       ),
@@ -83,8 +90,18 @@ class _EventPageState extends State<EventPage> {
   }
 
   @override
-  Widget build(BuildContext context) => CustomEventCard(
-    key: PageStorageKey<String>('event'),
-    data: data,
-  );
+  Widget build(BuildContext context) => buildList();
+
+  Widget buildList() => data.isEmpty
+      ? Center(
+          child: CircularProgressIndicator(),
+        )
+      : RefreshWidget(
+          keyRefresh: keyRefresh,
+          onRefresh: getValue,
+          child: CustomEventCard(
+            key: PageStorageKey<String>('event'),
+            data: data,
+          ),
+        );
 }

@@ -153,7 +153,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
               ),
               Card(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 elevation: 1.5,
                 margin: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 8.0),

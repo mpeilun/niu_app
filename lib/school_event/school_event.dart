@@ -5,6 +5,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/grades/page/final_page.dart';
 import 'package:niu_app/grades/page/mid_page.dart';
 import 'package:niu_app/grades/page/warn_page.dart';
+import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/school_event/page/event_signed_page.dart';
 import 'package:niu_app/school_event/page/event_page.dart';
 
@@ -19,30 +20,8 @@ class SchoolEvent extends StatefulWidget {
 
 class _SchoolEventState extends State<SchoolEvent> {
   final List<Widget> myTabs = [
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Tab(
-          icon: Icon(Icons.view_headline),
-          text: '活動列表',
-        ),
-        //SizedBox(width: 5.0,),
-        //Text('期中預警'),
-      ],
-    ),
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Tab(
-          icon: Icon(
-            Icons.check,
-          ),
-          text: '已報名',
-        ),
-        //SizedBox(width: 5.0,),
-        //Text('期中成績'),
-      ],
-    ),
+    CustomTabBar(title: '活動報名', icon: Icons.view_headline,),
+    CustomTabBar(title: '已報名', icon: Icons.check,),
   ];
 
   @override
@@ -50,12 +29,20 @@ class _SchoolEventState extends State<SchoolEvent> {
     return DefaultTabController(
       length: myTabs.length,
       child: Scaffold(
-        appBar: AppBar(
+        appBar: AppBar(titleSpacing: 0.0,
           elevation: 0.0,
           title: Text(widget.title),
           centerTitle: true,
-          bottom: TabBar(
-            tabs: myTabs,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(65.0),
+            child: Container(
+              height: 65.0,
+              child: TabBar(
+                labelPadding: EdgeInsets.zero,
+                indicatorWeight: 5.0,
+                tabs: myTabs,
+              ),
+            ),
           ),
         ),
         body: TabBarView(
