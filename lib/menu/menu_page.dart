@@ -162,7 +162,7 @@ class _StartMenu extends State<StartMenu> {
                                     press: () {},
                                   ),
                                   CustomIcons(
-                                    title: '帳號設定',
+                                    title: '帳號登出',
                                     icon: MenuIcon.icon_account,
                                     press: () {
                                       Navigator.push(
