@@ -17,8 +17,14 @@ class _LoadingState extends State<Loading> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller =
-        AnimationController(duration: Duration(milliseconds: 1000), vsync: this)
+        AnimationController(duration: Duration(milliseconds: 2500), vsync: this)
           ..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override

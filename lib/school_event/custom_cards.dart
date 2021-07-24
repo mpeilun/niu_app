@@ -5,8 +5,27 @@ import 'package:flutter/material.dart';
 class Event {
   final String name;
   final String department;
+  final String signTimeStart;
+  final String signTimeEnd;
+  final String eventTimeStart;
+  final String eventTimeEnd;
+  final String status;
 
   Event({
+    required this.name,
+    required this.department,
+    required this.signTimeStart,
+    required this.signTimeEnd,
+    required this.eventTimeStart,
+    required this.eventTimeEnd,
+    required this.status,
+  });
+}
+class EventSigned {
+  final String name;
+  final String department;
+
+  EventSigned({
     required this.name,
     required this.department,
   });
@@ -23,19 +42,6 @@ class Quote {
     String? teacher,
   }) : this.teacher = teacher;
 }
-
-final List<Quote> grades = [
-  Quote(lesson: '課程一', score: 80.0, teacher: 'CC'),
-  Quote(lesson: '課程二', score: 85.0),
-  Quote(lesson: '課程3', score: 75.0, teacher: 'BB'),
-  Quote(lesson: '課程4', score: 65.0),
-  Quote(lesson: '課程5', score: 95.0),
-  Quote(lesson: '課程5', score: 95.0, teacher: 'RR'),
-  Quote(lesson: '課程5', score: 95.0),
-  Quote(lesson: '課程5', score: 95.0, teacher: 'VVV'),
-  Quote(lesson: '課程5', score: 95.0),
-  Quote(lesson: '課程5', score: 95.0, teacher: 'AA'),
-];
 
 final List<Quote> grades2 = [
   Quote(
@@ -99,7 +105,6 @@ class CustomEventCard extends StatefulWidget {
 }
 
 class _CustomEventCardState extends State<CustomEventCard> {
-  bool warnCheck = true;
 
   @override
   Widget build(BuildContext context) {
