@@ -57,8 +57,31 @@ class _ESchoolState extends State<ESchool> {
         ),
         body: TabBarView(
           children: <Widget>[
-            EventPage(),
-            EventSignedPage(),
+            Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    '110-1',
+                    style: TextStyle(fontSize: 30, color: Colors.red),
+                  ),
+                  Text(
+                    'Flutter開發及應用',
+                    style: TextStyle(fontSize: 30, color: Colors.red),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    '業界講師-小賴',
+                    style: TextStyle(fontSize: 30, color: Colors.blueAccent),
+                  ),
+                ]),
+            Center(
+              child: Text(
+                'NIU 宜大學生APP',
+                style: TextStyle(fontSize: 30, color: Colors.red),
+              ),
+            ),
           ],
         ),
       ),
