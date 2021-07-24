@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'main.dart';
-
 class WebTestHeadless extends StatefulWidget {
   @override
   _WebTestHeadlessState createState() => new _WebTestHeadlessState();
