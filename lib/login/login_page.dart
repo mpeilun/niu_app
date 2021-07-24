@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
             'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
     await headlessWebView?.webViewController.evaluateJavascript(
         source: 'document.querySelector("#M_PW").value=\'$pwd\';');
-    await Future.delayed(Duration(milliseconds: 200), () async {
+    await Future.delayed(Duration(milliseconds: 500), () async {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
     });
