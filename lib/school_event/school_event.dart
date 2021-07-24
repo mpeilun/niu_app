@@ -45,10 +45,6 @@ class _SchoolEventState extends State<SchoolEvent> {
     ),
   ];
 
-
-
-  //12374
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -59,7 +55,6 @@ class _SchoolEventState extends State<SchoolEvent> {
           title: Text(widget.title),
           centerTitle: true,
           bottom: TabBar(
-            indicatorWeight: 5.0,
             tabs: myTabs,
           ),
         ),

@@ -1,6 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
+class Event {
+  final String name;
+  final String department;
+
+  Event({
+    required this.name,
+    required this.department,
+  });
+}
+
 class Quote {
   final String lesson;
   final double score;
@@ -76,7 +87,7 @@ final List<Quote> grades2 = [
 ];
 
 class CustomEventCard extends StatefulWidget {
-  final List<Quote> data;
+  final List<Event> data;
 
   const CustomEventCard({
     Key? key,
@@ -92,6 +103,9 @@ class _CustomEventCardState extends State<CustomEventCard> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSizeWidth = MediaQuery.of(context).size.width;
+    var screenSizeHeight = MediaQuery.of(context).size.height;
+
     return ListView.separated(
       physics: BouncingScrollPhysics(),
       itemCount: widget.data.length,
@@ -100,74 +114,61 @@ class _CustomEventCardState extends State<CustomEventCard> {
         indent: 12,
         endIndent: 10,
       ),
-      itemBuilder: (BuildContext context, int index) => Container(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(14.0, 4.0, 14.0, 0.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    widget.data[index].lesson,
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    '${widget.data[index].teacher}',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              elevation: 1.5,
-              margin: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 8.0),
-              child: Padding(
-                padding: const EdgeInsets.all(6.0),
+      itemBuilder: (BuildContext context, int index) => GestureDetector(
+        onTap: (){
+          Scaffold.of(context).showSnackBar(SnackBar(content: Text(index.toString())));
+        },
+        child: Container(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(14.0, 4.0, 14.0, 0.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          '期中警示',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                          ),
+                    Container(
+                      width: screenSizeWidth*0.6,
+                      child: Text(
+                        widget.data[index].name,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
-                        IgnorePointer(
-                          child: Transform.scale(
-                            scale: 1.5,
-                            child: Checkbox(
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(2.0))),
-                                activeColor: Colors.red[800],
-                                checkColor: Colors.white,
-                                value: warnCheck,
-                                onChanged: (value) {
-                                  setState(() {
-                                    warnCheck = !warnCheck;
-                                  });
-                                }),
-                          ),
+                      ),
+                    ),
+                    Container(
+                      width: screenSizeWidth*0.3,
+                      child: Text(
+                        '${widget.data[index].department}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.grey,
                         ),
-                      ],
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                elevation: 1.5,
+                margin: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 8.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text('測試')
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
