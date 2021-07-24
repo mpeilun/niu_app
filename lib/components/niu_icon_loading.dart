@@ -4,7 +4,7 @@ import 'dart:math';
 class Loading extends StatefulWidget {
   final size;
 
-  const Loading({Key? key, required this.size}) : super(key: key);
+  const Loading({Key? key, required double this.size}) : super(key: key);
 
   @override
   _LoadingState createState() => _LoadingState();
