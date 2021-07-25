@@ -89,7 +89,7 @@ class _WebTestHeadlessState extends State<WebTestHeadless> {
                       await headlessWebView?.webViewController.loadUrl(
                           urlRequest: URLRequest(
                               url: Uri.parse(
-                                  "https://acade.niu.edu.tw/NIU/Application/ENR/ENR30/ENR3040_01.aspx")));
+                                  "https://acade.niu.edu.tw/NIU/Application/TKE/TKE22/TKE2240_.aspx?progcd=TKE2240")));
                     },
                     child: Text("跳轉個人資料頁面")),
               ),
