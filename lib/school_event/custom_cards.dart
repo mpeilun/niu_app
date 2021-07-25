@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter/rendering.dart';
 
 class Event {
   final String name;
@@ -10,6 +10,10 @@ class Event {
   final String eventTimeStart;
   final String eventTimeEnd;
   final String status;
+  final String positive;
+  final String positiveLimit;
+  final String wait;
+  final String waitLimit;
 
   Event({
     required this.name,
@@ -19,78 +23,30 @@ class Event {
     required this.eventTimeStart,
     required this.eventTimeEnd,
     required this.status,
+    required this.positive,
+    required this.positiveLimit,
+    required this.wait,
+    required this.waitLimit,
   });
 }
+
 class EventSigned {
   final String name;
-  final String department;
+  final String status;
+  final String signedStatus;
+  final String signTime;
+  final String eventTimeStart;
+  final String eventTimeEnd;
 
   EventSigned({
     required this.name,
-    required this.department,
+    required this.status,
+    required this.signTime,
+    required this.eventTimeStart,
+    required this.eventTimeEnd,
+    required this.signedStatus,
   });
 }
-
-class Quote {
-  final String lesson;
-  final double score;
-  final String? teacher;
-
-  Quote({
-    required this.lesson,
-    required this.score,
-    String? teacher,
-  }) : this.teacher = teacher;
-}
-
-final List<Quote> grades2 = [
-  Quote(
-    lesson: '課程99',
-    score: 80.0,
-    teacher: 'star',
-  ),
-  Quote(
-    lesson: '課程88',
-    score: 85.0,
-    teacher: 'AA',
-  ),
-  Quote(
-    lesson: '課程77',
-    score: 75.0,
-    teacher: 'rock',
-  ),
-  Quote(
-    lesson: '課程66',
-    score: 65.0,
-  ),
-  Quote(
-    lesson: '課程55',
-    score: 95.0,
-    teacher: 'BB',
-  ),
-  Quote(
-    lesson: '課程44',
-    score: 95.0,
-    teacher: 'CC',
-  ),
-  Quote(
-    lesson: '課程33',
-    score: 95.0,
-  ),
-  Quote(
-    lesson: '課程22',
-    score: 95.0,
-    teacher: 'gas',
-  ),
-  Quote(
-    lesson: '課程11',
-    score: 95.0,
-  ),
-  Quote(
-    lesson: '課程00',
-    score: 95.0,
-  ),
-];
 
 class CustomEventCard extends StatefulWidget {
   final List<Event> data;
@@ -105,7 +61,6 @@ class CustomEventCard extends StatefulWidget {
 }
 
 class _CustomEventCardState extends State<CustomEventCard> {
-
   @override
   Widget build(BuildContext context) {
     var screenSizeWidth = MediaQuery.of(context).size.width;
@@ -120,8 +75,9 @@ class _CustomEventCardState extends State<CustomEventCard> {
         endIndent: 10,
       ),
       itemBuilder: (BuildContext context, int index) => GestureDetector(
-        onTap: (){
-          Scaffold.of(context).showSnackBar(SnackBar(content: Text(index.toString())));
+        onTap: () {
+          Scaffold.of(context)
+              .showSnackBar(SnackBar(content: Text(index.toString())));
         },
         child: Container(
           child: Column(
@@ -132,7 +88,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: screenSizeWidth*0.6,
+                      width: screenSizeWidth * 0.6,
                       child: Text(
                         widget.data[index].name,
                         style: TextStyle(
@@ -143,7 +99,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                       ),
                     ),
                     Container(
-                      width: screenSizeWidth*0.3,
+                      width: screenSizeWidth * 0.3,
                       child: Text(
                         '${widget.data[index].department}',
                         style: TextStyle(
@@ -164,10 +120,67 @@ class _CustomEventCardState extends State<CustomEventCard> {
                 margin: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 8.0),
                 child: Padding(
                   padding: const EdgeInsets.all(6.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text('測試')
+                      ListInfo(
+                        icon: Icons.calendar_today,
+                        title: '活動時間',
+                        widget: Column(
+                          children: [
+                            Text(
+                              widget.data[index].eventTimeStart + '起',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            Text(widget.data[index].eventTimeEnd + '止',
+                              style: TextStyle(fontSize: 14),),
+                          ],
+                        ),
+                      ),
+                      ListInfo(
+                        icon: Icons.access_time,
+                        title: '報名時間',
+                        widget: Column(
+                          children: [
+                            Text(
+                              widget.data[index].signTimeStart + '起',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            Text(widget.data[index].signTimeEnd + '止',
+                              style: TextStyle(fontSize: 14),),
+                          ],
+                        ),
+                      ),
+                      ListInfo(
+                        icon: Icons.check,
+                        title: '報名狀態',
+                        widget: Text(widget.data[index].status
+                            ,
+                            style: TextStyle(fontSize: 14)),
+                      ),
+                      ListInfo(
+                        icon: Icons.groups,
+                        title: '報名人數',
+                        widget: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '正取: ' +widget.data[index].positive +'/'+ widget.data[index].positiveLimit + '人',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            Text(
+                              '備取: ' +widget.data[index].wait +'/'+ widget.data[index].waitLimit + '人',
+                              style: TextStyle(fontSize: 14),),
+                          ],
+                        ),
+                      ),
+                      ListInfo(
+                        icon: Icons.info,
+                        title: '活動狀態',
+                        widget: Text(widget.data[index].status
+                            ,
+                            style: TextStyle(fontSize: 14)),
+                      ),
                     ],
                   ),
                 ),
@@ -180,37 +193,173 @@ class _CustomEventCardState extends State<CustomEventCard> {
   }
 }
 
-class CustomEventSignedCard extends StatelessWidget {
-  final List<Quote> data;
+class CustomEventSignedCard extends StatefulWidget {
+  final List<EventSigned> data;
 
-  const CustomEventSignedCard({Key? key, required this.data}) : super(key: key);
+  const CustomEventSignedCard({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
+
+  @override
+  _CustomEventSignedCardState createState() => _CustomEventSignedCardState();
+}
+
+class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
+  @override
+  Widget build(BuildContext context) {
+    var screenSizeWidth = MediaQuery.of(context).size.width;
+    var screenSizeHeight = MediaQuery.of(context).size.height;
+
+    return ListView.separated(
+      physics: BouncingScrollPhysics(),
+      itemCount: widget.data.length,
+      separatorBuilder: (BuildContext context, int index) => Divider(
+        thickness: 1.5,
+        indent: 12,
+        endIndent: 10,
+      ),
+      itemBuilder: (BuildContext context, int index) => GestureDetector(
+        onTap: () {
+          Scaffold.of(context)
+              .showSnackBar(SnackBar(content: Text(index.toString())));
+        },
+        child: Container(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(14.0, 4.0, 14.0, 0.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: screenSizeWidth * 0.6,
+                      child: Text(
+                        widget.data[index].name,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: screenSizeWidth * 0.3,
+                      child: Text(
+                        '${widget.data[index].status}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.grey,
+                        ),
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                elevation: 1.5,
+                margin: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 8.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ListInfo(
+                        icon: Icons.calendar_today,
+                        title: '活動時間',
+                        widget: Column(
+                          children: [
+                            Text(
+                              widget.data[index].eventTimeStart + '起',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            Text(widget.data[index].eventTimeEnd + '止',
+                              style: TextStyle(fontSize: 14),),
+                          ],
+                        ),
+                      ),
+                      ListInfo(
+                        icon: Icons.access_time,
+                        title: '報名時間',
+                        widget: Text(widget.data[index].signTime
+                            ,
+                            style: TextStyle(fontSize: 14)),
+                      ),
+                      ListInfo(
+                        icon: Icons.done_all,
+                        title: '報名狀態',
+                        widget: Text(widget.data[index].signedStatus
+                            ,
+                            style: TextStyle(fontSize: 14)),
+                      ),
+                      ListInfo(
+                        icon: Icons.info,
+                        title: '活動狀態',
+                        widget: Text(widget.data[index].status
+                            ,
+                            style: TextStyle(fontSize: 14)),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ListInfo extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final Widget widget;
+
+  ListInfo({
+    required this.icon,
+    required this.title,
+    required this.widget,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      physics: BouncingScrollPhysics(),
-      itemCount: data.length,
-      itemBuilder: (BuildContext context, int index) => Card(
-        elevation: 1.5,
-        margin: const EdgeInsets.fromLTRB(12.0, 10.0, 12.0, 4.0),
-        child: Padding(
-          padding: const EdgeInsets.all(6.0),
-          child: ListTile(
-            title: Row(
-              children: [
-                Text(
-                  data[index].lesson,
-                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700),
-                ),
-              ],
+    var screenSizeWidth = MediaQuery.of(context).size.width;
+    var screenSizeHeight = MediaQuery.of(context).size.height;
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: screenSizeHeight*0.005),
+      child: Container(
+        height: screenSizeHeight*0.055,
+        child: Row(
+          children: [
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(icon),
+                  SizedBox(
+                    width: screenSizeWidth * 0.01,
+                  ),
+                  Text(title),
+                ],
+              ),
+              flex: 2,
             ),
-            subtitle: Text(
-              '分數：${data[index].score}',
-              style: TextStyle(
-                fontSize: 18.0,
+            Expanded(
+              flex: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  widget,
+                ],
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
