@@ -23,13 +23,35 @@ class _LoginPageState extends State<LoginPage> {
   late String url;
   late String id;
   late String pwd;
+  late int webProgress;
 
   Future<String> _authUser(LoginData data) async {
     id = data.name;
     pwd = data.password;
     loginState = 'null';
     //TODO 測試放著很久會不會當掉
-    await headlessWebView?.run();
+    await jsLogin();
+    for (int i = 1; i <= 30; i++) {
+      await Future.delayed(Duration(milliseconds: 1000), () {});
+      print('計時器 $i');
+      if (loginState != 'null') {
+        break;
+      } else if (i == 30 && loginState == 'null') {
+        loginState = '網路異常，連線超時！';
+        break;
+      } else if (i % 5 == 0 && webProgress == 100) {
+        await headlessWebView?.webViewController.loadUrl(
+            urlRequest: URLRequest(
+                url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx")));
+        print('頁面閒置過長，重新載入');
+      } else if (i > 5 && webProgress == 100) {
+        jsLogin();
+      }
+    }
+    return loginState;
+  }
+
+  jsLogin() async {
     await headlessWebView?.webViewController.evaluateJavascript(
         source:
             'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
@@ -39,17 +61,6 @@ class _LoginPageState extends State<LoginPage> {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
     });
-    for (int i = 1; i <= 30; i++) {
-      await Future.delayed(Duration(milliseconds: 1000), () {});
-      print('計時器 $i');
-      if (loginState != 'null') {
-        break;
-      } else if (i == 30 && loginState == 'null') {
-        loginState = '網路異常，連線超時！';
-        break;
-      }
-    }
-    return loginState;
   }
 
   @override
@@ -97,6 +108,10 @@ class _LoginPageState extends State<LoginPage> {
           setState(() {
             this.url = url.toString();
           });
+        },
+        onProgressChanged: (controller, progress) {
+          webProgress = progress;
+          //print('進度 $webProgress');
         },
         onJsAlert: (InAppWebViewController controller,
             JsAlertRequest jsAlertRequest) async {
