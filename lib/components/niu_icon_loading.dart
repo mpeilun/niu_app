@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class Loading extends StatefulWidget {
+class NiuIconLoading extends StatefulWidget {
   final size;
 
-  const Loading({Key? key, required double this.size}) : super(key: key);
+  const NiuIconLoading({Key? key, required double this.size}) : super(key: key);
 
   @override
-  _LoadingState createState() => _LoadingState();
+  _NiuIconLoadingState createState() => _NiuIconLoadingState();
 }
 
-class _LoadingState extends State<Loading> with TickerProviderStateMixin {
+class _NiuIconLoadingState extends State<NiuIconLoading>
+    with TickerProviderStateMixin {
   late AnimationController _controller;
 
   @override

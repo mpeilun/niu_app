@@ -27,6 +27,8 @@ class _LoginPageState extends State<LoginPage> {
     id = data.name;
     pwd = data.password;
     loginState = 'null';
+    //TODO 測試放著很久會不會當掉
+    await headlessWebView?.run();
     await headlessWebView?.webViewController.evaluateJavascript(
         source:
             'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');

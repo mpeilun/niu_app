@@ -40,24 +40,28 @@ class _EventPageState extends State<EventPage> {
                   'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
       String signTimeStart = await headlessWebView?.webViewController
           .evaluateJavascript(
-          source:
-          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');;
+              source:
+                  'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
+      ;
       String signTimeEnd = await headlessWebView?.webViewController
           .evaluateJavascript(
-          source:
-          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');;
+              source:
+                  'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
+      ;
       String eventTimeStart = await headlessWebView?.webViewController
           .evaluateJavascript(
-          source:
-          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');;
+              source:
+                  'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
+      ;
       String eventTimeEnd = await headlessWebView?.webViewController
           .evaluateJavascript(
+              source:
+                  'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
+      ;
+      String status = await headlessWebView?.webViewController.evaluateJavascript(
           source:
-          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');;
-      String status = await headlessWebView?.webViewController
-          .evaluateJavascript(
-          source:
-          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');;
+              'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
+      ;
       temp.add(Event(
         name: name,
         department: department,
@@ -121,7 +125,9 @@ class _EventPageState extends State<EventPage> {
 
   Widget buildList() => data.isEmpty
       ? Center(
-          child: Loading(size: 80.0,),
+          child: NiuIconLoading(
+            size: 80.0,
+          ),
         )
       : RefreshWidget(
           keyRefresh: keyRefresh,

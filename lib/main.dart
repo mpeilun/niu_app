@@ -27,9 +27,7 @@ class MyApp extends StatelessWidget {
           headline1: GoogleFonts.oswald(textStyle: textTheme.headline1),
         ),
       ),
-      home: StartMenu(
-        title: '功能列表',
-      ),
+      home: StartMenu(),
     );
   }
 }

@@ -13,9 +13,7 @@ import 'package:niu_app/TimeTable/TimeTable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StartMenu extends StatefulWidget {
-  final String title;
-
-  StartMenu({Key? key, required this.title}) : super(key: key);
+  StartMenu({Key? key}) : super(key: key);
 
   @override
   _StartMenu createState() => new _StartMenu();
@@ -24,7 +22,6 @@ class StartMenu extends StatefulWidget {
 class _StartMenu extends State<StartMenu> {
   HeadlessInAppWebView? headlessWebView;
   String url = "";
-  String title = '功能列表';
   bool loginState = false;
 
   @override
@@ -41,15 +38,11 @@ class _StartMenu extends State<StartMenu> {
 
   @override
   Widget build(BuildContext context) {
-    //Size size = MediaQuery.of(context).size;
-    int day = daysBetween(DateTime.now(), DateTime(2021, 9, 13));
-    double goal = 1 - day / 77.0;
-
     return loginState
         ? Scaffold(
             backgroundColor: Theme.of(context).backgroundColor,
             appBar: AppBar(
-              title: Text(title),
+              title: Text('功能列表'),
               titleSpacing: 0.0,
               elevation: 0.0,
               actions: [
@@ -162,14 +155,14 @@ class _StartMenu extends State<StartMenu> {
                                     press: () {},
                                   ),
                                   CustomIcons(
-                                    title: '帳號登出',
+                                    title: '更改帳號',
                                     icon: MenuIcon.icon_account,
                                     press: () {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => LoginPage(
-                                                    willPop: true,
+                                                    willPop: false,
                                                   ),
                                               maintainState: false));
                                     },
@@ -206,7 +199,7 @@ class _StartMenu extends State<StartMenu> {
           context,
           MaterialPageRoute(
               builder: (context) => LoginPage(
-                    willPop: false,
+                    willPop: true,
                   ),
               maintainState: false));
       Future.delayed(Duration(seconds: 3), () async {
@@ -286,6 +279,7 @@ class _StartMenu extends State<StartMenu> {
     Future.delayed(Duration(milliseconds: 1000), () async {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
+      //TODO 登入超時提示網頁異常
     });
   }
 
