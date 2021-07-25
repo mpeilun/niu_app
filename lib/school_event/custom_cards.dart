@@ -228,7 +228,7 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(14.0, 4.0, 14.0, 0.0),
+                padding: EdgeInsets.fromLTRB(screenSizeWidth*0.05, screenSizeHeight*0.01, screenSizeWidth*0.05, 0.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -262,7 +262,7 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 elevation: 1.5,
-                margin: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 8.0),
+                margin: EdgeInsets.fromLTRB(screenSizeWidth*0.05, screenSizeHeight*0.005, screenSizeWidth*0.05, screenSizeHeight*0.01),
                 child: Padding(
                   padding: const EdgeInsets.all(6.0),
                   child: Column(
@@ -331,36 +331,38 @@ class ListInfo extends StatelessWidget {
     var screenSizeWidth = MediaQuery.of(context).size.width;
     var screenSizeHeight = MediaQuery.of(context).size.height;
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: screenSizeHeight*0.005),
-      child: Container(
-        height: screenSizeHeight*0.055,
-        child: Row(
-          children: [
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(icon),
-                  SizedBox(
-                    width: screenSizeWidth * 0.01,
-                  ),
-                  Text(title),
-                ],
+      padding: EdgeInsets.symmetric(vertical: 5),
+      child: Flex(
+        direction: Axis.vertical,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(icon),
+                    SizedBox(
+                      width: screenSizeWidth * 0.01,
+                    ),
+                    Text(title),
+                  ],
+                ),
+                flex: 2,
               ),
-              flex: 2,
-            ),
-            Expanded(
-              flex: 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  widget,
-                ],
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    widget,
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
     );
   }

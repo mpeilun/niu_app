@@ -145,6 +145,7 @@ class _EventPageState extends State<EventPage> {
   }
   Future<void> refresh() async{
     await headlessWebView?.webViewController.loadUrl(urlRequest: URLRequest(url: Uri.parse('https://syscc.niu.edu.tw/Activity/ApplyList.aspx')));
+    await Future.delayed(Duration(milliseconds: 1000));
   }
 
   @override
