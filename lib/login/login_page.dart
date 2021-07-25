@@ -29,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
     id = data.name;
     pwd = data.password;
     loginState = 'null';
-    //TODO 測試放著很久會不會當掉
     await jsLogin();
     for (int i = 1; i <= 30; i++) {
       await Future.delayed(Duration(milliseconds: 1000), () {});
@@ -39,13 +38,14 @@ class _LoginPageState extends State<LoginPage> {
       } else if (i == 30 && loginState == 'null') {
         loginState = '網路異常，連線超時！';
         break;
-      } else if (i % 5 == 0 && webProgress == 100) {
+      } else if (i == 5 && webProgress == 100) {
         await headlessWebView?.webViewController.loadUrl(
             urlRequest: URLRequest(
                 url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx")));
         print('頁面閒置過長，重新載入');
-      } else if (i > 5 && webProgress == 100) {
+      } else if (i > 5 && i % 5 == 0 && webProgress == 100) {
         jsLogin();
+        print('執行 jsLogin()');
       }
     }
     return loginState;
