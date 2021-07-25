@@ -7,9 +7,10 @@ import 'package:niu_app/menu/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
-  final bool willPop;
+  final bool cancelPop;
+  //true:禁止返回 false:不禁止返回
 
-  LoginPage({Key? key, required this.willPop}) : super(key: key);
+  LoginPage({Key? key, required this.cancelPop}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -127,9 +128,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: WillPopScope(
-        onWillPop: () async {
-          return widget.willPop;
-        },
+        onWillPop: widget.cancelPop ? () async => false : null,
         child: Container(
           child: loadState
               ? FlutterLogin(

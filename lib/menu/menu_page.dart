@@ -162,7 +162,7 @@ class _StartMenu extends State<StartMenu> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => LoginPage(
-                                                    willPop: false,
+                                                    cancelPop: false,
                                                   ),
                                               maintainState: false));
                                     },
@@ -199,7 +199,7 @@ class _StartMenu extends State<StartMenu> {
           context,
           MaterialPageRoute(
               builder: (context) => LoginPage(
-                    willPop: true,
+                    cancelPop: true,
                   ),
               maintainState: false));
       Future.delayed(Duration(seconds: 3), () async {
@@ -252,7 +252,7 @@ class _StartMenu extends State<StartMenu> {
               context,
               MaterialPageRoute(
                   builder: (context) => LoginPage(
-                        willPop: false,
+                        cancelPop: false,
                       ),
                   maintainState: false));
           Future.delayed(Duration(seconds: 3), () async {
