@@ -83,7 +83,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(14.0, 4.0, 14.0, 0.0),
+                padding: EdgeInsets.fromLTRB(screenSizeWidth*0.05, screenSizeHeight*0.01, screenSizeWidth*0.05, 0.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -117,9 +117,9 @@ class _CustomEventCardState extends State<CustomEventCard> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 elevation: 1.5,
-                margin: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 8.0),
+                margin: EdgeInsets.fromLTRB(screenSizeWidth*0.05, screenSizeHeight*0.005, screenSizeWidth*0.05, screenSizeHeight*0.01),
                 child: Padding(
-                  padding: const EdgeInsets.all(6.0),
+                  padding: EdgeInsets.all(6.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [

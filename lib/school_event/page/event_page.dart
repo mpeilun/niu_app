@@ -17,25 +17,30 @@ class _EventPageState extends State<EventPage> {
   String temp = "";
 
   List<Event> data = [];
+  bool canDisplay = false;
 
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
 
-  Future<void> getEventList() async {
-    List<Event> temp = [];
+  Future<void> getByStatus(String str) async {
     for (int i = 2;
-        await headlessWebView?.webViewController.evaluateJavascript(
-                source:
-                    'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText') !=
-            null;
-        i++) {
+    await headlessWebView?.webViewController.evaluateJavascript(
+        source:
+        'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(9)").innerText') != null;
+    i++) {
+      String status = await headlessWebView?.webViewController
+          .evaluateJavascript(
+          source:
+          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(9)").innerText');
+      if (status != str)
+        continue;
       print(i);
       String name = await headlessWebView?.webViewController.evaluateJavascript(
           source:
-              'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText');
+          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText');
       String department = await headlessWebView?.webViewController
           .evaluateJavascript(
-              source:
-                  'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
+          source:
+          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
 
       String signTimeStart = await headlessWebView?.webViewController
           .evaluateJavascript(
@@ -77,7 +82,7 @@ class _EventPageState extends State<EventPage> {
               i.toString() +
               '_lblActEdate").innerText');
 
-      String  positive= await headlessWebView?.webViewController
+      String positive = await headlessWebView?.webViewController
           .evaluateJavascript(
           source: i > 9
               ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
@@ -86,7 +91,7 @@ class _EventPageState extends State<EventPage> {
               : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
               i.toString() +
               '_lblOKNum").innerText');
-      String  positiveLimit= await headlessWebView?.webViewController
+      String positiveLimit = await headlessWebView?.webViewController
           .evaluateJavascript(
           source: i > 9
               ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
@@ -95,8 +100,7 @@ class _EventPageState extends State<EventPage> {
               : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
               i.toString() +
               '_lblLimitNum").innerText');
-      String  wait= await headlessWebView?.webViewController
-          .evaluateJavascript(
+      String wait = await headlessWebView?.webViewController.evaluateJavascript(
           source: i > 9
               ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
               i.toString() +
@@ -104,7 +108,7 @@ class _EventPageState extends State<EventPage> {
               : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
               i.toString() +
               '_lblBKNum").innerText');
-      String  waitLimit= await headlessWebView?.webViewController
+      String waitLimit = await headlessWebView?.webViewController
           .evaluateJavascript(
           source: i > 9
               ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
@@ -113,11 +117,7 @@ class _EventPageState extends State<EventPage> {
               : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
               i.toString() +
               '_lblSecNum").innerText');
-
-      String status = await headlessWebView?.webViewController.evaluateJavascript(
-          source:
-              'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(9)").innerText');
-      temp.add(Event(
+      data.add(Event(
         name: name,
         department: department,
         signTimeStart: signTimeStart,
@@ -131,10 +131,20 @@ class _EventPageState extends State<EventPage> {
         waitLimit: waitLimit,
       ));
     }
-    await Future.delayed(Duration(milliseconds: 500));
+  }
+
+  Future<void> getEventList() async {
+    data.clear();
+    await getByStatus('報名中');
+    await getByStatus('已額滿');
+    await getByStatus('未開放');
+    await getByStatus('已過期');
     setState(() {
-      this.data = temp;
+      canDisplay = true;
     });
+  }
+  Future<void> refresh() async{
+    await headlessWebView?.webViewController.loadUrl(urlRequest: URLRequest(url: Uri.parse('https://syscc.niu.edu.tw/Activity/ApplyList.aspx')));
   }
 
   @override
@@ -142,9 +152,12 @@ class _EventPageState extends State<EventPage> {
     super.initState();
     headlessWebView = new HeadlessInAppWebView(
       initialUrlRequest:
-          URLRequest(url: Uri.parse("https://syscc.niu.edu.tw/activity/")),
+      URLRequest(url: Uri.parse("https://syscc.niu.edu.tw/activity/")),
       initialOptions: InAppWebViewGroupOptions(
-        crossPlatform: InAppWebViewOptions(),
+        crossPlatform: InAppWebViewOptions(
+          useOnLoadResource: true,
+          javaScriptCanOpenWindowsAutomatically: true,
+        ),
       ),
       onWebViewCreated: (controller) {
         print('HeadlessInAppWebView created!');
@@ -157,6 +170,10 @@ class _EventPageState extends State<EventPage> {
         setState(() {
           this.url = url.toString();
         });
+      },
+      onLoadResource:
+          (InAppWebViewController controller, LoadedResource resource) {
+        print(resource.toString());
       },
       onLoadStop: (controller, url) async {
         print("onLoadStop $url");
@@ -182,18 +199,19 @@ class _EventPageState extends State<EventPage> {
   @override
   Widget build(BuildContext context) => buildList();
 
-  Widget buildList() => data.isEmpty
-      ? Center(
-          child: NiuIconLoading(
-            size: 80.0,
-          ),
-        )
-      : RefreshWidget(
-          keyRefresh: keyRefresh,
-          onRefresh: getEventList,
-          child: CustomEventCard(
-            key: PageStorageKey<String>('event'),
-            data: data,
-          ),
-        );
+  Widget buildList() =>
+      canDisplay
+          ? RefreshWidget(
+        keyRefresh: keyRefresh,
+        onRefresh: refresh,
+        child: CustomEventCard(
+          key: PageStorageKey<String>('event'),
+          data: data,
+        ),
+      )
+          : Center(
+        child: NiuIconLoading(
+          size: 80.0,
+        ),
+      );
 }
