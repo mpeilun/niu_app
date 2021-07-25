@@ -124,6 +124,13 @@ class _CustomEventCardState extends State<CustomEventCard> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ListInfo(
+                        icon: Icons.info,
+                        title: '活動狀態',
+                        widget: Text(widget.data[index].status
+                            ,
+                            style: TextStyle(fontSize: 14)),
+                      ),
+                      ListInfo(
                         icon: Icons.calendar_today,
                         title: '活動時間',
                         widget: Column(
@@ -152,13 +159,6 @@ class _CustomEventCardState extends State<CustomEventCard> {
                         ),
                       ),
                       ListInfo(
-                        icon: Icons.check,
-                        title: '報名狀態',
-                        widget: Text(widget.data[index].status
-                            ,
-                            style: TextStyle(fontSize: 14)),
-                      ),
-                      ListInfo(
                         icon: Icons.groups,
                         title: '報名人數',
                         widget: Column(
@@ -173,13 +173,6 @@ class _CustomEventCardState extends State<CustomEventCard> {
                               style: TextStyle(fontSize: 14),),
                           ],
                         ),
-                      ),
-                      ListInfo(
-                        icon: Icons.info,
-                        title: '活動狀態',
-                        widget: Text(widget.data[index].status
-                            ,
-                            style: TextStyle(fontSize: 14)),
                       ),
                     ],
                   ),
@@ -229,32 +222,13 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
             children: [
               Padding(
                 padding: EdgeInsets.fromLTRB(screenSizeWidth*0.05, screenSizeHeight*0.01, screenSizeWidth*0.05, 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: screenSizeWidth * 0.6,
-                      child: Text(
-                        widget.data[index].name,
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: screenSizeWidth * 0.3,
-                      child: Text(
-                        '${widget.data[index].status}',
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.grey,
-                        ),
-                        textAlign: TextAlign.end,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  widget.data[index].name,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Card(
