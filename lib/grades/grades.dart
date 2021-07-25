@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/grades/page/final_page.dart';
 import 'package:niu_app/grades/page/mid_page.dart';
 import 'package:niu_app/grades/page/warn_page.dart';
@@ -18,9 +17,18 @@ class Grades extends StatefulWidget {
 
 class _GradesState extends State<Grades> {
   final List<Widget> myTabs = [
-    CustomTabBar(title: '期中預警', icon: Icons.warning_amber_rounded,),
-    CustomTabBar(title: '期中成績', icon: Icons.grading_rounded,),
-    CustomTabBar(title: '期末成績', icon: Icons.whatshot_rounded,),
+    CustomTabBar(
+      title: '期中成績',
+      icon: Icons.grading_rounded,
+    ),
+    CustomTabBar(
+      title: '期末成績',
+      icon: Icons.whatshot_rounded,
+    ),
+    CustomTabBar(
+      title: '期中預警',
+      icon: Icons.warning_amber_rounded,
+    ),
   ];
 
   @override
@@ -32,7 +40,10 @@ class _GradesState extends State<Grades> {
         appBar: AppBar(
           titleSpacing: 0.0,
           elevation: 0.0,
-          title: Text(widget.title, style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600),),
+          title: Text(
+            widget.title,
+            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600),
+          ),
           centerTitle: true,
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(65.0),
@@ -48,9 +59,9 @@ class _GradesState extends State<Grades> {
         ),
         body: TabBarView(
           children: <Widget>[
-            WarmPage(),
             MidPage(),
             FinalPage(),
+            WarmPage(),
           ],
         ),
       ),
