@@ -34,9 +34,9 @@ class _SchoolEventState extends State<SchoolEvent> {
           title: Text(widget.title),
           centerTitle: true,
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(65.0),
+            preferredSize: Size.fromHeight(56.0),
             child: Container(
-              height: 65.0,
+              height: 56.0,
               child: TabBar(
                 labelPadding: EdgeInsets.zero,
                 indicatorWeight: 5.0,
