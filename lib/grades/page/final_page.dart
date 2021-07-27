@@ -38,7 +38,7 @@ class FinalPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Column(
       children: [
-        ListTile(title:Text("學期平均：$avg \t\t\t 班級排名：$rank", style: TextStyle(fontSize: 22.0),)),
+        ListTile(title:Text("班級排名：$rank\n學期平均：$avg", style: TextStyle(fontSize: 22.0),)),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 14.0),
           height: 1.0,

@@ -84,7 +84,7 @@ class _GradesState extends State<Grades> {
           body: TabBarView(
             children: <Widget>[
               MidPage(),
-              FinalPage(rank: 1, avg: 87.01,),
+              FinalPage(rank: 87, avg: 87.01,),
               WarmPage(),
             ],
           ),
