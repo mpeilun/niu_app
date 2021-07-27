@@ -3,6 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:niu_app/service/SemesterDate.dart';
 import './BuildTimeTable/ViewPage.dart';
 import './BuildTimeTable/Class.dart';
+import './GetTimeTable/getHTML.dart';
 /*  SpannableExtentCountPage  */
 /*  EdgeInsets.all(5)         */
 /*  crossAxisCount: 5         */
@@ -32,6 +33,7 @@ class _TimeTableState extends State<TimeTable> {
 
   @override
   Widget build(BuildContext context) {
+    getHTML();
     return ViewPage.build(myTable : myTable);
   }
 }
