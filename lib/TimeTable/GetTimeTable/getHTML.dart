@@ -10,14 +10,14 @@ class getHTML {
   List<List<String?>> teacher = <List<String?>> [];
   List<List<String?>> name = <List<String?>> [];
   List<List<String?>> address = <List<String?>> [];
-  Future<void> get() async {
 
-    HeadlessInAppWebView headlessWebView;
-    headlessWebView = new HeadlessInAppWebView(
-      onConsoleMessage: (controller, consoleMessage) {
-        print("CONSOLE MESSAGE: " + consoleMessage.message);
-      },
-    );
+  HeadlessInAppWebView headlessWebView = new HeadlessInAppWebView(
+    onConsoleMessage: (controller, consoleMessage) {
+      print("CONSOLE MESSAGE: " + consoleMessage.message);
+    },
+  );
+
+  Future<void> get() async {
     headlessWebView.run();
 
     await headlessWebView.webViewController.loadUrl(
