@@ -37,12 +37,12 @@ class _GradesState extends State<Grades> {
       length: myTabs.length,
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppBar(
+        /*appBar: AppBar(
           titleSpacing: 0.0,
           elevation: 0.0,
           title: Text(
             widget.title,
-            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600),
+            //style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
           bottom: PreferredSize(
@@ -56,13 +56,38 @@ class _GradesState extends State<Grades> {
               ),
             ),
           ),
-        ),
-        body: TabBarView(
-          children: <Widget>[
-            MidPage(),
-            FinalPage(),
-            WarmPage(),
-          ],
+        ),*/
+
+        body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              new SliverAppBar(
+                title: Text("成績查詢"),
+                centerTitle: true,
+                floating: true,
+                pinned: true,
+                snap: true,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(65.0),
+                  child: Container(
+                    height: 65.0,
+                    child: TabBar(
+                      labelPadding: EdgeInsets.zero,
+                      indicatorWeight: 5.0,
+                      tabs: myTabs,
+                    ),
+                  ),
+                ),
+              )
+            ];
+          },
+          body: TabBarView(
+            children: <Widget>[
+              MidPage(),
+              FinalPage(rank: 1, avg: 87.01,),
+              WarmPage(),
+            ],
+          ),
         ),
       ),
     );

@@ -56,6 +56,7 @@ final List<Quote> grades = [
 
 class CustomGradeCard extends StatelessWidget {
   final List<Quote> grade;
+  final int rank = 1;
 
   const CustomGradeCard({Key? key, required this.grade}) : super(key: key);
 
