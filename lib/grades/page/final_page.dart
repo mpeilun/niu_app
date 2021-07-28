@@ -39,11 +39,7 @@ class FinalPage extends StatelessWidget {
     return  Column(
       children: [
         ListTile(title:Text("班級排名：$rank\n學期平均：$avg", style: TextStyle(fontSize: 22.0),)),
-        Divider(
-          thickness: 1.5,
-          indent: 12,
-          endIndent: 10,
-        ),
+        Divider(),
         Expanded(
           child: CustomGradeCard(
             key: PageStorageKey<String>('final'),

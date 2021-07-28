@@ -127,11 +127,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
       padding: const EdgeInsets.all(8.0),
       physics: BouncingScrollPhysics(),
       itemCount: widget.grade.length,
-      separatorBuilder: (BuildContext context, int index) => Divider(
-        thickness: 1.5,
-        indent: 12,
-        endIndent: 10,
-      ),
+      separatorBuilder: (BuildContext context, int index) => Divider(height: 30.0,),
       itemBuilder: (BuildContext context, int index) => Column(
         children: [
           Padding(

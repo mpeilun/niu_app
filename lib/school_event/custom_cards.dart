@@ -69,11 +69,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
     return ListView.separated(
       physics: BouncingScrollPhysics(),
       itemCount: widget.data.length,
-      separatorBuilder: (BuildContext context, int index) => Divider(
-        thickness: 1.5,
-        indent: 12,
-        endIndent: 10,
-      ),
+      separatorBuilder: (BuildContext context, int index) => Divider(),
       itemBuilder: (BuildContext context, int index) => GestureDetector(
         onTap: () {
           Scaffold.of(context)
