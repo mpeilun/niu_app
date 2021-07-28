@@ -13,7 +13,6 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart' as dioCookieManager;
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -203,14 +202,14 @@ void _download(String url) async {
         await CookieManager.instance().getCookies(url: Uri.parse(url));
     await download(url, externalDir, cookies).then((value) => openFile(value));
   } else {
-    Fluttertoast.showToast(
-        msg: "請點選 => 權限  => 允許\"檔案和媒體\"權限",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.red,
-        fontSize: 20.0);
+    // Fluttertoast.showToast(
+    //     msg: "請點選 => 權限  => 允許\"檔案和媒體\"權限",
+    //     toastLength: Toast.LENGTH_LONG,
+    //     gravity: ToastGravity.CENTER,
+    //     timeInSecForIosWeb: 1,
+    //     backgroundColor: Colors.black,
+    //     textColor: Colors.red,
+    //     fontSize: 20.0);
     AppSettings.openAppSettings();
     print('無權限存取目錄');
   }

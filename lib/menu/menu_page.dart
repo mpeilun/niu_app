@@ -39,159 +39,155 @@ class _StartMenu extends State<StartMenu> {
   @override
   Widget build(BuildContext context) {
     final double appHeight = AppBar().preferredSize.height;
-    final double statusbarHeight = MediaQuery
-        .of(context)
-        .padding
-        .top;
+    final double statusbarHeight = MediaQuery.of(context).padding.top;
 
     if (loginState) {
       return Scaffold(
-            backgroundColor: Theme.of(context).backgroundColor,
-            appBar: AppBar(
-              title: Text('功能列表'),
-              titleSpacing: 0.0,
-              elevation: 0.0,
-              actions: [
-                IconButton(icon: Icon(Icons.search), onPressed: () {}),
-                IconButton(
-                    icon: Icon(Icons.notifications_none), onPressed: () {}),
-              ],
-              leading: IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {},
-              ),
+          backgroundColor: Theme.of(context).backgroundColor,
+          appBar: AppBar(
+            title: Text('功能列表'),
+            titleSpacing: 0.0,
+            elevation: 0.0,
+            actions: [
+              IconButton(icon: Icon(Icons.search), onPressed: () {}),
+              IconButton(
+                  icon: Icon(Icons.notifications_none), onPressed: () {}),
+            ],
+            leading: IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {},
             ),
-            body: LayoutBuilder(
-              builder:
-                  (BuildContext context, BoxConstraints viewportConstraints) {
-                return SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height - appHeight - statusbarHeight,
-                    ),
-                    child: Column(children: [
-                      Expanded(
-                        flex: 7,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                              children: [
-                                CustomIcons(
-                                  title: '數位園區',
-                                  icon: MenuIcon.icon_eschool,
-                                  press: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ESchool(),
-                                            maintainState: false));
-                                  },
-                                ),
-                                CustomIcons(
-                                  title: '成績查詢',
-                                  icon: MenuIcon.icon_grades,
-                                  press: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Grades(
-                                                  title: '成績查詢',
-                                                ),
-                                            maintainState: false));
-                                  },
-                                ),
-                                CustomIcons(
-                                  title: '每周課表',
-                                  icon: MenuIcon.icon_timetable,
-                                  press: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => TimeTable(),
-                                            maintainState: false));
-                                  },
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                              children: [
-                                CustomIcons(
-                                  title: '活動報名',
-                                  icon: MenuIcon.icon_event,
-                                  press: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => SchoolEvent(
-                                                  title: '活動報名',
-                                                ),
-                                            maintainState: false));
-                                  },
-                                ),
-                                CustomIcons(
-                                  title: 'ZUVIO',
-                                  icon: MenuIcon.icon_zuvio,
-                                  press: () {},
-                                ),
-                                CustomIcons(
-                                  title: '畢業門檻',
-                                  icon: MenuIcon.icon_graduation,
-                                  press: () {},
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                              children: [
-                                CustomIcons(
-                                  title: '選課系統',
-                                  icon: MenuIcon.icon_e_school,
-                                  press: () {},
-                                ),
-                                CustomIcons(
-                                  title: '公車動態',
-                                  icon: MenuIcon.icon_bus,
-                                  press: () {},
-                                ),
-                                CustomIcons(
-                                  title: '更改帳號',
-                                  icon: MenuIcon.icon_account,
-                                  press: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => LoginPage(
-                                                  cancelPop: false,
-                                                ),
-                                            maintainState: false));
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 12.0,
-                      ),
-                      Expanded(
-                        flex: 4,
-                        child: Image.asset(
-                          'assets/niu_background.png',
-                        ),
-                      )
-                    ]),
+          ),
+          body: LayoutBuilder(
+            builder:
+                (BuildContext context, BoxConstraints viewportConstraints) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height -
+                        appHeight -
+                        statusbarHeight,
                   ),
-                );
-              },
-            ));
+                  child: Column(children: [
+                    Expanded(
+                      flex: 7,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CustomIcons(
+                                title: '數位園區',
+                                icon: MenuIcon.icon_eschool,
+                                press: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ESchool(),
+                                          maintainState: false));
+                                },
+                              ),
+                              CustomIcons(
+                                title: '成績查詢',
+                                icon: MenuIcon.icon_grades,
+                                press: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Grades(
+                                                title: '成績查詢',
+                                              ),
+                                          maintainState: false));
+                                },
+                              ),
+                              CustomIcons(
+                                title: '每周課表',
+                                icon: MenuIcon.icon_timetable,
+                                press: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => TimeTable(),
+                                          maintainState: false));
+                                },
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CustomIcons(
+                                title: '活動報名',
+                                icon: MenuIcon.icon_event,
+                                press: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => SchoolEvent(
+                                                title: '活動報名',
+                                              ),
+                                          maintainState: false));
+                                },
+                              ),
+                              CustomIcons(
+                                title: 'ZUVIO',
+                                icon: MenuIcon.icon_zuvio,
+                                press: () {},
+                              ),
+                              CustomIcons(
+                                title: '畢業門檻',
+                                icon: MenuIcon.icon_graduation,
+                                press: () {},
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CustomIcons(
+                                title: '選課系統',
+                                icon: MenuIcon.icon_e_school,
+                                press: () {},
+                              ),
+                              CustomIcons(
+                                title: '公車動態',
+                                icon: MenuIcon.icon_bus,
+                                press: () {},
+                              ),
+                              CustomIcons(
+                                title: '更改帳號',
+                                icon: MenuIcon.icon_account,
+                                press: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LoginPage(
+                                                cancelPop: false,
+                                              ),
+                                          maintainState: false));
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 12.0,
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: Image.asset(
+                        'assets/niu_background.png',
+                      ),
+                    )
+                  ]),
+                ),
+              );
+            },
+          ));
     } else {
       return Loading();
     }
