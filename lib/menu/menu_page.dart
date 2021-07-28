@@ -68,10 +68,11 @@ class _StartMenu extends State<StartMenu> {
                   scrollDirection: Axis.vertical,
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height - appHeight - statusbarHeight - 0.1,
+                      maxHeight: MediaQuery.of(context).size.height - appHeight - statusbarHeight,
                     ),
                     child: Column(children: [
                       Expanded(
+                        flex: 7,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -180,8 +181,8 @@ class _StartMenu extends State<StartMenu> {
                       SizedBox(
                         height: 12.0,
                       ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
+                      Expanded(
+                        flex: 4,
                         child: Image.asset(
                           'assets/niu_background.png',
                         ),

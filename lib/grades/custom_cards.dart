@@ -73,7 +73,7 @@ class CustomGradeCard extends StatelessWidget {
       },
       itemBuilder: (BuildContext context, int index) => Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(8.0),
         ),
         elevation: 1.5,
         //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
@@ -131,7 +131,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
       itemBuilder: (BuildContext context, int index) => Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -155,7 +155,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
           ),
           Card(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(8),
             ),
             elevation: 1.5,
             child: LayoutBuilder(builder:

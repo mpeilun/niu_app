@@ -36,7 +36,9 @@ class _GradesState extends State<Grades> {
     return DefaultTabController(
       length: myTabs.length,
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme
+            .of(context)
+            .backgroundColor,
         /*appBar: AppBar(
           titleSpacing: 0.0,
           elevation: 0.0,
@@ -58,38 +60,40 @@ class _GradesState extends State<Grades> {
           ),
         ),*/
 
-        body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              new SliverAppBar(
-                title: Text("成績查詢"),
-                centerTitle: true,
-                floating: true,
-                pinned: true,
-                snap: true,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(56.0),
-                  child: Container(
-                    height: 56.0,
-                    child: TabBar(
-                      labelPadding: EdgeInsets.zero,
-                      indicatorWeight: 5.0,
-                      tabs: myTabs,
+        body: SafeArea(
+          child: NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[SliverAppBar(
+                  title: Text("成績查詢"),
+                  centerTitle: true,
+                  floating: true,
+                  pinned: false,
+                  snap: true,
+                  bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(56.0),
+                    child: Container(
+                      height: 56.0,
+                      child: TabBar(
+                        labelPadding: EdgeInsets.zero,
+                        indicatorWeight: 5.0,
+                        tabs: myTabs,
+                      ),
                     ),
                   ),
-                ),
-              )
-            ];
-          },
-          body: TabBarView(
-            children: <Widget>[
-              MidPage(),
-              FinalPage(rank: 87, avg: 87.01,),
-              WarmPage(),
-            ],
+                )
+              ];
+            },
+            body: TabBarView(
+              children: <Widget>[
+                MidPage(),
+                FinalPage(rank: 87, avg: 87.01,),
+                WarmPage(),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+
+
+    ),);
   }
 }
