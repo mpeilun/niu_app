@@ -39,7 +39,7 @@ class CustomIcons extends StatelessWidget {
   }
 }
 
-class CustomTabBar extends StatefulWidget {
+class CustomTabBar extends StatelessWidget {
   final String title;
   final IconData icon;
   const CustomTabBar({
@@ -49,77 +49,43 @@ class CustomTabBar extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CustomTabBarState createState() => _CustomTabBarState();
-}
-
-class _CustomTabBarState extends State<CustomTabBar> {
-  bool isLargeScreen = false;
-
-  @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.width);
+    bool isLargeScreen = false;
     if (MediaQuery.of(context).size.width > 320) {
       isLargeScreen = true;
     } else {
       isLargeScreen = false;
     }
     return Container(
-      height: 65.0,
-      child: isLargeScreen ? TabBarL(title: widget.title, icon: widget.icon) : TabBarS(title: widget.title,),
+      height: 56.0,
+      child: isLargeScreen ? Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Tab(
+            icon: Icon(icon),
+          ),
+          SizedBox(
+            width: 3.0,
+          ),
+          Text(
+            title,
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+          ),
+        ],
+      ) : Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
     );
   }
 }
 
-class TabBarL extends StatelessWidget {
-  final String title;
-  final IconData icon;
-
-  const TabBarL({
-    Key? key,
-    required this.title,
-    required this.icon,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Tab(
-          icon: Icon(icon),
-        ),
-        SizedBox(
-          width: 3.0,
-        ),
-        Text(
-          title,
-          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
-        ),
-      ],
-    );
-  }
-}
-
-class TabBarS extends StatelessWidget {
-  final String title;
-
-  const TabBarS({
-    Key? key,
-    required this.title,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          title,
-          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
-        ),
-      ],
-    );
-  }
-}
 
 class CGWIcon extends StatelessWidget {
   const CGWIcon({
