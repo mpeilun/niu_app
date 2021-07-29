@@ -68,9 +68,10 @@ class _StartMenu extends State<StartMenu> {
                   scrollDirection: Axis.vertical,
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height - appHeight - statusbarHeight,
+                      maxHeight: viewportConstraints.maxHeight,
                     ),
                     child: Column(children: [
+                      SizedBox(height: 8.0,),
                       Expanded(
                         flex: 7,
                         child: Column(

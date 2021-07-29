@@ -43,7 +43,7 @@ class FinalPage extends StatelessWidget {
               color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(12.0),)
             ),
-            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 4.0),
             child: ListTile(title:Text("班級排名：$rank\n學期平均：$avg", style: TextStyle(fontSize: 22.0, color: Colors.white),))),
         //Divider(),
         Expanded(

@@ -23,11 +23,11 @@ class MyApp extends StatelessWidget {
       title: 'NIU app',
       theme: ThemeData(
         //brightness: Brightness.dark,
-        appBarTheme: AppBarTheme(
+        /*appBarTheme: AppBarTheme(
           color: Colors.blue[900],
           //backwardsCompatibility: false,
           systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.blue[900]),
-        ),
+        ),*/
         dividerTheme: DividerThemeData(
           thickness: 1.5,
           indent: 10,
