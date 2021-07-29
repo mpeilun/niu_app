@@ -73,7 +73,8 @@ class _ESchoolState extends State<ESchool> {
           });
 
           if (url.toString() ==
-              'https://eschool.niu.edu.tw/mooc/message.php?type=17') {
+                  'https://eschool.niu.edu.tw/mooc/message.php?type=17' ||
+              url.toString() == 'https://eschool.niu.edu.tw/mooc/index.php') {
             await headlessWebView?.webViewController.loadUrl(
                 urlRequest: URLRequest(
                     url: Uri.parse(
@@ -167,6 +168,7 @@ class _ESchoolState extends State<ESchool> {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#btnSignIn").click();');
       //TODO 網頁異常狀態判定
+      //TODO 登入動畫？
     });
   }
 }

@@ -1,13 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:niu_app/menu/menu_page.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 
-Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Permission.storage.request();
+main() {
   runApp(MyApp());
 }
 
@@ -23,11 +20,12 @@ class MyApp extends StatelessWidget {
       title: 'NIU app',
       theme: ThemeData(
         //brightness: Brightness.dark,
-        /*appBarTheme: AppBarTheme(
+        appBarTheme: AppBarTheme(
           color: Colors.blue[900],
           //backwardsCompatibility: false,
-          systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.blue[900]),
-        ),*/
+          systemOverlayStyle:
+              SystemUiOverlayStyle(statusBarColor: Colors.blue[900]),
+        ),
         dividerTheme: DividerThemeData(
           thickness: 1.5,
           indent: 10,

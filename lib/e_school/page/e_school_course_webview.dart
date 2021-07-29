@@ -6,10 +6,10 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart' as dioCookieManager;
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ESchoolCourseWebView extends StatefulWidget {
@@ -45,8 +45,6 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
     if (dartCookies.Platform.isAndroid) {
       AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
     }
-
-    Permission.storage.request();
 
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(
@@ -146,8 +144,73 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
                 onConsoleMessage: (controller, consoleMessage) {
                   print(consoleMessage);
                 },
-                onDownloadStart: (controller, url) {
-                  _download(url.toString());
+                onDownloadStart: (controller, url) async {
+                  if (!await Permission.storage.isGranted) {
+                    Alert(
+                      context: context,
+                      type: AlertType.info,
+                      title: "需取得權限才能獲得完整的使用體驗",
+                      desc: "數位學習園區有下載與上傳檔案之需求，請允許存取\"檔案和媒體\"權限，以便您繼續使用此功能",
+                      buttons: [
+                        DialogButton(
+                          child: Text(
+                            '請點選 允許(Allow)',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          onPressed: () async {
+                            Navigator.pop(context);
+                            if (await Permission.storage.request().isGranted) {
+                              _download(url.toString());
+                            } else {
+                              Alert(
+                                context: context,
+                                type: AlertType.error,
+                                title: "無權限存取，無法使用此功能",
+                                desc: "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
+                                buttons: [
+                                  DialogButton(
+                                    child: Text(
+                                      "前往設定",
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 20),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      AppSettings.openAppSettings();
+                                    },
+                                    color: Color.fromRGBO(0, 179, 134, 1.0),
+                                  ),
+                                ],
+                              ).show();
+                            }
+                          },
+                          color: Color.fromRGBO(0, 179, 134, 1.0),
+                        ),
+                      ],
+                    ).show();
+                  } else if (await Permission.storage.isDenied) {
+                    Alert(
+                      context: context,
+                      type: AlertType.error,
+                      title: "無權限存取，無法使用此功能",
+                      desc: "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
+                      buttons: [
+                        DialogButton(
+                          child: Text(
+                            "前往設定",
+                            style: TextStyle(color: Colors.red, fontSize: 20),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            AppSettings.openAppSettings();
+                          },
+                          color: Color.fromRGBO(0, 179, 134, 1.0),
+                        ),
+                      ],
+                    ).show();
+                  } else {
+                    _download(url.toString());
+                  }
                   //_download('https://upload.wikimedia.org/wikipedia/commons/c/c3/%E5%90%89%E7%A5%A5%E7%89%A9-%E6%B3%A2%E6%AF%94.jpg');
                 },
               ),
@@ -163,9 +226,7 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
 }
 
 void _download(String url) async {
-  await Permission.storage.request();
-
-  if (await Permission.storage.request().isGranted) {
+  if (await Permission.storage.isGranted) {
     String externalDir;
     if (dartCookies.Platform.isAndroid) {
       externalDir = '/storage/emulated/0/Download';
@@ -183,15 +244,6 @@ void _download(String url) async {
         await CookieManager.instance().getCookies(url: Uri.parse(url));
     await download(url, externalDir, cookies).then((value) => openFile(value));
   } else {
-    Fluttertoast.showToast(
-        msg: "請點選 => 權限  => 允許\"檔案和媒體\"權限",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.red,
-        fontSize: 20.0);
-    AppSettings.openAppSettings();
     print('無權限存取目錄');
   }
 }
