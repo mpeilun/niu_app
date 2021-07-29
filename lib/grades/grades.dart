@@ -39,9 +39,6 @@ class _GradesState extends State<Grades> {
         color: Theme.of(context).primaryColor,
         child: SafeArea(
           child: Scaffold(
-            /*backgroundColor: Theme
-                .of(context)
-                .backgroundColor,*/
             /*appBar: AppBar(
               titleSpacing: 0.0,
               elevation: 0.0,

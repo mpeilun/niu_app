@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           endIndent: 10,
         ),
         primaryColor: Colors.blue[900],
-        backgroundColor: Colors.grey[200],
+        scaffoldBackgroundColor: Colors.grey[200],
         textTheme: GoogleFonts.notoSansTextTheme(textTheme).copyWith(
           headline1: GoogleFonts.oswald(textStyle: textTheme.headline1),
         ),

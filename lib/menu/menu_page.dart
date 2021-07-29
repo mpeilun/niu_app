@@ -38,15 +38,9 @@ class _StartMenu extends State<StartMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final double appHeight = AppBar().preferredSize.height;
-    final double statusbarHeight = MediaQuery
-        .of(context)
-        .padding
-        .top;
 
     if (loginState) {
       return Scaffold(
-            backgroundColor: Theme.of(context).backgroundColor,
             appBar: AppBar(
               title: Text('功能列表'),
               titleSpacing: 0.0,
