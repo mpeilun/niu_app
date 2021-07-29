@@ -4,7 +4,10 @@ class getHTML {
   getHTML(){
     get();
   }
-  bool enable = false;
+  bool _enable = false;
+  bool enable(){
+    return _enable;
+  }
   int weekDayNum = 5;
   int classNum = 14;
   // arr[classNum][weekDayNum]
@@ -50,7 +53,6 @@ class getHTML {
         break;
       await Future.delayed( Duration(milliseconds: 100));
     }while( result != "目前學期");
-    print("finish1");
     //按下按鈕
     await headlessWebView.webViewController.evaluateJavascript(
         source:
@@ -65,16 +67,7 @@ class getHTML {
         break;
       await Future.delayed( Duration(milliseconds: 100));
     }while( buttonResult != "星期一");
-
     //讀取課表
-/*
-    var thisBlock;
-    thisBlock = await headlessWebView.webViewController
-        .evaluateJavascript(
-        source:
-        'document.querySelector("#table2 > tbody > tr:nth-child(' + (0+2).toString() + ') > td:nth-child(' +  (0+2).toString()  + ')").innerHTML');
-    print(thisBlock);*/
-
     for(int i = 0; i < classNum; i++){
       List<String?> tempHtmlCode = [];
       for(int j = 0; j < weekDayNum; j++){
@@ -87,7 +80,8 @@ class getHTML {
       }
       htmlCode.add(tempHtmlCode);
     }
-    enable = true;
+    _enable = true;
+    print("HTML　load finish!");
     return;
   }
 }
