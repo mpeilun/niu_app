@@ -51,7 +51,7 @@ final List<Quote> grades = [
   Quote(lesson: '課程5', score: 95.0),
   Quote(lesson: '課程5', score: 95.0, teacher: 'VVV'),
   Quote(lesson: '課程5', score: 95.0),
-  Quote(lesson: '課程5', score: 95.0, teacher: 'AA'),
+  Quote(lesson: '課程5', score: 100.0, teacher: 'AA'),
 ];
 
 class CustomGradeCard extends StatelessWidget {
@@ -63,6 +63,7 @@ class CustomGradeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      key: key,
       padding: const EdgeInsets.all(8.0),
       physics: BouncingScrollPhysics(),
       itemCount: grade.length,

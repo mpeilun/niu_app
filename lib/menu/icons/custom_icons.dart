@@ -50,7 +50,6 @@ class CustomTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width);
     bool isLargeScreen = false;
     if (MediaQuery.of(context).size.width > 320) {
       isLargeScreen = true;
