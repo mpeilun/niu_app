@@ -115,7 +115,6 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
   var isGradeList = [];
   var isAttendanceList = [];
   var isPresentList = [];
-
   @override
   Widget build(BuildContext context) {
     isWarnList = widget.grade.map((g) => g.warn ?? false).toList();
@@ -128,7 +127,9 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
       padding: const EdgeInsets.all(8.0),
       physics: BouncingScrollPhysics(),
       itemCount: widget.grade.length,
-      separatorBuilder: (BuildContext context, int index) => Divider(height: 30.0,),
+      separatorBuilder: (BuildContext context, int index) => Divider(
+        height: 30.0,
+      ),
       itemBuilder: (BuildContext context, int index) => Column(
         children: [
           Padding(
@@ -164,6 +165,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
               return SingleChildScrollView(
                 padding: EdgeInsets.all(8.0),
                 key: PageStorageKey<String>('card$index'),
+                controller: ScrollController(initialScrollOffset: 8.0),
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 child: ConstrainedBox(
@@ -179,27 +181,21 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                         icon: MyFlutterApp.exclamation,
                         index: index,
                       ),
-                      SizedBox(
-                        width: 15.0,
-                      ),
+                      SizedBox(width: 10),
                       CGWIcon(
                         isWarnList: isGradeList,
                         title: '期中成績',
                         icon: MyFlutterApp.times_circle,
                         index: index,
                       ),
-                      SizedBox(
-                        width: 15.0,
-                      ),
+                      SizedBox(width: 10),
                       CGWIcon(
                         isWarnList: isAttendanceList,
                         title: '出席率',
                         icon: MyFlutterApp.times_circle,
                         index: index,
                       ),
-                      SizedBox(
-                        width: 15.0,
-                      ),
+                      SizedBox(width: 10),
                       CGWIcon(
                         isWarnList: isPresentList,
                         title: '報告/其他',

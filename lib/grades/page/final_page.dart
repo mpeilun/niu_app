@@ -40,7 +40,7 @@ class FinalPage extends StatelessWidget {
       children: [
         Container(
             decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Theme.of(context).accentColor,
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
             margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 0.0),
             padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
