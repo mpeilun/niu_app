@@ -27,25 +27,28 @@ class _FinalPageState extends State<FinalPage> {
   }
 }*/
 
-
 class FinalPage extends StatelessWidget {
   final double avg;
   final int rank;
 
-  const FinalPage({Key? key, required this.avg, required this.rank}) : super(key: key);
+  const FinalPage({Key? key, required this.avg, required this.rank})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
       children: [
         Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(12.0),)
-            ),
-            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 4.0),
-            child: ListTile(title:Text("班級排名：$rank\n學期平均：$avg", style: TextStyle(fontSize: 22.0, color: Colors.white),))),
-        //Divider(),
+                color: Colors.blue,
+                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 0.0),
+            padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
+            child: ListTile(
+                title: Text(
+              "班級排名：$rank\n學期平均：$avg",
+              style: TextStyle(fontSize: 24.0, color: Colors.white),
+            ))),
         Expanded(
           child: CustomGradeCard(
             key: PageStorageKey<String>('final'),
