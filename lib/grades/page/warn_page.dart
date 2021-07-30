@@ -11,7 +11,8 @@ class WarmPage extends StatefulWidget {
   _WarmPageState createState() => _WarmPageState();
 }
 
-class _WarmPageState extends State<WarmPage> {
+class _WarmPageState extends State<WarmPage>
+    with AutomaticKeepAliveClientMixin<WarmPage> {
   HeadlessInAppWebView? headlessWebView;
   bool loadStates = false;
   late String url;
@@ -163,4 +164,6 @@ class _WarmPageState extends State<WarmPage> {
             ],
           ),
         );
+  @override
+  bool get wantKeepAlive => true;
 }

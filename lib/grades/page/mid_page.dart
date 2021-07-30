@@ -10,7 +10,8 @@ class MidPage extends StatefulWidget {
   _MidPageState createState() => _MidPageState();
 }
 
-class _MidPageState extends State<MidPage> {
+class _MidPageState extends State<MidPage>
+    with AutomaticKeepAliveClientMixin<MidPage> {
   HeadlessInAppWebView? headlessWebView;
   bool loadStates = false;
   late String url;
@@ -115,4 +116,7 @@ class _MidPageState extends State<MidPage> {
           )
         : NiuIconLoading(size: 80);
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
