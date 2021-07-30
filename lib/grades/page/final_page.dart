@@ -2,32 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/grades/custom_cards.dart';
-/*
-class FinalPage extends StatefulWidget {
-  const FinalPage({Key? key}) : super(key: key);
-
-  @override
-  _FinalPageState createState() => _FinalPageState();
-}
-
-class _FinalPageState extends State<FinalPage> {
-
-
-  @override
-  Widget build(BuildContext context){
-    return Column(
-      children: [
-        ListTile(title:Text("學期平均：$avg \t\t\t 班級排名：$rank")),
-        Expanded(
-          child: CustomGradeCard(
-            key: PageStorageKey<String>('final'),
-            grade: grades,
-          ),
-        ),
-      ],
-    );
-  }
-}*/
 
 class FinalPage extends StatefulWidget {
   const FinalPage({Key? key}) : super(key: key);
@@ -82,11 +56,13 @@ class _FinalPageState extends State<FinalPage>
           setState(() {
             this.url = url.toString();
           });
+          //TODO 排序
           avg = await controller.evaluateJavascript(
               source: 'document.querySelector("#Q_CRS_AVG_MARK").innerText');
           rank = await controller.evaluateJavascript(
               source:
                   'document.querySelector("#QTable2 > tbody > tr:nth-child(2) > td:nth-child(2) > table > tbody > tr:nth-child(2) > td:nth-child(4)").innerText');
+          rank = '第${rank.replaceAll(RegExp('[^0-9]'), '')}名';
           for (int i = 2; //2~N
               (await controller.evaluateJavascript(
                           source:
@@ -94,15 +70,16 @@ class _FinalPageState extends State<FinalPage>
                       .toString() !=
                   'null';
               i++) {
+            String type = await controller.evaluateJavascript(
+                source:
+                    'document.querySelector("#DataGrid > tbody > tr:nth-child($i) > td:nth-child(4)").innerText');
             String lesson = await controller.evaluateJavascript(
                 source:
                     'document.querySelector("#DataGrid > tbody > tr:nth-child($i) > td:nth-child(5)").innerText');
             String score = await controller.evaluateJavascript(
                 source:
                     'document.querySelector("#DataGrid > tbody > tr:nth-child($i) > td:nth-child(6)").innerText');
-            print(lesson);
-            print(score);
-            grades.add(Quote(lesson: lesson, score: score));
+            grades.add(Quote(lesson: lesson, score: score, type: type));
           }
           setState(() {
             loadStates = true;
@@ -136,12 +113,17 @@ class _FinalPageState extends State<FinalPage>
   @override
   void dispose() {
     super.dispose();
+    headlessWebView?.dispose();
     loadStates = false;
     print('final_page dispose');
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return loadStates
         ? Column(
             children: [
@@ -154,13 +136,15 @@ class _FinalPageState extends State<FinalPage>
                     ),
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 12.0),
+                        padding:
+                            const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 12.0),
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             "期末平均：$avg",
                             textAlign: TextAlign.left,
-                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                            style:
+                                TextStyle(fontSize: 20.0, color: Colors.white),
                           ),
                         ),
                       ),
@@ -175,7 +159,4 @@ class _FinalPageState extends State<FinalPage>
           )
         : NiuIconLoading(size: 80);
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

@@ -55,6 +55,7 @@ class _WarmPageState extends State<WarmPage>
           setState(() {
             this.url = url.toString();
           });
+          //TODO 排序
           for (int i = 2; //2~N
               (await controller.evaluateJavascript(
                           source:
@@ -136,34 +137,39 @@ class _WarmPageState extends State<WarmPage>
   @override
   void dispose() {
     super.dispose();
+    headlessWebView?.dispose();
     loadStates = false;
     print('warn_page dispose');
   }
 
   @override
-  Widget build(BuildContext context) => loadStates
-      ? CustomWarnCard(
-          key: PageStorageKey<String>('warm'),
-          grade: grades,
-        )
-      : Container(
-          child: Column(
-            children: [
-              Expanded(child: NiuIconLoading(size: 80)),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                child: Text(
-                  '此頁面載入時間較長，請耐心等候',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              )
-            ],
-          ),
-        );
-  @override
   bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return loadStates
+        ? CustomWarnCard(
+            key: PageStorageKey<String>('warm'),
+            grade: grades,
+          )
+        : Container(
+            child: Column(
+              children: [
+                Expanded(child: NiuIconLoading(size: 80)),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  child: Text(
+                    '此頁面載入時間較長，請耐心等候',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+  }
 }

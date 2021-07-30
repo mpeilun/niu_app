@@ -54,6 +54,7 @@ class _MidPageState extends State<MidPage>
           setState(() {
             this.url = url.toString();
           });
+          //TODO 排序
           for (int i = 2; //2~N
               (await controller.evaluateJavascript(
                           source:
@@ -61,15 +62,19 @@ class _MidPageState extends State<MidPage>
                       .toString() !=
                   'null';
               i++) {
+            String type = await controller.evaluateJavascript(
+                source:
+                    'document.querySelector("#DataGrid > tbody > tr:nth-child($i) > td:nth-child(4)").innerText');
             String lesson = await controller.evaluateJavascript(
                 source:
                     'document.querySelector("#DataGrid > tbody > tr:nth-child($i) > td:nth-child(5)").innerText');
             String score = await controller.evaluateJavascript(
                 source:
                     'document.querySelector("#DataGrid > tbody > tr:nth-child($i) > td:nth-child(6)").innerText');
-            print(lesson);
-            print(score);
-            grades.add(Quote(lesson: lesson, score: score));
+            if (type.length < 2) {
+              type = '必修';
+            }
+            grades.add(Quote(lesson: lesson, score: score, type: type));
           }
           setState(() {
             loadStates = true;
@@ -103,19 +108,21 @@ class _MidPageState extends State<MidPage>
   @override
   void dispose() {
     super.dispose();
+    headlessWebView?.dispose();
     loadStates = false;
     print('mid_page dispose');
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return loadStates
         ? CustomGradeCard(
             grade: grades,
           )
         : NiuIconLoading(size: 80);
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

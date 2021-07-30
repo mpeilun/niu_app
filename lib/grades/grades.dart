@@ -81,21 +81,6 @@ class _GradesState extends State<Grades> {
                       ),
                     ),
                   ),
-                  /*
-                  SliverToBoxAdapter(
-                    child:  Container(
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
-                            borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                        margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 0.0),
-                        padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                        child: ListTile(
-                            title: Text(
-                              "班級排名：rank\n學期平均：avg",
-                              style: TextStyle(fontSize: 24.0, color: Colors.white),
-                            ))),
-                  )
-                  */
                 ];
               },
               body: TabBarView(

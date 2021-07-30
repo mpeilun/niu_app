@@ -6,6 +6,7 @@ import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
 class Quote {
   final String lesson;
   final String? score;
+  final String? type;
   final String? teacher;
   final bool? warn;
   final bool? gradeWarn;
@@ -15,19 +16,20 @@ class Quote {
   Quote({
     required this.lesson,
     String? score,
+    String? type,
     String? teacher,
     bool? warn,
     bool? gradeWarn,
     bool? attendanceWarn,
     bool? presentWarn,
   })  : this.score = score,
+        this.type = type,
         this.teacher = teacher,
         this.warn = warn ?? false,
         this.gradeWarn = gradeWarn ?? false,
         this.attendanceWarn = attendanceWarn ?? false,
         this.presentWarn = presentWarn ?? false;
 }
-
 
 class CustomGradeCard extends StatelessWidget {
   final List<Quote> grade;
@@ -37,6 +39,7 @@ class CustomGradeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      controller: ScrollController(),
       padding: const EdgeInsets.all(8.0),
       physics: BouncingScrollPhysics(),
       itemCount: grade.length,
@@ -54,7 +57,8 @@ class CustomGradeCard extends StatelessWidget {
           elevation: 1.5,
           //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +67,8 @@ class CustomGradeCard extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   child: Text(
                     grade[index].lesson,
-                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700),
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700),
                   ),
                 ),
                 Row(
@@ -77,7 +82,7 @@ class CustomGradeCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '必修or選修',
+                      '${grade[index].type}',
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.grey,
@@ -121,6 +126,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
     isPresentList = widget.grade.map((g) => g.presentWarn ?? false).toList();
 
     return ListView.separated(
+      controller: ScrollController(),
       padding: const EdgeInsets.all(8.0),
       physics: BouncingScrollPhysics(),
       itemCount: widget.grade.length,
