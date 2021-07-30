@@ -5,7 +5,7 @@ import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
 
 class Quote {
   final String lesson;
-  final double score;
+  final String score;
   final String? teacher;
   final bool? warn;
   final bool? gradeWarn;
@@ -28,30 +28,30 @@ class Quote {
 }
 
 final List<Quote> grades = [
-  Quote(lesson: '課程一', score: 80.0, teacher: 'CC', warn: true),
-  Quote(lesson: '課程二', score: 85.0),
-  Quote(
-    lesson: '課程3',
-    score: 75.0,
-    teacher: 'BB',
-    warn: true,
-    gradeWarn: true,
-  ),
-  Quote(lesson: '課程4', score: 65.0),
-  Quote(lesson: '課程5', score: 95.0),
-  Quote(
-    lesson: '課程5',
-    score: 95.0,
-    teacher: 'RR',
-    warn: true,
-    gradeWarn: true,
-    attendanceWarn: true,
-    presentWarn: true,
-  ),
-  Quote(lesson: '課程5', score: 95.0),
-  Quote(lesson: '課程5', score: 95.0, teacher: 'VVV'),
-  Quote(lesson: '課程5', score: 95.0),
-  Quote(lesson: '課程5', score: 100.0, teacher: 'AA'),
+  // Quote(lesson: '課程一', score: 80.0, teacher: 'CC', warn: true),
+  // Quote(lesson: '課程二', score: 85.0),
+  // Quote(
+  //   lesson: '課程3',
+  //   score: 75.0,
+  //   teacher: 'BB',
+  //   warn: true,
+  //   gradeWarn: true,
+  // ),
+  // Quote(lesson: '課程4', score: 65.0),
+  // Quote(lesson: '課程5', score: 95.0),
+  // Quote(
+  //   lesson: '課程5',
+  //   score: 95.0,
+  //   teacher: 'RR',
+  //   warn: true,
+  //   gradeWarn: true,
+  //   attendanceWarn: true,
+  //   presentWarn: true,
+  // ),
+  // Quote(lesson: '課程5', score: 95.0),
+  // Quote(lesson: '課程5', score: 95.0, teacher: 'VVV'),
+  // Quote(lesson: '課程5', score: 95.0),
+  // Quote(lesson: '課程5', score: 100.0, teacher: 'AA'),
 ];
 
 class CustomGradeCard extends StatelessWidget {
