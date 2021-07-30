@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
@@ -126,5 +127,22 @@ class _WarmPageState extends State<WarmPage> {
           key: PageStorageKey<String>('warm'),
           grade: grades,
         )
-      : NiuIconLoading(size: 80);
+      : Container(
+          child: Column(
+            children: [
+              Expanded(child: NiuIconLoading(size: 80)),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                child: Text(
+                  '此頁面載入時間較長，請耐心等候',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
 }
