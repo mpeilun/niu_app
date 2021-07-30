@@ -4,9 +4,7 @@ import 'package:niu_app/service/SemesterDate.dart';
 import './BuildTimeTable/ViewPage.dart';
 import './BuildTimeTable/Class.dart';
 import './GetTimeTable/getHTML.dart';
-/*  SpannableExtentCountPage  */
-/*  EdgeInsets.all(5)         */
-/*  crossAxisCount: 5         */
+import './Loading.dart';
 class TimeTable extends StatefulWidget {
   TimeTable({Key? key}) : super(key: key);
 
@@ -16,6 +14,7 @@ class TimeTable extends StatefulWidget {
 
 class _TimeTableState extends State<TimeTable> {
   var a = SemesterDate;
+  var b = getHTML();
 
   List<Class> myTable = <Class>[
     Class("電子電路","朱志明","教416",1,2,4),
@@ -32,8 +31,17 @@ class _TimeTableState extends State<TimeTable> {
   ];
 
   @override
+  Widget test() {
+    if( b.enable()){
+      return ViewPage.build(myTable : myTable);
+    }
+    else{
+      return Loading();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    getHTML();
-    return ViewPage.build(myTable : myTable);
+    return test();
   }
 }
