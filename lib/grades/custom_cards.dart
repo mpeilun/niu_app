@@ -148,19 +148,31 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  widget.grade[index].lesson,
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700,
+                Flexible(
+                  flex: 4,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      widget.grade[index].lesson,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
                 ),
-                Text(
-                  '${widget.grade[index].teacher}',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.grey,
+                Flexible(
+                  flex: 1,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      '${widget.grade[index].teacher}',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.grey,
+                      ),
+                    ),
                   ),
                 ),
               ],
