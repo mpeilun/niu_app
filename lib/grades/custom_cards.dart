@@ -5,7 +5,7 @@ import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
 
 class Quote {
   final String lesson;
-  final String score;
+  final String? score;
   final String? teacher;
   final bool? warn;
   final bool? gradeWarn;
@@ -14,13 +14,14 @@ class Quote {
 
   Quote({
     required this.lesson,
-    required this.score,
+    String? score,
     String? teacher,
     bool? warn,
     bool? gradeWarn,
     bool? attendanceWarn,
     bool? presentWarn,
-  })  : this.teacher = teacher,
+  })  : this.score = score,
+        this.teacher = teacher,
         this.warn = warn ?? false,
         this.gradeWarn = gradeWarn ?? false,
         this.attendanceWarn = attendanceWarn ?? false,
