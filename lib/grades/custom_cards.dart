@@ -56,7 +56,6 @@ final List<Quote> grades = [
 
 class CustomGradeCard extends StatelessWidget {
   final List<Quote> grade;
-  final int rank = 1;
 
   const CustomGradeCard({Key? key, required this.grade}) : super(key: key);
 
@@ -72,24 +71,34 @@ class CustomGradeCard extends StatelessWidget {
           height: 8,
         );
       },
-      itemBuilder: (BuildContext context, int index) => Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        elevation: 1.5,
-        //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-            title: Text(
-              grade[index].lesson,
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700),
-            ),
-            subtitle: Text(
-              '分數：${grade[index].score}',
-              style: TextStyle(
-                fontSize: 18.0,
-              ),
+      itemBuilder: (BuildContext context, int index) => Container(
+        height: 82.0,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          elevation: 1.5,
+          //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    grade[index].lesson,
+                    style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700),
+                  ),
+                ),
+                Text(
+                  '分數：${grade[index].score}',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -115,6 +124,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
   var isGradeList = [];
   var isAttendanceList = [];
   var isPresentList = [];
+
   @override
   Widget build(BuildContext context) {
     isWarnList = widget.grade.map((g) => g.warn ?? false).toList();
