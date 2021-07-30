@@ -146,19 +146,28 @@ class _FinalPageState extends State<FinalPage>
         ? Column(
             children: [
               Container(
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                  margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 0.0),
-                  padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                  child: ListTile(
-                      title: Text(
-                    "班級排名：$rank\n學期平均：$avg",
-                    style: TextStyle(fontSize: 24.0, color: Colors.white),
-                  ))),
+                  color: Theme.of(context).primaryColor,
+                  child: ExpansionTile(
+                    title: Text(
+                      "班級排名：$rank",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                    ),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 12.0),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "期末平均：$avg",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(fontSize: 20.0, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
               Expanded(
                 child: CustomGradeCard(
-                  key: PageStorageKey<String>('final'),
                   grade: grades,
                 ),
               ),

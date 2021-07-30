@@ -111,7 +111,6 @@ class _MidPageState extends State<MidPage>
   Widget build(BuildContext context) {
     return loadStates
         ? CustomGradeCard(
-            key: PageStorageKey<String>('mid'),
             grade: grades,
           )
         : NiuIconLoading(size: 80);

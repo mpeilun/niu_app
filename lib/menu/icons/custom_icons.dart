@@ -108,7 +108,7 @@ class CGWIcon extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontSize: 20.0,
+            fontSize: 18.0,
           ),
         ),
         SizedBox(

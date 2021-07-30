@@ -28,32 +28,6 @@ class Quote {
         this.presentWarn = presentWarn ?? false;
 }
 
-final List<Quote> grades = [
-  // Quote(lesson: '課程一', score: 80.0, teacher: 'CC', warn: true),
-  // Quote(lesson: '課程二', score: 85.0),
-  // Quote(
-  //   lesson: '課程3',
-  //   score: 75.0,
-  //   teacher: 'BB',
-  //   warn: true,
-  //   gradeWarn: true,
-  // ),
-  // Quote(lesson: '課程4', score: 65.0),
-  // Quote(lesson: '課程5', score: 95.0),
-  // Quote(
-  //   lesson: '課程5',
-  //   score: 95.0,
-  //   teacher: 'RR',
-  //   warn: true,
-  //   gradeWarn: true,
-  //   attendanceWarn: true,
-  //   presentWarn: true,
-  // ),
-  // Quote(lesson: '課程5', score: 95.0),
-  // Quote(lesson: '課程5', score: 95.0, teacher: 'VVV'),
-  // Quote(lesson: '課程5', score: 95.0),
-  // Quote(lesson: '課程5', score: 100.0, teacher: 'AA'),
-];
 
 class CustomGradeCard extends StatelessWidget {
   final List<Quote> grade;
@@ -63,7 +37,6 @@ class CustomGradeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      key: key,
       padding: const EdgeInsets.all(8.0),
       physics: BouncingScrollPhysics(),
       itemCount: grade.length,
@@ -73,31 +46,44 @@ class CustomGradeCard extends StatelessWidget {
         );
       },
       itemBuilder: (BuildContext context, int index) => Container(
-        height: 82.0,
+        height: 84.0,
         child: Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(18.0),
           ),
           elevation: 1.5,
           //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
                     grade[index].lesson,
-                    style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700),
+                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700),
                   ),
                 ),
-                Text(
-                  '分數：${grade[index].score}',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '分數：${grade[index].score}',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    Text(
+                      '必修or選修',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -180,7 +166,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
           ),
           Card(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(18.0),
             ),
             elevation: 1.5,
             child: LayoutBuilder(builder:
@@ -188,7 +174,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
               return SingleChildScrollView(
                 padding: EdgeInsets.all(8.0),
                 key: PageStorageKey<String>('card$index'),
-                controller: ScrollController(initialScrollOffset: 8.0),
+                //controller: ScrollController(initialScrollOffset: MediaQuery.of(context).size.width / 2),
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 child: ConstrainedBox(
