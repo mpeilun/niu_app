@@ -76,6 +76,24 @@ class _WarmPageState extends State<WarmPage> {
                         'document.querySelector("#DataGrid > tbody > tr:nth-child($i) > td:nth-child(5)").innerText') ==
                 '是') {
               warn = true;
+              if (await controller.evaluateJavascript(
+                      source:
+                          'document.querySelector("#DataGrid_ctl${i}_IS_WARYING").checked)') ==
+                  true) {
+                gradeWarn = true;
+              }
+              if (await controller.evaluateJavascript(
+                      source:
+                          'document.querySelector("#DataGrid_ctl${i}_IS_ATTEND").checked') ==
+                  true) {
+                attendanceWarn = true;
+              }
+              if (await controller.evaluateJavascript(
+                      source:
+                          'document.querySelector("#DataGrid_ctl${i}_IS_ASSESS").checked') ==
+                  true) {
+                presentWarn = true;
+              }
             }
             grades.add(Quote(
                 lesson: lesson,
