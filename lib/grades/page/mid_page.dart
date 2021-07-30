@@ -54,7 +54,6 @@ class _MidPageState extends State<MidPage>
           setState(() {
             this.url = url.toString();
           });
-          //TODO 排序
           for (int i = 2; //2~N
               (await controller.evaluateJavascript(
                           source:
@@ -76,6 +75,16 @@ class _MidPageState extends State<MidPage>
             }
             grades.add(Quote(lesson: lesson, score: score, type: type));
           }
+          grades.sort((a, b) {
+            return a.score!.compareTo(b.score!);
+          });
+          grades.sort((a, b) {
+            if (a.score!.contains('未上傳') || b.score!.contains('未上傳')) {
+              return -1;
+            } else {
+              return double.parse(b.score!).compareTo(double.parse(a.score!));
+            }
+          });
           setState(() {
             loadStates = true;
           });

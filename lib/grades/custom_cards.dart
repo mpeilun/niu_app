@@ -178,9 +178,9 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
             child: LayoutBuilder(builder:
                 (BuildContext context, BoxConstraints viewportConstraints) {
               return SingleChildScrollView(
+                controller: ScrollController(initialScrollOffset: 8),
                 padding: EdgeInsets.all(8.0),
                 key: PageStorageKey<String>('card$index'),
-                //controller: ScrollController(initialScrollOffset: MediaQuery.of(context).size.width / 2),
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 child: ConstrainedBox(

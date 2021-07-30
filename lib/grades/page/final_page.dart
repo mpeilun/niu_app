@@ -56,7 +56,6 @@ class _FinalPageState extends State<FinalPage>
           setState(() {
             this.url = url.toString();
           });
-          //TODO 排序
           avg = await controller.evaluateJavascript(
               source: 'document.querySelector("#Q_CRS_AVG_MARK").innerText');
           rank = await controller.evaluateJavascript(
@@ -81,6 +80,16 @@ class _FinalPageState extends State<FinalPage>
                     'document.querySelector("#DataGrid > tbody > tr:nth-child($i) > td:nth-child(6)").innerText');
             grades.add(Quote(lesson: lesson, score: score, type: type));
           }
+          grades.sort((a, b) {
+            return a.score!.compareTo(b.score!);
+          });
+          grades.sort((a, b) {
+            if (a.score!.contains('未上傳') || b.score!.contains('未上傳')) {
+              return -1;
+            } else {
+              return double.parse(b.score!).compareTo(double.parse(a.score!));
+            }
+          });
           setState(() {
             loadStates = true;
           });

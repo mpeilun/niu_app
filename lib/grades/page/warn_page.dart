@@ -55,7 +55,6 @@ class _WarmPageState extends State<WarmPage>
           setState(() {
             this.url = url.toString();
           });
-          //TODO 排序
           for (int i = 2; //2~N
               (await controller.evaluateJavascript(
                           source:
@@ -105,6 +104,12 @@ class _WarmPageState extends State<WarmPage>
                 attendanceWarn: attendanceWarn,
                 presentWarn: presentWarn));
           }
+          grades.sort((a, b) {
+            if (b.warn!) {
+              return 1;
+            }
+            return -1;
+          });
           setState(() {
             loadStates = true;
           });
