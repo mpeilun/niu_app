@@ -12,7 +12,8 @@ class EventSignedPage extends StatefulWidget {
   _EventSignedPageState createState() => _EventSignedPageState();
 }
 
-class _EventSignedPageState extends State<EventSignedPage> with AutomaticKeepAliveClientMixin{
+class _EventSignedPageState extends State<EventSignedPage>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -58,10 +59,11 @@ class _EventSignedPageState extends State<EventSignedPage> with AutomaticKeepAli
               'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(4)").innerText');
       String status = await headlessWebView?.webViewController.evaluateJavascript(
           source:
-          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(2)").innerText');
-      String signedStatus = await headlessWebView?.webViewController.evaluateJavascript(
-          source:
-          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
+              'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(2)").innerText');
+      String signedStatus = await headlessWebView?.webViewController
+          .evaluateJavascript(
+              source:
+                  'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
       String eventTimeStart = await headlessWebView?.webViewController
           .evaluateJavascript(
               source: i > 9
@@ -151,7 +153,10 @@ class _EventSignedPageState extends State<EventSignedPage> with AutomaticKeepAli
   }
 
   @override
-  Widget build(BuildContext context) => buildList();
+  Widget build(BuildContext context) {
+    super.build(context);
+    return buildList();
+  }
 
   Widget buildList() => data.isEmpty
       ? Center(
@@ -164,4 +169,3 @@ class _EventSignedPageState extends State<EventSignedPage> with AutomaticKeepAli
           data: data,
         );
 }
-

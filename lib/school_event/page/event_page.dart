@@ -11,7 +11,8 @@ class EventPage extends StatefulWidget {
   _EventPageState createState() => _EventPageState();
 }
 
-class _EventPageState extends State<EventPage> with AutomaticKeepAliveClientMixin{
+class _EventPageState extends State<EventPage>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -26,100 +27,95 @@ class _EventPageState extends State<EventPage> with AutomaticKeepAliveClientMixi
 
   Future<void> getByStatus(String str) async {
     for (int i = 2;
-    await headlessWebView?.webViewController.evaluateJavascript(
-        source:
-        'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(9)").innerText') != null;
-    i++) {
-      String status = await headlessWebView?.webViewController
-          .evaluateJavascript(
+        await headlessWebView?.webViewController.evaluateJavascript(
+                source:
+                    'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(9)").innerText') !=
+            null;
+        i++) {
+      String status = await headlessWebView?.webViewController.evaluateJavascript(
           source:
-          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(9)").innerText');
-      if (status != str)
-        continue;
+              'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(9)").innerText');
+      if (status != str) continue;
       print(i);
       String name = await headlessWebView?.webViewController.evaluateJavascript(
           source:
-          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText');
+              'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText');
       String department = await headlessWebView?.webViewController
           .evaluateJavascript(
-          source:
-          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
+              source:
+                  'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText');
 
       String signTimeStart = await headlessWebView?.webViewController
           .evaluateJavascript(
-          source: i > 9
-              ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-              i.toString() +
-              '_lblAttBdate").innerText'
-              : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-              i.toString() +
-              '_lblAttBdate").innerText');
+              source: i > 9
+                  ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
+                      i.toString() +
+                      '_lblAttBdate").innerText'
+                  : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
+                      i.toString() +
+                      '_lblAttBdate").innerText');
 
-      String signTimeEnd = await headlessWebView?.webViewController
-          .evaluateJavascript(
+      String signTimeEnd = await headlessWebView?.webViewController.evaluateJavascript(
           source: i > 9
               ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-              i.toString() +
-              '_lblAttEdate").innerText'
+                  i.toString() +
+                  '_lblAttEdate").innerText'
               : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-              i.toString() +
-              '_lblAttEdate").innerText');
+                  i.toString() +
+                  '_lblAttEdate").innerText');
 
       String eventTimeStart = await headlessWebView?.webViewController
           .evaluateJavascript(
-          source: i > 9
-              ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-              i.toString() +
-              '_lblActBdate").innerText'
-              : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-              i.toString() +
-              '_lblActBdate").innerText');
+              source: i > 9
+                  ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
+                      i.toString() +
+                      '_lblActBdate").innerText'
+                  : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
+                      i.toString() +
+                      '_lblActBdate").innerText');
 
-      String eventTimeEnd = await headlessWebView?.webViewController
-          .evaluateJavascript(
+      String eventTimeEnd = await headlessWebView?.webViewController.evaluateJavascript(
           source: i > 9
               ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-              i.toString() +
-              '_lblActEdate").innerText'
+                  i.toString() +
+                  '_lblActEdate").innerText'
               : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-              i.toString() +
-              '_lblActEdate").innerText');
+                  i.toString() +
+                  '_lblActEdate").innerText');
 
-      String positive = await headlessWebView?.webViewController
-          .evaluateJavascript(
+      String positive = await headlessWebView?.webViewController.evaluateJavascript(
           source: i > 9
               ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-              i.toString() +
-              '_lblOKNum").innerText'
+                  i.toString() +
+                  '_lblOKNum").innerText'
               : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-              i.toString() +
-              '_lblOKNum").innerText');
+                  i.toString() +
+                  '_lblOKNum").innerText');
       String positiveLimit = await headlessWebView?.webViewController
           .evaluateJavascript(
-          source: i > 9
-              ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-              i.toString() +
-              '_lblLimitNum").innerText'
-              : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-              i.toString() +
-              '_lblLimitNum").innerText');
+              source: i > 9
+                  ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
+                      i.toString() +
+                      '_lblLimitNum").innerText'
+                  : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
+                      i.toString() +
+                      '_lblLimitNum").innerText');
       String wait = await headlessWebView?.webViewController.evaluateJavascript(
           source: i > 9
               ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-              i.toString() +
-              '_lblBKNum").innerText'
+                  i.toString() +
+                  '_lblBKNum").innerText'
               : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-              i.toString() +
-              '_lblBKNum").innerText');
-      String waitLimit = await headlessWebView?.webViewController
-          .evaluateJavascript(
+                  i.toString() +
+                  '_lblBKNum").innerText');
+      String waitLimit = await headlessWebView?.webViewController.evaluateJavascript(
           source: i > 9
               ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-              i.toString() +
-              '_lblSecNum").innerText'
+                  i.toString() +
+                  '_lblSecNum").innerText'
               : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-              i.toString() +
-              '_lblSecNum").innerText');
+                  i.toString() +
+                  '_lblSecNum").innerText');
       data.add(Event(
         name: name,
         department: department,
@@ -146,11 +142,15 @@ class _EventPageState extends State<EventPage> with AutomaticKeepAliveClientMixi
       canDisplay = true;
     });
   }
-  Future<void> refresh() async{
+
+  Future<void> refresh() async {
     setState(() {
-      canDisplay = false;
+      // canDisplay = false;
     });
-    await headlessWebView?.webViewController.loadUrl(urlRequest: URLRequest(url: Uri.parse('https://syscc.niu.edu.tw/Activity/ApplyList.aspx')));
+    await headlessWebView?.webViewController.loadUrl(
+        urlRequest: URLRequest(
+            url:
+                Uri.parse('https://syscc.niu.edu.tw/Activity/ApplyList.aspx')));
     await Future.delayed(Duration(milliseconds: 1000));
   }
 
@@ -159,7 +159,7 @@ class _EventPageState extends State<EventPage> with AutomaticKeepAliveClientMixi
     super.initState();
     headlessWebView = new HeadlessInAppWebView(
       initialUrlRequest:
-      URLRequest(url: Uri.parse("https://syscc.niu.edu.tw/activity/")),
+          URLRequest(url: Uri.parse("https://syscc.niu.edu.tw/activity/")),
       initialOptions: InAppWebViewGroupOptions(
         crossPlatform: InAppWebViewOptions(
           useOnLoadResource: true,
@@ -204,21 +204,23 @@ class _EventPageState extends State<EventPage> with AutomaticKeepAliveClientMixi
   }
 
   @override
-  Widget build(BuildContext context) => buildList();
+  Widget build(BuildContext context) {
+    super.build(context);
+    return buildList();
+  }
 
-  Widget buildList() =>
-      canDisplay
-          ? RefreshWidget(
-        keyRefresh: keyRefresh,
-        onRefresh: refresh,
-        child: CustomEventCard(
-          key: PageStorageKey<String>('event'),
-          data: data,
-        ),
-      )
-          : Center(
-        child: NiuIconLoading(
-          size: 80.0,
-        ),
-      );
+  Widget buildList() => canDisplay
+      ? RefreshWidget(
+          keyRefresh: keyRefresh,
+          onRefresh: refresh,
+          child: CustomEventCard(
+            key: PageStorageKey<String>('event'),
+            data: data,
+          ),
+        )
+      : Center(
+          child: NiuIconLoading(
+            size: 80.0,
+          ),
+        );
 }
