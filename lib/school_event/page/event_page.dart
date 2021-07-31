@@ -147,6 +147,9 @@ class _EventPageState extends State<EventPage> with AutomaticKeepAliveClientMixi
     });
   }
   Future<void> refresh() async{
+    setState(() {
+      canDisplay = false;
+    });
     await headlessWebView?.webViewController.loadUrl(urlRequest: URLRequest(url: Uri.parse('https://syscc.niu.edu.tw/Activity/ApplyList.aspx')));
     await Future.delayed(Duration(milliseconds: 1000));
   }

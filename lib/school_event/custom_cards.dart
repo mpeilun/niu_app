@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
 
 class Event {
   final String name;
@@ -212,6 +213,7 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
         onTap: () {
           ScaffoldMessenger.of(context).showSnackBar
             (SnackBar(content: Text(index.toString())));
+          showListDialog();
         },
         child: Container(
           child: Column(
@@ -282,6 +284,15 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
         ),
       ),
     );
+  }
+  Future<void> showListDialog() async {
+    int? index = await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) => Dialog(child: EventInfoDialog()),
+    );
+    if (index != null) {
+      print("点击了：$index");
+    }
   }
 }
 
