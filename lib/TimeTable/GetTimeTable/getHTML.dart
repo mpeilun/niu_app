@@ -2,12 +2,18 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class getHTML {
   getHTML(){
-    get();
+    //get();
   }
   bool _enable = false;
   bool enable(){
     return _enable;
   }
+
+  Future<bool> getIsFinish() async{
+    await get();
+    return true;
+  }
+
   int weekDayNum = 5;
   int classNum = 14;
   // arr[classNum][weekDayNum]

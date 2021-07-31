@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:niu_app/service/SemesterDate.dart';
 import './BuildTimeTable/ViewPage.dart';
 import './BuildTimeTable/Class.dart';
 import './GetTimeTable/getHTML.dart';
 import './Loading.dart';
+import './GetTimeTable/HtmlToClassList.dart';
 class TimeTable extends StatefulWidget {
   TimeTable({Key? key}) : super(key: key);
 
@@ -30,7 +30,7 @@ class _TimeTableState extends State<TimeTable> {
     Class("微處理器系統","卓信宏","教416",5,2,4)
   ];
 
-  @override
+/*
   Widget test() {
     if( b.enable()){
       return ViewPage.build(myTable : myTable);
@@ -39,9 +39,28 @@ class _TimeTableState extends State<TimeTable> {
       return Loading();
     }
   }
-
+*/
   @override
   Widget build(BuildContext context) {
-    return test();
+    return FutureBuilder(
+        future: b.getIsFinish(), // the function to get your data from firebase or firestore
+        builder : (BuildContext context, AsyncSnapshot snap){
+          if(snap.data == null){
+            return Loading();
+            //return loading widget
+          }
+          else{
+            List<List<String?>> htmlCode = b.htmlCode;
+            var temp = HtmlToClassList();
+            List<Class> tempClassList = temp.classList(htmlCode);
+            for(int i = 0; i < tempClassList.length ; i++)
+              print(tempClassList[i].name.toString() + " " + tempClassList[i].teacher.toString() + " " + tempClassList[i].classroom.toString() + " " +
+                  tempClassList[i].weekDay.toString() + " " + tempClassList[i].startTime.toString() + " " + tempClassList[i].endTime.toString()
+              );
+            return ViewPage.build(myTable : tempClassList);
+            //return the widget that you want to display after loading
+          }
+        }
+    );
   }
 }
