@@ -31,20 +31,34 @@ class _NiuIconLoadingState extends State<NiuIconLoading>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          width: widget.size,
-          height: widget.size,
-          child: AnimatedBuilder(
-            animation: _controller,
-            builder: (_, child) {
-              return Transform.rotate(
-                angle: _controller.value * 2 * pi,
-                child: child,
-              );
-            },
-            child: Image.asset('assets/ic_launcher_round.png'),
-          ),
+      body: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              width: widget.size,
+              height: widget.size,
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (_, child) {
+                  return Transform.rotate(
+                    angle: _controller.value * 2 * pi,
+                    child: child,
+                  );
+                },
+                child: Image.asset('assets/ic_launcher_round.png'),
+              ),
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            Text(
+              '載入中...',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+            )
+          ],
         ),
       ),
     );
