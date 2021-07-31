@@ -12,7 +12,10 @@ class EventSignedPage extends StatefulWidget {
   _EventSignedPageState createState() => _EventSignedPageState();
 }
 
-class _EventSignedPageState extends State<EventSignedPage> {
+class _EventSignedPageState extends State<EventSignedPage> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
+
   HeadlessInAppWebView? headlessWebView;
   String url = "";
 
