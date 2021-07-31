@@ -155,7 +155,7 @@ class _WarmPageState extends State<WarmPage>
     super.build(context);
     return loadStates
         ? CustomWarnCard(
-            key: PageStorageKey<String>('warm'),
+            keyName: 'warm',
             grade: grades,
           )
         : Container(

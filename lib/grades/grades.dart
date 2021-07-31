@@ -84,7 +84,7 @@ class _GradesState extends State<Grades> with SingleTickerProviderStateMixin{
                 ),
               ),
             ),
-             */
+            */
             SliverToBoxAdapter(
               child: PreferredSize(
                 preferredSize: Size.fromHeight(56.0),
@@ -99,7 +99,6 @@ class _GradesState extends State<Grades> with SingleTickerProviderStateMixin{
                   ),
                 ),
               ),
-
             ),
           ];
         },

@@ -163,7 +163,7 @@ class _FinalPageState extends State<FinalPage>
                   )),
               Expanded(
                 child: CustomGradeCard(
-                  key: PageStorageKey<String>('final'),
+                  keyName: 'final',
                   grade: grades,
                 ),
               ),
