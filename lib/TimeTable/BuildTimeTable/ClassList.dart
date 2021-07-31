@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:niu_app/TimeTable/BuildTimeTable/ClassCard.dart';
-import 'package:niu_app/TimeTable/BuildTimeTable/NullClassCard.dart';
 
 import 'ClassCard.dart';
 import 'Class.dart';
 import 'TimeCard.dart';
 import 'WeekDayCard.dart';
+import 'NullClassCard.dart';
 
 class ClassList{
   List<dynamic> _classList;
@@ -20,6 +19,7 @@ class ClassList{
     return _tiles;
   }
   List<List<bool>> tableInfo = []; //在某個禮拜某節是不是有課
+  //arr[weekday][classNum]
 
 
   ClassList(this._classList){
@@ -56,7 +56,7 @@ class ClassList{
       }
       //同行空格
       for(int j = weekDay; j < _classList[i].weekDay;j++){
-        if(!tableInfo[weekDay][time]) {
+        if(!tableInfo[j][time]) {
           putNullClass();
         }
       }
@@ -66,6 +66,7 @@ class ClassList{
       //在tableInfo裡標記課程
       for(int j = _classList[i].startTime; j <= _classList[i].endTime; j++){
         tableInfo[_classList[i].weekDay][j] = true;
+        //print( "Have Class " + _classList[i].weekDay.toString() + " " + j.toString() + " because " + _classList[i].name);
       }
       //todo: 最後一節偵測 補完時間
     }
