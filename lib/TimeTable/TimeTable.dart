@@ -53,6 +53,12 @@ class _TimeTableState extends State<TimeTable> {
             List<List<String?>> htmlCode = b.htmlCode;
             var temp = HtmlToClassList();
             List<Class> tempClassList = temp.classList(htmlCode);
+            /*
+            for(int i = 0; i < tempClassList.length ; i++)
+              print(tempClassList[i].name.toString() + " " + tempClassList[i].teacher.toString() + " " + tempClassList[i].classroom.toString() + " " +
+                  tempClassList[i].weekDay.toString() + " " + tempClassList[i].startTime.toString() + " " + tempClassList[i].endTime.toString()
+              );
+            */
             return ViewPage.build(myTable : tempClassList);
             //return the widget that you want to display after loading
           }
