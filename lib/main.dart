@@ -4,9 +4,8 @@ import 'package:niu_app/menu/menu_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 
-main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

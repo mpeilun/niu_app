@@ -139,6 +139,8 @@ class _FinalPageState extends State<FinalPage>
               Container(
                   color: Theme.of(context).primaryColor,
                   child: ExpansionTile(
+                    collapsedIconColor: Colors.white,
+                    iconColor: Colors.white,
                     title: Text(
                       "班級排名：$rank",
                       style: TextStyle(fontSize: 20.0, color: Colors.white),
@@ -161,6 +163,7 @@ class _FinalPageState extends State<FinalPage>
                   )),
               Expanded(
                 child: CustomGradeCard(
+                  key: PageStorageKey<String>('final'),
                   grade: grades,
                 ),
               ),

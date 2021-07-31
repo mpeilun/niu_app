@@ -108,20 +108,20 @@ class CGWIcon extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontSize: 18.0,
+            fontSize: 14.0,
           ),
         ),
         SizedBox(
           height: 5.0,
         ),
         Container(
-          width: 35.0,
-          height: 35.0,
+          width: 30.0,
+          height: 30.0,
           child: isWarnList[index]
               ? Icon(
                   icon,
                   color: Colors.red,
-                  size: 30.0,
+                  size: 25.0,
                 )
               : null,
           decoration: BoxDecoration(

@@ -210,8 +210,8 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
       ),
       itemBuilder: (BuildContext context, int index) => GestureDetector(
         onTap: () {
-          Scaffold.of(context)
-              .showSnackBar(SnackBar(content: Text(index.toString())));
+          ScaffoldMessenger.of(context).showSnackBar
+            (SnackBar(content: Text(index.toString())));
         },
         child: Container(
           child: Column(

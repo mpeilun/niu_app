@@ -39,7 +39,7 @@ class CustomGradeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      controller: ScrollController(),
+      key: key,
       padding: const EdgeInsets.all(8.0),
       physics: BouncingScrollPhysics(),
       itemCount: grade.length,
@@ -49,7 +49,7 @@ class CustomGradeCard extends StatelessWidget {
         );
       },
       itemBuilder: (BuildContext context, int index) => Container(
-        height: 84.0,
+        height: 80.0,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0),
@@ -58,7 +58,7 @@ class CustomGradeCard extends StatelessWidget {
           //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
           child: Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +68,7 @@ class CustomGradeCard extends StatelessWidget {
                   child: Text(
                     grade[index].lesson,
                     style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700),
+                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
                   ),
                 ),
                 Row(
@@ -77,14 +77,14 @@ class CustomGradeCard extends StatelessWidget {
                     Text(
                       '分數：${grade[index].score}',
                       style: TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 14.0,
                         color: Colors.grey[600],
                       ),
                     ),
                     Text(
                       '${grade[index].type}',
                       style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 14.0,
                         color: Colors.grey,
                       ),
                     ),
@@ -126,7 +126,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
     isPresentList = widget.grade.map((g) => g.presentWarn ?? false).toList();
 
     return ListView.separated(
-      controller: ScrollController(),
+      key: widget.key,
       padding: const EdgeInsets.all(8.0),
       physics: BouncingScrollPhysics(),
       itemCount: widget.grade.length,
@@ -147,7 +147,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                     child: Text(
                       widget.grade[index].lesson,
                       style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 16.0,
                         color: Colors.black,
                         fontWeight: FontWeight.w700,
                       ),
@@ -161,7 +161,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                     child: Text(
                       '${widget.grade[index].teacher}',
                       style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 16.0,
                         color: Colors.grey,
                       ),
                     ),
@@ -170,58 +170,48 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
               ],
             ),
           ),
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
-            elevation: 1.5,
-            child: LayoutBuilder(builder:
-                (BuildContext context, BoxConstraints viewportConstraints) {
-              return SingleChildScrollView(
-                controller: ScrollController(initialScrollOffset: 8),
-                padding: EdgeInsets.all(8.0),
-                key: PageStorageKey<String>('card$index'),
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: viewportConstraints.maxWidth,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      CGWIcon(
-                        isWarnList: isWarnList,
-                        title: '期中警示',
-                        icon: MyFlutterApp.exclamation,
-                        index: index,
-                      ),
-                      SizedBox(width: 10),
-                      CGWIcon(
-                        isWarnList: isGradeList,
-                        title: '期中成績',
-                        icon: MyFlutterApp.times_circle,
-                        index: index,
-                      ),
-                      SizedBox(width: 10),
-                      CGWIcon(
-                        isWarnList: isAttendanceList,
-                        title: '出席率',
-                        icon: MyFlutterApp.times_circle,
-                        index: index,
-                      ),
-                      SizedBox(width: 10),
-                      CGWIcon(
-                        isWarnList: isPresentList,
-                        title: '報告/其他',
-                        icon: MyFlutterApp.times_circle,
-                        index: index,
-                      ),
-                    ],
-                  ),
+          Container(
+            width: MediaQuery.of(context).size.width - 16.0,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8.0, 6.0, 8.0, 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CGWIcon(
+                      isWarnList: isWarnList,
+                      title: '期中警示',
+                      icon: MyFlutterApp.exclamation,
+                      index: index,
+                    ),
+                    SizedBox(width: 10.0,),
+                    CGWIcon(
+                      isWarnList: isGradeList,
+                      title: '期中成績',
+                      icon: MyFlutterApp.times_circle,
+                      index: index,
+                    ),
+                    SizedBox(width: 10.0,),
+                    CGWIcon(
+                      isWarnList: isAttendanceList,
+                      title: '出席率',
+                      icon: MyFlutterApp.times_circle,
+                      index: index,
+                    ),
+                    SizedBox(width: 10.0,),
+                    CGWIcon(
+                      isWarnList: isPresentList,
+                      title: '報告/其他',
+                      icon: MyFlutterApp.times_circle,
+                      index: index,
+                    ),
+                  ],
                 ),
-              );
-            }),
+              ),
+            ),
           ),
         ],
       ),
