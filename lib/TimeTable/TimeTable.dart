@@ -30,16 +30,6 @@ class _TimeTableState extends State<TimeTable> {
     Class("微處理器系統","卓信宏","教416",5,2,4)
   ];
 
-/*
-  Widget test() {
-    if( b.enable()){
-      return ViewPage.build(myTable : myTable);
-    }
-    else{
-      return Loading();
-    }
-  }
-*/
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -53,16 +43,17 @@ class _TimeTableState extends State<TimeTable> {
             List<List<String?>> htmlCode = b.htmlCode;
             var temp = HtmlToClassList();
             List<Class> tempClassList = temp.classList(htmlCode);
-            /*
-            for(int i = 0; i < tempClassList.length ; i++)
-              print(tempClassList[i].name.toString() + " " + tempClassList[i].teacher.toString() + " " + tempClassList[i].classroom.toString() + " " +
-                  tempClassList[i].weekDay.toString() + " " + tempClassList[i].startTime.toString() + " " + tempClassList[i].endTime.toString()
-              );
-            */
             return ViewPage.build(myTable : tempClassList);
             //return the widget that you want to display after loading
           }
         }
     );
+  }
+
+  void printClassList(List<Class> ClassList){
+    for(int i = 0; i < ClassList.length ; i++)
+      print(ClassList[i].name.toString() + " " + ClassList[i].teacher.toString() + " " + ClassList[i].classroom.toString() + " " +
+          ClassList[i].weekDay.toString() + " " + ClassList[i].startTime.toString() + " " + ClassList[i].endTime.toString()
+      );
   }
 }
