@@ -31,7 +31,7 @@ class _GradesState extends State<Grades> with SingleTickerProviderStateMixin{
     ),
   ];
 
-
+  /*
   late TabController _tabController;
   late ScrollController _scrollController;
 
@@ -48,68 +48,69 @@ class _GradesState extends State<Grades> with SingleTickerProviderStateMixin{
     _scrollController.dispose();
     super.dispose();
   }
+  */
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.title,
+    return DefaultTabController(
+      length: myTabs.length,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            widget.title,
+          ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      body: NestedScrollView(
-        controller: _scrollController,
-        floatHeaderSlivers: true,
-        headerSliverBuilder:
-            (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            /*
-            SliverAppBar(
-              toolbarHeight: 0.0,
-              elevation: 0.0,
-              automaticallyImplyLeading: false,
-              centerTitle: true,
-              floating: true,
-              snap: true,
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(56.0),
-                child: Container(
-                  height: 56.0,
-                  child: TabBar(
-                    labelPadding: EdgeInsets.zero,
-                    indicatorWeight: 5.0,
-                    tabs: myTabs,
+        body: NestedScrollView(
+          //controller: _scrollController,
+          floatHeaderSlivers: true,
+          headerSliverBuilder:
+              (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                toolbarHeight: 0.0,
+                elevation: 0.0,
+                centerTitle: true,
+                floating: true,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(56.0),
+                  child: Container(
+                    height: 56.0,
+                    child: TabBar(
+                      labelPadding: EdgeInsets.zero,
+                      indicatorWeight: 5.0,
+                      tabs: myTabs,
+                    ),
                   ),
                 ),
               ),
-            ),
-             */
-            SliverToBoxAdapter(
-              child: PreferredSize(
-                preferredSize: Size.fromHeight(56.0),
-                child: Container(
-                  color: Theme.of(context).primaryColor,
-                  height: 56.0,
-                  child: TabBar(
-                    controller: _tabController,
-                    labelPadding: EdgeInsets.zero,
-                    indicatorWeight: 5.0,
-                    tabs: myTabs,
+              /*
+              SliverToBoxAdapter(
+                child: PreferredSize(
+                  preferredSize: Size.fromHeight(56.0),
+                  child: Container(
+                    color: Theme.of(context).primaryColor,
+                    height: 56.0,
+                    child: TabBar(
+                      //controller: _tabController,
+                      labelPadding: EdgeInsets.zero,
+                      indicatorWeight: 5.0,
+                      tabs: myTabs,
+                    ),
                   ),
                 ),
               ),
-
-            ),
-          ];
-        },
-        body: TabBarView(
-          controller: _tabController,
-          children: <Widget>[
-            MidPage(),
-            FinalPage(),
-            WarmPage(),
-          ],
+               */
+            ];
+          },
+          body: TabBarView(
+            //controller: _tabController,
+            children: <Widget>[
+              MidPage(),
+              FinalPage(),
+              WarmPage(),
+            ],
+          ),
         ),
       ),
     );

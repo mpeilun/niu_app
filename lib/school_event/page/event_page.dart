@@ -11,7 +11,10 @@ class EventPage extends StatefulWidget {
   _EventPageState createState() => _EventPageState();
 }
 
-class _EventPageState extends State<EventPage> {
+class _EventPageState extends State<EventPage> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
+
   HeadlessInAppWebView? headlessWebView;
   String url = "";
   String temp = "";

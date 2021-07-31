@@ -169,7 +169,7 @@ class _MidPageState extends State<MidPage>
     super.build(context);
     return loadStates
         ? CustomGradeCard(
-            key: PageStorageKey<String>('mid'),
+            keyName: 'mid',
             grade: grades,
           )
         : NiuIconLoading(size: 80);

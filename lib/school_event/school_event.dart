@@ -30,28 +30,43 @@ class _SchoolEventState extends State<SchoolEvent> {
       length: myTabs.length,
       child: Scaffold(
         appBar: AppBar(titleSpacing: 0.0,
-          elevation: 0.0,
           title: Text(widget.title),
           centerTitle: true,
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(56.0),
-            child: Container(
-              height: 56.0,
-              child: TabBar(
-                labelPadding: EdgeInsets.zero,
-                indicatorWeight: 5.0,
-                tabs: myTabs,
+        ),
+        body: NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder:
+              (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                toolbarHeight: 0.0,
+                elevation: 0.0,
+                centerTitle: true,
+                floating: true,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(56.0),
+                  child: Container(
+                    height: 56.0,
+                    child: TabBar(
+                      labelPadding: EdgeInsets.zero,
+                      indicatorWeight: 5.0,
+                      tabs: myTabs,
+                    ),
+                  ),
+                ),
               ),
-            ),
+
+            ];
+          },
+          body: TabBarView(
+            //controller: _tabController,
+            children: <Widget>[
+              EventPage(),
+              EventSignedPage(),
+            ],
           ),
         ),
-        body: TabBarView(
-          children: <Widget>[
-            EventPage(),
-            EventSignedPage(),
-          ],
-        ),
-      ),
-    );
+        )
+      );
   }
 }

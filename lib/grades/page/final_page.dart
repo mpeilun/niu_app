@@ -182,7 +182,7 @@ class _FinalPageState extends State<FinalPage>
                     iconColor: Colors.white,
                     title: Text(
                       "班級排名：$rank",
-                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                      style: TextStyle(fontSize: 18.0, color: Colors.white),
                     ),
                     children: [
                       Padding(
@@ -194,7 +194,7 @@ class _FinalPageState extends State<FinalPage>
                             "期末平均：$avg",
                             textAlign: TextAlign.left,
                             style:
-                                TextStyle(fontSize: 20.0, color: Colors.white),
+                                TextStyle(fontSize: 18.0, color: Colors.white),
                           ),
                         ),
                       ),
@@ -202,7 +202,7 @@ class _FinalPageState extends State<FinalPage>
                   )),
               Expanded(
                 child: CustomGradeCard(
-                  key: PageStorageKey<String>('final'),
+                  keyName: 'final',
                   grade: grades,
                 ),
               ),
