@@ -230,7 +230,7 @@ class _StartMenu extends State<StartMenu> {
     } else {
       headlessWebView = new HeadlessInAppWebView(
         initialUrlRequest: URLRequest(
-            url: Uri.parse("https://acade.niu.edu.tw/NIU/logout.aspx")),
+            url: Uri.parse("https://acade.niu.edu.tw/NIU/MainFrame.aspx")),
         initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
             javaScriptCanOpenWindowsAutomatically: true,
@@ -270,16 +270,6 @@ class _StartMenu extends State<StartMenu> {
         onJsAlert: (InAppWebViewController controller,
             JsAlertRequest jsAlertRequest) async {
           print(jsAlertRequest.message!);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => LoginPage(
-                        cancelPop: false,
-                      ),
-                  maintainState: false));
-          Future.delayed(Duration(seconds: 3), () async {
-            loginFinished();
-          });
           return JsAlertResponse(
               handledByClient: true, action: JsAlertResponseAction.CONFIRM);
         },
