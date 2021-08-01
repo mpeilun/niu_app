@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:niu_app/components/keep_alive.dart';
 import 'package:niu_app/grades/page/final_page.dart';
 import 'package:niu_app/grades/page/mid_page.dart';
 import 'package:niu_app/grades/page/warn_page.dart';
@@ -106,9 +107,9 @@ class _GradesState extends State<Grades> with SingleTickerProviderStateMixin {
           body: TabBarView(
             //controller: _tabController,
             children: <Widget>[
-              MidPage(),
-              FinalPage(),
-              WarmPage(),
+              KeepAlivePage(child: MidPage()),
+              KeepAlivePage(child: FinalPage()),
+              KeepAlivePage(child: WarmPage()),
             ],
           ),
         ),

@@ -12,8 +12,7 @@ class WarmPage extends StatefulWidget {
   _WarmPageState createState() => _WarmPageState();
 }
 
-class _WarmPageState extends State<WarmPage>
-    with AutomaticKeepAliveClientMixin<WarmPage> {
+class _WarmPageState extends State<WarmPage> {
   HeadlessInAppWebView? headlessWebView;
   bool loadStates = false;
   late String url;
@@ -187,11 +186,7 @@ class _WarmPageState extends State<WarmPage>
   }
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     return loadStates
         ? CustomWarnCard(
             keyName: 'warm',

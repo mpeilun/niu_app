@@ -11,8 +11,7 @@ class FinalPage extends StatefulWidget {
   _FinalPageState createState() => _FinalPageState();
 }
 
-class _FinalPageState extends State<FinalPage>
-    with AutomaticKeepAliveClientMixin<FinalPage> {
+class _FinalPageState extends State<FinalPage> {
   HeadlessInAppWebView? headlessWebView;
   bool loadStates = false;
   late String url;
@@ -167,11 +166,7 @@ class _FinalPageState extends State<FinalPage>
   }
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     return loadStates
         ? Column(
             children: [
@@ -201,74 +196,75 @@ class _FinalPageState extends State<FinalPage>
                     ],
                   )),
               Expanded(
-                child: ListView.separated(
-                  key: PageStorageKey<String>('final'),
-                  padding: const EdgeInsets.all(8.0),
-                  physics: BouncingScrollPhysics(),
-                  itemCount: grades.length,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      height: 8,
-                    );
-                  },
-                  itemBuilder: (BuildContext context, int index) {
-                    bool isFail = false;
-                    if (grades[index].score != '未上傳') {
-                      double score = double.parse('${grades[index].score}');
-                      if(score < 60.0){
-                        isFail = true;
-                      }
+                  child: ListView.separated(
+                key: PageStorageKey<String>('final'),
+                padding: const EdgeInsets.all(8.0),
+                physics: BouncingScrollPhysics(),
+                itemCount: grades.length,
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    height: 8,
+                  );
+                },
+                itemBuilder: (BuildContext context, int index) {
+                  bool isFail = false;
+                  if (grades[index].score != '未上傳') {
+                    double score = double.parse('${grades[index].score}');
+                    if (score < 60.0) {
+                      isFail = true;
                     }
-                    return Container(
-                      height: 80.0,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        ),
-                        elevation: 1.5,
-                        //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
-                        child: Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  grades[index].lesson,
-                                  style:
-                                  TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
+                  }
+                  return Container(
+                    height: 80.0,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                      elevation: 1.5,
+                      //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 18.0, vertical: 8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                grades[index].lesson,
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '分數：${grades[index].score}',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    color:
+                                        isFail ? Colors.red : Colors.grey[600],
+                                  ),
                                 ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '分數：${grades[index].score}',
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: isFail ? Colors.red : Colors.grey[600],
-                                    ),
+                                Text(
+                                  '${grades[index].type}',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.grey,
                                   ),
-                                  Text(
-                                    '${grades[index].type}',
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    );
-                  },
-                )
-              ),
+                    ),
+                  );
+                },
+              )),
             ],
           )
         : NiuIconLoading(size: 80);
