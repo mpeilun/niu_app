@@ -18,8 +18,14 @@ class _WorkPageState extends State<WorkPage> {
         title: '作業1',
         isSubmit: true,
       ),
-      AdvancedTile(title: '作業2', isSubmit: true,),
-      AdvancedTile(title: '作業3', isSubmit: true,),
+      AdvancedTile(
+        title: '作業2',
+        isSubmit: true,
+      ),
+      AdvancedTile(
+        title: '作業3',
+        isSubmit: true,
+      ),
       AdvancedTile(title: '作業4'),
     ]),
     AdvancedTile(title: '課程2', tiles: [
@@ -27,10 +33,22 @@ class _WorkPageState extends State<WorkPage> {
         title: '作業1',
         isSubmit: true,
       ),
-      AdvancedTile(title: '作業2', isSubmit: true,),
-      AdvancedTile(title: '作業3', isSubmit: true,),
-      AdvancedTile(title: '作業4', isSubmit: true,),
-      AdvancedTile(title: '作業5', isSubmit: true,),
+      AdvancedTile(
+        title: '作業2',
+        isSubmit: true,
+      ),
+      AdvancedTile(
+        title: '作業3',
+        isSubmit: true,
+      ),
+      AdvancedTile(
+        title: '作業4',
+        isSubmit: true,
+      ),
+      AdvancedTile(
+        title: '作業5',
+        isSubmit: true,
+      ),
     ]),
     AdvancedTile(title: '課程3', tiles: [
       AdvancedTile(
@@ -86,16 +104,17 @@ class _WorkPageState extends State<WorkPage> {
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: ExpansionPanelList.radio(
+          animationDuration: Duration(milliseconds: 750),
           children: advancedTile.map((tile) {
             int submitCount = 0;
             int workCount = tile.tiles.length;
             tile.tiles.map((tile) {
-              if(tile.isSubmit == true){
+              if (tile.isSubmit == true) {
                 return submitCount++;
               }
             }).toList();
             bool isFinish = false;
-            if(submitCount == workCount){
+            if (submitCount == workCount) {
               isFinish = true;
             }
             return ExpansionPanelRadio(
@@ -123,27 +142,46 @@ class _WorkPageState extends State<WorkPage> {
                             "$submitCount/$workCount",
                             style: TextStyle(color: Colors.grey[600]),
                           ),
-                          percent: submitCount/tile.tiles.length,
-                          center: Text("${(submitCount/workCount * 100).toStringAsFixed(2)}%"),
+                          percent: submitCount / tile.tiles.length,
+                          center: Text(
+                              "${(submitCount / workCount * 100).toStringAsFixed(2)}%"),
                           linearStrokeCap: LinearStrokeCap.butt,
-                          progressColor: isFinish ? Colors.greenAccent : Colors.amber,
+                          progressColor:
+                              isFinish ? Colors.greenAccent : Colors.amber,
                         ),
                       ),
                     ),
                 body: Column(
                   children: tile.tiles
-                      .map((tile) =>
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                            24.0, 0.0, 24.0, 16.0),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            tile.title,
-                            style: TextStyle(fontSize: 16.0),
-                          ),
-                        ),
-                      ))
+                      .map((tile) => Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                24.0, 0.0, 24.0, 16.0),
+                            child: Container(
+                              height: 30.0,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    tile.title,
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
+                                  tile.isSubmit
+                                      ? Container(
+                                          width: 60.0,
+                                          child: Center(child: Text('已繳交')),
+                                        )
+                                      : Container(
+                                          width: 60.0,
+                                          child: ElevatedButton(
+                                            onPressed: () {},
+                                            child: Text('繳交'),
+                                          ),
+                                        ),
+                                ],
+                              ),
+                            ),
+                          ))
                       .toList(),
                 ));
           }).toList(),
