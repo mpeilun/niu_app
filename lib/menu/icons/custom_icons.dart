@@ -65,11 +65,11 @@ class CustomTabBar extends StatelessWidget {
             icon: Icon(icon),
           ),
           SizedBox(
-            width: 3.0,
+            width: 5.0,
           ),
           Text(
             title,
-            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
           ),
         ],
       ) : Row(
@@ -77,7 +77,7 @@ class CustomTabBar extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
           ),
         ],
       ),

@@ -101,7 +101,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                         '${widget.data[index].department}',
                         style: TextStyle(
                           fontSize: 14.0,
-                          color: Colors.grey,
+                          color: Colors.grey[600],
                         ),
                         textAlign: TextAlign.end,
                       ),

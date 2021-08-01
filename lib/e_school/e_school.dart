@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/e_school/page/e_school_course_webview.dart';
+import 'package:niu_app/e_school/page/lesson_page.dart';
+import 'package:niu_app/e_school/page/work_page.dart';
+import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menu/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,24 +24,8 @@ class _ESchoolState extends State<ESchool> {
   late String pwd;
 
   final List<Widget> myTabs = [
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Tab(
-          // icon: Icon(Icons.view_headline),
-          text: '我的課程',
-        ),
-      ],
-    ),
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Tab(
-          // icon: Icon(Icons.check),
-          text: '所有作業',
-        ),
-      ],
-    ),
+    CustomTabBar(title: '我的課程', icon: Icons.view_headline),
+    CustomTabBar(title: '所有作業', icon: Icons.check),
   ];
 
   @override
@@ -129,30 +116,66 @@ class _ESchoolState extends State<ESchool> {
   Widget build(BuildContext context) {
     return loadState
         ? DefaultTabController(
-            length: myTabs.length,
-            child: Scaffold(
-              appBar: AppBar(
+      length: myTabs.length,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            '數位園區',
+          ),
+          centerTitle: true,
+        ),
+        body: NestedScrollView(
+          //controller: _scrollController,
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                toolbarHeight: 0.0,
                 elevation: 0.0,
-                title: Text('數位園區'),
                 centerTitle: true,
-                bottom: TabBar(
-                  indicatorWeight: 5.0,
-                  tabs: myTabs,
-                ),
-              ),
-              body: TabBarView(
-                children: <Widget>[
-                  ESchoolCourseWebView(),
-                  Center(
-                    child: Text(
-                      'NIU 宜大學生APP',
-                      style: TextStyle(fontSize: 30, color: Colors.red),
+                floating: true,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(56.0),
+                  child: Container(
+                    height: 56.0,
+                    child: TabBar(
+                      //controller: _tabController,
+                      labelPadding: EdgeInsets.zero,
+                      indicatorWeight: 5.0,
+                      tabs: myTabs,
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          )
+              /*
+              SliverToBoxAdapter(
+                child: PreferredSize(
+                  preferredSize: Size.fromHeight(56.0),
+                  child: Container(
+                    color: Theme.of(context).primaryColor,
+                    height: 56.0,
+                    child: TabBar(
+                      //controller: _tabController,
+                      labelPadding: EdgeInsets.zero,
+                      indicatorWeight: 5.0,
+                      tabs: myTabs,
+                    ),
+                  ),
+                ),
+              ),
+               */
+            ];
+          },
+          body: TabBarView(
+            //controller: _tabController,
+            children: <Widget>[
+              LessonPage(),
+              WorkPage(),
+            ],
+          ),
+        ),
+      ),
+    )
         : Loading();
   }
 
@@ -172,3 +195,4 @@ class _ESchoolState extends State<ESchool> {
     });
   }
 }
+

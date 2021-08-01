@@ -6,17 +6,17 @@ import 'package:niu_app/grades/page/mid_page.dart';
 import 'package:niu_app/grades/page/warn_page.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 
-
 class Grades extends StatefulWidget {
   final String title;
+
   const Grades({Key? key, required this.title}) : super(key: key);
 
   @override
   _GradesState createState() => _GradesState();
 }
 
-class _GradesState extends State<Grades> with SingleTickerProviderStateMixin{
-  final List<Widget> myTabs = const [
+class _GradesState extends State<Grades> with SingleTickerProviderStateMixin {
+  final List<Widget> myTabs = [
     CustomTabBar(
       title: '期中成績',
       icon: Icons.grading_rounded,
@@ -64,8 +64,7 @@ class _GradesState extends State<Grades> with SingleTickerProviderStateMixin{
         body: NestedScrollView(
           //controller: _scrollController,
           floatHeaderSlivers: true,
-          headerSliverBuilder:
-              (BuildContext context, bool innerBoxIsScrolled) {
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
                 toolbarHeight: 0.0,
@@ -77,6 +76,7 @@ class _GradesState extends State<Grades> with SingleTickerProviderStateMixin{
                   child: Container(
                     height: 56.0,
                     child: TabBar(
+                      //controller: _tabController,
                       labelPadding: EdgeInsets.zero,
                       indicatorWeight: 5.0,
                       tabs: myTabs,

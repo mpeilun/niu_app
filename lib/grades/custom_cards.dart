@@ -85,7 +85,7 @@ class _CustomGradeCardState extends State<CustomGradeCard> {
                       child: Text(
                         widget.grade[index].lesson,
                         style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
+                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Row(
@@ -102,7 +102,7 @@ class _CustomGradeCardState extends State<CustomGradeCard> {
                           '${widget.grade[index].type}',
                           style: TextStyle(
                             fontSize: 14.0,
-                            color: Colors.grey,
+                            color: Colors.grey[600],
                           ),
                         ),
                       ],
@@ -171,7 +171,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.black,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
                       ),
@@ -184,7 +184,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                           '${widget.grade[index].teacher}',
                           style: TextStyle(
                             fontSize: 16.0,
-                            color: Colors.grey,
+                            color: Colors.grey[600],
                           ),
                         ),
                       ),
@@ -291,7 +291,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ),
@@ -304,7 +304,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                       '${widget.grade[index].teacher}',
                       style: TextStyle(
                         fontSize: 16.0,
-                        color: Colors.grey,
+                        color: Colors.grey[600],
                       ),
                     ),
                   ),
