@@ -68,7 +68,6 @@ class _CustomEventCardState extends State<CustomEventCard> {
     var screenSizeHeight = MediaQuery.of(context).size.height;
 
     return ListView.separated(
-      physics: BouncingScrollPhysics(),
       itemCount: widget.data.length,
       separatorBuilder: (BuildContext context, int index) => Divider(),
       itemBuilder: (BuildContext context, int index) => GestureDetector(
@@ -202,7 +201,6 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
     var screenSizeHeight = MediaQuery.of(context).size.height;
 
     return ListView.separated(
-      physics: BouncingScrollPhysics(),
       itemCount: widget.data.length,
       separatorBuilder: (BuildContext context, int index) => Divider(
         thickness: 1.5,

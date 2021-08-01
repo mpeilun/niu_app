@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/components/keep_alive.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/refresh.dart';
 import 'package:niu_app/school_event/custom_cards.dart';
@@ -12,10 +13,7 @@ class EventSignedPage extends StatefulWidget {
   _EventSignedPageState createState() => _EventSignedPageState();
 }
 
-class _EventSignedPageState extends State<EventSignedPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class _EventSignedPageState extends State<EventSignedPage> {
 
   HeadlessInAppWebView? headlessWebView;
   String url = "";
@@ -153,10 +151,7 @@ class _EventSignedPageState extends State<EventSignedPage>
   }
 
   @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return buildList();
-  }
+  Widget build(BuildContext context) => KeepAlivePage(child: buildList());
 
   Widget buildList() => data.isEmpty
       ? Center(
