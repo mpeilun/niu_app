@@ -162,10 +162,15 @@ class _WorkPageState extends State<WorkPage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    tile.title,
-                                    style: TextStyle(fontSize: 16.0),
-                                  ),
+                                  tile.isSubmit
+                                      ? Text(
+                                          '${tile.title}',
+                                          style: TextStyle(fontSize: 16.0),
+                                        )
+                                      : Text('${tile.title}\t(未繳交)',
+                                          style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.red)),
                                   tile.isSubmit
                                       ? Container(
                                           width: 60.0,
