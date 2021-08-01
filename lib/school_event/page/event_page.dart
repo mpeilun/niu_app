@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/components/keep_alive.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/refresh.dart';
 import 'package:niu_app/school_event/custom_cards.dart';
@@ -11,17 +12,14 @@ class EventPage extends StatefulWidget {
   _EventPageState createState() => _EventPageState();
 }
 
-class _EventPageState extends State<EventPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
+class _EventPageState extends State<EventPage> {
   HeadlessInAppWebView? headlessWebView;
   String url = "";
   String temp = "";
 
   List<Event> data = [];
-  bool canDisplay = false;
+  bool dataLoaded = false;
+  bool refreshLoaded = true;
 
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
 
@@ -139,14 +137,16 @@ class _EventPageState extends State<EventPage>
     await getByStatus('未開放');
     await getByStatus('已過期');
     setState(() {
-      canDisplay = true;
+      dataLoaded = true;
+      refreshLoaded = true;
     });
   }
 
   Future<void> refresh() async {
     setState(() {
-      // canDisplay = false;
+      refreshLoaded = false;
     });
+
     await headlessWebView?.webViewController.loadUrl(
         urlRequest: URLRequest(
             url:
@@ -205,18 +205,19 @@ class _EventPageState extends State<EventPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return buildList();
+    return KeepAlivePage(child: buildList());
   }
 
-  Widget buildList() => canDisplay
+  Widget buildList() => dataLoaded
       ? RefreshWidget(
           keyRefresh: keyRefresh,
           onRefresh: refresh,
-          child: CustomEventCard(
-            key: PageStorageKey<String>('event'),
-            data: data,
-          ),
+          child: refreshLoaded
+              ? CustomEventCard(
+                  key: PageStorageKey<String>('event'),
+                  data: data,
+                )
+              : Container(),
         )
       : Center(
           child: NiuIconLoading(
