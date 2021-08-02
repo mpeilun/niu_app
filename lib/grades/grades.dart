@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:NationalIlanUniversityApp/components/keep_alive.dart';
-import 'package:NationalIlanUniversityApp/grades/page/final_page.dart';
-import 'package:NationalIlanUniversityApp/grades/page/mid_page.dart';
-import 'package:NationalIlanUniversityApp/grades/page/warn_page.dart';
-import 'package:NationalIlanUniversityApp/menu/icons/custom_icons.dart';
+import 'package:niu_app/components/keep_alive.dart';
+import 'package:niu_app/grades/page/final_page.dart';
+import 'package:niu_app/grades/page/mid_page.dart';
+import 'package:niu_app/grades/page/warn_page.dart';
+import 'package:niu_app/menu/icons/custom_icons.dart';
 
 ScrollController gradeScrollController = ScrollController();
 

@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:NationalIlanUniversityApp/grades/page/final_page.dart';
-import 'package:NationalIlanUniversityApp/grades/page/mid_page.dart';
-import 'package:NationalIlanUniversityApp/grades/page/warn_page.dart';
-import 'package:NationalIlanUniversityApp/menu/icons/custom_icons.dart';
-import 'package:NationalIlanUniversityApp/school_event/page/event_signed_page.dart';
-import 'package:NationalIlanUniversityApp/school_event/page/event_page.dart';
+import 'package:niu_app/grades/page/final_page.dart';
+import 'package:niu_app/grades/page/mid_page.dart';
+import 'package:niu_app/grades/page/warn_page.dart';
+import 'package:niu_app/menu/icons/custom_icons.dart';
+import 'package:niu_app/school_event/page/event_signed_page.dart';
+import 'package:niu_app/school_event/page/event_page.dart';
 
 class SchoolEvent extends StatefulWidget {
   final String title;

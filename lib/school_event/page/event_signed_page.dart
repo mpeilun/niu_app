@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:NationalIlanUniversityApp/components/keep_alive.dart';
-import 'package:NationalIlanUniversityApp/components/niu_icon_loading.dart';
-import 'package:NationalIlanUniversityApp/components/refresh.dart';
-import 'package:NationalIlanUniversityApp/school_event/custom_cards.dart';
+import 'package:niu_app/components/keep_alive.dart';
+import 'package:niu_app/components/niu_icon_loading.dart';
+import 'package:niu_app/components/refresh.dart';
+import 'package:niu_app/school_event/custom_cards.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EventSignedPage extends StatefulWidget {

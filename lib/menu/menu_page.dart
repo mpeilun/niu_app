@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:NationalIlanUniversityApp/e_school/e_school.dart';
-import 'package:NationalIlanUniversityApp/grades/grades.dart';
-import 'package:NationalIlanUniversityApp/menu/icons/custom_icons.dart';
-import 'package:NationalIlanUniversityApp/menu/loading.dart';
-import 'package:NationalIlanUniversityApp/menuIcon.dart';
-import 'package:NationalIlanUniversityApp/login/login_page.dart';
-import 'package:NationalIlanUniversityApp/school_event/school_event.dart';
-import 'package:NationalIlanUniversityApp/TimeTable/TimeTable.dart';
+import 'package:niu_app/e_school/e_school.dart';
+import 'package:niu_app/grades/grades.dart';
+import 'package:niu_app/menu/icons/custom_icons.dart';
+import 'package:niu_app/menu/loading.dart';
+import 'package:niu_app/menuIcon.dart';
+import 'package:niu_app/login/login_page.dart';
+import 'package:niu_app/school_event/school_event.dart';
+import 'package:niu_app/TimeTable/TimeTable.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
