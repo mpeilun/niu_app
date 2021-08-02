@@ -25,6 +25,7 @@ class _StartMenu extends State<StartMenu> {
   HeadlessInAppWebView? headlessWebView;
   String url = "";
   bool loginState = false;
+  bool reLogin = false;
 
   @override
   void initState() {
@@ -208,12 +209,6 @@ class _StartMenu extends State<StartMenu> {
     }
   }
 
-  int daysBetween(DateTime from, DateTime to) {
-    from = DateTime(from.year, from.month, from.day);
-    to = DateTime(to.year, to.month, to.day);
-    return (to.difference(from).inHours / 24).round();
-  }
-
   _checkAccount() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.get('id') == null || prefs.get('pwd') == null) {
@@ -257,8 +252,10 @@ class _StartMenu extends State<StartMenu> {
             login();
           }
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
-            print('登入成功');
-            loginFinished();
+            if (!reLogin) {
+              print('登入成功');
+              loginFinished();
+            }
           }
         },
         onUpdateVisitedHistory: (controller, url, androidIsReload) {
@@ -269,6 +266,7 @@ class _StartMenu extends State<StartMenu> {
         },
         onJsAlert: (InAppWebViewController controller,
             JsAlertRequest jsAlertRequest) async {
+          reLogin = true;
           print(jsAlertRequest.message!);
           return JsAlertResponse(
               handledByClient: true, action: JsAlertResponseAction.CONFIRM);
@@ -292,6 +290,7 @@ class _StartMenu extends State<StartMenu> {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
     });
+    reLogin = false;
   }
 
   void loginFinished() {
