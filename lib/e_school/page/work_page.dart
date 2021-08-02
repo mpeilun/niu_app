@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:niu_app/e_school/advanced_tiles.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class WorkPage extends StatefulWidget {
   const WorkPage({
@@ -11,7 +12,20 @@ class WorkPage extends StatefulWidget {
   _WorkPageState createState() => _WorkPageState();
 }
 
-class _WorkPageState extends State<WorkPage> {
+class _WorkPageState extends State<WorkPage> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   final advancedTile = <AdvancedTile>[
     AdvancedTile(title: '課程1', tiles: [
       AdvancedTile(
@@ -100,7 +114,10 @@ class _WorkPageState extends State<WorkPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
+      key: PageStorageKey<String>('Work'),
+      physics: BouncingScrollPhysics(),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: ExpansionPanelList.radio(
@@ -147,46 +164,46 @@ class _WorkPageState extends State<WorkPage> {
                               "${(submitCount / workCount * 100).toStringAsFixed(2)}%"),
                           linearStrokeCap: LinearStrokeCap.butt,
                           progressColor:
-                              isFinish ? Colors.greenAccent : Colors.amber,
+                          isFinish ? Colors.greenAccent : Colors.amber,
                         ),
                       ),
                     ),
                 body: Column(
                   children: tile.tiles
                       .map((tile) => Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                24.0, 0.0, 24.0, 16.0),
-                            child: Container(
-                              height: 30.0,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  tile.isSubmit
-                                      ? Text(
-                                          '${tile.title}',
-                                          style: TextStyle(fontSize: 16.0),
-                                        )
-                                      : Text('${tile.title}\t(未繳交)',
-                                          style: TextStyle(
-                                              fontSize: 16.0,
-                                              color: Colors.red)),
-                                  tile.isSubmit
-                                      ? Container(
-                                          width: 60.0,
-                                          child: Center(child: Text('已繳交')),
-                                        )
-                                      : Container(
-                                          width: 60.0,
-                                          child: ElevatedButton(
-                                            onPressed: () {},
-                                            child: Text('繳交'),
-                                          ),
-                                        ),
-                                ],
-                              ),
+                    padding: const EdgeInsets.fromLTRB(
+                        24.0, 0.0, 24.0, 16.0),
+                    child: Container(
+                      height: 30.0,
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
+                        children: [
+                          tile.isSubmit
+                              ? Text(
+                            '${tile.title}',
+                            style: TextStyle(fontSize: 16.0),
+                          )
+                              : Text('${tile.title}\t(未繳交)',
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.red)),
+                          tile.isSubmit
+                              ? Container(
+                            width: 60.0,
+                            child: Center(child: Text('已繳交')),
+                          )
+                              : Container(
+                            width: 60.0,
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              child: Text('繳交'),
                             ),
-                          ))
+                          ),
+                        ],
+                      ),
+                    ),
+                  ))
                       .toList(),
                 ));
           }).toList(),

@@ -15,7 +15,7 @@ class ESchool extends StatefulWidget {
   _ESchoolState createState() => _ESchoolState();
 }
 
-class _ESchoolState extends State<ESchool> {
+class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin{
   HeadlessInAppWebView? headlessWebView;
   bool loadState = false;
   String loginState = 'null';
@@ -31,6 +31,8 @@ class _ESchoolState extends State<ESchool> {
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(vsync: this, length: myTabs.length,);
+    _scrollController = ScrollController();
     headlessWebView = new HeadlessInAppWebView(
         initialUrlRequest: URLRequest(
             url: Uri.parse("https://eschool.niu.edu.tw/mooc/login.php")),
@@ -109,73 +111,76 @@ class _ESchoolState extends State<ESchool> {
     headlessWebView?.dispose();
     loginState = 'null';
     loadState = false;
+    _tabController.dispose();
+    _scrollController.dispose();
     print('login dispose');
   }
+
+  late TabController _tabController;
+  late ScrollController _scrollController;
 
   @override
   Widget build(BuildContext context) {
     return loadState
-        ? DefaultTabController(
-      length: myTabs.length,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            '數位園區',
+        ? Scaffold(
+          appBar: AppBar(
+            title: Text(
+              '數位園區',
+            ),
+            centerTitle: true,
           ),
-          centerTitle: true,
-        ),
-        body: NestedScrollView(
-          //controller: _scrollController,
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                toolbarHeight: 0.0,
-                elevation: 0.0,
-                centerTitle: true,
-                floating: true,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(56.0),
-                  child: Container(
-                    height: 56.0,
-                    child: TabBar(
-                      //controller: _tabController,
-                      labelPadding: EdgeInsets.zero,
-                      indicatorWeight: 5.0,
-                      tabs: myTabs,
+          body: NestedScrollView(
+            controller: _scrollController,
+            floatHeaderSlivers: true,
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                /*
+                SliverAppBar(
+                  toolbarHeight: 0.0,
+                  elevation: 0.0,
+                  centerTitle: true,
+                  floating: true,
+                  bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(56.0),
+                    child: Container(
+                      height: 56.0,
+                      child: TabBar(
+                        controller: _tabController,
+                        labelPadding: EdgeInsets.zero,
+                        indicatorWeight: 5.0,
+                        tabs: myTabs,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              /*
-              SliverToBoxAdapter(
-                child: PreferredSize(
-                  preferredSize: Size.fromHeight(56.0),
-                  child: Container(
-                    color: Theme.of(context).primaryColor,
-                    height: 56.0,
-                    child: TabBar(
-                      //controller: _tabController,
-                      labelPadding: EdgeInsets.zero,
-                      indicatorWeight: 5.0,
-                      tabs: myTabs,
+                */
+
+                SliverToBoxAdapter(
+                  child: PreferredSize(
+                    preferredSize: Size.fromHeight(56.0),
+                    child: Container(
+                      color: Theme.of(context).primaryColor,
+                      height: 56.0,
+                      child: TabBar(
+                        controller: _tabController,
+                        labelPadding: EdgeInsets.zero,
+                        indicatorWeight: 5.0,
+                        tabs: myTabs,
+                      ),
                     ),
                   ),
                 ),
-              ),
-               */
-            ];
-          },
-          body: TabBarView(
-            //controller: _tabController,
-            children: <Widget>[
-              LessonPage(),
-              WorkPage(),
-            ],
+              ];
+            },
+            body: TabBarView(
+              controller: _tabController,
+              children: <Widget>[
+                LessonPage(),
+                WorkPage(),
+              ],
+            ),
           ),
-        ),
-      ),
-    )
+        )
         : Loading();
   }
 
