@@ -1,19 +1,21 @@
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class getHTML {
   getHTML(){
     //get();
   }
-  bool _enable = false;
-  bool enable(){
-    return _enable;
-  }
 
   Future<bool> getIsFinish() async{
-    await get();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if( prefs.getStringList("timeTable") == null)
+      await getFromWeb(prefs);
+    else{
+      await Future.delayed(const Duration(milliseconds: 1000), (){});
+      htmlCode = saveListToList(prefs.getStringList("timeTable") );
+    }
     return true;
   }
-
   int weekDayNum = 5;
   int classNum = 14;
   // arr[classNum][weekDayNum]
@@ -45,7 +47,7 @@ class getHTML {
     },
   );
 
-  Future<void> get() async {
+  Future<void> getFromWeb(SharedPreferences prefs) async {
     headlessWebView.run();
     var result;
     var buttonResult;
@@ -86,8 +88,42 @@ class getHTML {
       }
       htmlCode.add(tempHtmlCode);
     }
-    _enable = true;
+    await prefs.setStringList("timeTable", listToSaveList(htmlCode));
     print("HTML　load finish!");
     return;
+  }
+  List<String> listToSaveList(List<List<String?>> list){
+    List<String> saveList = <String>[];
+    for(int i = 0; i < classNum; i++){
+      String temp = "";
+      for(int j = 0; j < weekDayNum; j++){
+        if(htmlCode[i][j] != null)
+          temp += htmlCode[i][j].toString();
+        else
+          temp += "&sp"; // space
+        temp += "\\";
+      }
+      saveList.add(temp);
+    }
+    return saveList;
+  }
+  List<List<String?>> saveListToList(List<String>?  saveList){
+    List<List<String?>> list = <List<String?>> [];
+    if( saveList != null){
+      for(int i = 0; i < classNum; i++){
+        int index = 0;
+        List<String?> tempList = [];
+        for(int j = 0; j < weekDayNum; j++){
+          String tempString = saveList[i].substring(index,saveList[i].indexOf("\\", index));
+          if(tempString != "&sp")
+            tempList.add(tempString);
+          else
+            tempList.add(null);
+          index = saveList[i].indexOf("\\", index)+1;
+        }
+        list.add(tempList);
+      }
+    }
+    return list;
   }
 }

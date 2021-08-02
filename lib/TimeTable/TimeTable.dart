@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:niu_app/service/SemesterDate.dart';
 import './BuildTimeTable/ViewPage.dart';
 import './BuildTimeTable/Class.dart';
-import './GetTimeTable/getHTML.dart';
+import './GetTimeTable/GetHTML.dart';
 import './Loading.dart';
 import './GetTimeTable/HtmlToClassList.dart';
 class TimeTable extends StatefulWidget {
