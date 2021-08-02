@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
 
@@ -22,8 +23,7 @@ class Quote {
     bool? gradeWarn,
     bool? attendanceWarn,
     bool? presentWarn,
-  })
-      : this.score = score,
+  })  : this.score = score,
         this.type = type,
         this.teacher = teacher,
         this.warn = warn ?? false,
@@ -34,98 +34,99 @@ class Quote {
 
 class CustomGradeCard extends StatefulWidget {
   final List<Quote> grade;
-  final String keyName;
 
-  const CustomGradeCard({Key? key, required this.grade, required this.keyName})
-      : super(key: key);
+  const CustomGradeCard({Key? key, required this.grade}) : super(key: key);
 
   @override
   _CustomGradeCardState createState() => _CustomGradeCardState();
 }
 
 class _CustomGradeCardState extends State<CustomGradeCard> {
+  ScrollController _scrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      gradeScrollController.jumpTo(_scrollController.offset);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-        key: PageStorageKey<String>(widget.keyName),
-        padding: const EdgeInsets.all(8.0),
-        physics: BouncingScrollPhysics(),
-        itemCount: widget.grade.length,
-        separatorBuilder: (BuildContext context, int index) {
-          return SizedBox(
-            height: 8,
-          );
-        },
-        itemBuilder: (BuildContext context, int index) {
-          bool isFail = false;
-          if (widget.grade[index].score != '未上傳') {
-            double score = double.parse('${widget.grade[index].score}');
-            if(score < 60.0){
-              isFail = true;
-            }
+      controller: _scrollController,
+      padding: const EdgeInsets.all(8.0),
+      physics: BouncingScrollPhysics(),
+      itemCount: widget.grade.length,
+      separatorBuilder: (BuildContext context, int index) {
+        return SizedBox(
+          height: 8,
+        );
+      },
+      itemBuilder: (BuildContext context, int index) {
+        bool isFail = false;
+        if (widget.grade[index].score != '未上傳') {
+          double score = double.parse('${widget.grade[index].score}');
+          if (score < 60.0) {
+            isFail = true;
           }
-          return Container(
-            height: 80.0,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-              elevation: 1.5,
-              //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
-              child: Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        widget.grade[index].lesson,
-                        style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+        }
+        return Container(
+          height: 80.0,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ),
+            elevation: 1.5,
+            //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      widget.grade[index].lesson,
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '分數：${widget.grade[index].score}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: isFail ? Colors.red : Colors.grey[600],
+                        ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '分數：${widget.grade[index].score}',
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: isFail ? Colors.red : Colors.grey[600],
-                          ),
+                      Text(
+                        '${widget.grade[index].type}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.grey[600],
                         ),
-                        Text(
-                          '${widget.grade[index].type}',
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          );
-        },
+          ),
+        );
+      },
     );
   }
 }
 
 class CustomWarnCard extends StatefulWidget {
   final List<Quote> grade;
-  final String keyName;
 
-  const CustomWarnCard({
-    Key? key,
-    required this.grade,
-    required this.keyName
-  }) : super(key: key);
+  const CustomWarnCard({Key? key, required this.grade}) : super(key: key);
 
   @override
   _CustomWarnCardState createState() => _CustomWarnCardState();
@@ -133,9 +134,18 @@ class CustomWarnCard extends StatefulWidget {
 
 class _CustomWarnCardState extends State<CustomWarnCard> {
   var isWarnList = const [];
-  var isGradeList = const[];
-  var isAttendanceList = const[];
-  var isPresentList = const[];
+  var isGradeList = const [];
+  var isAttendanceList = const [];
+  var isPresentList = const [];
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      gradeScrollController.jumpTo(_scrollController.offset);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,129 +156,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
     isPresentList = widget.grade.map((g) => g.presentWarn ?? false).toList();
 
     return ListView.separated(
-      key: PageStorageKey<String>(widget.keyName),
-      padding: const EdgeInsets.all(8.0),
-      physics: BouncingScrollPhysics(),
-      itemCount: widget.grade.length,
-      separatorBuilder: (BuildContext context, int index) =>
-          Divider(
-            height: 30.0,
-          ),
-      itemBuilder: (BuildContext context, int index) =>
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 4,
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          widget.grade[index].lesson,
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          '${widget.grade[index].teacher}',
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width - 16.0,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 6.0, 8.0, 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CGWIcon(
-                          isWarnList: isWarnList,
-                          title: '期中警示',
-                          icon: MyFlutterApp.exclamation,
-                          index: index,
-                        ),
-                        SizedBox(width: 10.0,),
-                        CGWIcon(
-                          isWarnList: isGradeList,
-                          title: '期中成績',
-                          icon: MyFlutterApp.times_circle,
-                          index: index,
-                        ),
-                        SizedBox(width: 10.0,),
-                        CGWIcon(
-                          isWarnList: isAttendanceList,
-                          title: '出席率',
-                          icon: MyFlutterApp.times_circle,
-                          index: index,
-                        ),
-                        SizedBox(width: 10.0,),
-                        CGWIcon(
-                          isWarnList: isPresentList,
-                          title: '報告/其他',
-                          icon: MyFlutterApp.times_circle,
-                          index: index,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-    );
-  }
-}
-
-/*
-class CustomWarnCard extends StatefulWidget {
-  final List<Quote> grade;
-
-  const CustomWarnCard({
-    Key? key,
-    required this.grade,
-  }) : super(key: key);
-
-  @override
-  _CustomWarnCardState createState() => _CustomWarnCardState();
-}
-
-class _CustomWarnCardState extends State<CustomWarnCard> {
-  var isWarnList = [];
-  var isGradeList = [];
-  var isAttendanceList = [];
-  var isPresentList = [];
-
-  @override
-  Widget build(BuildContext context) {
-
-
-    return ListView.separated(
-      key: widget.key,
+      controller: _scrollController,
       padding: const EdgeInsets.all(8.0),
       physics: BouncingScrollPhysics(),
       itemCount: widget.grade.length,
@@ -329,21 +217,27 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                       icon: MyFlutterApp.exclamation,
                       index: index,
                     ),
-                    SizedBox(width: 10.0,),
+                    SizedBox(
+                      width: 10.0,
+                    ),
                     CGWIcon(
                       isWarnList: isGradeList,
                       title: '期中成績',
                       icon: MyFlutterApp.times_circle,
                       index: index,
                     ),
-                    SizedBox(width: 10.0,),
+                    SizedBox(
+                      width: 10.0,
+                    ),
                     CGWIcon(
                       isWarnList: isAttendanceList,
                       title: '出席率',
                       icon: MyFlutterApp.times_circle,
                       index: index,
                     ),
-                    SizedBox(width: 10.0,),
+                    SizedBox(
+                      width: 10.0,
+                    ),
                     CGWIcon(
                       isWarnList: isPresentList,
                       title: '報告/其他',
@@ -360,4 +254,3 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
     );
   }
 }
-*/

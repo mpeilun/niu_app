@@ -189,7 +189,6 @@ class _WarmPageState extends State<WarmPage> {
   Widget build(BuildContext context) {
     return loadStates
         ? CustomWarnCard(
-            keyName: 'warm',
             grade: grades,
           )
         : Container(

@@ -11,8 +11,7 @@ class MidPage extends StatefulWidget {
   _MidPageState createState() => _MidPageState();
 }
 
-class _MidPageState extends State<MidPage>
-    with AutomaticKeepAliveClientMixin<MidPage> {
+class _MidPageState extends State<MidPage> {
   HeadlessInAppWebView? headlessWebView;
   bool loadStates = false;
   late String url;
@@ -162,14 +161,9 @@ class _MidPageState extends State<MidPage>
   }
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     return loadStates
         ? CustomGradeCard(
-            keyName: 'mid',
             grade: grades,
           )
         : NiuIconLoading(size: 80);

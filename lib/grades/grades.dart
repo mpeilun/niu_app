@@ -7,6 +7,8 @@ import 'package:niu_app/grades/page/mid_page.dart';
 import 'package:niu_app/grades/page/warn_page.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 
+ScrollController gradeScrollController = ScrollController();
+
 class Grades extends StatefulWidget {
   final String title;
 
@@ -32,24 +34,15 @@ class _GradesState extends State<Grades> with SingleTickerProviderStateMixin {
     ),
   ];
 
-  /*
-  late TabController _tabController;
-  late ScrollController _scrollController;
-
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: myTabs.length,);
-    _scrollController = ScrollController();
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
-    _scrollController.dispose();
     super.dispose();
   }
-  */
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +56,7 @@ class _GradesState extends State<Grades> with SingleTickerProviderStateMixin {
           centerTitle: true,
         ),
         body: NestedScrollView(
-          //controller: _scrollController,
+          controller: gradeScrollController,
           floatHeaderSlivers: true,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
@@ -85,27 +78,9 @@ class _GradesState extends State<Grades> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
-              /*
-              SliverToBoxAdapter(
-                child: PreferredSize(
-                  preferredSize: Size.fromHeight(56.0),
-                  child: Container(
-                    color: Theme.of(context).primaryColor,
-                    height: 56.0,
-                    child: TabBar(
-                      //controller: _tabController,
-                      labelPadding: EdgeInsets.zero,
-                      indicatorWeight: 5.0,
-                      tabs: myTabs,
-                    ),
-                  ),
-                ),
-              ),
-               */
             ];
           },
           body: TabBarView(
-            //controller: _tabController,
             children: <Widget>[
               KeepAlivePage(child: MidPage()),
               KeepAlivePage(child: FinalPage()),
