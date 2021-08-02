@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:NationalIlanUniversityApp/Components/circle.dart';
+import 'package:niu_app/Components/circle.dart';
 
 class CustomIcons extends StatelessWidget {
   final String title;
