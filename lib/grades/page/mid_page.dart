@@ -163,7 +163,7 @@ class _MidPageState extends State<MidPage> {
   @override
   Widget build(BuildContext context) {
     return loadStates
-        ? CustomGradeCard(
+        ? CustomMidCard(
             grade: grades,
           )
         : NiuIconLoading(size: 80);

@@ -69,7 +69,6 @@ class _GradesState extends State<Grades> with SingleTickerProviderStateMixin {
                   child: Container(
                     height: 56.0,
                     child: TabBar(
-                      //controller: _tabController,
                       labelPadding: EdgeInsets.zero,
                       indicatorWeight: 5.0,
                       tabs: myTabs,

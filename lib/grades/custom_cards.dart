@@ -26,17 +26,16 @@ class Quote {
   });
 }
 
-
-class CustomGradeCard extends StatefulWidget {
+class CustomMidCard extends StatefulWidget {
   final List<Quote> grade;
 
-  const CustomGradeCard({Key? key, required this.grade}) : super(key: key);
+  const CustomMidCard({Key? key, required this.grade}) : super(key: key);
 
   @override
-  _CustomGradeCardState createState() => _CustomGradeCardState();
+  _CustomMidCardState createState() => _CustomMidCardState();
 }
 
-class _CustomGradeCardState extends State<CustomGradeCard> {
+class _CustomMidCardState extends State<CustomMidCard> {
   ScrollController _scrollController = ScrollController();
   @override
   void initState() {
@@ -118,27 +117,35 @@ class _CustomGradeCardState extends State<CustomGradeCard> {
   }
 }
 
-
-class CustomFinCard extends StatefulWidget {
-  const CustomFinCard({
-    Key? key,
-    required this.rank,
-    required this.avg,
-    required this.grade
-  }) : super(key: key);
+class CustomFinalCard extends StatefulWidget {
+  const CustomFinalCard(
+      {Key? key, required this.rank, required this.avg, required this.grade})
+      : super(key: key);
 
   final String rank;
   final String avg;
   final List<Quote> grade;
 
   @override
-  _CustomFinCardState createState() => _CustomFinCardState();
+  _CustomFinalCardState createState() => _CustomFinalCardState();
 }
 
-class _CustomFinCardState extends State<CustomFinCard> {
+class _CustomFinalCardState extends State<CustomFinalCard> {
+  ScrollController _listScrollController = ScrollController();
+  ScrollController _rankScrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    _listScrollController.addListener(() {
+      gradeScrollController.jumpTo(_listScrollController.offset);
+      _rankScrollController.jumpTo(gradeScrollController.offset);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      controller: _rankScrollController,
       slivers: [
         SliverToBoxAdapter(
           child: Container(
@@ -152,15 +159,13 @@ class _CustomFinCardState extends State<CustomFinCard> {
                 ),
                 children: [
                   Padding(
-                    padding:
-                    const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 12.0),
+                    padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 12.0),
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
                         "期末平均：${widget.avg}",
                         textAlign: TextAlign.left,
-                        style:
-                        TextStyle(fontSize: 18.0, color: Colors.white),
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
                       ),
                     ),
                   ),
@@ -169,7 +174,7 @@ class _CustomFinCardState extends State<CustomFinCard> {
         ),
         SliverFillRemaining(
           child: ListView.separated(
-            //controller: _scrollController,
+            controller: _listScrollController,
             padding: const EdgeInsets.all(8.0),
             physics: BouncingScrollPhysics(),
             itemCount: widget.grade.length,
@@ -195,8 +200,8 @@ class _CustomFinCardState extends State<CustomFinCard> {
                   elevation: 1.5,
                   //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
                   child: Padding(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 18.0, vertical: 8.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,8 +245,6 @@ class _CustomFinCardState extends State<CustomFinCard> {
     );
   }
 }
-
-
 
 class CustomWarnCard extends StatefulWidget {
   final List<Quote> grade;

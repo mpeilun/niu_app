@@ -168,8 +168,11 @@ class _FinalPageState extends State<FinalPage> {
   @override
   Widget build(BuildContext context) {
     return loadStates
-        ? CustomFinCard(rank: rank, avg: avg, grade: grades,)
+        ? CustomFinalCard(
+            rank: rank,
+            avg: avg,
+            grade: grades,
+          )
         : NiuIconLoading(size: 80);
   }
 }
-
