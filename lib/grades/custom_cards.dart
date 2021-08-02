@@ -47,7 +47,7 @@ class _CustomGradeCardState extends State<CustomGradeCard> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      gradeScrollController.jumpTo(_scrollController.offset * 0.8);
+      gradeScrollController.jumpTo(_scrollController.offset);
     });
   }
 
@@ -143,7 +143,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      gradeScrollController.jumpTo(_scrollController.offset * 0.8);
+      gradeScrollController.jumpTo(_scrollController.offset);
     });
   }
 
