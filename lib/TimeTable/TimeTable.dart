@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:niu_app/service/SemesterDate.dart';
+import 'package:NationalIlanUniversityApp/service/SemesterDate.dart';
 import './BuildTimeTable/ViewPage.dart';
 import './BuildTimeTable/Class.dart';
 import './GetTimeTable/GetHTML.dart';

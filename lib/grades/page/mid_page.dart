@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:niu_app/components/niu_icon_loading.dart';
-import 'package:niu_app/grades/custom_cards.dart';
+import 'package:NationalIlanUniversityApp/components/niu_icon_loading.dart';
+import 'package:NationalIlanUniversityApp/grades/custom_cards.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MidPage extends StatefulWidget {

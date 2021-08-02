@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:niu_app/grades/grades.dart';
-import 'package:niu_app/menu/icons/custom_icons.dart';
-import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
+import 'package:NationalIlanUniversityApp/grades/grades.dart';
+import 'package:NationalIlanUniversityApp/menu/icons/custom_icons.dart';
+import 'package:NationalIlanUniversityApp/menu/icons/my_flutter_app_icons.dart';
 
 class Quote {
   final String lesson;

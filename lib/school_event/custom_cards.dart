@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
+import 'package:NationalIlanUniversityApp/school_event/dialog/event_info_dialog.dart';
 
 class Event {
   final String name;

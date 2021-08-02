@@ -1,4 +1,4 @@
-import 'package:niu_app/TimeTable/BuildTimeTable/Class.dart';
+import 'package:NationalIlanUniversityApp/TimeTable/BuildTimeTable/Class.dart';
 class HtmlToClassList{
   HtmlToClassList();
   int weekDayNum = 5;
