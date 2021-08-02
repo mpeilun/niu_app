@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:niu_app/e_school/advanced_tiles.dart';
+import 'package:NationalIlanUniversityApp/e_school/advanced_tiles.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:niu_app/e_school/advanced_tiles.dart';
+import 'package:NationalIlanUniversityApp/e_school/advanced_tiles.dart';
 
 
 class LessonPage extends StatefulWidget {
