@@ -37,6 +37,7 @@ class CustomMidCard extends StatefulWidget {
 
 class _CustomMidCardState extends State<CustomMidCard> {
   ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -50,7 +51,6 @@ class _CustomMidCardState extends State<CustomMidCard> {
     return ListView.separated(
       controller: _scrollController,
       padding: const EdgeInsets.all(8.0),
-      physics: BouncingScrollPhysics(),
       itemCount: widget.grade.length,
       separatorBuilder: (BuildContext context, int index) {
         return SizedBox(
@@ -132,116 +132,117 @@ class CustomFinalCard extends StatefulWidget {
 
 class _CustomFinalCardState extends State<CustomFinalCard> {
   ScrollController _listScrollController = ScrollController();
-  ScrollController _rankScrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
+    //widget.grade.insert(0, Quote(lesson: 'null'));
     _listScrollController.addListener(() {
       gradeScrollController.jumpTo(_listScrollController.offset);
-      _rankScrollController.jumpTo(gradeScrollController.offset);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      controller: _rankScrollController,
-      slivers: [
-        SliverToBoxAdapter(
-          child: Container(
-              color: Theme.of(context).primaryColor,
-              child: ExpansionTile(
-                collapsedIconColor: Colors.white,
-                iconColor: Colors.white,
-                title: Text(
-                  "班級排名：${widget.rank}",
-                  style: TextStyle(fontSize: 18.0, color: Colors.white),
+    return ListView.separated(
+      controller: _listScrollController,
+      padding: const EdgeInsets.all(8.0),
+      itemCount: widget.grade.length + 1,
+      separatorBuilder: (BuildContext context, int index) {
+        return SizedBox(
+          height: 8,
+        );
+      },
+      itemBuilder: (BuildContext context, int index) {
+        if(index == 0){
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(18.0),
                 ),
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 12.0),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "期末平均：${widget.avg}",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 18.0, color: Colors.white),
+                child: ExpansionTile(
+                  key: PageStorageKey('rank'),
+                  collapsedIconColor: Colors.white,
+                  iconColor: Colors.white,
+                  title: Text(
+                    "班級排名：${widget.rank}",
+                    style: TextStyle(fontSize: 18.0, color: Colors.white),
+                  ),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 12.0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "期末平均：${widget.avg}",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(fontSize: 18.0, color: Colors.white),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              )),
-        ),
-        SliverFillRemaining(
-          child: ListView.separated(
-            controller: _listScrollController,
-            padding: const EdgeInsets.all(8.0),
-            physics: BouncingScrollPhysics(),
-            itemCount: widget.grade.length,
-            separatorBuilder: (BuildContext context, int index) {
-              return SizedBox(
-                height: 8,
-              );
-            },
-            itemBuilder: (BuildContext context, int index) {
-              bool isFail = false;
-              if (widget.grade[index].score != '未上傳') {
-                double score = double.parse('${widget.grade[index].score}');
-                if (score < 60.0) {
-                  isFail = true;
-                }
-              }
-              return Container(
-                height: 80.0,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                  ),
-                  elevation: 1.5,
-                  //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 18.0, vertical: 8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  ],
+                )),
+          );
+        }
+        else{
+          bool isFail = false;
+          if (widget.grade[index-1].score != '未上傳') {
+            double score = double.parse('${widget.grade[index-1].score}');
+            if (score < 60.0) {
+              isFail = true;
+            }
+          }
+          return Container(
+            height: 80.0,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+              ),
+              elevation: 1.5,
+              //margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 8.0),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 18.0, vertical: 8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        widget.grade[index-1].lesson,
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            widget.grade[index].lesson,
-                            style: TextStyle(
-                                fontSize: 16.0, fontWeight: FontWeight.bold),
+                        Text(
+                          '分數：${widget.grade[index-1].score}',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: isFail ? Colors.red : Colors.grey[600],
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '分數：${widget.grade[index].score}',
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                color: isFail ? Colors.red : Colors.grey[600],
-                              ),
-                            ),
-                            Text(
-                              '${widget.grade[index].type}',
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ],
+                        Text(
+                          '${widget.grade[index-1].type}',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.grey[600],
+                          ),
                         ),
                       ],
                     ),
-                  ),
+                  ],
                 ),
-              );
-            },
-          ),
-        )
-      ],
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }
@@ -281,7 +282,6 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
     return ListView.separated(
       controller: _scrollController,
       padding: const EdgeInsets.all(8.0),
-      physics: BouncingScrollPhysics(),
       itemCount: widget.grade.length,
       separatorBuilder: (BuildContext context, int index) => Divider(
         height: 30.0,
@@ -302,7 +302,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),

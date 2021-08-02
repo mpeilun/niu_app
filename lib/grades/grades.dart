@@ -63,7 +63,6 @@ class _GradesState extends State<Grades> with SingleTickerProviderStateMixin {
                 toolbarHeight: 0.0,
                 elevation: 0.0,
                 centerTitle: true,
-                floating: true,
                 bottom: PreferredSize(
                   preferredSize: Size.fromHeight(56.0),
                   child: Container(
