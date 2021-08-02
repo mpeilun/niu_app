@@ -11,7 +11,8 @@ class FinalPage extends StatefulWidget {
   _FinalPageState createState() => _FinalPageState();
 }
 
-class _FinalPageState extends State<FinalPage> {
+class _FinalPageState extends State<FinalPage>
+    with AutomaticKeepAliveClientMixin<FinalPage> {
   HeadlessInAppWebView? headlessWebView;
   bool loadStates = false;
   late String url;
@@ -166,7 +167,11 @@ class _FinalPageState extends State<FinalPage> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return loadStates
         ? Column(
             children: [
