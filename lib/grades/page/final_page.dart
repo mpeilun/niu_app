@@ -168,42 +168,8 @@ class _FinalPageState extends State<FinalPage> {
   @override
   Widget build(BuildContext context) {
     return loadStates
-        ? CustomScrollView(
-      slivers: [
-              SliverToBoxAdapter(
-                child: Container(
-                    color: Theme.of(context).primaryColor,
-                    child: ExpansionTile(
-                      collapsedIconColor: Colors.white,
-                      iconColor: Colors.white,
-                      title: Text(
-                        "班級排名：$rank",
-                        style: TextStyle(fontSize: 18.0, color: Colors.white),
-                      ),
-                      children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 12.0),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "期末平均：$avg",
-                              textAlign: TextAlign.left,
-                              style:
-                                  TextStyle(fontSize: 18.0, color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
-              ),
-              SliverFillRemaining(
-                child: CustomGradeCard(
-                  grade: grades,
-                ),
-              )
-            ],
-          )
+        ? CustomFinCard(rank: rank, avg: avg, grade: grades,)
         : NiuIconLoading(size: 80);
   }
 }
+
