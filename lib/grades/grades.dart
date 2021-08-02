@@ -57,7 +57,6 @@ class _GradesState extends State<Grades> with SingleTickerProviderStateMixin {
         ),
         body: NestedScrollView(
           controller: gradeScrollController,
-          floatHeaderSlivers: true,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
