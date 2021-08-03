@@ -4,6 +4,15 @@ import 'dart:convert';
 
 class SemesterDate{
 
+  Future<bool> getIsFinish() async{
+    DateTime now = DateTime.now();
+    nowYear = now.year;
+    nowMonths = now.month;
+    nowDay = now.day;
+    await semester();
+    return true;
+  }
+
   ///<--Json的索引列-->///
   List<String> index = [
     "start_year",
@@ -22,7 +31,7 @@ class SemesterDate{
 
   ///<--現在的學期-->///
   /// null=沒初始化 ///
-  /// out=不在學期中///
+  /// out+年月=不在學期中///
   String nowSemester = "null";
 
   ///<--學期起迄-->///
@@ -44,11 +53,14 @@ class SemesterDate{
   }
 
   SemesterDate(){
+    /*
     DateTime now = DateTime.now();
     nowYear = now.year;
     nowMonths = now.month;
     nowDay = now.day;
     semester();
+
+     */
   }
   Future<void> semester() async{
     var jsonString = await Dio().get('https://my-json-server.typicode.com/ken6078/NiuSemesterJSON/db');
@@ -99,6 +111,6 @@ class SemesterDate{
     semesterEndMonths = -1;
     semesterEndDay = -1;
     semesterWeek = -1;
-    nowSemester = "out";
+    nowSemester = "out" + nowYear.toString() + "/" + nowMonths.toString();
   }
 }

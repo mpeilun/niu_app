@@ -1,5 +1,6 @@
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:niu_app/service/SemesterDate.dart';
 
 class getHTML {
   getHTML(){
@@ -7,13 +8,16 @@ class getHTML {
   }
 
   Future<bool> getIsFinish() async{
+    SemesterDate date = SemesterDate();
+    await date.getIsFinish();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if( prefs.getStringList("timeTable") == null)
-      await getFromWeb(prefs);
+    if( prefs.getStringList( prefs.getString("id").toString() + "TimeTable" + date.nowSemester) == null)
+      await getFromWeb(prefs,date);
     else{
       await Future.delayed(const Duration(milliseconds: 1000), (){});
       htmlCode = saveListToList(prefs.getStringList("timeTable") );
     }
+    print("HTML load finish!");
     return true;
   }
   int weekDayNum = 5;
@@ -47,7 +51,7 @@ class getHTML {
     },
   );
 
-  Future<void> getFromWeb(SharedPreferences prefs) async {
+  Future<void> getFromWeb(SharedPreferences prefs,SemesterDate date) async {
     headlessWebView.run();
     var result;
     var buttonResult;
@@ -88,8 +92,7 @@ class getHTML {
       }
       htmlCode.add(tempHtmlCode);
     }
-    await prefs.setStringList("timeTable", listToSaveList(htmlCode));
-    print("HTML　load finish!");
+    await prefs.setStringList(prefs.getString("id").toString() + "TimeTable" + date.nowSemester, listToSaveList(htmlCode));
     return;
   }
   List<String> listToSaveList(List<List<String?>> list){
