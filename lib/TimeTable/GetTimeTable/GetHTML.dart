@@ -11,9 +11,12 @@ class getHTML {
     SemesterDate date = SemesterDate();
     await date.getIsFinish();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if( prefs.getStringList( prefs.getString("id").toString() + "TimeTable" + date.nowSemester) == null)
-      await getFromWeb(prefs,date);
+    if(prefs.getStringList(prefs.getString("id").toString() + "TimeTable" + date.nowSemester) == null){
+      print("Get from web");
+      await getFromWeb(date);
+    }
     else{
+      print("Get from mem");
       await Future.delayed(const Duration(milliseconds: 1000), (){});
       htmlCode = saveListToList(prefs.getStringList("timeTable") );
     }
@@ -38,7 +41,7 @@ class getHTML {
       print('HeadlessInAppWebView created!');
     },
     onConsoleMessage: (controller, consoleMessage) {
-      print("CONSOLE MESSAGE: " + consoleMessage.message);
+      //print("CONSOLE MESSAGE: " + consoleMessage.message);
     },
     onLoadStart: (controller, url) async {
       print("onLoadStart $url");
@@ -51,8 +54,9 @@ class getHTML {
     },
   );
 
-  Future<void> getFromWeb(SharedPreferences prefs,SemesterDate date) async {
+  Future<void> getFromWeb(SemesterDate date) async {
     headlessWebView.run();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     var result;
     var buttonResult;
     //等待網頁載入結束

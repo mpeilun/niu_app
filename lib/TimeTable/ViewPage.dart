@@ -32,7 +32,7 @@ class _ViewPage extends State<ViewPage> {
           PopupMenuButton<String>(
             itemBuilder: (context) => weekGetPopupMenu(context),
             onSelected: (String value) {
-              print('onSelected : ' + value);
+              print('Week Selected : ' + value);
               setState(() {
                 week = int.parse(value)-1;
                 select = true;
@@ -50,7 +50,7 @@ class _ViewPage extends State<ViewPage> {
             onSelected: (String value) {
               print('onSelected : ' + value);
               if( value == "Reload")
-                reload(context);
+                clean(context);
             },
             onCanceled: () {
               print('onCanceled');
@@ -80,7 +80,7 @@ class _ViewPage extends State<ViewPage> {
     return <PopupMenuEntry<String>>[
       PopupMenuItem<String>(
         value: 'Reload',
-        child: Text('重新獲取課表'),
+        child: Text('清除緩存'),
       ),
     ];
   }
@@ -111,7 +111,7 @@ class _ViewPage extends State<ViewPage> {
     ];
     return Text('第' + chineseNum[num] + "週" ,style: TextStyle(fontSize: num < 10 ? 12 : 9),);
   }
-  void reload(BuildContext context) async{
+  void clean(BuildContext context) async{
     SemesterDate date = SemesterDate();
     await date.getIsFinish();
     SharedPreferences prefs = await SharedPreferences.getInstance();
