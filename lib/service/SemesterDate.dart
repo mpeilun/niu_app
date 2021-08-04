@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:week_of_year/week_of_year.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class SemesterDate{
@@ -68,11 +69,12 @@ class SemesterDate{
     getNowWeek(semesterJSON,109,1);
     //print(semesterWeek);
   }
-  void getNowWeek(Map<String, dynamic> semesterJSON,int year,int semester){
+  void getNowWeek(Map<String, dynamic> semesterJSON,int year,int semester) async{
     if (semester == 3) {
       getNowWeek(semesterJSON, year + 1, 1);
       return;
     }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     String thisSemester = "d" + year.toString() + "-" + semester.toString();
     int startYear = int.parse(semesterJSON[thisSemester][index[0]]);
     int startMonth = int.parse(semesterJSON[thisSemester][index[1]]);
@@ -92,6 +94,13 @@ class SemesterDate{
       semesterEndMonths = endMonth;
       semesterEndDay = endDay;
       semesterWeek = now.weekOfYear - semesterStartTime.weekOfYear + 1;
+      prefs.setInt("semesterStartYear", semesterStartYear);
+      prefs.setInt("semesterStartMonths", semesterStartMonths);
+      prefs.setInt("semesterStartDay", semesterStartDay);
+      prefs.setInt("semesterEndYear", semesterStartYear);
+      prefs.setInt("semesterEndMonths", semesterEndMonths);
+      prefs.setInt("semesterEndDay", semesterEndDay);
+      prefs.setInt("semesterWeek", semesterWeek);
       if(semesterWeek < 0)
         semesterWeek += 52;
     }else if( now.isBefore(semesterStartTime) ){

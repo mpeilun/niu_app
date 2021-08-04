@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:niu_app/service/SemesterDate.dart';
-import './BuildTimeTable/ViewPage.dart';
+import 'ViewPage.dart';
 import './BuildTimeTable/Class.dart';
 import './GetTimeTable/GetHTML.dart';
 import './Loading.dart';
@@ -13,7 +13,7 @@ class TimeTable extends StatefulWidget {
 }
 
 class _TimeTableState extends State<TimeTable> {
-  var a = SemesterDate;
+  SemesterDate a = SemesterDate();
   var b = getHTML();
 
   List<Class> myTable = <Class>[
@@ -32,6 +32,7 @@ class _TimeTableState extends State<TimeTable> {
 
   @override
   Widget build(BuildContext context) {
+    a.getIsFinish();
     return FutureBuilder(
         future: b.getIsFinish(), // the function to get your data from firebase or firestore
         builder : (BuildContext context, AsyncSnapshot snap){
@@ -43,7 +44,7 @@ class _TimeTableState extends State<TimeTable> {
             List<List<String?>> htmlCode = b.htmlCode;
             var temp = HtmlToClassList();
             List<Class> tempClassList = temp.classList(htmlCode);
-            return ViewPage.build(myTable : tempClassList);
+            return ViewPage.build(myTable : tempClassList,date : a);
             //return the widget that you want to display after loading
           }
         }
