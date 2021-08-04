@@ -28,14 +28,14 @@ class _ClassCard extends State<ClassCard> {
       child: InkWell(
         onTap: () {
           setState(() {
-            if(thisClass.getColor() == Colors.red)
+            if(thisClass.getColor() == Color(0x2A))
+              thisClass.setColor(Colors.red);
+            else if(thisClass.getColor() == Colors.red)
               thisClass.setColor(Colors.green);
             else if(thisClass.getColor() == Colors.green)
               thisClass.setColor(Colors.blue);
             else if(thisClass.getColor() == Colors.blue)
-              thisClass.setColor(Color(0x2));
-            else
-              thisClass.setColor(Colors.red);
+              thisClass.setColor(Color(0x2A));
           });
         },
         child: Center(

@@ -102,20 +102,24 @@ class ClassList{
 
 int colorIndex = 0;
 List<Color> colors = <Color>[
-  Color(0x2828FF),
-  Color(0x4A4AFF),
-  Color(0x6A6AFF),
-  Color(0x0072E3),
-  Color(0x0080FF),
-  Color(0x00CACA),
-  Color(0x00E3E3),
-  Color(0x00FFFF),
-  Color(0x02DF82),
-  Color(0x02F78E),
-  Color(0x1AFD9C),
-  Color(0x00DB00),
-  Color(0x00EC00),
-  Color(0x28FF28),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
+  Color(0x2A),
 ];
 /*
 List<Color> colors = <Color>[
