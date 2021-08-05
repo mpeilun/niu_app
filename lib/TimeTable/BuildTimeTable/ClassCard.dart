@@ -14,7 +14,7 @@ class ClassCard extends StatefulWidget {
 class _ClassCard extends State<ClassCard> {
 
   void calenderChange() async{
-    await Future.delayed(Duration(seconds: 100));
+    await Future.delayed(Duration(seconds: 10));
     //todo:等待行事曆編輯的結束
   }
 

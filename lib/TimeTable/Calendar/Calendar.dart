@@ -9,7 +9,7 @@ class Calendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("課表"),
+        title: Text("行事曆"),
         centerTitle: true,
       ),
       body: Container(
