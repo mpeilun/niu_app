@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import '../Calendar/Calendar.dart';
 
 import 'Class.dart';
 class ClassCard extends StatefulWidget {
   ClassCard.build({
     required this.thisClass,
   });
-  Class thisClass;
+  final Class thisClass;
 
   @override
   _ClassCard createState() => new _ClassCard();
 }
 class _ClassCard extends State<ClassCard> {
+
+  void calenderChange() async{
+    await Future.delayed(Duration(seconds: 100));
+    //todo:等待行事曆編輯的結束
+  }
+
   @override
   Widget build(BuildContext context) {
     Class thisClass = widget.thisClass;
@@ -22,12 +29,19 @@ class _ClassCard extends State<ClassCard> {
     }else {
       classInfo = thisClass.name.toString();
     }
-
     return Card(
       color: thisClass.getColor(),
       child: InkWell(
         onTap: () {
           setState(() {
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+              builder: (context) => Calendar()),
+              );
+            calenderChange(); //不會延遲所以應該要用setState()
+
             if(thisClass.getColor() == Color(0x2A))
               thisClass.setColor(Colors.red);
             else if(thisClass.getColor() == Colors.red)
