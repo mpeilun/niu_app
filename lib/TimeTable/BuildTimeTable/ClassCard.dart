@@ -33,15 +33,21 @@ class _ClassCard extends State<ClassCard> {
       color: thisClass.getColor(),
       child: InkWell(
         onTap: () {
+
           setState(() {
+
+
 
             Navigator.push(
               context,
               MaterialPageRoute(
-              builder: (context) => Calendar()),
+              builder: (context) => Calendar(
+                index: 1,
+              )),
               );
             calenderChange(); //不會延遲所以應該要用setState()
 
+            /*
             if(thisClass.getColor() == Color(0x2A))
               thisClass.setColor(Colors.red);
             else if(thisClass.getColor() == Colors.red)
@@ -50,6 +56,8 @@ class _ClassCard extends State<ClassCard> {
               thisClass.setColor(Colors.blue);
             else if(thisClass.getColor() == Colors.blue)
               thisClass.setColor(Color(0x2A));
+
+             */
           });
         },
         child: Center(
