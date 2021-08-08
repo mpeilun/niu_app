@@ -47,6 +47,7 @@ class _GraduationState extends State<Graduation> {
                       Indicator(
                         title: '服務奉獻',
                         time: time.service,
+                        requiredTime: 20.0,
                       ),
                       SizedBox(
                         width: 20.0,
@@ -54,6 +55,7 @@ class _GraduationState extends State<Graduation> {
                       Indicator(
                         title: '多元成長',
                         time: time.multiple,
+                        requiredTime: 20.0,
                       ),
                       SizedBox(
                         width: 20.0,
@@ -61,6 +63,7 @@ class _GraduationState extends State<Graduation> {
                       Indicator(
                         title: '專業進取',
                         time: time.profession,
+                        requiredTime: 20.0,
                       ),
                       SizedBox(
                         width: 20.0,
@@ -68,6 +71,7 @@ class _GraduationState extends State<Graduation> {
                       Indicator(
                         title: '彈性綜合',
                         time: time.flex,
+                        requiredTime: 40.0,
                       ),
                     ],
                   ),
@@ -118,11 +122,13 @@ class _GraduationState extends State<Graduation> {
 class Indicator extends StatelessWidget {
   final String title;
   final String time;
+  final double requiredTime;
 
   const Indicator({
     Key? key,
     required this.title,
     required this.time,
+    required this.requiredTime,
   }) : super(key: key);
 
   @override
@@ -141,9 +147,9 @@ class Indicator extends StatelessWidget {
         animationDuration: 750,
         radius: 100.0,
         lineWidth: 10.0,
-        percent: times / 20,
+        percent: times / requiredTime,
         center: Text(
-          "$time/20",
+          "$time/${requiredTime.toStringAsFixed(0)}",
           style: TextStyle(
               fontSize: 16.0,
               color: Colors.grey[600],
