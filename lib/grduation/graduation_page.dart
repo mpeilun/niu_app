@@ -127,6 +127,7 @@ class Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double times = double.parse('$time');
     return Container(
       child: CircularPercentIndicator(
         header: Padding(
@@ -140,7 +141,7 @@ class Indicator extends StatelessWidget {
         animationDuration: 750,
         radius: 100.0,
         lineWidth: 10.0,
-        percent: 0.8,
+        percent: times / 20,
         center: Text(
           "$time/20",
           style: TextStyle(
