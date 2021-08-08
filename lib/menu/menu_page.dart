@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/grades/grades.dart';
+import 'package:niu_app/grduation/graduation_page.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menu/loading.dart';
 import 'package:niu_app/menuIcon.dart';
@@ -139,7 +140,13 @@ class _StartMenu extends State<StartMenu> {
                               CustomIcons(
                                 title: '畢業門檻',
                                 icon: MenuIcon.icon_graduation,
-                                press: () {},
+                                press: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Graduation(),
+                                          maintainState: false));
+                                },
                               ),
                             ],
                           ),
