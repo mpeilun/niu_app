@@ -33,12 +33,11 @@ class _ClassCard extends State<ClassCard> {
       color: thisClass.getColor(),
       child: InkWell(
         onTap: () async {
-          bool isSwitched = false;
-          List<bool> isSelected = <bool>[false,false,false];
           var ret = showDialog(
             barrierDismissible: false,
             context: context,
             builder: (BuildContext context) {
+              List<bool> isSelected = <bool>[false,false,false];
               return AlertDialog(
                   content: StatefulBuilder(
                     builder: (BuildContext context, StateSetter setState) {
@@ -112,8 +111,9 @@ class _ClassCard extends State<ClassCard> {
                           ),
                         ),
                       );
-                  }
-              ));
+                    }
+                  )
+              );
             },
           );
         },
