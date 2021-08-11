@@ -32,33 +32,24 @@ class _ClassCard extends State<ClassCard> {
     return Card(
       color: thisClass.getColor(),
       child: InkWell(
-        onTap: () {
+        onTap: () async {
 
+          //final String? inputData = await inputDialog(context);
+          //print("你輸入：$inputData");
+
+          final int? inputData = await optionDialog(context);
           setState(() {
-
-
-
             Navigator.push(
               context,
               MaterialPageRoute(
               builder: (context) => Calendar(
-                index: 1,
+                index: inputData!,
               )),
               );
             calenderChange(); //不會延遲所以應該要用setState()
-
-            /*
-            if(thisClass.getColor() == Color(0x2A))
-              thisClass.setColor(Colors.red);
-            else if(thisClass.getColor() == Colors.red)
-              thisClass.setColor(Colors.green);
-            else if(thisClass.getColor() == Colors.green)
-              thisClass.setColor(Colors.blue);
-            else if(thisClass.getColor() == Colors.blue)
-              thisClass.setColor(Color(0x2A));
-
-             */
           });
+
+
         },
         child: Center(
           child: Padding(
@@ -75,5 +66,39 @@ class _ClassCard extends State<ClassCard> {
       ),
     );
   }
+}
+
+//http://tw-hkt.blogspot.com/2019/08/flutter_87.html
+enum OptionDatas { Test, Homework, paper }
+
+Future<int?> optionDialog(BuildContext context) async {
+  return await showDialog<int>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text('行事曆'),
+          children: <Widget>[
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, 0);
+              },
+              child: const Text('作業'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, 1);
+              },
+              child: const Text('考試'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, 2);
+              },
+              child: const Text('報告'),
+            ),
+          ],
+        );
+      });
 }
 

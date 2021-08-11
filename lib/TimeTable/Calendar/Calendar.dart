@@ -80,7 +80,7 @@ class _Calendar extends State<Calendar>{
           );
         },
         tooltip: 'Show me the value!',
-        child: const Icon(Icons.text_fields),
+        child: const Icon(Icons.add),
       ),
     );
   }
