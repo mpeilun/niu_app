@@ -43,7 +43,7 @@ class _ClassCard extends State<ClassCard> {
                   content: StatefulBuilder(
                     builder: (BuildContext context, StateSetter setState) {
                       return Container(
-                        height: MediaQuery.of(context).size.height / 2,
+                        height: 284 ,
                         child: Center(
                           child: Column(
                             children: [
@@ -112,7 +112,8 @@ class _ClassCard extends State<ClassCard> {
                           ),
                         ),
                       );
-                  }));
+                  }
+              ));
             },
           );
         },
