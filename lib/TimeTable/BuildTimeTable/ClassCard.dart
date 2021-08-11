@@ -33,23 +33,88 @@ class _ClassCard extends State<ClassCard> {
       color: thisClass.getColor(),
       child: InkWell(
         onTap: () async {
+          bool isSwitched = false;
+          List<bool> isSelected = <bool>[false,false,false];
+          var ret = showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                  content: StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                      return Container(
+                        height: MediaQuery.of(context).size.height / 2,
+                        child: Center(
+                          child: Column(
+                            children: [
+                              ToggleButtons(
+                                children: <Widget>[
+                                  Text("作業"),
+                                  Text("考試"),
+                                  Text("報告"),
+                                ],
+                                onPressed: (int index) {
+                                  setState(() {
+                                    for (int buttonIndex = 0; buttonIndex < isSelected.length; buttonIndex++) {
+                                      if (buttonIndex == index) {
+                                        isSelected[buttonIndex] = true;
+                                      } else {
+                                        isSelected[buttonIndex] = false;
+                                      }
+                                    }
+                                  });
+                                },
+                                isSelected: isSelected,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(15),
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: '名稱',
+                                    hintText: '清輸入名稱',
+                                  ),
+                                  onChanged: (text) {
 
-          //final String? inputData = await inputDialog(context);
-          //print("你輸入：$inputData");
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.all(15),
+                                  child: TextField(
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: '範圍',
+                                      hintText: "清輸入範圍",
+                                    ),
+                                    onChanged: (text) {
 
-          final int? inputData = await optionDialog(context);
-          setState(() {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-              builder: (context) => Calendar(
-                index: inputData!,
-              )),
-              );
-            calenderChange(); //不會延遲所以應該要用setState()
-          });
-
-
+                                    },
+                                  )
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  RaisedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, false);
+                                    },
+                                    child: Icon(Icons.delete),
+                                  ),
+                                  RaisedButton(
+                                    onPressed: () {},
+                                    child: Icon(Icons.check),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                  }));
+            },
+          );
         },
         child: Center(
           child: Padding(
@@ -69,36 +134,5 @@ class _ClassCard extends State<ClassCard> {
 }
 
 //http://tw-hkt.blogspot.com/2019/08/flutter_87.html
-enum OptionDatas { Test, Homework, paper }
-
-Future<int?> optionDialog(BuildContext context) async {
-  return await showDialog<int>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: const Text('行事曆'),
-          children: <Widget>[
-            SimpleDialogOption(
-              onPressed: () {
-                Navigator.pop(context, 0);
-              },
-              child: const Text('作業'),
-            ),
-            SimpleDialogOption(
-              onPressed: () {
-                Navigator.pop(context, 1);
-              },
-              child: const Text('考試'),
-            ),
-            SimpleDialogOption(
-              onPressed: () {
-                Navigator.pop(context, 2);
-              },
-              child: const Text('報告'),
-            ),
-          ],
-        );
-      });
-}
+//https://stackoverflow.com/questions/62034107/flutter-switch-widget-does-not-work-properly-in-the-showdialog
 
