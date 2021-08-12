@@ -24,4 +24,7 @@ class Class{
   ///<--普通建構子-->///
   Class(this.name,this.teacher,this.classroom,this.weekDay,this.startTime,this.endTime);
   void setColor(Color? changeColor) {_color = changeColor;}
+  String save(){
+    return "Class($name,$teacher,$classroom,$weekDay,$startTime,$endTime)";
+  }
 }

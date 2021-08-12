@@ -1,88 +1,93 @@
-//棄用
-import 'package:flutter/material.dart';
-
-class Calendar extends StatefulWidget {
-  Calendar({
-    required this.index,
-  });
-  int index;
-  @override
-  _Calendar createState() => _Calendar();
+import 'dart:convert';
+import 'dart:core';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../BuildTimeTable/Class.dart';
+class Calendar{
+  Calendar(int? type,String? name,String? range){
+    if(type != null){
+      typeEnable = true;
+      _type = type;
+    }
+    if(name != null){
+      nameEnable = true;
+      _name = name;
+    }
+    if(range != null){
+      rangeEnable = true;
+      _range = range;
+    }
+  }
+  bool typeEnable = false;
+  late int _type;
+  int type(){
+    if(typeEnable)
+      return _type;
+    else
+      return -1;
+  }
+  bool nameEnable = false;
+  late String _name;
+  String name(){
+    if(nameEnable)
+      return _name;
+    else
+      return "null";
+  }
+  bool rangeEnable = false;
+  late String _range;
+  String range(){
+    if(rangeEnable)
+      return _range;
+    else
+      return "null";
+  }
+  String save(){
+    return "Calendar(" + type().toString() + "," + name() + "," + range() + ")";
+  }
 }
 
-// Define a corresponding State class.
-// This class holds the data related to the Form.
-class _Calendar extends State<Calendar>{
-  final myController = TextEditingController();
-  @override
-  Widget build(BuildContext context) {
-    String name = "";
-    String detail = "";
-    String indexString;
-    if(widget.index == 1)
-      indexString = "考試";
-    else if(widget.index == 2)
-      indexString = "報告";
-    else
-      indexString = "作業";
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('行事曆'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-            children: <Widget> [
-              //週次不知要不要
-              Padding(
-                padding: EdgeInsets.all(15),
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: '名稱',
-                    hintText: '清輸入名稱',
-                  ),
-                  onChanged: (text) {
-                    name = text;
-                  },
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(15),
-                child: TextField(
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: '範圍',
-                    hintText: "清輸入" + indexString + "範圍",
-                  ),
-                  onChanged: (text) {
-                    detail = text;
-                  },
-                )
-              ),
-
-            ]
-        )
-      ),
-      floatingActionButton: FloatingActionButton(
-        // When the user presses the button, show an alert dialog containing
-        // the text that the user has entered into the text field.
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                // Retrieve the text the that user has entered by using the
-                // TextEditingController.
-                content: Text(name + detail),
-              );
-            },
-          );
-        },
-        tooltip: 'Show me the value!',
-        child: const Icon(Icons.add),
-      ),
+class WeekCalendar{
+//List< Map<Class,Calendar> >
+  List< Map<String,String> > saveList = [{Class("電子電路","朱志明","教416",1,2,4).save() : Calendar(1,null,null).save()}];
+  void push(Class cl,Calendar ca) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int week = prefs.getInt("SelectWeek")!;
+    if(week == -1)
+      week = 0;
+    List<String> saveList = await readMen();
+    Map<String,String> tempMap = stringToMap(saveList[week]);
+    tempMap[cl.save()] = ca.save();
+    saveList[week] = mapToString(tempMap);
+    prefs.setStringList("Calendar",saveList);
+  }
+  void setWeek(int week) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt("SelectWeek",week);
+    List<String> saveList = await readMen();
+    print(
+        saveList // {"Class(電子電路,朱志明,教416,1,2,4)":"Calendar(1,null,null)"}
     );
   }
+  Map<String,String> stringToMap(String str){
+    if(str.isNotEmpty)
+      return Map<String, String>.from(json.decode(str));
+    return {};
+  }
+  String mapToString(Map<String,String> map){
+    if(map.isNotEmpty)
+      return json.encode(map);
+    return "";
+  }
+  Future<List<String>> readMen() async{
+    List<String>firstList = ["","","","","","","","","","","","","","","","","","","","","","","",""];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? tempList = prefs.getStringList("Calendar");
+    List<String> returnList;
+    if(tempList != null)
+      returnList = tempList;
+    else
+      returnList = firstList;
+    return returnList;
+  }
+
 }

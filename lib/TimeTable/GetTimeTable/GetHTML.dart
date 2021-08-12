@@ -11,7 +11,7 @@ class getHTML {
     SemesterDate date = SemesterDate();
     await date.getIsFinish();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getStringList(prefs.getString("id").toString() + "TimeTable" + date.nowSemester) == null){
+    if(prefs.getStringList(prefs.getString("id").toString() + "TimeTable" + date.nowSemester) == null || true){
       print("Get from web");
       await getFromWeb(date);
     }
@@ -28,34 +28,82 @@ class getHTML {
   // arr[classNum][weekDayNum]
   List<List<String?>> htmlCode = <List<String?>> [];
 
-  HeadlessInAppWebView headlessWebView = new HeadlessInAppWebView(
-    initialUrlRequest: URLRequest(
-        url: Uri.parse(
-            "https://acade.niu.edu.tw/NIU/Application/TKE/TKE22/TKE2240_01.aspx"),
-        headers:{"Referer":"https://acade.niu.edu.tw/NIU/Application/TKE/TKE22/TKE2240_.aspx?progcd=TKE2240"}
-    ),
-    initialOptions: InAppWebViewGroupOptions(
-      crossPlatform: InAppWebViewOptions(),
-    ),
-    onWebViewCreated: (controller) {
-      print('HeadlessInAppWebView created!');
-    },
-    onConsoleMessage: (controller, consoleMessage) {
-      //print("CONSOLE MESSAGE: " + consoleMessage.message);
-    },
-    onLoadStart: (controller, url) async {
-      print("onLoadStart $url");
-    },
-    onLoadStop: (controller, url) async {
-      print("onLoadStop $url");
-    },
-    onUpdateVisitedHistory: (controller, url, androidIsReload) {
-      print("onUpdateVisitedHistory $url");
-    },
-  );
+  late HeadlessInAppWebView headlessWebView;
 
   Future<void> getFromWeb(SemesterDate date) async {
+    String? _url;
+    headlessWebView = new HeadlessInAppWebView(
+      initialUrlRequest: URLRequest(
+          url: Uri.parse(
+              "https://acade.niu.edu.tw/NIU/Application/TKE/TKE22/TKE2240_01.aspx"),
+          headers:{"Referer":"https://acade.niu.edu.tw/NIU/Application/TKE/TKE22/TKE2240_.aspx?progcd=TKE2240"}
+      ),
+      initialOptions: InAppWebViewGroupOptions(
+        crossPlatform: InAppWebViewOptions(),
+      ),
+      onWebViewCreated: (controller) {
+        print('HeadlessInAppWebView created!');
+      },
+      onConsoleMessage: (controller, consoleMessage) {
+        print("CONSOLE MESSAGE: " + consoleMessage.message);
+      },
+      onLoadStart: (controller, url) async {
+        print("onLoadStart $url");
+      },
+      onLoadStop: (controller, url) async {
+        if (url.toString() == 'https://acade.niu.edu.tw/NIU/Default.aspx') {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          String? id = prefs.getString('id');
+          String? pwd = prefs.getString('pwd');
+          await headlessWebView.webViewController.evaluateJavascript(
+              source:
+              'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
+          await headlessWebView.webViewController.evaluateJavascript(
+              source: 'document.querySelector("#M_PW").value=\'$pwd\';');
+          Future.delayed(Duration(milliseconds: 1000), () async {
+            await headlessWebView.webViewController.evaluateJavascript(
+                source: 'document.querySelector("#LGOIN_BTN").click();');
+          });
+        }
+        if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
+          await headlessWebView.webViewController.loadUrl(
+              urlRequest: URLRequest(
+                  url: Uri.parse(
+                      "https://acade.niu.edu.tw/NIU/Application/TKE/TKE22/TKE2240_01.aspx"),
+                  headers:{"Referer":"https://acade.niu.edu.tw/NIU/Application/TKE/TKE22/TKE2240_.aspx?progcd=TKE2240"}
+              )
+          );
+        }
+        print("onLoadStop $url");
+      },
+      onUpdateVisitedHistory: (controller, url, androidIsReload) {
+        print("onUpdateVisitedHistory $url");
+        _url = url.toString();
+      },
+      onJsAlert: (InAppWebViewController controller,
+          JsAlertRequest jsAlertRequest) async {
+        print(jsAlertRequest.message.toString());
+        /*
+        if (jsAlertRequest.message.toString().contains('使用時間逾時')) {
+          _url = null;
+
+          await headlessWebView.webViewController.loadUrl(
+              urlRequest: URLRequest(
+                  url: Uri.parse(
+                      "https://acade.niu.edu.tw/NIU/Default.aspx")));
+        }
+        */
+        return JsAlertResponse(
+            handledByClient: true, action: JsAlertResponseAction.CONFIRM);
+      },
+    );
+
     headlessWebView.run();
+
+    await Future.delayed( Duration(milliseconds: 500));
+    while(_url != "https://acade.niu.edu.tw/NIU/Application/TKE/TKE22/TKE2240_01.aspx")
+      await Future.delayed( Duration(milliseconds: 100));
+    print(_url);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var result;
     var buttonResult;
@@ -131,6 +179,7 @@ class getHTML {
         list.add(tempList);
       }
     }
+    print(list);
     return list;
   }
 }

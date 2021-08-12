@@ -5,6 +5,7 @@ import 'package:niu_app/service/SemesterDate.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 import 'BuildTimeTable/ClassList.dart';
 import 'BuildTimeTable/Class.dart';
+import 'Calendar/Calendar.dart';
 class ViewPage extends StatefulWidget {
   const ViewPage.build({
     required this.myTable,
@@ -22,6 +23,7 @@ class _ViewPage extends State<ViewPage> {
   Widget build(BuildContext context) {
     if(!select)
       week = widget.date.semesterWeek;
+    WeekCalendar().setWeek(week);
     String dropdownValue = 'One';
     var _re = ClassList(widget.myTable);
     return Scaffold(
@@ -35,6 +37,7 @@ class _ViewPage extends State<ViewPage> {
               print('Week Selected : ' + value);
               setState(() {
                 week = int.parse(value)-1;
+                WeekCalendar().setWeek(week);
                 select = true;
               });
             },
@@ -47,10 +50,13 @@ class _ViewPage extends State<ViewPage> {
           ),
           PopupMenuButton<String>(
             itemBuilder: (context) => setingGetPopupMenu(context),
-            onSelected: (String value) {
+            onSelected: (String value) async{
               print('onSelected : ' + value);
-              if( value == "Reload")
+              if( value == "Reload"){
                 clean(context);
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.remove("Calendar");
+              }
             },
             onCanceled: () {
               print('onCanceled');

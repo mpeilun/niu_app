@@ -33,10 +33,13 @@ class _ClassCard extends State<ClassCard> {
       color: thisClass.getColor(),
       child: InkWell(
         onTap: () async {
-          var ret = showDialog(
+          Calendar input = await showDialog(
             barrierDismissible: false,
             context: context,
             builder: (BuildContext context) {
+              int? type;
+              String? name;
+              String? range;
               List<bool> isSelected = <bool>[false,false,false];
               return AlertDialog(
                   content: StatefulBuilder(
@@ -53,6 +56,7 @@ class _ClassCard extends State<ClassCard> {
                                   Text("報告"),
                                 ],
                                 onPressed: (int index) {
+                                  type = index;
                                   setState(() {
                                     for (int buttonIndex = 0; buttonIndex < isSelected.length; buttonIndex++) {
                                       if (buttonIndex == index) {
@@ -74,7 +78,7 @@ class _ClassCard extends State<ClassCard> {
                                     hintText: '清輸入名稱',
                                   ),
                                   onChanged: (text) {
-
+                                    name = text;
                                   },
                                 ),
                               ),
@@ -88,7 +92,7 @@ class _ClassCard extends State<ClassCard> {
                                       hintText: "清輸入範圍",
                                     ),
                                     onChanged: (text) {
-
+                                      range = text;
                                     },
                                   )
                               ),
@@ -97,12 +101,14 @@ class _ClassCard extends State<ClassCard> {
                                 children: [
                                   RaisedButton(
                                     onPressed: () {
-                                      Navigator.pop(context, false);
+                                      Navigator.pop(context, Calendar(null,null,null));
                                     },
                                     child: Icon(Icons.delete),
                                   ),
                                   RaisedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pop(context, Calendar(type,name,range));
+                                    },
                                     child: Icon(Icons.check),
                                   ),
                                 ],
@@ -116,6 +122,8 @@ class _ClassCard extends State<ClassCard> {
               );
             },
           );
+          if(input.typeEnable || input.nameEnable || input.rangeEnable)
+            WeekCalendar().push(thisClass,input);
         },
         child: Center(
           child: Padding(
