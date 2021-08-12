@@ -166,7 +166,9 @@ class _StartMenu extends State<StartMenu> {
                               CustomIcons(
                                 title: '更改帳號',
                                 icon: MenuIcon.icon_account,
-                                press: () {
+                                press: () async {
+                                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                                  prefs.clear();//清空键值对
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

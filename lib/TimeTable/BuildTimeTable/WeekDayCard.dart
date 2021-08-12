@@ -7,14 +7,15 @@ class WeekDayCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Padding(
-      padding: const EdgeInsets.all(11),  //2*5課表+1時間
-      //child: Text("生態與環境變遷\n徐頭疼\n教101"),
-      child: Text(
-        weekDayName[thisDay],
-        style: TextStyle(
-          fontSize: 12,
-        ),
+    return Container(
+      child: Expanded(
+          //child: Text("生態與環境變遷\n徐頭疼\n教101"),
+          child: Text(
+            weekDayName[thisDay],
+            style: TextStyle(
+              fontSize: 12,
+            ),
+          )
       ),
     );
   }

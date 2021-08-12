@@ -7,13 +7,14 @@ class TimeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Padding(
-      padding: const EdgeInsets.all(11),  //2*5課表+1時間
-      //child: Text("生態與環境變遷\n徐頭疼\n教101"),
-      child: Text(
-        timeName[thisTime],
-        style: TextStyle(
-          fontSize: 12,
+    return Container(
+      child: Expanded(
+        //child: Text("生態與環境變遷\n徐頭疼\n教101"),
+        child: Text(
+          timeName[thisTime],
+          style: TextStyle(
+            fontSize: 12,
+          ),
         ),
       ),
     );
@@ -21,19 +22,19 @@ class TimeCard extends StatelessWidget {
 }
 
 List<String> timeName = <String> [
-  "特早課",
-  "第一節",
-  "第二節",
-  "第三節",
-  "第四節",
-  "第五節",
-  "第六節",
-  "第七節",
-  "第八節",
-  "第九節",
-  "第A節",
-  "第B節",
-  "第C節",
-  "第D節",
+  "特\n早\n課",
+  "第\n一\n節",
+  "第\n二\n節",
+  "第\n三\n節",
+  "第\n四\n節",
+  "第\n五\n節",
+  "第\n六\n節",
+  "第\n七\n節",
+  "第\n八\n節",
+  "第\n九\n節",
+  "第\nA\n節",
+  "第\nB\n節",
+  "第\nC\n節",
+  "第\nD\n節",
 ];
 
