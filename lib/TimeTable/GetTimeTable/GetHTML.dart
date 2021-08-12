@@ -11,7 +11,7 @@ class getHTML {
     SemesterDate date = SemesterDate();
     await date.getIsFinish();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getStringList(prefs.getString("id").toString() + "TimeTable" + date.nowSemester) == null || true){
+    if(prefs.getStringList(prefs.getString("id").toString() + "TimeTable" + date.nowSemester) == null){
       print("Get from web");
       await getFromWeb(date);
     }
