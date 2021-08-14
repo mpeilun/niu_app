@@ -93,8 +93,8 @@ class _ClassCard extends State<ClassCard> {
                                     obscureText: false,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
-                                      labelText: '範圍',
-                                      hintText: "清輸入範圍",
+                                      labelText: '內容',
+                                      hintText: "清輸入內容",
                                     ),
                                     onChanged: (text) {
                                       range = text;
