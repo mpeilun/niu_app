@@ -22,8 +22,7 @@ class _ClassCard extends State<ClassCard> {
   Widget build(BuildContext context) {
     Class thisClass = widget.thisClass;
     String classInfo = "";
-    classInfo = thisClass.name.toString() + "\n\n" + thisClass.teacher.toString() + "\n\n" + thisClass.classroom.toString();
-    /*
+    //classInfo = thisClass.name.toString() + "\n\n" + thisClass.teacher.toString() + "\n\n" + thisClass.classroom.toString();
     if(thisClass.endTime-thisClass.startTime >= 2){
       classInfo = thisClass.name.toString() + "\n\n" + thisClass.teacher.toString() + "\n\n" + thisClass.classroom.toString();
     }else if(thisClass.endTime-thisClass.startTime == 1){
@@ -31,113 +30,113 @@ class _ClassCard extends State<ClassCard> {
     }else {
       classInfo = thisClass.name.toString();
     }
-    */
     return Card(
       color: thisClass.getColor(),
-      child: SingleChildScrollView(
-        child: InkWell(
-          onTap: () async {
-            Calendar input = await showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                int? type;
-                String? name;
-                String? range;
-                List<bool> isSelected = <bool>[false,false,false];
-                return AlertDialog(
-                    content: StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) {
-                        return Container(
-                          height: 284 ,
-                          child: Center(
-                            child: Column(
-                              children: [
-                                ToggleButtons(
-                                  children: <Widget>[
-                                    Text("作業"),
-                                    Text("考試"),
-                                    Text("報告"),
-                                  ],
-                                  onPressed: (int index) {
-                                    type = index;
-                                    setState(() {
-                                      for (int buttonIndex = 0; buttonIndex < isSelected.length; buttonIndex++) {
-                                        if (buttonIndex == index) {
-                                          isSelected[buttonIndex] = true;
-                                        } else {
-                                          isSelected[buttonIndex] = false;
-                                        }
+      child: TextButton(
+        style : ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+          overlayColor: MaterialStateProperty.all<Color>(Colors.grey),
+        ),
+        onPressed: () async {
+          Calendar input = await showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) {
+              int? type;
+              String? name;
+              String? range;
+              List<bool> isSelected = <bool>[false,false,false];
+              return AlertDialog(
+                  content: StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                      return Container(
+                        height: 284 ,
+                        child: Center(
+                          child: Column(
+                            children: [
+                              ToggleButtons(
+                                children: <Widget>[
+                                  Text("作業"),
+                                  Text("考試"),
+                                  Text("報告"),
+                                ],
+                                onPressed: (int index) {
+                                  type = index;
+                                  setState(() {
+                                    for (int buttonIndex = 0; buttonIndex < isSelected.length; buttonIndex++) {
+                                      if (buttonIndex == index) {
+                                        isSelected[buttonIndex] = true;
+                                      } else {
+                                        isSelected[buttonIndex] = false;
                                       }
-                                    });
+                                    }
+                                  });
+                                },
+                                isSelected: isSelected,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(15),
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: '名稱',
+                                    hintText: '清輸入名稱',
+                                  ),
+                                  onChanged: (text) {
+                                    name = text;
                                   },
-                                  isSelected: isSelected,
                                 ),
-                                Padding(
+                              ),
+                              Padding(
                                   padding: EdgeInsets.all(15),
                                   child: TextField(
+                                    obscureText: false,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
-                                      labelText: '名稱',
-                                      hintText: '清輸入名稱',
+                                      labelText: '範圍',
+                                      hintText: "清輸入範圍",
                                     ),
                                     onChanged: (text) {
-                                      name = text;
+                                      range = text;
                                     },
+                                  )
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  RaisedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, Calendar(null,null,null));
+                                    },
+                                    child: Icon(Icons.delete),
                                   ),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.all(15),
-                                    child: TextField(
-                                      obscureText: false,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: '範圍',
-                                        hintText: "清輸入範圍",
-                                      ),
-                                      onChanged: (text) {
-                                        range = text;
-                                      },
-                                    )
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    RaisedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context, Calendar(null,null,null));
-                                      },
-                                      child: Icon(Icons.delete),
-                                    ),
-                                    RaisedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context, Calendar(type,name,range));
-                                      },
-                                      child: Icon(Icons.check),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  RaisedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, Calendar(type,name,range));
+                                    },
+                                    child: Icon(Icons.check),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        );
-                      }
-                    )
-                );
-              },
-            );
-            if(input.typeEnable || input.nameEnable || input.rangeEnable)
-              WeekCalendar().push(thisClass,input);
-          },
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(11),  //2*5課表+1時間
-              //child: Text("生態與環境變遷\n徐頭疼\n教101"),
-              child: Text(
-                classInfo,
-                style: TextStyle(
-                  fontSize: 12,
-                ),
+                        ),
+                      );
+                    }
+                  )
+              );
+            },
+          );
+          if(input.typeEnable || input.nameEnable || input.rangeEnable)
+            WeekCalendar().push(thisClass,input);
+        },
+        child: SingleChildScrollView(
+          child: Center(//padding
+            child: Text(
+              classInfo,
+              textAlign : TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
               ),
             ),
           ),
