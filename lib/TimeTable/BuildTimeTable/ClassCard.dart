@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Calendar/Calendar.dart';
 
 import 'Class.dart';
 class ClassCard extends StatefulWidget {
   ClassCard.build({
     required this.thisClass,
+    required this.calendar,
   });
   final Class thisClass;
+  Calendar calendar;
 
   @override
   _ClassCard createState() => new _ClassCard();
 }
 class _ClassCard extends State<ClassCard> {
-
-  void calenderChange() async{
-    await Future.delayed(Duration(seconds: 10));
-    //todo:等待行事曆編輯的結束
-  }
+  bool select = false;
+  Class thisClass = Class("","","",-1,-1,-1);
+  Calendar calendar = Calendar(null, null, null);
 
   @override
   Widget build(BuildContext context) {
-    Class thisClass = widget.thisClass;
+    if(!select){
+      thisClass = widget.thisClass;
+      calendar = widget.calendar;
+    }
+    String calendarName = calendar.name();
+    if(calendarName == "null")
+      calendarName = "";
+    String calendarRange = calendar.range();
+    if(calendarRange == "null")
+      calendarRange = "";
     String classInfo = "";
     //classInfo = thisClass.name.toString() + "\n\n" + thisClass.teacher.toString() + "\n\n" + thisClass.classroom.toString();
     if(thisClass.endTime-thisClass.startTime >= 2){
@@ -30,6 +40,14 @@ class _ClassCard extends State<ClassCard> {
     }else {
       classInfo = thisClass.name.toString();
     }
+    if(calendar.type() == 0)
+      thisClass.setColor(Colors.red);
+    else if(calendar.type() == 1)
+      thisClass.setColor(Colors.blue);
+    else if(calendar.type() == 2)
+      thisClass.setColor(Colors.green);
+    else
+      thisClass.setColor(Color(0x2A));
     return Card(
       color: thisClass.getColor(),
       child: TextButton(
@@ -38,14 +56,55 @@ class _ClassCard extends State<ClassCard> {
           overlayColor: MaterialStateProperty.all<Color>(Colors.grey),
         ),
         onPressed: () async {
+          print( thisClass.save() + " : " + calendar.save());
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          int week = prefs.getInt("SelectWeek")!;
+          if(week == -1){
+            await showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    content: StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                          return Container(
+                            height: 71 ,
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Text("寒暑假不開放行事曆"),
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        RaisedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Icon(Icons.check),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                    )
+                );
+              },
+            );
+            return;
+          }
           Calendar input = await showDialog(
             barrierDismissible: false,
             context: context,
             builder: (BuildContext context) {
-              int? type;
-              String? name;
-              String? range;
-              List<bool> isSelected = <bool>[false,false,false];
+              int? type = 0;
+              String? name = calendar.name();
+              String? range = calendar.range();
+              List<bool> isSelected = <bool>[true,false,false];
               return AlertDialog(
                   content: StatefulBuilder(
                     builder: (BuildContext context, StateSetter setState) {
@@ -76,20 +135,23 @@ class _ClassCard extends State<ClassCard> {
                               ),
                               Padding(
                                 padding: EdgeInsets.all(15),
-                                child: TextField(
+                                child: TextFormField(
+                                  initialValue: calendarName,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(),
                                     labelText: '名稱',
                                     hintText: '清輸入名稱',
                                   ),
                                   onChanged: (text) {
-                                    name = text;
+                                    if(text != "") name = text;
+                                    else name = null;
                                   },
                                 ),
                               ),
                               Padding(
                                   padding: EdgeInsets.all(15),
-                                  child: TextField(
+                                  child: TextFormField(
+                                    initialValue: calendarRange,
                                     obscureText: false,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
@@ -97,7 +159,8 @@ class _ClassCard extends State<ClassCard> {
                                       hintText: "清輸入內容",
                                     ),
                                     onChanged: (text) {
-                                      range = text;
+                                      if(text != "") range = text;
+                                      else range = null;
                                     },
                                   )
                               ),
@@ -127,8 +190,11 @@ class _ClassCard extends State<ClassCard> {
               );
             },
           );
-          if(input.typeEnable || input.nameEnable || input.rangeEnable)
-            WeekCalendar().push(thisClass,input);
+          print(input.save());
+          setState(() {
+            calendar = input;
+            select = true;
+          });
         },
         child: SingleChildScrollView(
           child: Center(//padding

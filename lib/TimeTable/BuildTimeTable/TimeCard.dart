@@ -8,13 +8,10 @@ class TimeCard extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(
-      child: Expanded(
-        //child: Text("生態與環境變遷\n徐頭疼\n教101"),
-        child: Text(
-          timeName[thisTime],
-          style: TextStyle(
-            fontSize: 12,
-          ),
+      child: Text(
+        timeName[thisTime],
+        style: TextStyle(
+          fontSize: 12,
         ),
       ),
     );

@@ -10,22 +10,26 @@ class ViewPage extends StatefulWidget {
   const ViewPage.build({
     required this.myTable,
     required this.date,
+    required this.calendarMap,
   });
   final List<Class> myTable;
   final SemesterDate date;
+  final Map<Class,Calendar> calendarMap;
   @override
   _ViewPage createState() => new _ViewPage();
 }
 class _ViewPage extends State<ViewPage> {
   int week = -1;
   bool select = false;
+  Map<Class,Calendar> calendarMap = {};
   @override
   Widget build(BuildContext context) {
-    if(!select)
+    if(!select){
       week = widget.date.semesterWeek;
+      calendarMap = widget.calendarMap;
+    }
     WeekCalendar().setWeek(week);
-    String dropdownValue = 'One';
-    var _re = ClassList(widget.myTable);
+    var _re = ClassList(widget.myTable,calendarMap);
     return Scaffold(
       appBar: AppBar(
         title: Text("課表"),
@@ -33,10 +37,11 @@ class _ViewPage extends State<ViewPage> {
         actions: [
           PopupMenuButton<String>(
             itemBuilder: (context) => weekGetPopupMenu(context),
-            onSelected: (String value) {
+            onSelected: (String value) async{
               print('Week Selected : ' + value);
+              week = int.parse(value)-1;
+              calendarMap = await WeekCalendar().getCalendar(week);
               setState(() {
-                week = int.parse(value)-1;
                 WeekCalendar().setWeek(week);
                 select = true;
               });

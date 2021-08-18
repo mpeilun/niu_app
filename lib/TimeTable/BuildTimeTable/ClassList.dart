@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import '../Calendar/Calendar.dart';
 import 'ClassCard.dart';
 import 'Class.dart';
 import 'TimeCard.dart';
@@ -9,7 +10,7 @@ import 'NullClassCard.dart';
 
 class ClassList{
   List<dynamic> _classList;
-  Map<String , Color> colorList = {}; //Color?
+  Map<Class,Calendar> calendarMap;
   List<StaggeredTile> _staggeredTiles = [];
   List<StaggeredTile> getStaggeredTile(){
     return _staggeredTiles;
@@ -22,8 +23,8 @@ class ClassList{
   //arr[weekday][classNum]
 
 
-  ClassList(this._classList){
-    colorIndex = 0;
+  ClassList(this._classList,this.calendarMap){
+
     ///<--執行前對list的sort&tableInfo的初始化-->///
     //排序
     _classList.sort((left,right)=>left.weekDay.compareTo(right.weekDay));
@@ -60,7 +61,7 @@ class ClassList{
           putNullClass();
         }
       }
-      putClass(_classList[i]);
+      putClass(_classList[i],calendarMap);
       weekDay = _classList[i].weekDay+1;
       time = _classList[i].startTime;
       //在tableInfo裡標記課程
@@ -73,15 +74,15 @@ class ClassList{
   }
 
   ///<--有課程新增ClassCard到list裡-->///
-  void putClass(Class thisClass){
-    if( colorList[thisClass.name] == null){
-      thisClass.setColor( colors[colorIndex] );
-      colorList[thisClass.name.toString()] = colors[colorIndex++];
-    }
-    else {
-      thisClass.setColor( colorList[thisClass.name] );
-    }
-    _tiles.add(ClassCard.build(thisClass : thisClass));
+  void putClass(Class thisClass,Map<Class,Calendar> calendarMap){
+    Calendar calendar = Calendar(null,null,null);
+    calendarMap.forEach((key, value) {
+      if(key.equal(thisClass)){
+        calendar = value;
+        return;
+      }
+    });
+    _tiles.add(ClassCard.build(thisClass : thisClass, calendar : calendar));
     _staggeredTiles.add(StaggeredTile.count(2, (thisClass.endTime - thisClass.startTime + 1).toDouble()*2.1 )); //*2ㄉ寬 *2.1高
   }
   ///<--沒課程新增NullClassCard到list裡-->///
@@ -99,28 +100,6 @@ class ClassList{
   }
 
 }
-
-int colorIndex = 0;
-List<Color> colors = <Color>[
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-  Color(0x2A),
-];
 /*
 List<Color> colors = <Color>[
   Colors.red,

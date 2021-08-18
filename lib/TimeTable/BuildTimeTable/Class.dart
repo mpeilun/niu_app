@@ -24,7 +24,11 @@ class Class{
   ///<--普通建構子-->///
   Class(this.name,this.teacher,this.classroom,this.weekDay,this.startTime,this.endTime);
   void setColor(Color? changeColor) {_color = changeColor;}
+  String indexChar = ",";
   String save(){
-    return "Class($name,$teacher,$classroom,$weekDay,$startTime,$endTime)";
+    return "Class($name$indexChar$teacher$indexChar$classroom$indexChar$weekDay$indexChar$startTime$indexChar$endTime)";
+  }
+  bool equal(Class a){
+    return (a.save()==this.save());
   }
 }

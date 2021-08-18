@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:core';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../BuildTimeTable/Class.dart';
+
+
+
 class Calendar{
   Calendar(int? type,String? name,String? range){
     if(type != null){
@@ -60,13 +63,28 @@ class WeekCalendar{
     saveList[week] = mapToString(tempMap);
     prefs.setStringList("Calendar",saveList);
   }
-  void setWeek(int week) async{
+  void del(Class cl) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int week = prefs.getInt("SelectWeek")!;
+    if(week == -1)
+      week = 0;
+    List<String> saveList = await readMen();
+    Map<String,String> tempMap = stringToMap(saveList[week]);
+    tempMap[cl.save()] = "";
+    tempMap.removeWhere((String key, dynamic value)=> value=="");
+    saveList[week] = mapToString(tempMap);
+    prefs.setStringList("Calendar",saveList);
+  }
+  setWeek(int week) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt("SelectWeek",week);
+    /*
     List<String> saveList = await readMen();
     print(
         saveList // {"Class(電子電路,朱志明,教416,1,2,4)":"Calendar(1,null,null)"}
     );
+
+     */
   }
   Map<String,String> stringToMap(String str){
     if(str.isNotEmpty)
@@ -88,6 +106,58 @@ class WeekCalendar{
     else
       returnList = firstList;
     return returnList;
+  }
+  Class strToClass(String str){
+    int index1 = 0;
+    int index2 = 0;
+    void next(String str){
+      index1 = index2;
+      index2 = str.indexOf(",",index2+1);
+    }
+    next(str);
+    String className = str.substring(str.indexOf("(")+1,index2);
+    next(str);
+    String teacherName = str.substring(index1+1,index2);
+    next(str);
+    String classroom = str.substring(index1+1,index2);
+    next(str);
+    String _weekDay = str.substring(index1+1,index2);
+    int weekDay = int.parse(_weekDay);
+    next(str);
+    String _startTime = str.substring(index1+1,index2);
+    int startTime = int.parse(_startTime);
+    next(str);
+    String _endTime = str.substring(index1+1,str.indexOf(")"));
+    int endTime = int.parse(_endTime);
+    return Class(className,teacherName,classroom,weekDay,startTime,endTime);
+  }
+  Calendar strToCalendar(String str){
+    int index1 = 0;
+    int index2 = 0;
+    void next(String str){
+      index1 = index2;
+      index2 = str.indexOf(",",index2+1);
+    }
+    next(str);
+    String _type = str.substring(str.indexOf("(")+1,index2);
+    int type = int.parse(_type);
+    next(str);
+    String name = str.substring(index1+1,index2);
+    next(str);
+    String range = str.substring(index1+1,str.indexOf(")"));
+    return Calendar(type,name,range);
+  }
+  Future<Map<Class,Calendar>> getCalendar(int week) async{
+    List<String> saveList = await readMen();
+    Map<String,String> tempMap;
+    if(week == -1)
+      week = 18;
+    tempMap = stringToMap(saveList[week]);
+    Map<Class,Calendar> returnMap = {};
+    tempMap.forEach((String key,String value) {
+      returnMap[strToClass(key)] = strToCalendar(value);
+    });
+    return returnMap;
   }
 
 }
