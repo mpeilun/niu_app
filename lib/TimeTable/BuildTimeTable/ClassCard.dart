@@ -7,24 +7,39 @@ class ClassCard extends StatefulWidget {
   ClassCard.build({
     required this.thisClass,
     required this.calendar,
+    required this.week,
   });
   final Class thisClass;
-  Calendar calendar;
+  final Calendar calendar;
+  final int week;
 
   @override
   _ClassCard createState() => new _ClassCard();
 }
 class _ClassCard extends State<ClassCard> {
+  int week = -1;
   bool select = false;
+  bool first = true;
   Class thisClass = Class("","","",-1,-1,-1);
   Calendar calendar = Calendar(null, null, null);
+  Calendar original = Calendar(null, null, null);
 
   @override
   Widget build(BuildContext context) {
-    if(!select){
+    if(first){
+      week = widget.week;
+      original = widget.calendar;
+      thisClass = widget.thisClass;
+      calendar = widget.calendar;
+      first = false;
+    }
+    if(week != widget.week){
+      week = widget.week;
+      original = widget.calendar;
       thisClass = widget.thisClass;
       calendar = widget.calendar;
     }
+
     String calendarName = calendar.name();
     if(calendarName == "null")
       calendarName = "";
@@ -101,10 +116,13 @@ class _ClassCard extends State<ClassCard> {
             barrierDismissible: false,
             context: context,
             builder: (BuildContext context) {
-              int? type = 0;
+              int? type = calendar.type();
+              if(type == -1)
+                type = 0;
               String? name = calendar.name();
               String? range = calendar.range();
-              List<bool> isSelected = <bool>[true,false,false];
+              List<bool> isSelected = <bool>[false,false,false];
+              isSelected[type] = true;
               return AlertDialog(
                   content: StatefulBuilder(
                     builder: (BuildContext context, StateSetter setState) {
@@ -197,6 +215,10 @@ class _ClassCard extends State<ClassCard> {
             },
           );
           print(input.save());
+          if(input.typeEnable || input.nameEnable || input.rangeEnable)
+            WeekCalendar().push(thisClass,input);
+          else
+            WeekCalendar().del(thisClass);
           setState(() {
             calendar = input;
             select = true;

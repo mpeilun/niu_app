@@ -9,6 +9,7 @@ import 'WeekDayCard.dart';
 import 'NullClassCard.dart';
 
 class ClassList{
+  int week;
   List<dynamic> _classList;
   Map<Class,Calendar> calendarMap;
   List<StaggeredTile> _staggeredTiles = [];
@@ -23,7 +24,7 @@ class ClassList{
   //arr[weekday][classNum]
 
 
-  ClassList(this._classList,this.calendarMap){
+  ClassList(this._classList,this.calendarMap,this.week){
 
     ///<--執行前對list的sort&tableInfo的初始化-->///
     //排序
@@ -82,7 +83,7 @@ class ClassList{
         return;
       }
     });
-    _tiles.add(ClassCard.build(thisClass : thisClass, calendar : calendar));
+    _tiles.add(ClassCard.build(thisClass : thisClass, calendar : calendar,week : week));
     _staggeredTiles.add(StaggeredTile.count(2, (thisClass.endTime - thisClass.startTime + 1).toDouble()*2.1 )); //*2ㄉ寬 *2.1高
   }
   ///<--沒課程新增NullClassCard到list裡-->///

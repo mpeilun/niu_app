@@ -27,9 +27,9 @@ class _ViewPage extends State<ViewPage> {
     if(!select){
       week = widget.date.semesterWeek;
       calendarMap = widget.calendarMap;
+      WeekCalendar().setWeek(week);
     }
-    WeekCalendar().setWeek(week);
-    var _re = ClassList(widget.myTable,calendarMap);
+    var _re = ClassList(widget.myTable,calendarMap,week);
     return Scaffold(
       appBar: AppBar(
         title: Text("課表"),

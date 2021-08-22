@@ -47,6 +47,9 @@ class Calendar{
   String save(){
     return "Calendar(" + type().toString() + "," + name() + "," + range() + ")";
   }
+  bool equal(Calendar input){
+    return (input.save() == this.save());
+  }
 }
 
 class WeekCalendar{
@@ -78,13 +81,10 @@ class WeekCalendar{
   setWeek(int week) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt("SelectWeek",week);
-    /*
     List<String> saveList = await readMen();
     print(
         saveList // {"Class(電子電路,朱志明,教416,1,2,4)":"Calendar(1,null,null)"}
     );
-
-     */
   }
   Map<String,String> stringToMap(String str){
     if(str.isNotEmpty)
@@ -148,6 +148,7 @@ class WeekCalendar{
     return Calendar(type,name,range);
   }
   Future<Map<Class,Calendar>> getCalendar(int week) async{
+    print("get week:" + week.toString());
     List<String> saveList = await readMen();
     Map<String,String> tempMap;
     if(week == -1)
