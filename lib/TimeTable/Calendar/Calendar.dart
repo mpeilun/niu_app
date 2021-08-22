@@ -82,9 +82,12 @@ class WeekCalendar{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt("SelectWeek",week);
     List<String> saveList = await readMen();
+    /*
     print(
         saveList // {"Class(電子電路,朱志明,教416,1,2,4)":"Calendar(1,null,null)"}
     );
+
+     */
   }
   Map<String,String> stringToMap(String str){
     if(str.isNotEmpty)
