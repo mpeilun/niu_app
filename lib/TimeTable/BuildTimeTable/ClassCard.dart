@@ -143,7 +143,10 @@ class _ClassCard extends State<ClassCard> {
                                     hintText: '清輸入名稱',
                                   ),
                                   onChanged: (text) {
-                                    if(text != "") name = text;
+                                    if(text != "") {
+                                      name = text;
+                                      name!.replaceAll(",", "");
+                                    }
                                     else name = null;
                                   },
                                 ),
@@ -159,7 +162,10 @@ class _ClassCard extends State<ClassCard> {
                                       hintText: "清輸入內容",
                                     ),
                                     onChanged: (text) {
-                                      if(text != "") range = text;
+                                      if(text != "") {
+                                        range = text;
+                                        range!.replaceAll(",", "");
+                                      }
                                       else range = null;
                                     },
                                   )
