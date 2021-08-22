@@ -41,8 +41,8 @@ class _ViewPage extends State<ViewPage> {
               print('Week Selected : ' + value);
               week = int.parse(value)-1;
               calendarMap = await WeekCalendar().getCalendar(week);
+              await WeekCalendar().setWeek(week);
               setState(() {
-                WeekCalendar().setWeek(week);
                 select = true;
               });
             },
