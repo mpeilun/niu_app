@@ -9,6 +9,8 @@ import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/school_event/page/event_signed_page.dart';
 import 'package:niu_app/school_event/page/event_page.dart';
 
+ScrollController schoolEventScrollController = ScrollController();
+
 class SchoolEvent extends StatefulWidget {
   final String title;
 
@@ -34,6 +36,7 @@ class _SchoolEventState extends State<SchoolEvent> {
           centerTitle: true,
         ),
         body: NestedScrollView(
+          controller: schoolEventScrollController,
           floatHeaderSlivers: true,
           headerSliverBuilder:
               (BuildContext context, bool innerBoxIsScrolled) {

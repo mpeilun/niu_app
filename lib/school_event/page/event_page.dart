@@ -3,7 +3,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/keep_alive.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/refresh.dart';
-import 'package:niu_app/school_event/custom_cards.dart';
+import 'package:niu_app/school_event/components/event_card.dart';
+import 'package:niu_app/school_event/components/custom_list_info.dart';
 
 class EventPage extends StatefulWidget {
   const EventPage({Key? key}) : super(key: key);
@@ -151,7 +152,9 @@ class _EventPageState extends State<EventPage> {
         urlRequest: URLRequest(
             url:
                 Uri.parse('https://syscc.niu.edu.tw/Activity/ApplyList.aspx')));
-    await Future.delayed(Duration(milliseconds: 1000));
+    while (!refreshLoaded) {
+      await Future.delayed(Duration(milliseconds: 500));
+    }
   }
 
   @override
