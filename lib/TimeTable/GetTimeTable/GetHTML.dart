@@ -2,14 +2,18 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:niu_app/service/SemesterDate.dart';
 
+import '../BuildTimeTable/Class.dart';
+import '../Calendar/Calendar.dart';
+
 class getHTML {
   getHTML(){
     //get();
   }
-
+ Map<Class,Calendar> calendarMap = {};
   Future<bool> getIsFinish() async{
     SemesterDate date = SemesterDate();
     await date.getIsFinish();
+    calendarMap = await WeekCalendar().getCalendar(await date.getSemesterWeek());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if(prefs.getStringList(prefs.getString("id").toString() + "TimeTable" + date.nowSemester) == null){
       print("Get from web");

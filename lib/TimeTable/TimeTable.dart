@@ -5,6 +5,7 @@ import './BuildTimeTable/Class.dart';
 import './GetTimeTable/GetHTML.dart';
 import './Loading.dart';
 import './GetTimeTable/HtmlToClassList.dart';
+import './Calendar/Calendar.dart';
 class TimeTable extends StatefulWidget {
   TimeTable({Key? key}) : super(key: key);
 
@@ -44,7 +45,8 @@ class _TimeTableState extends State<TimeTable> {
             List<List<String?>> htmlCode = b.htmlCode;
             var temp = HtmlToClassList();
             List<Class> tempClassList = temp.classList(htmlCode);
-            return ViewPage.build(myTable : tempClassList,date : a);
+            Map<Class,Calendar> calendarMap = b.calendarMap;
+            return ViewPage.build(myTable : tempClassList,date : a,calendarMap : calendarMap);
             //return the widget that you want to display after loading
           }
         }
