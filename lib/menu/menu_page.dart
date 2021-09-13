@@ -37,6 +37,7 @@ class _StartMenu extends State<StartMenu> {
   @override
   void dispose() {
     super.dispose();
+    headlessWebView?.dispose();
     print('menu dispose');
   }
 
