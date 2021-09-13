@@ -34,11 +34,11 @@ class _StartMenu extends State<StartMenu> {
     _checkAccount();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    print('menu dispose');
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   print('menu dispose');
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -167,8 +167,9 @@ class _StartMenu extends State<StartMenu> {
                                 title: '更改帳號',
                                 icon: MenuIcon.icon_account,
                                 press: () async {
-                                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                                  prefs.clear();//清空键值对
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  prefs.clear(); //清空键值对
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -251,6 +252,13 @@ class _StartMenu extends State<StartMenu> {
           setState(() {
             this.url = url.toString();
           });
+          if (url.toString() == 'https://acade.niu.edu.tw/NIU/logout.aspx') {
+            CookieManager().deleteAllCookies();
+            await headlessWebView?.webViewController.loadUrl(
+                urlRequest: URLRequest(
+                    url: Uri.parse(
+                        "https://acade.niu.edu.tw/NIU/Default.aspx")));
+          }
         },
         onLoadStop: (controller, url) async {
           print("onLoadStop $url");
@@ -290,11 +298,13 @@ class _StartMenu extends State<StartMenu> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? id = prefs.getString('id');
     String? pwd = prefs.getString('pwd');
-    await headlessWebView?.webViewController.evaluateJavascript(
-        source:
-            'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
-    await headlessWebView?.webViewController.evaluateJavascript(
-        source: 'document.querySelector("#M_PW").value=\'$pwd\';');
+    Future.delayed(Duration(milliseconds: 500), () async {
+      await headlessWebView?.webViewController.evaluateJavascript(
+          source:
+              'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
+      await headlessWebView?.webViewController.evaluateJavascript(
+          source: 'document.querySelector("#M_PW").value=\'$pwd\';');
+    });
     Future.delayed(Duration(milliseconds: 1000), () async {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
