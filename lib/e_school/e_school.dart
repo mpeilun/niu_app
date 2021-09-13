@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/e_school/page/e_school_course_webview.dart';
 import 'package:niu_app/e_school/page/lesson_page.dart';
 import 'package:niu_app/e_school/page/work_page.dart';
@@ -15,7 +16,7 @@ class ESchool extends StatefulWidget {
   _ESchoolState createState() => _ESchoolState();
 }
 
-class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin{
+class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
   HeadlessInAppWebView? headlessWebView;
   bool loadState = false;
   String loginState = 'null';
@@ -31,7 +32,10 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: myTabs.length,);
+    _tabController = TabController(
+      vsync: this,
+      length: myTabs.length,
+    );
     _scrollController = ScrollController();
     headlessWebView = new HeadlessInAppWebView(
         initialUrlRequest: URLRequest(
@@ -123,18 +127,19 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin{
   Widget build(BuildContext context) {
     return loadState
         ? Scaffold(
-          appBar: AppBar(
-            title: Text(
-              '數位園區',
+            appBar: AppBar(
+              title: Text(
+                '數位園區',
+              ),
+              centerTitle: true,
             ),
-            centerTitle: true,
-          ),
-          body: NestedScrollView(
-            controller: _scrollController,
-            floatHeaderSlivers: true,
-            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                /*
+            body: NestedScrollView(
+              controller: _scrollController,
+              floatHeaderSlivers: true,
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  /*
                 SliverAppBar(
                   toolbarHeight: 0.0,
                   elevation: 0.0,
@@ -155,33 +160,33 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin{
                 ),
                 */
 
-                SliverToBoxAdapter(
-                  child: PreferredSize(
-                    preferredSize: Size.fromHeight(56.0),
-                    child: Container(
-                      color: Theme.of(context).primaryColor,
-                      height: 56.0,
-                      child: TabBar(
-                        controller: _tabController,
-                        labelPadding: EdgeInsets.zero,
-                        indicatorWeight: 5.0,
-                        tabs: myTabs,
+                  SliverToBoxAdapter(
+                    child: PreferredSize(
+                      preferredSize: Size.fromHeight(56.0),
+                      child: Container(
+                        color: Theme.of(context).primaryColor,
+                        height: 56.0,
+                        child: TabBar(
+                          controller: _tabController,
+                          labelPadding: EdgeInsets.zero,
+                          indicatorWeight: 5.0,
+                          tabs: myTabs,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ];
-            },
-            body: TabBarView(
-              controller: _tabController,
-              children: <Widget>[
-                LessonPage(),
-                WorkPage(),
-              ],
+                ];
+              },
+              body: TabBarView(
+                controller: _tabController,
+                children: <Widget>[
+                  LessonPage(),
+                  WorkPage(),
+                ],
+              ),
             ),
-          ),
-        )
-        : Loading();
+          )
+        : NiuIconLoading(size: 80);
   }
 
   _login() async {
@@ -200,4 +205,3 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin{
     });
   }
 }
-
