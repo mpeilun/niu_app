@@ -254,11 +254,9 @@ class _StartMenu extends State<StartMenu> {
             this.url = url.toString();
           });
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/logout.aspx') {
+            print("Logout and Clean cache");
+            controller.clearCache();
             CookieManager().deleteAllCookies();
-            await headlessWebView?.webViewController.loadUrl(
-                urlRequest: URLRequest(
-                    url: Uri.parse(
-                        "https://acade.niu.edu.tw/NIU/Default.aspx")));
           }
         },
         onLoadStop: (controller, url) async {
