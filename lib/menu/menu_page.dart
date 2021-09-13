@@ -34,11 +34,11 @@ class _StartMenu extends State<StartMenu> {
     _checkAccount();
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   print('menu dispose');
-  // }
+  @override
+  void dispose() {
+    super.dispose();
+    print('menu dispose');
+  }
 
   @override
   Widget build(BuildContext context) {
