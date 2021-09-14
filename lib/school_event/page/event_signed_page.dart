@@ -15,7 +15,6 @@ class EventSignedPage extends StatefulWidget {
 }
 
 class _EventSignedPageState extends State<EventSignedPage> {
-
   HeadlessInAppWebView? headlessWebView;
   String url = "";
 
@@ -148,7 +147,6 @@ class _EventSignedPageState extends State<EventSignedPage> {
   @override
   void dispose() {
     super.dispose();
-    headlessWebView?.dispose();
   }
 
   @override

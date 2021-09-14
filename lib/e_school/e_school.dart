@@ -112,7 +112,6 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
-    headlessWebView?.dispose();
     loginState = 'null';
     loadState = false;
     _tabController.dispose();

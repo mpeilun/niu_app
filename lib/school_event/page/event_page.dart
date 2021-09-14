@@ -203,7 +203,6 @@ class _EventPageState extends State<EventPage> {
   @override
   void dispose() {
     super.dispose();
-    headlessWebView?.dispose();
   }
 
   @override

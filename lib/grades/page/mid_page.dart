@@ -155,7 +155,6 @@ class _MidPageState extends State<MidPage> {
   @override
   void dispose() {
     super.dispose();
-    headlessWebView?.dispose();
     loadStates = false;
     print('mid_page dispose');
   }
