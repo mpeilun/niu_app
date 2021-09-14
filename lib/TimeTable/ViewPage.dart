@@ -25,7 +25,9 @@ class _ViewPage extends State<ViewPage> {
   @override
   Widget build(BuildContext context) {
     if(!select){
-      week = widget.date.semesterWeek-1;
+      week = widget.date.semesterWeek;
+      if(week != -1)
+        week--;
       calendarMap = widget.calendarMap;
       WeekCalendar().setWeek(week);
     }
