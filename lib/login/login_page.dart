@@ -5,6 +5,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:niu_app/menu/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:niu_app/menu/studentInfo.dart';
 
 class LoginPage extends StatefulWidget {
   final bool cancelPop;
@@ -23,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   late String url;
   late String id;
   late String pwd;
+  late String name;
   late int webProgress;
 
   Future<String> _authUser(LoginData data) async {
@@ -100,6 +102,10 @@ class _LoginPageState extends State<LoginPage> {
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
             print('登入成功');
             loginState = '';
+            name = (await headlessWebView?.webViewController
+                .evaluateJavascript(
+                source:
+                'document.querySelector("#topFrame > frame:nth-child(1)").contentDocument.querySelector("html").querySelector("#form1 > table > tbody > tr > td.title_bg > table > tbody > tr > td:nth-child(4) > span").innerText;')).toString();
             await _saveData(id, pwd);
           }
         },
@@ -152,7 +158,9 @@ class _LoginPageState extends State<LoginPage> {
                   hideForgotPasswordButton: true,
                   hideSignUpButton: true,
                   onSubmitAnimationCompleted: () {
-                    Navigator.pop(context);
+                    print("id: " + id);
+                    print("name: " + name);
+                    Navigator.pop(context,StudentInfo(id,name));
                   },
                   theme: LoginTheme(
                       logoWidth: 0.3, titleStyle: TextStyle(fontSize: 30)),

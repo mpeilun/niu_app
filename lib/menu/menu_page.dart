@@ -27,8 +27,7 @@ class StartMenu extends StatefulWidget {
 class _StartMenu extends State<StartMenu> {
   HeadlessInAppWebView? headlessWebView;
   String url = "";
-  String studentName = "";
-  String studentID = "";
+  StudentInfo info = StudentInfo("","");
   bool loginState = false;
   bool reLogin = false;
 
@@ -66,7 +65,7 @@ class _StartMenu extends State<StartMenu> {
             */
           ),
           drawer: MyDrawer(
-            info : StudentInfo(studentID, studentName),
+            info : info,
           ),
           body: LayoutBuilder(
             builder:
@@ -180,13 +179,15 @@ class _StartMenu extends State<StartMenu> {
                                   SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
                                   prefs.clear(); //清空键值对
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => LoginPage(
-                                                cancelPop: false,
-                                              ),
-                                          maintainState: false));
+                                  setState(() async {
+                                    info = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => LoginPage(
+                                              cancelPop: false,
+                                            ),
+                                            maintainState: false));
+                                  });
                                 },
                               ),
                             ],
@@ -232,7 +233,7 @@ class _StartMenu extends State<StartMenu> {
   _checkAccount() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.get('id') == null || prefs.get('pwd') == null) {
-      Navigator.push(
+      info = await Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => LoginPage(
@@ -243,7 +244,6 @@ class _StartMenu extends State<StartMenu> {
         loginFinished();
       });
     } else {
-      studentID = prefs.get('id').toString();
       headlessWebView = new HeadlessInAppWebView(
         initialUrlRequest: URLRequest(
             url: Uri.parse("https://acade.niu.edu.tw/NIU/MainFrame.aspx")),
@@ -281,10 +281,12 @@ class _StartMenu extends State<StartMenu> {
             if (!reLogin) {
               print('登入成功');
               //--獲取名字--
-              studentName = (await headlessWebView?.webViewController
+              String studentName = (await headlessWebView?.webViewController
                   .evaluateJavascript(
                   source:
                   'document.querySelector("#topFrame > frame:nth-child(1)").contentDocument.querySelector("html").querySelector("#form1 > table > tbody > tr > td.title_bg > table > tbody > tr > td:nth-child(4) > span").innerText;')).toString();
+              String studentID = prefs.get('id').toString();
+              info = StudentInfo(studentName,studentID);
               //-----------
 
               loginFinished();
