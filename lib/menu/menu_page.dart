@@ -14,6 +14,8 @@ import 'package:niu_app/TimeTable/TimeTable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../testwebview.dart';
+import './drawer.dart';
+import './studentInfo.dart';
 
 class StartMenu extends StatefulWidget {
   StartMenu({Key? key}) : super(key: key);
@@ -25,6 +27,8 @@ class StartMenu extends StatefulWidget {
 class _StartMenu extends State<StartMenu> {
   HeadlessInAppWebView? headlessWebView;
   String url = "";
+  String studentName = "";
+  String studentID = "";
   bool loginState = false;
   bool reLogin = false;
 
@@ -54,10 +58,15 @@ class _StartMenu extends State<StartMenu> {
               IconButton(
                   icon: Icon(Icons.notifications_none), onPressed: () {}),
             ],
+            /* 移到drawer
             leading: IconButton(
               icon: Icon(Icons.menu),
               onPressed: () {},
             ),
+            */
+          ),
+          drawer: MyDrawer(
+            info : StudentInfo(studentID, studentName),
           ),
           body: LayoutBuilder(
             builder:
@@ -234,6 +243,7 @@ class _StartMenu extends State<StartMenu> {
         loginFinished();
       });
     } else {
+      studentID = prefs.get('id').toString();
       headlessWebView = new HeadlessInAppWebView(
         initialUrlRequest: URLRequest(
             url: Uri.parse("https://acade.niu.edu.tw/NIU/MainFrame.aspx")),
@@ -270,6 +280,13 @@ class _StartMenu extends State<StartMenu> {
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
             if (!reLogin) {
               print('登入成功');
+              //--獲取名字--
+              studentName = (await headlessWebView?.webViewController
+                  .evaluateJavascript(
+                  source:
+                  'document.querySelector("#topFrame > frame:nth-child(1)").contentDocument.querySelector("html").querySelector("#form1 > table > tbody > tr > td.title_bg > table > tbody > tr > td:nth-child(4) > span").innerText;')).toString();
+              //-----------
+
               loginFinished();
             }
           }
