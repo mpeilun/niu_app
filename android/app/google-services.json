@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "283192567280",
+    "project_id": "niu-app-82fd0",
+    "storage_bucket": "niu-app-82fd0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283192567280:android:99fb20024b6853d5a16935",
+        "android_client_info": {
+          "package_name": "com.niu.niu_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "283192567280-mu22l4u422rnc00i0v94a8gerni83um7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.niu.niu_app",
+            "certificate_hash": "1ae18228fb5394bf3da6c5fb637bf22ed37868bf"
+          }
+        },
+        {
+          "client_id": "283192567280-p7ialbnafiapbt77a6tu0abtif50i67t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIVEFzxtlWHLgR-GfFxALG8NrD3HxrMKM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "283192567280-p7ialbnafiapbt77a6tu0abtif50i67t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
