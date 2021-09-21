@@ -12,9 +12,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 Future<void> main() async {
   ChangeNotifierProvider(create: (_) => OnItemClick());
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      name: 'SecondaryApp'
-  );
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -26,7 +24,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   @override
   Widget build(BuildContext context) {
