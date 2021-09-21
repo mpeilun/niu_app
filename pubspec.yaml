@@ -52,9 +52,6 @@ dependencies:
   url_launcher: ^6.0.8
   week_of_year: ^2.0.0
   provider: ^5.0.0
-  #Google FireBase
-  firebase_core: ^1.6.0
-  firebase_messaging: ^10.0.7
 
 dev_dependencies:
   flutter_test:
