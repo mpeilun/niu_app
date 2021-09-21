@@ -294,7 +294,7 @@ class _StartMenu extends State<StartMenu> {
                   source:
                   'document.querySelector("#topFrame > frame:nth-child(1)").contentDocument.querySelector("html").querySelector("#form1 > table > tbody > tr > td.title_bg > table > tbody > tr > td:nth-child(4) > span").innerText;')).toString();
               String studentID = prefs.get('id').toString();
-              info = StudentInfo(studentName,studentID);
+              info = StudentInfo(studentID,studentName);
               //-----------
 
               loginFinished();

@@ -56,11 +56,11 @@ class _ClassCard extends State<ClassCard> {
       classInfo = thisClass.name.toString();
     }
     if(calendar.type() == 0)
-      thisClass.setColor(Colors.red);
+      thisClass.setColor(Color(0xEE71D2D4));
     else if(calendar.type() == 1)
-      thisClass.setColor(Colors.blue);
+      thisClass.setColor(Color(0xEE71D2D4));
     else if(calendar.type() == 2)
-      thisClass.setColor(Colors.green);
+      thisClass.setColor(Color(0xEE71D2D4));
     else
       thisClass.setColor(Color(0x2A));
     return Card(
