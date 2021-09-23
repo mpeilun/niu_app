@@ -10,6 +10,8 @@ import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menu/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'advanced_tiles.dart';
+
 class ESchool extends StatefulWidget {
   ESchool({Key? key}) : super(key: key);
   @override
@@ -20,6 +22,8 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
   HeadlessInAppWebView? headlessWebView;
   bool loadState = false;
   String loginState = 'null';
+  late List<AdvancedTile> advancedTile = [];
+  late String semester;
   late String url;
   late String id;
   late String pwd;
@@ -78,9 +82,41 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
           }
 
           if (url.toString() == 'https://eschool.niu.edu.tw/learn/index.php') {
-            headlessWebView?.webViewController
+            await headlessWebView?.webViewController
                 .evaluateJavascript(source: 'parent.s_sysbar.goPersonal()');
-            print('登入成功');
+
+            semester = (await headlessWebView?.webViewController.evaluateJavascript(
+                        source:
+                            'window.frames[0].document.querySelector("#selcourse > option:nth-child(2)").innerText;')
+                    as String)
+                .split('_')[0];
+
+            for (int i = 2;
+                (await headlessWebView?.webViewController.evaluateJavascript(
+                            source:
+                                'window.frames[0].document.querySelector("#selcourse > option:nth-child(' +
+                                    i.toString() +
+                                    ')").innerText;') as String)
+                        .split('_')[0] ==
+                    semester;
+                i++) {
+              String courseName = (await headlessWebView?.webViewController
+                      .evaluateJavascript(
+                          source:
+                              'window.frames[0].document.querySelector("#selcourse > option:nth-child(' +
+                                  i.toString() +
+                                  ')").innerText;') as String)
+                  .split('_')[1]
+                  .split('(')[0];
+              String courseId = await headlessWebView?.webViewController
+                  .evaluateJavascript(
+                      source:
+                          'window.frames[0].document.querySelector("#selcourse > option:nth-child(' +
+                              i.toString() +
+                              ')").value;') as String;
+              advancedTile
+                  .add(AdvancedTile(title: courseName, courseId: courseId));
+            }
             setState(() {
               loadState = true;
             });
@@ -138,27 +174,6 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
-                  /*
-                SliverAppBar(
-                  toolbarHeight: 0.0,
-                  elevation: 0.0,
-                  centerTitle: true,
-                  floating: true,
-                  bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(56.0),
-                    child: Container(
-                      height: 56.0,
-                      child: TabBar(
-                        controller: _tabController,
-                        labelPadding: EdgeInsets.zero,
-                        indicatorWeight: 5.0,
-                        tabs: myTabs,
-                      ),
-                    ),
-                  ),
-                ),
-                */
-
                   SliverToBoxAdapter(
                     child: PreferredSize(
                       preferredSize: Size.fromHeight(56.0),
@@ -179,8 +194,8 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
               body: TabBarView(
                 controller: _tabController,
                 children: <Widget>[
-                  LessonPage(),
-                  WorkPage(),
+                  LessonPage(advancedTile: advancedTile),
+                  WorkPage(semester: semester),
                 ],
               ),
             ),
