@@ -51,6 +51,7 @@ dependencies:
   shared_preferences: ^2.0.6
   url_launcher: ^6.0.8
   week_of_year: ^2.0.0
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +77,11 @@ flutter:
     - family: MyFlutterApp
       fonts:
         - asset: fonts/MyFlutterApp.ttf
+    - family: MyFlutterApp2
+      fonts:
+        - asset: fonts/MyFlutterApp2.ttf
+
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
