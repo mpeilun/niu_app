@@ -3,13 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:niu_app/menu/menu_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
-import 'package:niu_app/provider/drawer_provider.dart';
-import 'package:provider/provider.dart';
-
 //nope
-void main() => runApp(MultiProvider(providers: [
-      ChangeNotifierProvider(create: (_) => OnItemClick()),
-    ], child: MyApp()));
+void main() => runApp(MyApp());
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
