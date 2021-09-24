@@ -1,5 +1,5 @@
 class StudentInfo {
-  String ID;
+  String id;
   String name;
-  StudentInfo(this.ID, this.name);
+  StudentInfo(this.id, this.name);
 }

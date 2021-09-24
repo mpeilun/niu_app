@@ -139,6 +139,7 @@ class _WorkPageState extends State<WorkPage> {
   @override
   void dispose() {
     super.dispose();
+    print('work_page dispose');
   }
 
   @override
