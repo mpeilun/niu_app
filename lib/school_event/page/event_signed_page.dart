@@ -153,9 +153,22 @@ class _EventSignedPageState extends State<EventSignedPage> {
   Widget build(BuildContext context) => KeepAlivePage(child: buildList());
 
   Widget buildList() => data.isEmpty
-      ? Center(
-          child: NiuIconLoading(
-            size: 80.0,
+      ? Container(
+          child: Column(
+            children: [
+              Expanded(child: NiuIconLoading(size: 80)),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                child: Text(
+                  '僅顯示前15筆報名資料',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              )
+            ],
           ),
         )
       : CustomEventSignedCard(
