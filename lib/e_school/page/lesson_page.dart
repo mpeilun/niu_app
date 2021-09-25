@@ -5,7 +5,7 @@ import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/e_school/advanced_tiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'e_school_course_webview.dart';
+import 'e_school_announcement.dart';
 
 class LessonPage extends StatefulWidget {
   final List<AdvancedTile> advancedTile;
@@ -94,7 +94,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  ESchoolCourseWebView(
+                                                  ESchoolAnnouncement(
                                                       courseId: tile.courseId,
                                                       advancedTile:
                                                           widget.tile),

@@ -12,27 +12,26 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../advanced_tiles.dart';
 import '../e_school.dart';
 
-class ESchoolCourseWebView extends StatefulWidget {
+class ESchoolAnnouncement extends StatefulWidget {
   final courseId;
   final List<AdvancedTile> advancedTile;
 
-  const ESchoolCourseWebView({
+  const ESchoolAnnouncement({
     Key? key,
     required this.courseId,
     required this.advancedTile,
   }) : super(key: key);
 
   @override
-  _ESchoolCourseWebViewState createState() => new _ESchoolCourseWebViewState();
+  _ESchoolAnnouncementState createState() => new _ESchoolAnnouncementState();
 }
 
-class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
+class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
   final GlobalKey eSchoolCourseWebView = GlobalKey();
   HeadlessInAppWebView? headlessWebView;
   InAppWebViewController? webViewController;
@@ -131,6 +130,7 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
     headlessWebView?.run();
   }
 
+//parent.chgCourse('10037692', 1, 1,'SYS_04_01_002')
   @override
   void dispose() {
     super.dispose();
@@ -199,38 +199,16 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
                           setState(() {
                             this.url = url.toString();
                           });
-
-                          // if (url.toString() ==
-                          //     'https://eschool.niu.edu.tw/mooc/login.php') {
-                          //   globalAdvancedTile = [];
-                          //   Navigator.pop(context);
-                          // }
+                          if (url.toString() ==
+                              'https://eschool.niu.edu.tw/forum/m_node_list.php') {
+                            await controller.evaluateJavascript(
+                                source:
+                                    'document.querySelector("body > div.box1.navbar-fixed-top > div.operate").style = \'display: none\'');
+                          }
                         },
                         onLoadResource: (InAppWebViewController controller,
                             LoadedResource resource) async {
                           print(resource.toString());
-                          // if (resource.url.toString() ==
-                          //         'https://eschool.niu.edu.tw/learn/mycourse/index.php' ||
-                          //     resource.url.toString() ==
-                          //         'https://eschool.niu.edu.tw/forum/m_node_list.php') {
-                          //   await Future.delayed(Duration(milliseconds: 200),
-                          //       () async {
-                          //     await controller.evaluateJavascript(
-                          //         source: 'parent.chgCourse(' +
-                          //             widget.courseId +
-                          //             ', 1, 1)');
-                          //   });
-                          //   await Future.delayed(Duration(milliseconds: 1000),
-                          //       () async {
-                          //     await controller.loadUrl(
-                          //         urlRequest: URLRequest(
-                          //             url: Uri.parse(
-                          //                 "https://eschool.niu.edu.tw/forum/m_node_list.php")));
-                          //     setState(() {
-                          //       loadState = true;
-                          //     });
-                          //   });
-                          // }
                         },
                         onLoadError: (controller, url, code, message) {},
                         onProgressChanged: (controller, progress) {
