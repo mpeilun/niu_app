@@ -4,7 +4,6 @@ import 'package:niu_app/components/keep_alive.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/refresh.dart';
 import 'package:niu_app/school_event/components/event_card.dart';
-import 'package:niu_app/school_event/components/custom_list_info.dart';
 
 class EventPage extends StatefulWidget {
   const EventPage({Key? key}) : super(key: key);
@@ -19,12 +18,14 @@ class _EventPageState extends State<EventPage> {
   String temp = "";
 
   List<Event> data = [];
+  List<Event> readTemp = [];
   bool dataLoaded = false;
   bool refreshLoaded = true;
 
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
 
-  Future<void> getByStatus(String str) async {
+  Future<void> getData() async {
+    readTemp.clear();
     for (int i = 2;
         await headlessWebView?.webViewController.evaluateJavascript(
                 source:
@@ -34,7 +35,7 @@ class _EventPageState extends State<EventPage> {
       String status = await headlessWebView?.webViewController.evaluateJavascript(
           source:
               'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(9)").innerText');
-      if (status != str) continue;
+      //if (status != str) continue;
       print(i);
       String name = await headlessWebView?.webViewController.evaluateJavascript(
           source:
@@ -115,28 +116,42 @@ class _EventPageState extends State<EventPage> {
               : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
                   i.toString() +
                   '_lblSecNum").innerText');
-      data.add(Event(
-        name: name,
-        department: department,
-        signTimeStart: signTimeStart,
-        signTimeEnd: signTimeEnd,
-        eventTimeStart: eventTimeStart,
-        eventTimeEnd: eventTimeEnd,
-        status: status,
-        positive: positive,
-        positiveLimit: positiveLimit,
-        wait: wait,
-        waitLimit: waitLimit,
+      String signUpJavaScript = await headlessWebView?.webViewController
+          .evaluateJavascript(
+          source:
+          'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(1) > a").href');
+      readTemp.add(Event(
+        name: name,//活動名稱
+        department: department,//主辦部門
+        signTimeStart: signTimeStart,//報名時間
+        signTimeEnd: signTimeEnd,//報名時間截止
+        eventTimeStart: eventTimeStart,//活動時間
+        eventTimeEnd: eventTimeEnd,//活動時間截止
+        status: status,//報名狀態
+        positive: positive,//正取人數
+        positiveLimit: positiveLimit,//正取上限
+        wait: wait,//備取人數
+        waitLimit: waitLimit,//備取上限
+        signUpJavaScript: signUpJavaScript, //報名javascript連結
       ));
+    }
+  }
+
+  Future<void> getDataByStatus (String keyword) async{
+    for(int i=0; i<readTemp.length; i++){
+      if(readTemp[i].status == keyword){
+        data.add(readTemp[i]);
+      }
     }
   }
 
   Future<void> getEventList() async {
     data.clear();
-    await getByStatus('報名中');
-    await getByStatus('已額滿');
-    await getByStatus('未開放');
-    await getByStatus('已過期');
+    await getData();
+    await getDataByStatus('報名中');
+    await getDataByStatus('已額滿');
+    await getDataByStatus('未開放');
+    await getDataByStatus('已過期');
     setState(() {
       dataLoaded = true;
       refreshLoaded = true;

@@ -5,6 +5,8 @@ import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/e_school/advanced_tiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'e_school_course_webview.dart';
+
 class LessonPage extends StatefulWidget {
   final List<AdvancedTile> advancedTile;
 
@@ -37,6 +39,8 @@ class _LessonPageState extends State<LessonPage> {
 }
 
 class CustomLessonCard extends StatefulWidget {
+  final List<AdvancedTile> advancedTile;
+
   const CustomLessonCard({
     Key? key,
     required this.tile,
@@ -56,8 +60,8 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
         itemCount: 1,
         itemBuilder: (BuildContext context, int index) {
           return ExpansionPanelList.radio(
-            animationDuration: Duration(milliseconds: 500),
-            children: widget.tile
+            animationDuration: Duration(milliseconds: 750),
+            children: widget.advancedTile
                 .map((tile) => ExpansionPanelRadio(
                     value: tile.title,
                     canTapOnHeader: true,

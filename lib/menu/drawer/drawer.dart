@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:niu_app/menu/menu_page.dart';
 import 'package:niu_app/my_flutter_app_icons.dart';
 import '../studentInfo.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,22 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawer extends State<MyDrawer> {
+  late SharedPreferences prefs;
+  String studentId = '';
+  String studentName = '';
+  String imageUrl =
+      'https://upload.wikimedia.org/wikipedia/commons/1/12/White_background.png';
+
+  @override
+  void initState() {
+    super.initState();
+    _checkInfo();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +52,13 @@ class _MyDrawer extends State<MyDrawer> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: ClipOval(
-                        child: Image.network(
-                          "https://acade.niu.edu.tw/NIU/Application/stdphoto.aspx?stno=" + studentId ,
-                          width: 75,
-                          height: 75,
+                        child: Container(
+                          color: Colors.white,
+                          child: Image.network(
+                            imageUrl,
+                            width: 75,
+                            height: 75,
+                          ),
                         ),
                       ),
                     ),
@@ -87,6 +107,17 @@ class _MyDrawer extends State<MyDrawer> {
         ),
       ),
     );
+  }
+
+  _checkInfo() async {
+    prefs = await SharedPreferences.getInstance();
+    setState(() {
+      studentId = prefs.getString('id')!;
+      studentName = prefs.getString('name')!;
+      imageUrl =
+          "https://acade.niu.edu.tw/NIU/Application/stdphoto.aspx?stno=" +
+              studentId;
+    });
   }
 }
 

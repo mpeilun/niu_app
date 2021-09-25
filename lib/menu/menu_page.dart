@@ -16,13 +16,13 @@ import 'package:niu_app/TimeTable/TimeTable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../testwebview.dart';
-import './studentInfo.dart';
 import 'package:niu_app/menu/drawer/about.dart';
 import 'package:niu_app/menu/drawer/announcement.dart';
 import 'package:niu_app/menu/drawer/report.dart';
 import 'package:niu_app/menu/drawer/setting.dart';
 import 'package:provider/src/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
+
 
 class StartMenu extends StatefulWidget {
   StartMenu({Key? key}) : super(key: key);
@@ -33,8 +33,8 @@ class StartMenu extends StatefulWidget {
 
 class _StartMenu extends State<StartMenu> {
   HeadlessInAppWebView? headlessWebView;
+  late SharedPreferences prefs;
   String url = "";
-  StudentInfo info = StudentInfo("", "");
   bool loginState = false;
   bool reLogin = false;
   bool isNotification = true;
@@ -48,13 +48,11 @@ class _StartMenu extends State<StartMenu> {
   @override
   void dispose() {
     super.dispose();
-    headlessWebView?.dispose();
-    print('menu dispose');
   }
 
   @override
   Widget build(BuildContext context) {
-    final title = ['功能列表', '公告', '設定', '關於', '回報問題'];
+    final title = ['首頁', '公告', '設定', '關於', '回報問題'];
     final pages = [
       LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -83,7 +81,8 @@ class _StartMenu extends State<StartMenu> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ESchool(),
+                                      builder: (context) =>
+                                          ESchool(advancedTile: []),
                                       maintainState: false));
                             },
                           ),
@@ -167,15 +166,13 @@ class _StartMenu extends State<StartMenu> {
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               prefs.clear(); //清空键值对
-                              setState(() async {
-                                info = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginPage(
-                                              cancelPop: false,
-                                            ),
-                                        maintainState: false));
-                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage(
+                                            cancelPop: false,
+                                          ),
+                                      maintainState: false));
                             },
                           ),
                         ],
@@ -220,7 +217,6 @@ class _StartMenu extends State<StartMenu> {
     ];
 
     if (loginState) {
-      print('$isNotification++');
       return Scaffold(
           appBar: AppBar(
             title: Text(title[context.watch<OnItemClick>().index]),
@@ -251,17 +247,8 @@ class _StartMenu extends State<StartMenu> {
                 ),
               )
             ],
-            /* 移到drawer
-            leading: IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {},
-            ),
-            */
           ),
-          drawer: MyDrawer(
-            info: info,
-          ),
-          endDrawer: NotificationDrawer(),
+          drawer: MyDrawer(),
           body: pages[context.watch<OnItemClick>().index]);
     } else {
       return Loading();
@@ -269,18 +256,18 @@ class _StartMenu extends State<StartMenu> {
   }
 
   _checkAccount() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     if (prefs.get('id') == null || prefs.get('pwd') == null) {
-      info = await Navigator.push(
+      Future.delayed(Duration(milliseconds: 1000), () async {
+        loginFinished();
+      });
+      Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => LoginPage(
-                    cancelPop: true,
+                    cancelPop: false,
                   ),
               maintainState: false));
-      Future.delayed(Duration(seconds: 3), () async {
-        loginFinished();
-      });
     } else {
       headlessWebView = new HeadlessInAppWebView(
         initialUrlRequest: URLRequest(
@@ -318,16 +305,6 @@ class _StartMenu extends State<StartMenu> {
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
             if (!reLogin) {
               print('登入成功');
-              //--獲取名字--
-              String studentName = (await headlessWebView?.webViewController
-                      .evaluateJavascript(
-                          source:
-                              'document.querySelector("#topFrame > frame:nth-child(1)").contentDocument.querySelector("html").querySelector("#form1 > table > tbody > tr > td.title_bg > table > tbody > tr > td:nth-child(4) > span").innerText;'))
-                  .toString();
-              String studentID = prefs.get('id').toString();
-              info = StudentInfo(studentID, studentName);
-              //-----------
-
               loginFinished();
             }
           }

@@ -6,13 +6,27 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart' as dioCookieManager;
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../advanced_tiles.dart';
+import '../e_school.dart';
+
 class ESchoolCourseWebView extends StatefulWidget {
+  final courseId;
+  final List<AdvancedTile> advancedTile;
+
+  const ESchoolCourseWebView({
+    Key? key,
+    required this.courseId,
+    required this.advancedTile,
+  }) : super(key: key);
+
   @override
   _ESchoolCourseWebViewState createState() => new _ESchoolCourseWebViewState();
 }
@@ -24,6 +38,7 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
         useOnDownloadStart: true,
+        useOnLoadResource: true,
         useShouldOverrideUrlLoading: true,
         mediaPlaybackRequiresUserGesture: false,
       ),
@@ -34,8 +49,8 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
         allowsInlineMediaPlayback: true,
       ));
 
-  late PullToRefreshController pullToRefreshController;
-  String url = "";
+  late String url;
+  late bool loadState = false;
   double progress = 0;
 
   @override
@@ -45,20 +60,6 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
     if (dartCookies.Platform.isAndroid) {
       AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
     }
-
-    pullToRefreshController = PullToRefreshController(
-      options: PullToRefreshOptions(
-        color: Colors.blue,
-      ),
-      onRefresh: () async {
-        if (dartCookies.Platform.isAndroid) {
-          webViewController?.reload();
-        } else if (dartCookies.Platform.isIOS) {
-          webViewController?.loadUrl(
-              urlRequest: URLRequest(url: await webViewController?.getUrl()));
-        }
-      },
-    );
   }
 
   @override
@@ -68,161 +69,260 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Column(children: <Widget>[
-        Expanded(
-          child: Stack(
-            children: [
-              InAppWebView(
-                key: eSchoolCourseWebView,
-                initialUrlRequest: URLRequest(
-                    url: Uri.parse(
-                        "https://eschool.niu.edu.tw/learn/index.php")),
-                initialOptions: options,
-                pullToRefreshController: pullToRefreshController,
-                onWebViewCreated: (controller) {
-                  webViewController = controller;
-                },
-                onLoadStart: (controller, url) {
-                  setState(() {
-                    this.url = url.toString();
-                  });
-                },
-                androidOnPermissionRequest:
-                    (controller, origin, resources) async {
-                  return PermissionRequestResponse(
-                      resources: resources,
-                      action: PermissionRequestResponseAction.GRANT);
-                },
-                shouldOverrideUrlLoading: (controller, navigationAction) async {
-                  var uri = navigationAction.request.url!;
+    return WillPopScope(
+        child: Container(
+          child: Scaffold(
+            body: SafeArea(
+                child: Column(children: <Widget>[
+              Expanded(
+                child: Stack(
+                  children: [
+                    Visibility(
+                        visible: !loadState, child: NiuIconLoading(size: 80)),
+                    Visibility(
+                      visible: loadState,
+                      maintainState: true,
+                      child: InAppWebView(
+                        key: eSchoolCourseWebView,
+                        initialUrlRequest: URLRequest(
+                            url: Uri.parse(
+                                "https://eschool.niu.edu.tw/mooc/login.php")),
+                        initialOptions: options,
+                        onWebViewCreated: (controller) {
+                          webViewController = controller;
+                        },
+                        onLoadStart: (controller, url) async {
+                          setState(() {
+                            this.url = url.toString();
+                          });
+                        },
+                        androidOnPermissionRequest:
+                            (controller, origin, resources) async {
+                          return PermissionRequestResponse(
+                              resources: resources,
+                              action: PermissionRequestResponseAction.GRANT);
+                        },
+                        shouldOverrideUrlLoading:
+                            (controller, navigationAction) async {
+                          var uri = navigationAction.request.url!;
 
-                  if (![
-                    "http",
-                    "https",
-                    "file",
-                    "chrome",
-                    "data",
-                    "javascript",
-                    "about"
-                  ].contains(uri.scheme)) {
-                    if (await canLaunch(url)) {
-                      // Launch the App
-                      await launch(
-                        url,
-                      );
-                      // and cancel the request
-                      return NavigationActionPolicy.CANCEL;
-                    }
-                  }
-
-                  return NavigationActionPolicy.ALLOW;
-                },
-                onLoadStop: (controller, url) async {
-                  pullToRefreshController.endRefreshing();
-                  setState(() {
-                    this.url = url.toString();
-                  });
-                },
-                onLoadError: (controller, url, code, message) {
-                  pullToRefreshController.endRefreshing();
-                },
-                onProgressChanged: (controller, progress) {
-                  if (progress == 100) {
-                    pullToRefreshController.endRefreshing();
-                  }
-                  setState(() {
-                    this.progress = progress / 100;
-                  });
-                },
-                onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                  setState(() {
-                    this.url = url.toString();
-                  });
-                },
-                onConsoleMessage: (controller, consoleMessage) {
-                  print(consoleMessage);
-                },
-                onDownloadStart: (controller, url) async {
-                  if (!await Permission.storage.isGranted) {
-                    Alert(
-                      context: context,
-                      type: AlertType.info,
-                      title: "需取得權限才能獲得完整的使用體驗",
-                      desc: "數位學習園區有下載與上傳檔案之需求，請允許存取\"檔案和媒體\"權限，以便您繼續使用此功能",
-                      buttons: [
-                        DialogButton(
-                          child: Text(
-                            '請點選 允許(Allow)',
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                          onPressed: () async {
-                            Navigator.pop(context);
-                            if (await Permission.storage.request().isGranted) {
-                              _download(url.toString());
-                            } else {
-                              Alert(
-                                context: context,
-                                type: AlertType.error,
-                                title: "無權限存取，無法使用此功能",
-                                desc: "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
-                                buttons: [
-                                  DialogButton(
-                                    child: Text(
-                                      "前往設定",
-                                      style: TextStyle(
-                                          color: Colors.red, fontSize: 20),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      AppSettings.openAppSettings();
-                                    },
-                                    color: Color.fromRGBO(0, 179, 134, 1.0),
-                                  ),
-                                ],
-                              ).show();
+                          if (![
+                            "http",
+                            "https",
+                            "file",
+                            "chrome",
+                            "data",
+                            "javascript",
+                            "about"
+                          ].contains(uri.scheme)) {
+                            if (await canLaunch(url)) {
+                              // Launch the App
+                              await launch(
+                                url,
+                              );
+                              // and cancel the request
+                              return NavigationActionPolicy.CANCEL;
                             }
-                          },
-                          color: Color.fromRGBO(0, 179, 134, 1.0),
-                        ),
-                      ],
-                    ).show();
-                  } else if (await Permission.storage.isDenied) {
-                    Alert(
-                      context: context,
-                      type: AlertType.error,
-                      title: "無權限存取，無法使用此功能",
-                      desc: "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
-                      buttons: [
-                        DialogButton(
-                          child: Text(
-                            "前往設定",
-                            style: TextStyle(color: Colors.red, fontSize: 20),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            AppSettings.openAppSettings();
-                          },
-                          color: Color.fromRGBO(0, 179, 134, 1.0),
-                        ),
-                      ],
-                    ).show();
-                  } else {
-                    _download(url.toString());
-                  }
-                  //_download('https://upload.wikimedia.org/wikipedia/commons/c/c3/%E5%90%89%E7%A5%A5%E7%89%A9-%E6%B3%A2%E6%AF%94.jpg');
-                },
+                          }
+
+                          return NavigationActionPolicy.ALLOW;
+                        },
+                        onLoadStop: (controller, url) async {
+                          print("onLoadStop $url");
+                          setState(() {
+                            this.url = url.toString();
+                          });
+
+                          if (url.toString() ==
+                                  'https://eschool.niu.edu.tw/mooc/message.php?type=17' ||
+                              url.toString() ==
+                                  'https://eschool.niu.edu.tw/mooc/index.php') {
+                            await controller.loadUrl(
+                                urlRequest: URLRequest(
+                                    url: Uri.parse(
+                                        "https://eschool.niu.edu.tw/learn/index.php")));
+                          } else if (url.toString() ==
+                              'https://eschool.niu.edu.tw/mooc/login.php') {
+                            await _login(controller);
+                          }
+
+                          if (url.toString() ==
+                              'https://eschool.niu.edu.tw/learn/index.php') {
+                            await Future.delayed(Duration(milliseconds: 200),
+                                () async {
+                              print('500');
+                              // await controller.evaluateJavascript(
+                              //     source: 'parent.chgCourse(' +
+                              //         widget.courseId +
+                              //         ', 1, 1)');
+                              // setState(() {
+                              //   loadState = true;
+                              // });
+                            });
+                            // await Future.delayed(Duration(milliseconds: 500),
+                            //     () async {
+                            //   print('500');
+                            //   await controller.loadUrl(
+                            //       urlRequest: URLRequest(
+                            //           url: Uri.parse(
+                            //               "https://eschool.niu.edu.tw/forum/m_node_list.php")));
+                            //   setState(() {
+                            //     loadState = true;
+                            //   });
+                            // });
+                          }
+                        },
+                        onLoadResource: (InAppWebViewController controller,
+                            LoadedResource resource) async {
+                          print(resource.toString());
+                          if (resource.url.toString() ==
+                              'https://eschool.niu.edu.tw/learn/mycourse/index.php') {
+                            await controller.evaluateJavascript(
+                                source: 'parent.chgCourse(' +
+                                    widget.courseId +
+                                    ', 1, 1)');
+                          }
+                          if (resource.url.toString() ==
+                              'https://eschool.niu.edu.tw/forum/m_node_list.php') {
+                            await Future.delayed(Duration(milliseconds: 500),
+                                () async {
+                              print('500');
+                              await controller.loadUrl(
+                                  urlRequest: URLRequest(
+                                      url: Uri.parse(
+                                          "https://eschool.niu.edu.tw/forum/m_node_list.php")));
+                              setState(() {
+                                loadState = true;
+                              });
+                            });
+                          }
+                        },
+                        onLoadError: (controller, url, code, message) {},
+                        onProgressChanged: (controller, progress) {
+                          setState(() {
+                            this.progress = progress / 100;
+                          });
+                        },
+                        onUpdateVisitedHistory:
+                            (controller, url, androidIsReload) {
+                          setState(() {
+                            this.url = url.toString();
+                          });
+                        },
+                        onConsoleMessage: (controller, consoleMessage) {
+                          print(consoleMessage);
+                        },
+                        onDownloadStart: (controller, url) async {
+                          if (!await Permission.storage.isGranted) {
+                            Alert(
+                              context: context,
+                              type: AlertType.info,
+                              title: "需取得權限才能獲得完整的使用體驗",
+                              desc:
+                                  "數位學習園區有下載與上傳檔案之需求，請允許存取\"檔案和媒體\"權限，以便您繼續使用此功能",
+                              buttons: [
+                                DialogButton(
+                                  child: Text(
+                                    '請點選 允許(Allow)',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
+                                  onPressed: () async {
+                                    Navigator.pop(context);
+                                    if (await Permission.storage
+                                        .request()
+                                        .isGranted) {
+                                      _download(url.toString());
+                                    } else {
+                                      Alert(
+                                        context: context,
+                                        type: AlertType.error,
+                                        title: "無權限存取，無法使用此功能",
+                                        desc: "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
+                                        buttons: [
+                                          DialogButton(
+                                            child: Text(
+                                              "前往設定",
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 20),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              AppSettings.openAppSettings();
+                                            },
+                                            color: Color.fromRGBO(
+                                                0, 179, 134, 1.0),
+                                          ),
+                                        ],
+                                      ).show();
+                                    }
+                                  },
+                                  color: Color.fromRGBO(0, 179, 134, 1.0),
+                                ),
+                              ],
+                            ).show();
+                          } else if (await Permission.storage.isDenied) {
+                            Alert(
+                              context: context,
+                              type: AlertType.error,
+                              title: "無權限存取，無法使用此功能",
+                              desc: "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
+                              buttons: [
+                                DialogButton(
+                                  child: Text(
+                                    "前往設定",
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 20),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    AppSettings.openAppSettings();
+                                  },
+                                  color: Color.fromRGBO(0, 179, 134, 1.0),
+                                ),
+                              ],
+                            ).show();
+                          } else {
+                            _download(url.toString());
+                          }
+                          //_download('https://upload.wikimedia.org/wikipedia/commons/c/c3/%E5%90%89%E7%A5%A5%E7%89%A9-%E6%B3%A2%E6%AF%94.jpg');
+                        },
+                      ),
+                    ),
+                    progress < 1.0
+                        ? LinearProgressIndicator(value: progress)
+                        : Container(),
+                  ],
+                ),
               ),
-              progress < 1.0
-                  ? LinearProgressIndicator(value: progress)
-                  : Container(),
-            ],
+            ])),
           ),
         ),
-      ])),
-    );
+        onWillPop: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ESchool(advancedTile: widget.advancedTile),
+                  maintainState: false));
+          return false;
+        });
   }
+}
+
+_login(InAppWebViewController webViewController) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? id = prefs.getString('id');
+  String? pwd = prefs.getString('pwd');
+  await webViewController.evaluateJavascript(
+      source: 'document.querySelector("#username").value=\'$id\';');
+  await webViewController.evaluateJavascript(
+      source: 'document.querySelector("#password").value=\'$pwd\';');
+  Future.delayed(Duration(milliseconds: 1000), () async {
+    await webViewController.evaluateJavascript(
+        source: 'document.querySelector("#btnSignIn").click();');
+  });
 }
 
 void _download(String url) async {

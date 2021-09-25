@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
-import 'package:niu_app/e_school/page/e_school_course_webview.dart';
 import 'package:niu_app/e_school/page/lesson_page.dart';
 import 'package:niu_app/e_school/page/work_page.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
-import 'package:niu_app/menu/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'advanced_tiles.dart';
 
 class ESchool extends StatefulWidget {
-  ESchool({Key? key}) : super(key: key);
+  final List<AdvancedTile> advancedTile;
+
+  ESchool({Key? key, required this.advancedTile}) : super(key: key);
+
   @override
   _ESchoolState createState() => _ESchoolState();
 }
@@ -36,6 +37,13 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    if (widget.advancedTile.isNotEmpty) {
+      advancedTile = widget.advancedTile;
+      semester = widget.advancedTile.first.semester;
+      setState(() {
+        loadState = true;
+      });
+    }
     _tabController = TabController(
       vsync: this,
       length: myTabs.length,
@@ -84,42 +92,44 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
           if (url.toString() == 'https://eschool.niu.edu.tw/learn/index.php') {
             await headlessWebView?.webViewController
                 .evaluateJavascript(source: 'parent.s_sysbar.goPersonal()');
+            if (widget.advancedTile.isEmpty) {
+              semester = (await headlessWebView?.webViewController
+                          .evaluateJavascript(
+                              source:
+                                  'window.frames[0].document.querySelector("#selcourse > option:nth-child(2)").innerText;')
+                      as String)
+                  .split('_')[0];
 
-            semester = (await headlessWebView?.webViewController.evaluateJavascript(
-                        source:
-                            'window.frames[0].document.querySelector("#selcourse > option:nth-child(2)").innerText;')
-                    as String)
-                .split('_')[0];
-
-            for (int i = 2;
-                (await headlessWebView?.webViewController.evaluateJavascript(
+              for (int i = 2;
+                  (await headlessWebView?.webViewController.evaluateJavascript(
+                              source:
+                                  'window.frames[0].document.querySelector("#selcourse > option:nth-child(' +
+                                      i.toString() +
+                                      ')").innerText;') as String)
+                          .split('_')[0] ==
+                      semester;
+                  i++) {
+                String courseName = (await headlessWebView?.webViewController
+                        .evaluateJavascript(
                             source:
                                 'window.frames[0].document.querySelector("#selcourse > option:nth-child(' +
                                     i.toString() +
                                     ')").innerText;') as String)
-                        .split('_')[0] ==
-                    semester;
-                i++) {
-              String courseName = (await headlessWebView?.webViewController
-                      .evaluateJavascript(
-                          source:
-                              'window.frames[0].document.querySelector("#selcourse > option:nth-child(' +
-                                  i.toString() +
-                                  ')").innerText;') as String)
-                  .split('_')[1]
-                  .split('(')[0];
-              String courseId = await headlessWebView?.webViewController
-                  .evaluateJavascript(
-                      source:
-                          'window.frames[0].document.querySelector("#selcourse > option:nth-child(' +
-                              i.toString() +
-                              ')").value;') as String;
-              advancedTile
-                  .add(AdvancedTile(title: courseName, courseId: courseId));
+                    .split('_')[1]
+                    .split('(')[0];
+                String courseId = await headlessWebView?.webViewController
+                    .evaluateJavascript(
+                        source:
+                            'window.frames[0].document.querySelector("#selcourse > option:nth-child(' +
+                                i.toString() +
+                                ')").value;') as String;
+                advancedTile.add(AdvancedTile(
+                    title: courseName, courseId: courseId, semester: semester));
+              }
+              setState(() {
+                loadState = true;
+              });
             }
-            setState(() {
-              loadState = true;
-            });
           }
         },
         onUpdateVisitedHistory: (controller, url, androidIsReload) {
@@ -148,11 +158,6 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
-    loginState = 'null';
-    loadState = false;
-    _tabController.dispose();
-    _scrollController.dispose();
-    print('login dispose');
   }
 
   late TabController _tabController;
@@ -214,8 +219,6 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
     Future.delayed(Duration(milliseconds: 1000), () async {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#btnSignIn").click();');
-      //TODO 網頁異常狀態判定
-      //TODO 登入動畫？
     });
   }
 }

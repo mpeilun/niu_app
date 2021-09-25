@@ -147,7 +147,7 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
       builder: (BuildContext context) => Dialog(child: EventInfoDialog()),
     );
     if (index != null) {
-      print("点击了：$index");
+      print("點了：$index");
     }
   }
 }

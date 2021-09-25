@@ -106,6 +106,7 @@ class _WorkPageState extends State<WorkPage> {
                 advancedTile.add(AdvancedTile(
                     title: courseName,
                     courseId: courseId,
+                    semester: widget.semester,
                     workCount: workCount,
                     submitCount: submitCount));
               }
@@ -139,6 +140,7 @@ class _WorkPageState extends State<WorkPage> {
   @override
   void dispose() {
     super.dispose();
+    print('work_page dispose');
   }
 
   @override
