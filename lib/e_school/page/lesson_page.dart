@@ -56,7 +56,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
         itemCount: 1,
         itemBuilder: (BuildContext context, int index) {
           return ExpansionPanelList.radio(
-            animationDuration: Duration(milliseconds: 750),
+            animationDuration: Duration(milliseconds: 500),
             children: widget.tile
                 .map((tile) => ExpansionPanelRadio(
                     value: tile.title,

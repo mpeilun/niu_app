@@ -18,7 +18,7 @@ class Grades extends StatefulWidget {
   _GradesState createState() => _GradesState();
 }
 
-class _GradesState extends State<Grades> with SingleTickerProviderStateMixin {
+class _GradesState extends State<Grades> {
   final List<Widget> myTabs = [
     CustomTabBar(
       title: '期中成績',
