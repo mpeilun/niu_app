@@ -249,6 +249,7 @@ class _StartMenu extends State<StartMenu> {
             ],
           ),
           drawer: MyDrawer(),
+          endDrawer: NotificationDrawer(),
           body: pages[context.watch<OnItemClick>().index]);
     } else {
       return Loading();

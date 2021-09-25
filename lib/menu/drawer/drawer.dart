@@ -32,6 +32,7 @@ class _MyDrawer extends State<MyDrawer> {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Drawer(
         child: Column(
@@ -69,50 +70,30 @@ class _MyDrawer extends State<MyDrawer> {
                 color: Theme.of(context).scaffoldBackgroundColor,
                 child: ListView(
                   children: <Widget>[
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    createDrawerItem(
-                        icon: Icons.home,
-                        text: '首頁',
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          context.read<OnItemClick>().onclick(0);
-                        }),
-                    createDrawerItem(
-                        icon: MyFlutterApp2.megaphone,
-                        text: '公告',
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          context.read<OnItemClick>().onclick(1);
-                        }),
-                    createDrawerItem(
-                        icon: Icons.settings,
-                        text: '設定',
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          context.read<OnItemClick>().onclick(2);
-                        }),
-                    createDrawerItem(
-                        icon: Icons.info,
-                        text: '關於',
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          context.read<OnItemClick>().onclick(3);
-                        }),
-                    createDrawerItem(
-                        icon: Icons.logout,
-                        text: '登出',
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        }),
-                    createDrawerItem(
-                        icon: Icons.bug_report,
-                        text: '回報問題',
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          context.read<OnItemClick>().onclick(4);
-                        }),
+                    SizedBox(height: 10.0,),
+                    createDrawerItem(icon: Icons.home, text: '首頁', onTap: (){
+                      Navigator.of(context).pop();
+                      context.read<OnItemClick>().onclick(0);
+                    }),
+                    createDrawerItem(icon: MyFlutterApp2.megaphone, text: '公告', onTap: () {
+                      Navigator.of(context).pop();
+                      context.read<OnItemClick>().onclick(1);
+                    }),
+                    createDrawerItem(icon: Icons.settings, text: '設定', onTap: () {
+                      Navigator.of(context).pop();
+                      context.read<OnItemClick>().onclick(2);
+                    }),
+                    createDrawerItem(icon: Icons.info, text: '關於', onTap: () {
+                      Navigator.of(context).pop();
+                      context.read<OnItemClick>().onclick(3);
+                    }),
+                    createDrawerItem(icon: Icons.logout, text: '登出', onTap: () {
+                      Navigator.of(context).pop();
+                    }),
+                    createDrawerItem(icon: Icons.bug_report, text: '回報問題', onTap: () {
+                      Navigator.of(context).pop();
+                      context.read<OnItemClick>().onclick(4);
+                    }),
                   ],
                 ),
               ),
@@ -136,18 +117,13 @@ class _MyDrawer extends State<MyDrawer> {
 }
 
 Widget createDrawerItem(
-    {required IconData icon,
-    required String text,
-    required GestureTapCallback onTap}) {
+    {required IconData icon, required String text, required GestureTapCallback onTap}) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8.0),
     child: ListTile(
       title: Row(
         children: <Widget>[
-          Icon(
-            icon,
-            color: Colors.black,
-          ),
+          Icon(icon, color: Colors.black,),
           Padding(
             padding: EdgeInsets.only(left: 16.0),
             child: Text(text),
