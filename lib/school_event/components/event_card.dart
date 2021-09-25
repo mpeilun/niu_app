@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
 import 'package:niu_app/school_event/school_event.dart';
 
 import 'custom_list_info.dart';
@@ -17,6 +20,7 @@ class Event {
   final String positiveLimit;
   final String wait;
   final String waitLimit;
+  final String signUpJavaScript;
 
   Event({
     required this.name,
@@ -30,6 +34,7 @@ class Event {
     required this.positiveLimit,
     required this.wait,
     required this.waitLimit,
+    required this.signUpJavaScript,
   });
 }
 
@@ -48,10 +53,20 @@ class CustomEventCard extends StatefulWidget {
 class _CustomEventCardState extends State<CustomEventCard> {
   ScrollController _scrollController = ScrollController();
 
+  Future<void> showListDialog() async {
+    String? index = await showDialog<String>(
+      context: context,
+
+      builder: (BuildContext context) => Dialog(child: EventInfoDialog()),
+    );
+    if (index != null) {
+      print("點了：$index");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    //widget.grade.insert(0, Quote(lesson: 'null'));
     _scrollController.addListener(() {
       schoolEventScrollController.jumpTo(_scrollController.offset);
     });
@@ -72,28 +87,34 @@ class _CustomEventCardState extends State<CustomEventCard> {
             padding: EdgeInsets.fromLTRB(screenSizeWidth * 0.05,
                 screenSizeHeight * 0.01, screenSizeWidth * 0.05, 0.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  width: screenSizeWidth * 0.6,
-                  child: Text(
-                    widget.data[index].name,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    child: Text(
+                      widget.data[index].name
+                          .substring(0, widget.data[index].name.length - 1),
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
-                Container(
-                  width: screenSizeWidth * 0.3,
-                  child: Text(
-                    '${widget.data[index].department}',
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.grey[600],
+                SizedBox(
+                  width: screenSizeWidth * 0.05,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    child: Text(
+                      widget.data[index].department,
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.grey[600],
+                      ),
+                      textAlign: TextAlign.end,
                     ),
-                    textAlign: TextAlign.end,
                   ),
                 ),
               ],
@@ -109,7 +130,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                     offset: Offset(1.0, 1.0), //陰影y軸偏移量
                     blurRadius: 0, //陰影模糊程度
                     spreadRadius: 0 //陰影擴散程度
-                )
+                    )
               ],
             ),
             margin: EdgeInsets.fromLTRB(
@@ -123,7 +144,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                 dividerColor: Colors.transparent,
               ),
               child: ExpansionTile(
-                key: PageStorageKey('event'),
+                key: PageStorageKey('event' + index.toString()),
                 title: Text(
                   '　詳細資料',
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -194,19 +215,51 @@ class _CustomEventCardState extends State<CustomEventCard> {
                           ],
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('我要報名'),
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all<
-                              RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
+                      (widget.data[index].status == "報名中" ||
+                              widget.data[index].status == "已額滿")
+                          ? ElevatedButton(
+                              onPressed: () {
+                                print(widget.data[index].signUpJavaScript);
+                                showListDialog();
+                              },
+                              child: Text('我要報名'),
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : ElevatedButton(
+                              onPressed: () {
+                                final scaffold = ScaffoldMessenger.of(context);
+                                final snackBar = SnackBar(
+                                  content: Text(widget.data[index].status + ' 無法報名'),
+                                  action: SnackBarAction(
+                                    label: '確定',
+                                    onPressed: () {
+                                      scaffold.removeCurrentSnackBar();
+                                    },
+                                  ),
+                                );
+                                scaffold.showSnackBar(snackBar);
+                              },
+                              child: Text('不可報名'),
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ),
+                                ),
+                                backgroundColor: MaterialStateProperty.all(Colors.grey)
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: screenSizeHeight * 0.015,)
+                      SizedBox(
+                        height: screenSizeHeight * 0.015,
+                      )
                     ],
                   ),
                 ],
