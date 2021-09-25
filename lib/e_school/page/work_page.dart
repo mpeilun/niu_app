@@ -106,6 +106,7 @@ class _WorkPageState extends State<WorkPage> {
                 advancedTile.add(AdvancedTile(
                     title: courseName,
                     courseId: courseId,
+                    semester: widget.semester,
                     workCount: workCount,
                     submitCount: submitCount));
               }

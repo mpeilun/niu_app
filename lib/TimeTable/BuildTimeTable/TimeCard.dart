@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class TimeCard extends StatefulWidget {
   TimeCard.build({
     required this.thisTime,
@@ -10,21 +11,22 @@ class TimeCard extends StatefulWidget {
 }
 
 class _TimeCardState extends State<TimeCard> {
+  List<String> time = timeName;
+  bool state = false;
+
   @override
   Widget build(BuildContext context) {
-    List<String> time = timeName;
-    bool state = false;
     return Container(
       child: GestureDetector(
-        onTap: (){
-          setState(){
-            if(state){
+        onTap: () {
+          setState(() {
+            if (state) {
               time = timeName;
-            }else{
+            } else {
               time = timeRange;
             }
             state = !state;
-          }
+          });
           print("Tap");
         },
         child: Text(
@@ -38,24 +40,24 @@ class _TimeCardState extends State<TimeCard> {
   }
 }
 
-List<String> timeRange = <String> [
-  "07:10-08:00",//0
-  "08:10-09:00",//1
-  "09:10-10:00",//2
-  "10:10-11:00",//3
-  "11:10-12:00",//4
-  "13:10-14:00",//5
-  "14:10-15:00",//6
-  "15:10-16:00",//7
-  "16:10-17:00",//8
-  "17:10-18:00",//9
-  "18:20-19:10",//a
-  "19:15-20:05",//b
-  "20:10-21:00",//c
-  "21:05-21:55",//d
+List<String> timeRange = <String>[
+  "07:10-08:00", //0
+  "08:10-09:00", //1
+  "09:10-10:00", //2
+  "10:10-11:00", //3
+  "11:10-12:00", //4
+  "13:10-14:00", //5
+  "14:10-15:00", //6
+  "15:10-16:00", //7
+  "16:10-17:00", //8
+  "17:10-18:00", //9
+  "18:20-19:10", //a
+  "19:15-20:05", //b
+  "20:10-21:00", //c
+  "21:05-21:55", //d
 ];
 
-List<String> timeName = <String> [
+List<String> timeName = <String>[
   "特\n早\n課",
   "第\n一\n節",
   "第\n二\n節",
@@ -71,4 +73,3 @@ List<String> timeName = <String> [
   "第\nC\n節",
   "第\nD\n節",
 ];
-

@@ -5,6 +5,8 @@ import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/e_school/advanced_tiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'e_school_course_webview.dart';
+
 class LessonPage extends StatefulWidget {
   final List<AdvancedTile> advancedTile;
 
@@ -32,17 +34,17 @@ class _LessonPageState extends State<LessonPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomLessonCard(tile: widget.advancedTile);
+    return CustomLessonCard(advancedTile: widget.advancedTile);
   }
 }
 
 class CustomLessonCard extends StatefulWidget {
+  final List<AdvancedTile> advancedTile;
+
   const CustomLessonCard({
     Key? key,
-    required this.tile,
+    required this.advancedTile,
   }) : super(key: key);
-
-  final List<AdvancedTile> tile;
 
   @override
   _CustomLessonCardState createState() => _CustomLessonCardState();
@@ -57,7 +59,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
         itemBuilder: (BuildContext context, int index) {
           return ExpansionPanelList.radio(
             animationDuration: Duration(milliseconds: 750),
-            children: widget.tile
+            children: widget.advancedTile
                 .map((tile) => ExpansionPanelRadio(
                     value: tile.title,
                     canTapOnHeader: true,
@@ -87,7 +89,17 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                     child: Text("課程公告",
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.white)),
-                                    onPressed: () => null),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ESchoolCourseWebView(
+                                                      courseId: tile.courseId,
+                                                      advancedTile:
+                                                          widget.advancedTile),
+                                              maintainState: true));
+                                    }),
                               ),
                               // SizedBox(
                               //   width: 16.0,

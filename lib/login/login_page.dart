@@ -5,7 +5,6 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:niu_app/menu/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:niu_app/menu/studentInfo.dart';
 
 class LoginPage extends StatefulWidget {
   final bool cancelPop;
@@ -21,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   HeadlessInAppWebView? headlessWebView;
   bool loadState = false;
   String loginState = 'null';
+  late SharedPreferences prefs;
   late String url;
   late String id;
   late String pwd;
@@ -68,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+
     headlessWebView = new HeadlessInAppWebView(
         initialUrlRequest: URLRequest(
             url: Uri.parse("https://acade.niu.edu.tw/NIU/logout.aspx")),
@@ -94,6 +95,9 @@ class _LoginPageState extends State<LoginPage> {
           setState(() {
             this.url = url.toString();
           });
+
+          prefs = await SharedPreferences.getInstance();
+
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/Default.aspx') {
             setState(() {
               loadState = true;
@@ -102,11 +106,11 @@ class _LoginPageState extends State<LoginPage> {
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
             print('登入成功');
             loginState = '';
-            name = (await headlessWebView?.webViewController
-                .evaluateJavascript(
-                source:
-                'document.querySelector("#topFrame > frame:nth-child(1)").contentDocument.querySelector("html").querySelector("#form1 > table > tbody > tr > td.title_bg > table > tbody > tr > td:nth-child(4) > span").innerText;')).toString();
-            await _saveData(id, pwd);
+            name = (await headlessWebView?.webViewController.evaluateJavascript(
+                    source:
+                        'document.querySelector("#topFrame > frame:nth-child(1)").contentDocument.querySelector("html").querySelector("#form1 > table > tbody > tr > td.title_bg > table > tbody > tr > td:nth-child(4) > span").innerText;'))
+                .toString();
+            await _saveData(id, pwd, name);
           }
         },
         onUpdateVisitedHistory: (controller, url, androidIsReload) {
@@ -160,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                   onSubmitAnimationCompleted: () {
                     print("id: " + id);
                     print("name: " + name);
-                    Navigator.pop(context,StudentInfo(id,name));
+                    Navigator.pop(context);
                   },
                   theme: LoginTheme(
                       logoWidth: 0.3, titleStyle: TextStyle(fontSize: 30)),
@@ -177,9 +181,10 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _saveData(String id, String pwd) async {
+  _saveData(String id, String pwd, String name) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("id", id.toLowerCase());
     prefs.setString("pwd", pwd);
+    prefs.setString("name", name);
   }
 }
