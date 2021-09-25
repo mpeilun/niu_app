@@ -1,3 +1,4 @@
+import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:niu_app/menu/menu_page.dart';
@@ -5,10 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 import 'package:provider/provider.dart';
+
 //nope
 void main() => runApp(MultiProvider(providers: [
-  ChangeNotifierProvider(create: (_) => OnItemClick()),
-], child: MyApp()));
+      ChangeNotifierProvider(create: (_) => OnItemClick()),
+    ], child: MyApp()));
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -37,6 +39,12 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.grey[200],
         textTheme: GoogleFonts.notoSansTextTheme(textTheme).copyWith(
           headline1: GoogleFonts.oswald(textStyle: textTheme.headline1),
+        ),
+        pageTransitionsTheme: PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: ZoomPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoWillPopScopePageTransionsBuilder(),
+          },
         ),
       ),
       home: StartMenu(),

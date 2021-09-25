@@ -89,7 +89,17 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                     child: Text("課程公告",
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.white)),
-                                    onPressed: () => null),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ESchoolCourseWebView(
+                                                      courseId: tile.courseId,
+                                                      advancedTile:
+                                                          widget.tile),
+                                              maintainState: true));
+                                    }),
                               ),
                               // SizedBox(
                               //   width: 16.0,

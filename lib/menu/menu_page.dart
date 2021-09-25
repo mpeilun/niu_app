@@ -23,7 +23,6 @@ import 'package:niu_app/menu/drawer/setting.dart';
 import 'package:provider/src/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 
-
 class StartMenu extends StatefulWidget {
   StartMenu({Key? key}) : super(key: key);
 
@@ -81,8 +80,7 @@ class _StartMenu extends State<StartMenu> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          ESchool(advancedTile: []),
+                                      builder: (context) => ESchool(),
                                       maintainState: false));
                             },
                           ),
@@ -241,7 +239,9 @@ class _StartMenu extends State<StartMenu> {
                       right: 9.0,
                       top: 9.0,
                       child: Icon(Icons.brightness_1,
-                          color: isNotification ? Colors.red : Colors.transparent, size: 9.0),
+                          color:
+                              isNotification ? Colors.red : Colors.transparent,
+                          size: 9.0),
                     )
                   ],
                 ),

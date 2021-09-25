@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/components/keep_alive.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/e_school/page/lesson_page.dart';
 import 'package:niu_app/e_school/page/work_page.dart';
@@ -10,10 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'advanced_tiles.dart';
 
-class ESchool extends StatefulWidget {
-  final List<AdvancedTile> advancedTile;
+List<AdvancedTile> globalAdvancedTile = [];
 
-  ESchool({Key? key, required this.advancedTile}) : super(key: key);
+class ESchool extends StatefulWidget {
+  ESchool({Key? key}) : super(key: key);
 
   @override
   _ESchoolState createState() => _ESchoolState();
@@ -22,9 +23,8 @@ class ESchool extends StatefulWidget {
 class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
   HeadlessInAppWebView? headlessWebView;
   bool loadState = false;
-  String loginState = 'null';
   late List<AdvancedTile> advancedTile = [];
-  late String semester;
+  late String semester = '';
   late String url;
   late String id;
   late String pwd;
@@ -37,12 +37,10 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    if (widget.advancedTile.isNotEmpty) {
-      advancedTile = widget.advancedTile;
-      semester = widget.advancedTile.first.semester;
-      setState(() {
-        loadState = true;
-      });
+    if (globalAdvancedTile.isNotEmpty) {
+      advancedTile = globalAdvancedTile;
+      semester = globalAdvancedTile.first.semester;
+      loadState = true;
     }
     _tabController = TabController(
       vsync: this,
@@ -92,7 +90,7 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
           if (url.toString() == 'https://eschool.niu.edu.tw/learn/index.php') {
             await headlessWebView?.webViewController
                 .evaluateJavascript(source: 'parent.s_sysbar.goPersonal()');
-            if (widget.advancedTile.isEmpty) {
+            if (advancedTile.isEmpty) {
               semester = (await headlessWebView?.webViewController
                           .evaluateJavascript(
                               source:
@@ -126,6 +124,7 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
                 advancedTile.add(AdvancedTile(
                     title: courseName, courseId: courseId, semester: semester));
               }
+              globalAdvancedTile = advancedTile;
               setState(() {
                 loadState = true;
               });
@@ -140,10 +139,6 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
         },
         onJsAlert: (InAppWebViewController controller,
             JsAlertRequest jsAlertRequest) async {
-          // await headlessWebView?.webViewController.loadUrl(
-          //     urlRequest: URLRequest(
-          //         url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx")));
-          loginState = jsAlertRequest.message!;
           return JsAlertResponse(
               handledByClient: true, action: JsAlertResponseAction.CONFIRM);
         },
@@ -199,8 +194,8 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
               body: TabBarView(
                 controller: _tabController,
                 children: <Widget>[
-                  LessonPage(advancedTile: advancedTile),
-                  WorkPage(semester: semester),
+                  KeepAlivePage(child: LessonPage(advancedTile: advancedTile)),
+                  KeepAlivePage(child: WorkPage(semester: semester)),
                 ],
               ),
             ),

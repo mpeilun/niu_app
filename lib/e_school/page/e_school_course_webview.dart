@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io' as dartCookies;
 import 'package:app_settings/app_settings.dart';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart' as dioCookieManager;
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class ESchoolCourseWebView extends StatefulWidget {
 
 class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
   final GlobalKey eSchoolCourseWebView = GlobalKey();
-
+  HeadlessInAppWebView? headlessWebView;
   InAppWebViewController? webViewController;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
@@ -60,6 +61,74 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
     if (dartCookies.Platform.isAndroid) {
       AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
     }
+
+    headlessWebView = new HeadlessInAppWebView(
+        initialUrlRequest: URLRequest(
+            url: Uri.parse("https://eschool.niu.edu.tw/learn/index.php")),
+        initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(
+            useOnLoadResource: true,
+            useOnDownloadStart: true,
+            javaScriptCanOpenWindowsAutomatically: true,
+          ),
+        ),
+        onWebViewCreated: (controller) {
+          print('HeadlessInAppWebView created!');
+        },
+        onConsoleMessage: (controller, consoleMessage) {
+          print("CONSOLE MESSAGE: " + consoleMessage.message);
+        },
+        onLoadStart: (controller, url) async {
+          print("onLoadStart $url");
+          setState(() {
+            this.url = url.toString();
+          });
+        },
+        onLoadStop: (controller, url) async {
+          print("onLoadStop $url");
+          setState(() {
+            this.url = url.toString();
+          });
+          if (url.toString() == 'https://eschool.niu.edu.tw/mooc/login.php') {
+            globalAdvancedTile = [];
+            Navigator.pop(context);
+          }
+        },
+        onUpdateVisitedHistory: (controller, url, androidIsReload) {
+          print("onUpdateVisitedHistory $url");
+          setState(() {
+            this.url = url.toString();
+          });
+        },
+        onJsAlert: (InAppWebViewController controller,
+            JsAlertRequest jsAlertRequest) async {
+          return JsAlertResponse(
+              handledByClient: true, action: JsAlertResponseAction.CONFIRM);
+        },
+        onLoadResource:
+            (InAppWebViewController controller, LoadedResource resource) async {
+          print(resource.toString());
+          if (resource.url.toString() ==
+                  'https://eschool.niu.edu.tw/learn/mycourse/index.php' ||
+              resource.url.toString() ==
+                  'https://eschool.niu.edu.tw/forum/m_node_list.php') {
+            await Future.delayed(Duration(milliseconds: 200), () async {
+              await controller.evaluateJavascript(
+                  source: 'parent.chgCourse(' + widget.courseId + ', 1, 1)');
+            });
+            await Future.delayed(Duration(milliseconds: 1000), () async {
+              await webViewController!.loadUrl(
+                  urlRequest: URLRequest(
+                      url: Uri.parse(
+                          "https://eschool.niu.edu.tw/forum/m_node_list.php")));
+              setState(() {
+                loadState = true;
+              });
+            });
+          }
+        });
+
+    headlessWebView?.run();
   }
 
   @override
@@ -69,7 +138,7 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return ConditionalWillPopScope(
         child: Container(
           child: Scaffold(
             body: SafeArea(
@@ -84,9 +153,7 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
                       maintainState: true,
                       child: InAppWebView(
                         key: eSchoolCourseWebView,
-                        initialUrlRequest: URLRequest(
-                            url: Uri.parse(
-                                "https://eschool.niu.edu.tw/mooc/login.php")),
+                        initialUrlRequest: URLRequest(url: Uri.parse("")),
                         initialOptions: options,
                         onWebViewCreated: (controller) {
                           webViewController = controller;
@@ -133,49 +200,37 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
                             this.url = url.toString();
                           });
 
-                          if (url.toString() ==
-                                  'https://eschool.niu.edu.tw/mooc/message.php?type=17' ||
-                              url.toString() ==
-                                  'https://eschool.niu.edu.tw/mooc/index.php') {
-                            await controller.loadUrl(
-                                urlRequest: URLRequest(
-                                    url: Uri.parse(
-                                        "https://eschool.niu.edu.tw/learn/index.php")));
-                          } else if (url.toString() ==
-                              'https://eschool.niu.edu.tw/mooc/login.php') {
-                            await _login(controller);
-                          }
+                          // if (url.toString() ==
+                          //     'https://eschool.niu.edu.tw/mooc/login.php') {
+                          //   globalAdvancedTile = [];
+                          //   Navigator.pop(context);
+                          // }
                         },
                         onLoadResource: (InAppWebViewController controller,
                             LoadedResource resource) async {
                           print(resource.toString());
-                          if (resource.url.toString() ==
-                              'https://eschool.niu.edu.tw/learn/mycourse/index.php') {
-                            setState(() {
-                              loadState = true;
-                            });
-                            await Future.delayed(Duration(milliseconds: 1000),
-                                () async {
-                              await controller.evaluateJavascript(
-                                  source: 'parent.chgCourse(' +
-                                      widget.courseId +
-                                      ', 1, 1)');
-                            });
-                          }
-                          if (resource.url.toString() ==
-                              'https://eschool.niu.edu.tw/forum/m_node_list.php') {
-                            await Future.delayed(Duration(milliseconds: 500),
-                                () async {
-                              print('500');
-                              await controller.loadUrl(
-                                  urlRequest: URLRequest(
-                                      url: Uri.parse(
-                                          "https://eschool.niu.edu.tw/forum/m_node_list.php")));
-                              setState(() {
-                                loadState = true;
-                              });
-                            });
-                          }
+                          // if (resource.url.toString() ==
+                          //         'https://eschool.niu.edu.tw/learn/mycourse/index.php' ||
+                          //     resource.url.toString() ==
+                          //         'https://eschool.niu.edu.tw/forum/m_node_list.php') {
+                          //   await Future.delayed(Duration(milliseconds: 200),
+                          //       () async {
+                          //     await controller.evaluateJavascript(
+                          //         source: 'parent.chgCourse(' +
+                          //             widget.courseId +
+                          //             ', 1, 1)');
+                          //   });
+                          //   await Future.delayed(Duration(milliseconds: 1000),
+                          //       () async {
+                          //     await controller.loadUrl(
+                          //         urlRequest: URLRequest(
+                          //             url: Uri.parse(
+                          //                 "https://eschool.niu.edu.tw/forum/m_node_list.php")));
+                          //     setState(() {
+                          //       loadState = true;
+                          //     });
+                          //   });
+                          // }
                         },
                         onLoadError: (controller, url, code, message) {},
                         onProgressChanged: (controller, progress) {
@@ -188,6 +243,7 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
                           setState(() {
                             this.url = url.toString();
                           });
+                          print(url.toString());
                         },
                         onConsoleMessage: (controller, consoleMessage) {
                           print(consoleMessage);
@@ -280,29 +336,11 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
           ),
         ),
         onWillPop: () async {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ESchool(advancedTile: widget.advancedTile),
-                  maintainState: false));
+          Navigator.pop(context);
           return false;
-        });
+        },
+        shouldAddCallbacks: true);
   }
-}
-
-_login(InAppWebViewController webViewController) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? id = prefs.getString('id');
-  String? pwd = prefs.getString('pwd');
-  await webViewController.evaluateJavascript(
-      source: 'document.querySelector("#username").value=\'$id\';');
-  await webViewController.evaluateJavascript(
-      source: 'document.querySelector("#password").value=\'$pwd\';');
-  Future.delayed(Duration(milliseconds: 1000), () async {
-    await webViewController.evaluateJavascript(
-        source: 'document.querySelector("#btnSignIn").click();');
-  });
 }
 
 void _download(String url) async {
