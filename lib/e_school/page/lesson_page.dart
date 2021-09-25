@@ -39,14 +39,12 @@ class _LessonPageState extends State<LessonPage> {
 }
 
 class CustomLessonCard extends StatefulWidget {
-  final List<AdvancedTile> advancedTile;
+  final List<AdvancedTile> tile;
 
   const CustomLessonCard({
     Key? key,
     required this.tile,
   }) : super(key: key);
-
-  final List<AdvancedTile> tile;
 
   @override
   _CustomLessonCardState createState() => _CustomLessonCardState();
@@ -61,7 +59,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
         itemBuilder: (BuildContext context, int index) {
           return ExpansionPanelList.radio(
             animationDuration: Duration(milliseconds: 750),
-            children: widget.advancedTile
+            children: widget.tile
                 .map((tile) => ExpansionPanelRadio(
                     value: tile.title,
                     canTapOnHeader: true,

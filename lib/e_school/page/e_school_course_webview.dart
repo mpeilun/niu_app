@@ -145,42 +145,22 @@ class _ESchoolCourseWebViewState extends State<ESchoolCourseWebView> {
                               'https://eschool.niu.edu.tw/mooc/login.php') {
                             await _login(controller);
                           }
-
-                          if (url.toString() ==
-                              'https://eschool.niu.edu.tw/learn/index.php') {
-                            await Future.delayed(Duration(milliseconds: 200),
-                                () async {
-                              print('500');
-                              // await controller.evaluateJavascript(
-                              //     source: 'parent.chgCourse(' +
-                              //         widget.courseId +
-                              //         ', 1, 1)');
-                              // setState(() {
-                              //   loadState = true;
-                              // });
-                            });
-                            // await Future.delayed(Duration(milliseconds: 500),
-                            //     () async {
-                            //   print('500');
-                            //   await controller.loadUrl(
-                            //       urlRequest: URLRequest(
-                            //           url: Uri.parse(
-                            //               "https://eschool.niu.edu.tw/forum/m_node_list.php")));
-                            //   setState(() {
-                            //     loadState = true;
-                            //   });
-                            // });
-                          }
                         },
                         onLoadResource: (InAppWebViewController controller,
                             LoadedResource resource) async {
                           print(resource.toString());
                           if (resource.url.toString() ==
                               'https://eschool.niu.edu.tw/learn/mycourse/index.php') {
-                            await controller.evaluateJavascript(
-                                source: 'parent.chgCourse(' +
-                                    widget.courseId +
-                                    ', 1, 1)');
+                            setState(() {
+                              loadState = true;
+                            });
+                            await Future.delayed(Duration(milliseconds: 1000),
+                                () async {
+                              await controller.evaluateJavascript(
+                                  source: 'parent.chgCourse(' +
+                                      widget.courseId +
+                                      ', 1, 1)');
+                            });
                           }
                           if (resource.url.toString() ==
                               'https://eschool.niu.edu.tw/forum/m_node_list.php') {
