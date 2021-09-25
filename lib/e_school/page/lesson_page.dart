@@ -1,20 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/e_school/advanced_tiles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LessonPage extends StatefulWidget {
+  final List<AdvancedTile> advancedTile;
+
   const LessonPage({
     Key? key,
+    required this.advancedTile,
   }) : super(key: key);
 
   @override
   _LessonPageState createState() => _LessonPageState();
 }
 
-class _LessonPageState extends State<LessonPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class _LessonPageState extends State<LessonPage> {
+  late String url;
 
   @override
   void initState() {
@@ -26,28 +30,9 @@ class _LessonPageState extends State<LessonPage>
     super.dispose();
   }
 
-  final advancedTile = <AdvancedTile>[
-    AdvancedTile(title: '課程1', workCount: '10', submitCount: '10'),
-    AdvancedTile(title: '課程2', workCount: '10', submitCount: '9'),
-    AdvancedTile(title: '課程3'),
-    AdvancedTile(title: '課程4'),
-    AdvancedTile(title: '課程5'),
-    AdvancedTile(title: '課程6'),
-    AdvancedTile(title: '課程7'),
-    AdvancedTile(title: '課程8'),
-    AdvancedTile(title: '課程9'),
-    AdvancedTile(title: '課程10'),
-    AdvancedTile(title: '課程11'),
-    AdvancedTile(title: '課程12'),
-    AdvancedTile(title: '課程13'),
-  ];
-
-  //title 放展開前的標題，tiles 裡的 title 放展開後的作業內容
-
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return CustomLessonCard(tile: advancedTile);
+    return CustomLessonCard(tile: widget.advancedTile);
   }
 }
 
@@ -67,7 +52,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0),
         itemCount: 1,
         itemBuilder: (BuildContext context, int index) {
           return ExpansionPanelList.radio(
