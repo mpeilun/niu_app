@@ -6,6 +6,7 @@ import 'package:niu_app/e_school/advanced_tiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'e_school_announcement.dart';
+import 'e_school_grade.dart';
 import 'e_school_learning.dart';
 
 class LessonPage extends StatefulWidget {
@@ -144,7 +145,17 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                     child: Text("成績資訊",
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.white)),
-                                    onPressed: () => null),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ESchoolGrade(
+                                                      courseId: tile.courseId,
+                                                      advancedTile:
+                                                          widget.tile),
+                                              maintainState: false));
+                                    }),
                               ),
                             ]),
                       ),

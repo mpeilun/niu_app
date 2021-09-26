@@ -13,22 +13,61 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 Future<void> download(Uri uri, BuildContext context) async {
+  String fileName = '   ' +
+      Uri.decodeComponent(
+          uri.toString().substring(uri.toString().lastIndexOf("/") + 1));
+
+  Color colorYes = Colors.blueAccent;
+  Color colorNo = Colors.pinkAccent;
+
+  void askDownload() {
+    Alert(
+      context: context,
+      type: AlertType.warning,
+      title: "是否要下載此檔案至裝置?",
+      desc: fileName,
+      buttons: [
+        DialogButton(
+          child: Text(
+            "下載",
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            checkDownloadInfo(uri.toString());
+          },
+          color: colorYes,
+        ),
+        DialogButton(
+          child: Text(
+            "取消",
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          color: colorNo,
+        )
+      ],
+    ).show();
+  }
+
   if (!await Permission.storage.isGranted) {
     Alert(
       context: context,
-      type: AlertType.info,
+      type: AlertType.warning,
       title: "需取得權限才能獲得完整的使用體驗",
       desc: "請允許存取\"檔案和媒體\"權限，以便您上傳與下載檔案",
       buttons: [
         DialogButton(
           child: Text(
             '請點選 允許(Allow)',
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            style: TextStyle(color: Colors.white, fontSize: 18),
           ),
           onPressed: () async {
             Navigator.pop(context);
             if (await Permission.storage.request().isGranted) {
-              checkDownloadInfo(uri.toString());
+              askDownload();
             } else {
               Alert(
                 context: context,
@@ -39,19 +78,19 @@ Future<void> download(Uri uri, BuildContext context) async {
                   DialogButton(
                     child: Text(
                       "前往設定",
-                      style: TextStyle(color: Colors.red, fontSize: 20),
+                      style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     onPressed: () {
                       Navigator.pop(context);
                       AppSettings.openAppSettings();
                     },
-                    color: Color.fromRGBO(0, 179, 134, 1.0),
+                    color: colorYes,
                   ),
                 ],
               ).show();
             }
           },
-          color: Color.fromRGBO(0, 179, 134, 1.0),
+          color: colorYes,
         ),
       ],
     ).show();
@@ -65,18 +104,18 @@ Future<void> download(Uri uri, BuildContext context) async {
         DialogButton(
           child: Text(
             "前往設定",
-            style: TextStyle(color: Colors.red, fontSize: 20),
+            style: TextStyle(color: Colors.white, fontSize: 18),
           ),
           onPressed: () {
             Navigator.pop(context);
             AppSettings.openAppSettings();
           },
-          color: Color.fromRGBO(0, 179, 134, 1.0),
+          color: colorYes,
         ),
       ],
     ).show();
   } else {
-    checkDownloadInfo(uri.toString());
+    askDownload();
   }
 }
 
