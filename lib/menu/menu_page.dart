@@ -271,11 +271,6 @@ class _StartMenu extends State<StartMenu> {
           setState(() {
             this.url = url.toString();
           });
-          if (url.toString() == 'https://acade.niu.edu.tw/NIU/logout.aspx') {
-            print("Logout and Clean cache");
-            controller.clearCache();
-            CookieManager().deleteAllCookies();
-          }
         },
         onLoadStop: (controller, url) async {
           print("onLoadStop $url");
@@ -302,6 +297,14 @@ class _StartMenu extends State<StartMenu> {
             JsAlertRequest jsAlertRequest) async {
           reLogin = true;
           print(jsAlertRequest.message!);
+          await Future.delayed(Duration(milliseconds: 200), () {
+            print("Logout and Clean cache");
+            controller.clearCache();
+            CookieManager().deleteAllCookies();
+          });
+          await headlessWebView?.webViewController.loadUrl(
+              urlRequest: URLRequest(
+                  url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx")));
           return JsAlertResponse(
               handledByClient: true, action: JsAlertResponseAction.CONFIRM);
         },

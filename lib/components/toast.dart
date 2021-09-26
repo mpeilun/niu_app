@@ -10,10 +10,11 @@ void showToast(String msg) {
         child: Text(msg),
         onPressed: () {},
         style: ButtonStyle(
-            textStyle: MaterialStateProperty.all(TextStyle(fontSize: 20)),
-            backgroundColor: MaterialStateProperty.all(Colors.blue[900]),
+            textStyle: MaterialStateProperty.all(TextStyle(fontSize: 18)),
+            backgroundColor:
+                MaterialStateProperty.all(Colors.grey[850]!.withOpacity(0.7)),
             shape: MaterialStateProperty.all(StadiumBorder(
-              side: BorderSide(color: Colors.blue[900]!),
+              side: BorderSide(color: Colors.white.withOpacity(0.0)),
             ))),
       ));
   showToastWidget(toast);

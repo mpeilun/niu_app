@@ -92,6 +92,9 @@ void checkDownloadInfo(String url) async {
     externalDir +=
         '/' + Uri.decodeComponent(url.substring(url.lastIndexOf("/") + 1));
 
+    showToast('開始下載: ' +
+        Uri.decodeComponent(url.substring(url.lastIndexOf("/") + 1)));
+
     print('---下載網址--- ' + url);
     print('---下載位置--- ' + externalDir);
 
@@ -144,9 +147,9 @@ Future sendToDownload(String url, String savePath, List<Cookie> cookies) async {
 }
 
 Future openDownloadFile(savePath) async {
-  showToast('下載完成');
-  print('---開啟檔案---');
+  showToast('檔案下載完成');
   OpenFile.open(savePath);
+  print('檔案下載完成!');
 }
 
 void showDownloadProgress(received, total) {

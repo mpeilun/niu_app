@@ -6,6 +6,7 @@ import 'package:niu_app/e_school/advanced_tiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'e_school_announcement.dart';
+import 'e_school_learning.dart';
 
 class LessonPage extends StatefulWidget {
   final List<AdvancedTile> advancedTile;
@@ -98,7 +99,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                                       courseId: tile.courseId,
                                                       advancedTile:
                                                           widget.tile),
-                                              maintainState: true));
+                                              maintainState: false));
                                     }),
                               ),
                               // SizedBox(
@@ -116,7 +117,17 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                     child: Text("開始上課",
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.white)),
-                                    onPressed: () => null),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ESchoolLearning(
+                                                      courseId: tile.courseId,
+                                                      advancedTile:
+                                                          widget.tile),
+                                              maintainState: false));
+                                    }),
                               ),
                               // SizedBox(
                               //   width: 16.0,

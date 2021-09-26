@@ -5,29 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
-import 'package:niu_app/components/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../advanced_tiles.dart';
 import '../e_school.dart';
 
-class ESchoolAnnouncement extends StatefulWidget {
+class ESchoolLearning extends StatefulWidget {
   final courseId;
   final List<AdvancedTile> advancedTile;
 
-  const ESchoolAnnouncement({
+  const ESchoolLearning({
     Key? key,
     required this.courseId,
     required this.advancedTile,
   }) : super(key: key);
 
   @override
-  _ESchoolAnnouncementState createState() => new _ESchoolAnnouncementState();
+  _ESchoolLearningState createState() => new _ESchoolLearningState();
 }
 
-class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
+class _ESchoolLearningState extends State<ESchoolLearning> {
   final GlobalKey eSchoolCourseWebView = GlobalKey();
-  HeadlessInAppWebView? headlessWebView;
   InAppWebViewController? webViewController;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
@@ -44,8 +42,7 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
       ));
 
   late String url;
-  late bool loadState = false;
-  late bool headlessLoadState = false;
+  late bool loadState = true;
   double progress = 0;
 
   @override
@@ -55,77 +52,6 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
     if (dartCookies.Platform.isAndroid) {
       AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
     }
-
-    headlessWebView = new HeadlessInAppWebView(
-        initialUrlRequest: URLRequest(
-            url: Uri.parse("https://eschool.niu.edu.tw/learn/index.php")),
-        initialOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(
-            useOnLoadResource: true,
-            useOnDownloadStart: true,
-            javaScriptCanOpenWindowsAutomatically: true,
-          ),
-        ),
-        onWebViewCreated: (controller) {
-          print('HeadlessInAppWebView created!');
-        },
-        onConsoleMessage: (controller, consoleMessage) {
-          print("CONSOLE MESSAGE: " + consoleMessage.message);
-        },
-        onLoadStart: (controller, url) async {
-          print("onLoadStart $url");
-          setState(() {
-            this.url = url.toString();
-          });
-        },
-        onLoadStop: (controller, url) async {
-          print("onLoadStop $url");
-          setState(() {
-            this.url = url.toString();
-          });
-          if (url.toString() == 'https://eschool.niu.edu.tw/mooc/login.php') {
-            globalAdvancedTile = [];
-            Navigator.pop(context);
-            showToast('登入逾時，重新登入中！');
-          }
-        },
-        onUpdateVisitedHistory: (controller, url, androidIsReload) {
-          print("onUpdateVisitedHistory $url");
-          setState(() {
-            this.url = url.toString();
-          });
-        },
-        onJsAlert: (InAppWebViewController controller,
-            JsAlertRequest jsAlertRequest) async {
-          return JsAlertResponse(
-              handledByClient: true, action: JsAlertResponseAction.CONFIRM);
-        },
-        onLoadResource:
-            (InAppWebViewController controller, LoadedResource resource) async {
-          print(resource.toString());
-          if ((resource.url.toString() ==
-                      'https://eschool.niu.edu.tw/learn/mycourse/index.php' ||
-                  resource.url.toString() ==
-                      'https://eschool.niu.edu.tw/forum/m_node_list.php') &&
-              headlessLoadState == false) {
-            headlessLoadState = true;
-            await Future.delayed(Duration(milliseconds: 200), () async {
-              await controller.evaluateJavascript(
-                  source: 'parent.chgCourse(' + widget.courseId + ', 1, 1)');
-            });
-            await Future.delayed(Duration(milliseconds: 1000), () async {
-              await webViewController!.loadUrl(
-                  urlRequest: URLRequest(
-                      url: Uri.parse(
-                          "https://eschool.niu.edu.tw/forum/m_node_list.php")));
-              setState(() {
-                loadState = true;
-              });
-            });
-          }
-        });
-
-    headlessWebView?.run();
   }
 
 //parent.chgCourse('10037692', 1, 1,'SYS_04_01_002')
@@ -152,9 +78,9 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
                       maintainState: true,
                       child: InAppWebView(
                         key: eSchoolCourseWebView,
-                        // initialUrlRequest: URLRequest(
-                        //     url: Uri.parse(
-                        //         "https://eschool.niu.edu.tw/forum/m_node_list.php")),
+                        initialUrlRequest: URLRequest(
+                            url: Uri.parse(
+                                "https://acade.niu.edu.tw/NIU/MainFrame.aspx")),
                         initialOptions: options,
                         onWebViewCreated: (controller) {
                           webViewController = controller;

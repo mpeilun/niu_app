@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
+import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/e_school/advanced_tiles.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+
+import '../e_school.dart';
 
 class WorkPage extends StatefulWidget {
   final String semester;
@@ -110,6 +113,11 @@ class _WorkPageState extends State<WorkPage> {
                     workCount: workCount,
                     submitCount: submitCount));
               }
+            }
+            if (advancedTile.first.courseId == '10040471') {
+              globalAdvancedTile = [];
+              Navigator.pop(context);
+              showToast('登入逾時，重新登入中！');
             }
             setState(() {
               loadStates = true;
