@@ -12,6 +12,10 @@
 ///       - asset: fonts/MyFlutterApp.ttf
 ///
 /// 
+/// * Entypo, Copyright (C) 2012 by Daniel Bruce
+///         Author:    Daniel Bruce
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://www.entypo.com
 /// * Font Awesome 5, Copyright (C) 2016 by Dave Gandy
 ///         Author:    Dave Gandy
 ///         License:   SIL (https://github.com/FortAwesome/Font-Awesome/blob/master/LICENSE.txt)
@@ -25,6 +29,7 @@ class MyFlutterApp {
   static const _kFontFam = 'MyFlutterApp';
   static const String? _kFontPkg = null;
 
+  static const IconData megaphone = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData times_circle = IconData(0xf057, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData exclamation = IconData(0xf12a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData exclamation_circle = IconData(0xf06a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

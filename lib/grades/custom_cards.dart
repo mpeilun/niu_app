@@ -327,7 +327,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                   CGWIcon(
                     isWarnList: isWarnList,
                     title: '期中警示',
-                    icon: MyFlutterApp.exclamation,
+                    icon: MyFlutterApp.exclamation_circle,
                     index: index,
                   ),
                   SizedBox(

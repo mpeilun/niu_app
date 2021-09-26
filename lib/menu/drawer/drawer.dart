@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:niu_app/components/my_flutter_app_icons.dart';
+import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -79,7 +79,7 @@ class _MyDrawer extends State<MyDrawer> {
                           context.read<OnItemClick>().onclick(0);
                         }),
                     createDrawerItem(
-                        icon: MyFlutterApp2.megaphone,
+                        icon: MyFlutterApp.megaphone,
                         text: '公告',
                         onTap: () {
                           Navigator.of(context).pop();
