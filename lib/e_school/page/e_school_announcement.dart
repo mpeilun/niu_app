@@ -7,7 +7,9 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart' as dioCookieManager;
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
+import 'package:niu_app/components/toast.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -51,6 +53,7 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
 
   late String url;
   late bool loadState = false;
+  late bool headlessLoadState = false;
   double progress = 0;
 
   @override
@@ -91,6 +94,7 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
           if (url.toString() == 'https://eschool.niu.edu.tw/mooc/login.php') {
             globalAdvancedTile = [];
             Navigator.pop(context);
+            //TODO
           }
         },
         onUpdateVisitedHistory: (controller, url, androidIsReload) {
@@ -107,10 +111,12 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
         onLoadResource:
             (InAppWebViewController controller, LoadedResource resource) async {
           print(resource.toString());
-          if (resource.url.toString() ==
-                  'https://eschool.niu.edu.tw/learn/mycourse/index.php' ||
-              resource.url.toString() ==
-                  'https://eschool.niu.edu.tw/forum/m_node_list.php') {
+          if ((resource.url.toString() ==
+                      'https://eschool.niu.edu.tw/learn/mycourse/index.php' ||
+                  resource.url.toString() ==
+                      'https://eschool.niu.edu.tw/forum/m_node_list.php') &&
+              headlessLoadState == false) {
+            headlessLoadState = true;
             await Future.delayed(Duration(milliseconds: 200), () async {
               await controller.evaluateJavascript(
                   source: 'parent.chgCourse(' + widget.courseId + ', 1, 1)');
@@ -131,6 +137,7 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
   }
 
 //parent.chgCourse('10037692', 1, 1,'SYS_04_01_002')
+// https://eschool.niu.edu.tw/learn/grade/grade_list.php
   @override
   void dispose() {
     super.dispose();
@@ -153,7 +160,9 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
                       maintainState: true,
                       child: InAppWebView(
                         key: eSchoolCourseWebView,
-                        initialUrlRequest: URLRequest(url: Uri.parse("")),
+                        // initialUrlRequest: URLRequest(
+                        //     url: Uri.parse(
+                        //         "https://eschool.niu.edu.tw/forum/m_node_list.php")),
                         initialOptions: options,
                         onWebViewCreated: (controller) {
                           webViewController = controller;
@@ -174,20 +183,19 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
                           var uri = navigationAction.request.url!;
 
                           if (![
-                            "http",
-                            "https",
-                            "file",
-                            "chrome",
-                            "data",
-                            "javascript",
-                            "about"
-                          ].contains(uri.scheme)) {
-                            if (await canLaunch(url)) {
-                              // Launch the App
+                                "http",
+                                "https",
+                                "file",
+                                "chrome",
+                                "data",
+                                "javascript",
+                                "about"
+                              ].contains(uri.scheme) ||
+                              !uri.toString().contains("eschool.niu.edu.tw")) {
+                            if (await canLaunch(uri.toString())) {
                               await launch(
-                                url,
+                                uri.toString(),
                               );
-                              // and cancel the request
                               return NavigationActionPolicy.CANCEL;
                             }
                           }
@@ -207,9 +215,7 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
                           }
                         },
                         onLoadResource: (InAppWebViewController controller,
-                            LoadedResource resource) async {
-                          print(resource.toString());
-                        },
+                            LoadedResource resource) {},
                         onLoadError: (controller, url, code, message) {},
                         onProgressChanged: (controller, progress) {
                           setState(() {
@@ -227,86 +233,10 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
                           print(consoleMessage);
                         },
                         onDownloadStart: (controller, url) async {
-                          if (!await Permission.storage.isGranted) {
-                            Alert(
-                              context: context,
-                              type: AlertType.info,
-                              title: "需取得權限才能獲得完整的使用體驗",
-                              desc:
-                                  "數位學習園區有下載與上傳檔案之需求，請允許存取\"檔案和媒體\"權限，以便您繼續使用此功能",
-                              buttons: [
-                                DialogButton(
-                                  child: Text(
-                                    '請點選 允許(Allow)',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                  onPressed: () async {
-                                    Navigator.pop(context);
-                                    if (await Permission.storage
-                                        .request()
-                                        .isGranted) {
-                                      _download(url.toString());
-                                    } else {
-                                      Alert(
-                                        context: context,
-                                        type: AlertType.error,
-                                        title: "無權限存取，無法使用此功能",
-                                        desc: "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
-                                        buttons: [
-                                          DialogButton(
-                                            child: Text(
-                                              "前往設定",
-                                              style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontSize: 20),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                              AppSettings.openAppSettings();
-                                            },
-                                            color: Color.fromRGBO(
-                                                0, 179, 134, 1.0),
-                                          ),
-                                        ],
-                                      ).show();
-                                    }
-                                  },
-                                  color: Color.fromRGBO(0, 179, 134, 1.0),
-                                ),
-                              ],
-                            ).show();
-                          } else if (await Permission.storage.isDenied) {
-                            Alert(
-                              context: context,
-                              type: AlertType.error,
-                              title: "無權限存取，無法使用此功能",
-                              desc: "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
-                              buttons: [
-                                DialogButton(
-                                  child: Text(
-                                    "前往設定",
-                                    style: TextStyle(
-                                        color: Colors.red, fontSize: 20),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    AppSettings.openAppSettings();
-                                  },
-                                  color: Color.fromRGBO(0, 179, 134, 1.0),
-                                ),
-                              ],
-                            ).show();
-                          } else {
-                            _download(url.toString());
-                          }
-                          //_download('https://upload.wikimedia.org/wikipedia/commons/c/c3/%E5%90%89%E7%A5%A5%E7%89%A9-%E6%B3%A2%E6%AF%94.jpg');
+                          download(url, context);
                         },
                       ),
-                    ),
-                    progress < 1.0
-                        ? LinearProgressIndicator(value: progress)
-                        : Container(),
+                    )
                   ],
                 ),
               ),
@@ -314,82 +244,18 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
           ),
         ),
         onWillPop: () async {
-          Navigator.pop(context);
+          if (progress == 1.0) {
+            if (await webViewController!.evaluateJavascript(
+                    source:
+                        'document.querySelector("body > div.box1.navbar-fixed-top > div > div.bread-navi > table > tbody > tr > td:nth-child(1) > a").title') ==
+                '回列表') {
+              await webViewController!.goBack();
+            } else {
+              Navigator.pop(context);
+            }
+          }
           return false;
         },
         shouldAddCallbacks: true);
-  }
-}
-
-void _download(String url) async {
-  if (await Permission.storage.isGranted) {
-    String externalDir;
-    if (dartCookies.Platform.isAndroid) {
-      externalDir = '/storage/emulated/0/Download';
-    } else {
-      externalDir = (await getApplicationDocumentsDirectory()).path;
-    }
-
-    externalDir +=
-        '/' + Uri.decodeComponent(url.substring(url.lastIndexOf("/") + 1));
-
-    print('---下載網址--- ' + url);
-    print('---下載位置--- ' + externalDir);
-
-    List<Cookie> cookies =
-        await CookieManager.instance().getCookies(url: Uri.parse(url));
-    await download(url, externalDir, cookies).then((value) => openFile(value));
-  } else {
-    print('無權限存取目錄');
-  }
-}
-
-Future download(String url, String savePath, List<Cookie> cookies) async {
-  var dio = Dio();
-  var cookieJar = new CookieJar();
-  List<dartCookies.Cookie> dioCookies = [];
-  cookies.forEach((element) {
-    dioCookies.add(new dartCookies.Cookie(element.name, element.value)
-      ..httpOnly = false
-      ..expires = DateTime.now().add(const Duration(hours: 1))
-      ..path = '/'
-      ..secure = true);
-  });
-  cookieJar.saveFromResponse(Uri.parse(url), dioCookies);
-  dio.interceptors.add(dioCookieManager.CookieManager(cookieJar));
-  print('---Cookies---');
-  print(dioCookies);
-  try {
-    Response response = await dio.get(
-      url,
-      onReceiveProgress: showDownloadProgress,
-      //Received data with List<int>
-      options: Options(
-          responseType: ResponseType.bytes,
-          followRedirects: false,
-          validateStatus: (status) {
-            return status! < 500;
-          }),
-    );
-    print(response.headers);
-    dartCookies.File file = dartCookies.File(savePath);
-    var raf = file.openSync(mode: dartCookies.FileMode.write);
-    // response.data is List<int> type
-    raf.writeFromSync(response.data);
-    await raf.close();
-  } catch (e) {
-    print(e);
-  }
-  return savePath;
-}
-
-Future openFile(savePath) async {
-  print('---開啟檔案---');
-  OpenFile.open(savePath);
-}
-
-void showDownloadProgress(received, total) {
-  if (total != -1) {
-    print((received / total * 100).toStringAsFixed(0) + "%");
   }
 }

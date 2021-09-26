@@ -5,9 +5,9 @@ import 'package:niu_app/menu/menu_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
-//nope
 void main() => runApp(MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => OnItemClick()),
     ], child: MyApp()));
@@ -19,35 +19,37 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'NIU app',
-      theme: ThemeData(
-        //brightness: Brightness.dark,
-        appBarTheme: AppBarTheme(
-          color: Colors.blue[900],
-          //backwardsCompatibility: false,
-          systemOverlayStyle:
-              SystemUiOverlayStyle(statusBarColor: Colors.blue[900]),
+    return OKToast(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'NIU app',
+        theme: ThemeData(
+          //brightness: Brightness.dark,
+          appBarTheme: AppBarTheme(
+            color: Colors.blue[900],
+            //backwardsCompatibility: false,
+            systemOverlayStyle:
+                SystemUiOverlayStyle(statusBarColor: Colors.blue[900]),
+          ),
+          dividerTheme: DividerThemeData(
+            thickness: 1.5,
+            indent: 10,
+            endIndent: 10,
+          ),
+          primaryColor: Colors.blue[900],
+          scaffoldBackgroundColor: Colors.grey[200],
+          textTheme: GoogleFonts.notoSansTextTheme(textTheme).copyWith(
+            headline1: GoogleFonts.oswald(textStyle: textTheme.headline1),
+          ),
+          pageTransitionsTheme: PageTransitionsTheme(
+            builders: {
+              TargetPlatform.android: ZoomPageTransitionsBuilder(),
+              TargetPlatform.iOS: CupertinoWillPopScopePageTransionsBuilder(),
+            },
+          ),
         ),
-        dividerTheme: DividerThemeData(
-          thickness: 1.5,
-          indent: 10,
-          endIndent: 10,
-        ),
-        primaryColor: Colors.blue[900],
-        scaffoldBackgroundColor: Colors.grey[200],
-        textTheme: GoogleFonts.notoSansTextTheme(textTheme).copyWith(
-          headline1: GoogleFonts.oswald(textStyle: textTheme.headline1),
-        ),
-        pageTransitionsTheme: PageTransitionsTheme(
-          builders: {
-            TargetPlatform.android: ZoomPageTransitionsBuilder(),
-            TargetPlatform.iOS: CupertinoWillPopScopePageTransionsBuilder(),
-          },
-        ),
+        home: StartMenu(),
       ),
-      home: StartMenu(),
     );
   }
 }

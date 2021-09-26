@@ -8,14 +8,12 @@ import 'package:niu_app/menu/drawer/drawer.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menu/loading.dart';
 import 'package:niu_app/menu/notification/notification_page.dart';
-import 'package:niu_app/menuIcon.dart';
+import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../testwebview.dart';
 import 'package:niu_app/menu/drawer/about.dart';
 import 'package:niu_app/menu/drawer/announcement.dart';
 import 'package:niu_app/menu/drawer/report.dart';
@@ -187,22 +185,6 @@ class _StartMenu extends State<StartMenu> {
                     'assets/niu_background.png',
                   ),
                 ),
-                Expanded(
-                  //測試用按鈕登出行政系統
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: FloatingActionButton(
-                        backgroundColor: Colors.red,
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => WebTest(),
-                                  maintainState: false));
-                        }),
-                  ),
-                )
               ]),
             ),
           );
