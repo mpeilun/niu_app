@@ -33,7 +33,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
         useOnDownloadStart: true,
         useOnLoadResource: true,
         useShouldOverrideUrlLoading: true,
-        mediaPlaybackRequiresUserGesture: false,
+        mediaPlaybackRequiresUserGesture: true,
       ),
       android: AndroidInAppWebViewOptions(
         useHybridComposition: true,
@@ -134,16 +134,32 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                             Navigator.pop(context);
                             showToast('登入逾時，重新登入中！');
                           }
-                          // if (url.toString() ==
-                          //     'https://eschool.niu.edu.tw/forum/m_node_list.php') {
-                          //   await controller.evaluateJavascript(
-                          //       source:
-                          //           'document.querySelector("body > div.box1.navbar-fixed-top > div.operate").style = \'display: none\'');
-                          // }
                         },
                         onLoadResource: (InAppWebViewController controller,
-                            LoadedResource resource) {
+                            LoadedResource resource) async {
                           print('onLoadResource: ' + resource.toString());
+                          if ((resource.url.toString() ==
+                                  'https://eschool.niu.edu.tw/learn/mycourse/index.php' ||
+                              resource.url.toString() ==
+                                  'https://eschool.niu.edu.tw/forum/m_node_list.php')) {
+                            await Future.delayed(Duration(milliseconds: 200),
+                                () async {
+                              await controller.evaluateJavascript(
+                                  source: 'parent.chgCourse(' +
+                                      widget.courseId +
+                                      ', 1, 1,\'SYS_04_01_002\')');
+                            });
+                          }
+                          if (resource.url.toString() ==
+                              'https://eschool.niu.edu.tw/learn/path/SCORM_loadCA.php') {
+                            // await Future.delayed(Duration(milliseconds: 1000),
+                            //     () async {
+                            //   await controller.evaluateJavascript(source: '');
+                            // });
+                            setState(() {
+                              loadState = true;
+                            });
+                          }
                         },
                         onLoadError: (controller, url, code, message) {},
                         onProgressChanged: (controller, progress) {
