@@ -288,7 +288,7 @@ class _StartMenu extends State<StartMenu> {
           }
         },
         onUpdateVisitedHistory: (controller, url, androidIsReload) {
-          print("onUpdateVisitedHistory $url");
+          // print("onUpdateVisitedHistory $url");
           setState(() {
             this.url = url.toString();
           });
@@ -297,14 +297,17 @@ class _StartMenu extends State<StartMenu> {
             JsAlertRequest jsAlertRequest) async {
           reLogin = true;
           print(jsAlertRequest.message!);
-          await Future.delayed(Duration(milliseconds: 200), () {
-            print("Logout and Clean cache");
-            controller.clearCache();
-            CookieManager().deleteAllCookies();
+          print("Logout and Clean cache");
+          controller.clearCache();
+          CookieManager().deleteAllCookies();
+          await headlessWebView?.webViewController
+              .loadUrl(urlRequest: URLRequest(url: Uri.parse("about:blank")));
+          await Future.delayed(Duration(milliseconds: 100), () async {
+            await headlessWebView?.webViewController.loadUrl(
+                urlRequest: URLRequest(
+                    url: Uri.parse(
+                        "https://acade.niu.edu.tw/NIU/Default.aspx")));
           });
-          await headlessWebView?.webViewController.loadUrl(
-              urlRequest: URLRequest(
-                  url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx")));
           return JsAlertResponse(
               handledByClient: true, action: JsAlertResponseAction.CONFIRM);
         },
@@ -319,6 +322,7 @@ class _StartMenu extends State<StartMenu> {
     String? id = prefs.getString('id');
     String? pwd = prefs.getString('pwd');
     Future.delayed(Duration(milliseconds: 500), () async {
+      print('keying');
       await headlessWebView?.webViewController.evaluateJavascript(
           source:
               'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
@@ -326,6 +330,7 @@ class _StartMenu extends State<StartMenu> {
           source: 'document.querySelector("#M_PW").value=\'$pwd\';');
     });
     Future.delayed(Duration(milliseconds: 1000), () async {
+      print('clickLogin');
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#LGOIN_BTN").click();');
     });

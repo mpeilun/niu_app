@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
+import 'package:niu_app/components/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../advanced_tiles.dart';
@@ -25,7 +26,7 @@ class ESchoolLearning extends StatefulWidget {
 }
 
 class _ESchoolLearningState extends State<ESchoolLearning> {
-  final GlobalKey eSchoolCourseWebView = GlobalKey();
+  final GlobalKey eSchoolLearning = GlobalKey();
   InAppWebViewController? webViewController;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
@@ -54,8 +55,10 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
     }
   }
 
-//parent.chgCourse('10037692', 1, 1,'SYS_04_01_002')
-// https://eschool.niu.edu.tw/learn/grade/grade_list.php
+  //parent.chgCourse('10037692', 1, 1,'SYS_04_01_002')
+  // https://eschool.niu.edu.tw/learn/grade/grade_list.php
+  //https://eschool.niu.edu.tw/learn/path/SCORM_loadCA.php
+
   @override
   void dispose() {
     super.dispose();
@@ -77,10 +80,10 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                       visible: loadState,
                       maintainState: true,
                       child: InAppWebView(
-                        key: eSchoolCourseWebView,
+                        key: eSchoolLearning,
                         initialUrlRequest: URLRequest(
                             url: Uri.parse(
-                                "https://acade.niu.edu.tw/NIU/MainFrame.aspx")),
+                                "https://eschool.niu.edu.tw/learn/index.php")),
                         initialOptions: options,
                         onWebViewCreated: (controller) {
                           webViewController = controller;
@@ -126,14 +129,22 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                             this.url = url.toString();
                           });
                           if (url.toString() ==
-                              'https://eschool.niu.edu.tw/forum/m_node_list.php') {
-                            await controller.evaluateJavascript(
-                                source:
-                                    'document.querySelector("body > div.box1.navbar-fixed-top > div.operate").style = \'display: none\'');
+                              'https://eschool.niu.edu.tw/mooc/login.php') {
+                            globalAdvancedTile = [];
+                            Navigator.pop(context);
+                            showToast('登入逾時，重新登入中！');
                           }
+                          // if (url.toString() ==
+                          //     'https://eschool.niu.edu.tw/forum/m_node_list.php') {
+                          //   await controller.evaluateJavascript(
+                          //       source:
+                          //           'document.querySelector("body > div.box1.navbar-fixed-top > div.operate").style = \'display: none\'');
+                          // }
                         },
                         onLoadResource: (InAppWebViewController controller,
-                            LoadedResource resource) {},
+                            LoadedResource resource) {
+                          print('onLoadResource: ' + resource.toString());
+                        },
                         onLoadError: (controller, url, code, message) {},
                         onProgressChanged: (controller, progress) {
                           setState(() {

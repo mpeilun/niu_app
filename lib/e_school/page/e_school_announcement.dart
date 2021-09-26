@@ -26,7 +26,7 @@ class ESchoolAnnouncement extends StatefulWidget {
 }
 
 class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
-  final GlobalKey eSchoolCourseWebView = GlobalKey();
+  final GlobalKey eSchoolAnnouncement = GlobalKey();
   HeadlessInAppWebView? headlessWebView;
   InAppWebViewController? webViewController;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
@@ -128,8 +128,6 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
     headlessWebView?.run();
   }
 
-//parent.chgCourse('10037692', 1, 1,'SYS_04_01_002')
-// https://eschool.niu.edu.tw/learn/grade/grade_list.php
   @override
   void dispose() {
     super.dispose();
@@ -151,7 +149,7 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
                       visible: loadState,
                       maintainState: true,
                       child: InAppWebView(
-                        key: eSchoolCourseWebView,
+                        key: eSchoolAnnouncement,
                         // initialUrlRequest: URLRequest(
                         //     url: Uri.parse(
                         //         "https://eschool.niu.edu.tw/forum/m_node_list.php")),
