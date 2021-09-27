@@ -132,7 +132,7 @@ class _EventPageState extends State<EventPage> {
         positiveLimit: positiveLimit,//正取上限
         wait: wait,//備取人數
         waitLimit: waitLimit,//備取上限
-        signUpJavaScript: signUpJavaScript, //報名javascript連結
+        signUpJS: signUpJavaScript, //報名javascript連結
       ));
     }
   }
@@ -177,7 +177,7 @@ class _EventPageState extends State<EventPage> {
     super.initState();
     headlessWebView = new HeadlessInAppWebView(
       initialUrlRequest:
-          URLRequest(url: Uri.parse("https://syscc.niu.edu.tw/activity/")),
+          URLRequest(url: Uri.parse("https://syscc.niu.edu.tw/Activity/ApplyList.aspx")),
       initialOptions: InAppWebViewGroupOptions(
         crossPlatform: InAppWebViewOptions(
           useOnLoadResource: true,

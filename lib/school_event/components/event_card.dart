@@ -20,7 +20,7 @@ class Event {
   final String positiveLimit;
   final String wait;
   final String waitLimit;
-  final String signUpJavaScript;
+  final String signUpJS;
 
   Event({
     required this.name,
@@ -34,7 +34,7 @@ class Event {
     required this.positiveLimit,
     required this.wait,
     required this.waitLimit,
-    required this.signUpJavaScript,
+    required this.signUpJS,
   });
 }
 
@@ -53,15 +53,18 @@ class CustomEventCard extends StatefulWidget {
 class _CustomEventCardState extends State<CustomEventCard> {
   ScrollController _scrollController = ScrollController();
 
-  Future<void> showListDialog() async {
-    String? index = await showDialog<String>(
+  Future<void> showListDialog(String JS) async {
+    // String? index = await showDialog<String>(
+    //   context: context,
+    //   builder: (BuildContext context) => EventInfoDialog(),
+    // );
+    // if (index != null) {
+    //   print("點了：$index");
+    // }
+    showDialog(
       context: context,
-
-      builder: (BuildContext context) => Dialog(child: EventInfoDialog()),
+      builder: (BuildContext context) => EventInfoDialog(eventJS: JS,),
     );
-    if (index != null) {
-      print("點了：$index");
-    }
   }
 
   @override
@@ -219,8 +222,8 @@ class _CustomEventCardState extends State<CustomEventCard> {
                               widget.data[index].status == "已額滿")
                           ? ElevatedButton(
                               onPressed: () {
-                                print(widget.data[index].signUpJavaScript);
-                                showListDialog();
+                                print(widget.data[index].signUpJS);
+                                showListDialog(widget.data[index].signUpJS);
                               },
                               child: Text('我要報名'),
                               style: ButtonStyle(

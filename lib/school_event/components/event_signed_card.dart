@@ -64,7 +64,7 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
         onTap: () {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(index.toString())));
-          showListDialog();
+          //showListDialog();
         },
         child: Container(
           child: Column(
@@ -142,12 +142,12 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
   }
 
   Future<void> showListDialog() async {
-    int? index = await showDialog<int>(
-      context: context,
-      builder: (BuildContext context) => Dialog(child: EventInfoDialog()),
-    );
-    if (index != null) {
-      print("點了：$index");
-    }
+  //   int? index = await showDialog<int>(
+  //     context: context,
+  //     builder: (BuildContext context) => Dialog(child: EventInfoDialog()),
+  //   );
+  //   if (index != null) {
+  //     print("點了：$index");
+  //   }
   }
 }
