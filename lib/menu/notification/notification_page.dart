@@ -15,16 +15,13 @@ class _NotificationDrawer extends State<NotificationDrawer> {
 
     return SafeArea(
       child: Drawer(
-        child: Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: ListView(
-            children: <Widget>[
-              Container(
-                height: 200.0,
-                color: Colors.black,
-              )
-            ],
-          ),
+        child: ListView(
+          children: <Widget>[
+            Container(
+              height: 200.0,
+              color: Colors.black,
+            )
+          ],
         ),
       ),
     );

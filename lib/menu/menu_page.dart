@@ -201,7 +201,6 @@ class _StartMenu extends State<StartMenu> {
           appBar: AppBar(
             title: Text(title[context.watch<OnItemClick>().index]),
             titleSpacing: 0.0,
-            elevation: 0.0,
             actions: [
               Builder(
                 builder: (context) => Stack(
@@ -214,8 +213,6 @@ class _StartMenu extends State<StartMenu> {
                         });
                         Scaffold.of(context).openEndDrawer();
                       },
-                      tooltip: MaterialLocalizations.of(context)
-                          .openAppDrawerTooltip,
                     ),
                     Positioned(
                       right: 9.0,
@@ -230,8 +227,18 @@ class _StartMenu extends State<StartMenu> {
               )
             ],
           ),
-          drawer: MyDrawer(),
-          endDrawer: NotificationDrawer(),
+          drawer: Theme(
+              data: Theme.of(context).copyWith(
+                canvasColor: Theme.of(context).scaffoldBackgroundColor, //This will change the drawer background to blue.
+                //other styles
+              ),
+              child: MyDrawer()),
+          endDrawer: Theme(
+              data: Theme.of(context).copyWith(
+                canvasColor: Theme.of(context).scaffoldBackgroundColor, //This will change the drawer background to blue.
+                //other styles
+              ),
+              child: NotificationDrawer()),
           body: pages[context.watch<OnItemClick>().index]);
     } else {
       return Loading();

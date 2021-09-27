@@ -57,63 +57,60 @@ class _MyDrawer extends State<MyDrawer> {
                     ),
                     Text(
                       '$studentName\n${studentId.toUpperCase()}',
-                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                      style: TextStyle(fontSize: 18.0, color: Colors.white),
                     )
                   ],
                 ),
               ),
             ),
             Expanded(
-              child: Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: ListView(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    createDrawerItem(
-                        icon: Icons.home,
-                        text: '首頁',
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          context.read<OnItemClick>().onclick(0);
-                        }),
-                    createDrawerItem(
-                        icon: MyFlutterApp.megaphone,
-                        text: '公告',
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          context.read<OnItemClick>().onclick(1);
-                        }),
-                    createDrawerItem(
-                        icon: Icons.settings,
-                        text: '設定',
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          context.read<OnItemClick>().onclick(2);
-                        }),
-                    createDrawerItem(
-                        icon: Icons.info,
-                        text: '關於',
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          context.read<OnItemClick>().onclick(3);
-                        }),
-                    createDrawerItem(
-                        icon: Icons.logout,
-                        text: '登出',
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        }),
-                    createDrawerItem(
-                        icon: Icons.bug_report,
-                        text: '回報問題',
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          context.read<OnItemClick>().onclick(4);
-                        }),
-                  ],
-                ),
+              child: ListView(
+                children: <Widget>[
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  createDrawerItem(
+                      icon: Icons.home,
+                      text: '首頁',
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        context.read<OnItemClick>().onclick(0);
+                      }),
+                  createDrawerItem(
+                      icon: MyFlutterApp.megaphone,
+                      text: '公告',
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        context.read<OnItemClick>().onclick(1);
+                      }),
+                  createDrawerItem(
+                      icon: Icons.settings,
+                      text: '設定',
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        context.read<OnItemClick>().onclick(2);
+                      }),
+                  createDrawerItem(
+                      icon: Icons.info,
+                      text: '關於',
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        context.read<OnItemClick>().onclick(3);
+                      }),
+                  createDrawerItem(
+                      icon: Icons.logout,
+                      text: '登出',
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      }),
+                  createDrawerItem(
+                      icon: Icons.bug_report,
+                      text: '回報問題',
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        context.read<OnItemClick>().onclick(4);
+                      }),
+                ],
               ),
             ),
           ],
