@@ -7,6 +7,7 @@ import 'package:niu_app/e_school/advanced_tiles.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 import '../e_school.dart';
+import 'e_school_homework.dart';
 
 class WorkPage extends StatefulWidget {
   final String semester;
@@ -223,10 +224,18 @@ class _CustomWorkCardState extends State<CustomWorkCard> {
                                 horizontal: 12.0, vertical: 6.0),
                             minimumSize: Size(0.0, 0.0),
                           ),
-                          child: Text("Go!",
+                          child: Text("查看",
                               style:
                                   TextStyle(fontSize: 14, color: Colors.white)),
-                          onPressed: () => null),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ESchoolHomeWork(
+                                        courseId: widget.tile[index].courseId,
+                                        advancedTile: widget.tile),
+                                    maintainState: false));
+                          }),
                     ),
                   ],
                 ),

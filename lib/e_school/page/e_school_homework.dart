@@ -11,22 +11,22 @@ import 'package:url_launcher/url_launcher.dart';
 import '../advanced_tiles.dart';
 import '../e_school.dart';
 
-class ESchoolGrade extends StatefulWidget {
+class ESchoolHomeWork extends StatefulWidget {
   final courseId;
   final List<AdvancedTile> advancedTile;
 
-  const ESchoolGrade({
+  const ESchoolHomeWork({
     Key? key,
     required this.courseId,
     required this.advancedTile,
   }) : super(key: key);
 
   @override
-  _ESchoolGradeState createState() => new _ESchoolGradeState();
+  _ESchoolHomeWorkState createState() => new _ESchoolHomeWorkState();
 }
 
-class _ESchoolGradeState extends State<ESchoolGrade> {
-  final GlobalKey eSchoolGrade = GlobalKey();
+class _ESchoolHomeWorkState extends State<ESchoolHomeWork> {
+  final GlobalKey eSchoolHomeWork = GlobalKey();
   HeadlessInAppWebView? headlessWebView;
   InAppWebViewController? webViewController;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
@@ -117,7 +117,7 @@ class _ESchoolGradeState extends State<ESchoolGrade> {
               await webViewController!.loadUrl(
                   urlRequest: URLRequest(
                       url: Uri.parse(
-                          "https://eschool.niu.edu.tw/learn/grade/grade_list.php")));
+                          "https://eschool.niu.edu.tw/learn/homework/homework_list.php")));
               setState(() {
                 loadState = true;
               });
@@ -149,7 +149,7 @@ class _ESchoolGradeState extends State<ESchoolGrade> {
                       visible: loadState,
                       maintainState: true,
                       child: InAppWebView(
-                        key: eSchoolGrade,
+                        key: eSchoolHomeWork,
                         // initialUrlRequest: URLRequest(
                         //     url: Uri.parse(
                         //         "https://eschool.niu.edu.tw/forum/m_node_list.php")),
@@ -228,7 +228,14 @@ class _ESchoolGradeState extends State<ESchoolGrade> {
           ),
         ),
         onWillPop: () async {
-          Navigator.pop(context);
+          if (progress == 1.0) {
+            if (url !=
+                'https://eschool.niu.edu.tw/learn/homework/homework_list.php') {
+              await webViewController!.goBack();
+            } else {
+              Navigator.pop(context);
+            }
+          }
           return false;
         },
         shouldAddCallbacks: true);
