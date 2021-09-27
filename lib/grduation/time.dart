@@ -13,8 +13,8 @@ class Time {
 }
 
 class Pass {
-  final bool english;
-  final bool physical ;
+  final int english;
+  final int physical;
   final String credit;
 
   Pass({

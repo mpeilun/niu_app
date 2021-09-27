@@ -11,7 +11,9 @@ class Graduation extends StatefulWidget {
 
 class _GraduationState extends State<Graduation> {
   final time = Time(service: '15', multiple: '20', profession: '5', flex: '14');
-  final pass = Pass(english: true, physical: true, credit: '47/128');
+  final pass = Pass(english: 0, physical: 0, credit: '47/128');
+  final passWord = ['通過', '尚未檢測', '未通過'];
+  final passColor = [Colors.green[600], Colors.black, Colors.red];
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +85,10 @@ class _GraduationState extends State<Graduation> {
               CustomCard(
                   title: '英語能力',
                   rowChild: Text(
-                    pass.english ? '通過' : '未通過',
+                    passWord[pass.english],
                     style: TextStyle(
                         fontSize: 16.0,
-                        color: pass.english ? Colors.green[600] : Colors.red),
+                        color: passColor[pass.english]),
                   ),
                   columnChild: SizedBox()),
               SizedBox(
@@ -95,10 +97,10 @@ class _GraduationState extends State<Graduation> {
               CustomCard(
                   title: '體適能',
                   rowChild: Text(
-                    pass.english ? '通過' : '未通過',
+                    passWord[pass.physical],
                     style: TextStyle(
                         fontSize: 16.0,
-                        color: pass.physical ? Colors.green[600] : Colors.red),
+                        color: passColor[pass.physical],),
                   ),
                   columnChild: SizedBox()),
               SizedBox(
