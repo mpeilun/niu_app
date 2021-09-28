@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:niu_app/grduation/time.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -21,103 +23,135 @@ class _GraduationState extends State<Graduation> {
         appBar: AppBar(
           title: Text('畢業門檻'),
           centerTitle: true,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20.0),
-          child: Column(
-            children: [
-              CustomCard(
-                title: '多元時數',
-                rowChild: Tooltip(
-                  showDuration: Duration(milliseconds: 500),
-                  message: '前往網頁查詢',
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 12.0, vertical: 6.0),
-                        minimumSize: Size(0.0, 0.0),
-                      ),
-                      child: Text("詳細",
-                          style: TextStyle(fontSize: 14, color: Colors.white)),
-                      onPressed: () => null),
+          actions: [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: TextButton(
+                onPressed: () {
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 12.0, vertical: 6.0),
+                  minimumSize: Size(0.0, 0.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),),
+                  elevation: 5.0,
                 ),
-                columnChild: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Text('查詢畢業門檻', style: TextStyle(color: Colors.white),),
+              ),
+            ),
+          ],
+        ),
+        body:LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+            return SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: viewportConstraints.maxHeight,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20.0),
+                  child: Column(
                     children: [
-                      Indicator(
-                        title: '服務奉獻',
-                        time: time.service,
-                        requiredTime: 20.0,
+                      CustomCard(
+                        title: '多元時數',
+                        rowChild: Tooltip(
+                          showDuration: Duration(milliseconds: 500),
+                          message: '前往網頁查詢',
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12.0, vertical: 6.0),
+                                minimumSize: Size(0.0, 0.0),
+                              ),
+                              child: Text("詳細",
+                                  style: TextStyle(fontSize: 14, color: Colors.white)),
+                              onPressed: () => null),
+                        ),
+                        columnChild: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Indicator(
+                                title: '服務奉獻',
+                                time: time.service,
+                                requiredTime: 20.0,
+                              ),
+                              SizedBox(
+                                width: 20.0,
+                              ),
+                              Indicator(
+                                title: '多元成長',
+                                time: time.multiple,
+                                requiredTime: 20.0,
+                              ),
+                              SizedBox(
+                                width: 20.0,
+                              ),
+                              Indicator(
+                                title: '專業進取',
+                                time: time.profession,
+                                requiredTime: 20.0,
+                              ),
+                              SizedBox(
+                                width: 20.0,
+                              ),
+                              Indicator(
+                                title: '彈性綜合',
+                                time: time.flex,
+                                requiredTime: 40.0,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       SizedBox(
-                        width: 20.0,
+                        height: 20.0,
                       ),
-                      Indicator(
-                        title: '多元成長',
-                        time: time.multiple,
-                        requiredTime: 20.0,
-                      ),
+                      CustomCard(
+                          title: '英語能力',
+                          rowChild: Text(
+                            passWord[pass.english],
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                color: passColor[pass.english]),
+                          ),
+                          columnChild: SizedBox()),
                       SizedBox(
-                        width: 20.0,
+                        height: 20.0,
                       ),
-                      Indicator(
-                        title: '專業進取',
-                        time: time.profession,
-                        requiredTime: 20.0,
-                      ),
+                      CustomCard(
+                          title: '體適能',
+                          rowChild: Text(
+                            passWord[pass.physical],
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: passColor[pass.physical],),
+                          ),
+                          columnChild: SizedBox()),
                       SizedBox(
-                        width: 20.0,
+                        height: 20.0,
                       ),
-                      Indicator(
-                        title: '彈性綜合',
-                        time: time.flex,
-                        requiredTime: 40.0,
-                      ),
+                      CustomCard(
+                          title: '應修學分總數',
+                          rowChild: Text(
+                            pass.credit,
+                            style: TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          columnChild: SizedBox()),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
-                height: 20.0,
-              ),
-              CustomCard(
-                  title: '英語能力',
-                  rowChild: Text(
-                    passWord[pass.english],
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        color: passColor[pass.english]),
-                  ),
-                  columnChild: SizedBox()),
-              SizedBox(
-                height: 20.0,
-              ),
-              CustomCard(
-                  title: '體適能',
-                  rowChild: Text(
-                    passWord[pass.physical],
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        color: passColor[pass.physical],),
-                  ),
-                  columnChild: SizedBox()),
-              SizedBox(
-                height: 20.0,
-              ),
-              CustomCard(
-                  title: '應修學分總數',
-                  rowChild: Text(
-                    pass.credit,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  columnChild: SizedBox())
-            ],
-          ),
-        ));
+            );
+          },
+        )
+        );
   }
 }
 

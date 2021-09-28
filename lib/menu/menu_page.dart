@@ -90,8 +90,8 @@ class _StartMenu extends State<StartMenu> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Grades(
-                                            title: '成績查詢',
-                                          ),
+                                        title: '成績查詢',
+                                      ),
                                       maintainState: false));
                             },
                           ),
@@ -119,8 +119,8 @@ class _StartMenu extends State<StartMenu> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SchoolEvent(
-                                            title: '活動報名',
-                                          ),
+                                        title: '活動報名',
+                                      ),
                                       maintainState: false));
                             },
                           ),
@@ -160,14 +160,14 @@ class _StartMenu extends State<StartMenu> {
                             icon: MenuIcon.icon_account,
                             press: () async {
                               SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
+                              await SharedPreferences.getInstance();
                               prefs.clear(); //清空键值对
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => LoginPage(
-                                            cancelPop: false,
-                                          ),
+                                        cancelPop: false,
+                                      ),
                                       maintainState: false));
                             },
                           ),
@@ -204,6 +204,7 @@ class _StartMenu extends State<StartMenu> {
             actions: [
               Builder(
                 builder: (context) => Stack(
+                  alignment: Alignment.center,
                   children: [
                     IconButton(
                       icon: Icon(Icons.notifications_none),
@@ -215,8 +216,8 @@ class _StartMenu extends State<StartMenu> {
                       },
                     ),
                     Positioned(
-                      right: 9.0,
-                      top: 9.0,
+                      right: 10.0,
+                      top: 13.0,
                       child: Icon(Icons.brightness_1,
                           color:
                               isNotification ? Colors.red : Colors.transparent,

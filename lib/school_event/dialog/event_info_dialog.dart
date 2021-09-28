@@ -16,26 +16,26 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
   bool dataLoaded = false;
   String url = "";
   
-  Future<void> getEventInfo(String js) async{
-    for (int i = 1; i <= 30; i++) {
-      await Future.delayed(Duration(milliseconds: 1000), () {});
-      print('計時器 $i');
-      if (headlessWebView?.webViewController.evaluateJavascript(source: 'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > caption")') != 'null') {
-        break;
-      } else if (i == 30 && loginState == 'null') {
-        loginState = '網路異常，連線超時！';
-        break;
-      } else if (i == 5 && webProgress == 100) {
-        await headlessWebView?.webViewController.loadUrl(
-            urlRequest: URLRequest(
-                url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx")));
-        print('頁面閒置過長，重新載入');
-      } else if (i > 5 && i % 5 == 0 && webProgress == 100) {
-        jsLogin();
-        print('執行 jsLogin()');
-      }
-    }
-  }
+  // Future<void> getEventInfo(String js) async{
+  //   for (int i = 1; i <= 30; i++) {
+  //     await Future.delayed(Duration(milliseconds: 1000), () {});
+  //     print('計時器 $i');
+  //     if (headlessWebView?.webViewController.evaluateJavascript(source: 'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > caption")') != 'null') {
+  //       break;
+  //     } else if (i == 30 && loginState == 'null') {
+  //       loginState = '網路異常，連線超時！';
+  //       break;
+  //     } else if (i == 5 && webProgress == 100) {
+  //       await headlessWebView?.webViewController.loadUrl(
+  //           urlRequest: URLRequest(
+  //               url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx")));
+  //       print('頁面閒置過長，重新載入');
+  //     } else if (i > 5 && i % 5 == 0 && webProgress == 100) {
+  //       jsLogin();
+  //       print('執行 jsLogin()');
+  //     }
+  //   }
+  // }
 
   @override
   void initState() {
