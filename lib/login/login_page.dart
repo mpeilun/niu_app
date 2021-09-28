@@ -150,33 +150,31 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: WillPopScope(
-        onWillPop: widget.cancelPop ? () async => false : null,
-        child: Container(
-          child: loadState
-              ? FlutterLogin(
-                  title: '宜大學生 APP',
-                  logo: 'assets/niu_logo.png',
-                  onLogin: _authUser,
-                  hideForgotPasswordButton: true,
-                  hideSignUpButton: true,
-                  onSubmitAnimationCompleted: () {
-                    print("id: " + id);
-                    print("name: " + name);
-                    Navigator.pop(context);
-                  },
-                  theme: LoginTheme(
-                      logoWidth: 0.3, titleStyle: TextStyle(fontSize: 30)),
-                  messages: LoginMessages(
-                    userHint: '學號',
-                    passwordHint: '密碼',
-                    loginButton: '登入',
-                    flushbarTitleError: '錯誤',
-                  ),
-                )
-              : Loading(),
-        ),
+    return WillPopScope(
+      onWillPop: widget.cancelPop ? () async => false : null,
+      child: Container(
+        child: loadState
+            ? FlutterLogin(
+                title: '宜大學生 APP',
+                logo: 'assets/niu_logo.png',
+                onLogin: _authUser,
+                hideForgotPasswordButton: true,
+                hideSignUpButton: true,
+                onSubmitAnimationCompleted: () {
+                  print("id: " + id);
+                  print("name: " + name);
+                  Navigator.pop(context);
+                },
+                theme: LoginTheme(
+                    logoWidth: 0.35, titleStyle: TextStyle(fontSize: 30)),
+                messages: LoginMessages(
+                  userHint: '學號',
+                  passwordHint: '密碼',
+                  loginButton: '登入',
+                  flushbarTitleError: '錯誤',
+                ),
+              )
+            : Loading(),
       ),
     );
   }
