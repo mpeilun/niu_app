@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/grades/grades.dart';
-import 'package:niu_app/grduation/graduation_page.dart';
+import 'package:niu_app/graduation/graduation.dart';
 import 'package:niu_app/menu/drawer/drawer.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menu/loading.dart';
@@ -20,6 +20,8 @@ import 'package:niu_app/menu/drawer/report.dart';
 import 'package:niu_app/menu/drawer/setting.dart';
 import 'package:provider/src/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
+
+import '../course＿select.dart';
 
 class StartMenu extends StatefulWidget {
   StartMenu({Key? key}) : super(key: key);
@@ -90,8 +92,8 @@ class _StartMenu extends State<StartMenu> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Grades(
-                                        title: '成績查詢',
-                                      ),
+                                            title: '成績查詢',
+                                          ),
                                       maintainState: false));
                             },
                           ),
@@ -119,8 +121,8 @@ class _StartMenu extends State<StartMenu> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SchoolEvent(
-                                        title: '活動報名',
-                                      ),
+                                            title: '活動報名',
+                                          ),
                                       maintainState: false));
                             },
                           ),
@@ -148,7 +150,13 @@ class _StartMenu extends State<StartMenu> {
                           CustomIcons(
                             title: '選課系統',
                             icon: MenuIcon.icon_e_school,
-                            press: () {},
+                            press: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CourseSelect(),
+                                      maintainState: false));
+                            },
                           ),
                           CustomIcons(
                             title: '公車動態',
@@ -160,14 +168,14 @@ class _StartMenu extends State<StartMenu> {
                             icon: MenuIcon.icon_account,
                             press: () async {
                               SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
+                                  await SharedPreferences.getInstance();
                               prefs.clear(); //清空键值对
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => LoginPage(
-                                        cancelPop: false,
-                                      ),
+                                            cancelPop: false,
+                                          ),
                                       maintainState: false));
                             },
                           ),
@@ -230,19 +238,22 @@ class _StartMenu extends State<StartMenu> {
           ),
           drawer: Theme(
               data: Theme.of(context).copyWith(
-                canvasColor: Theme.of(context).scaffoldBackgroundColor, //This will change the drawer background to blue.
+                canvasColor: Theme.of(context)
+                    .scaffoldBackgroundColor, //This will change the drawer background to blue.
                 //other styles
               ),
               child: MyDrawer()),
           endDrawer: Theme(
               data: Theme.of(context).copyWith(
-                canvasColor: Theme.of(context).scaffoldBackgroundColor, //This will change the drawer background to blue.
+                canvasColor: Theme.of(context)
+                    .scaffoldBackgroundColor, //This will change the drawer background to blue.
                 //other styles
               ),
               child: NotificationDrawer()),
           body: pages[context.watch<OnItemClick>().index]);
     } else {
-      return Loading();
+      return WillPopScope(
+          onWillPop: true ? () async => false : null, child: Loading());
     }
   }
 
@@ -256,7 +267,8 @@ class _StartMenu extends State<StartMenu> {
           context,
           MaterialPageRoute(
               builder: (context) => LoginPage(
-                    cancelPop: false,
+                    cancelPop: true,
+                    //TODO 登入左滑會跳出lodding
                   ),
               maintainState: false));
     } else {
