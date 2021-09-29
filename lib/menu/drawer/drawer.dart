@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/e_school/e_school.dart';
+import 'package:niu_app/graduation/graduation.dart';
+import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
@@ -100,8 +104,21 @@ class _MyDrawer extends State<MyDrawer> {
                   createDrawerItem(
                       icon: Icons.logout,
                       text: '登出',
-                      onTap: () {
-                        Navigator.of(context).pop();
+                      onTap: () async {
+                        //清除緩存
+                        saveGraduationData = false;
+                        globalAdvancedTile = [];
+                        CookieManager().deleteAllCookies();
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.clear(); //清空键值对
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage(
+                                      cancelPop: true,
+                                    ),
+                                maintainState: false));
                       }),
                   createDrawerItem(
                       icon: Icons.bug_report,
