@@ -79,12 +79,14 @@ class ClassList{
 
   ///<--有課程新增ClassCard到list裡-->///
   void putClass(Class thisClass,Map<Class,Calendar> calendarMap){
-    String saveString = thisClass.save();
-    if(colorMap[saveString] != null){
-      thisClass.setColor(colorMap[saveString]);
+    String className = thisClass.getName();
+    if(colorIndex == colors.length)
+      colorIndex = 0;
+    if(colorMap[className] != null){
+      thisClass.setColor(colorMap[className]);
     }else{
-      colorMap[saveString] = colors[colorIndex++];
-      thisClass.setColor(colorMap[saveString]);
+      colorMap[className] = colors[colorIndex++];
+      thisClass.setColor(colorMap[className]);
     }
     Calendar calendar = Calendar(null,null,null);
     calendarMap.forEach((key, value) {
@@ -113,16 +115,48 @@ class ClassList{
 }
 
 List<Color> colors = <Color>[
-  Colors.red,
-  Colors.blue,
-  Colors.green,
-  Colors.yellow,
-  Colors.amber,
-  Colors.cyan,
-  Colors.purple,
-  Colors.indigo,
-  Colors.greenAccent,
-  Colors.lightBlueAccent,
-  Colors.tealAccent,
-  Colors.cyanAccent
+  Color(0x8071D2D4),
+  Color(0x8071B8D4),
+  Color(0x8071A6D4),
+  Color(0x807871D4),
+  Color(0x80AE71D4),
+  Color(0x80D471C7),
+  Color(0x80D47190),
+  Color(0x80D47171),
+  Color(0x80D49971),
+  Color(0x80D4BF71),
+  Color(0x80B1D471),
+  Color(0x8071D473),
+  Color(0x8071D4C5),
 ];
+
+/*
+  Color(0xED71D2D4),
+  Color(0xEE71B8D4),
+  Color(0xEE71A6D4),
+  Color(0xEE7871D4),
+  Color(0xEEAE71D4),
+  Color(0xEED471C7),
+  Color(0xEED47190),
+  Color(0xEED47171),
+  Color(0xEED49971),
+  Color(0xEED4BF71),
+  Color(0xEEB1D471),
+  Color(0xEE71D473),
+  Color(0xEE71D4C5),
+ */
+/*
+  Color(0x8071D2D4),
+  Color(0x8071B8D4),
+  Color(0x8071A6D4),
+  Color(0x807871D4),
+  Color(0x80AE71D4),
+  Color(0x80D471C7),
+  Color(0x80D47190),
+  Color(0x80D47171),
+  Color(0x80D49971),
+  Color(0x80D4BF71),
+  Color(0x80B1D471),
+  Color(0x8071D473),
+  Color(0x8071D4C5),
+ */

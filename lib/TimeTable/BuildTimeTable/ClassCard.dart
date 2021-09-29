@@ -26,6 +26,7 @@ class _ClassCard extends State<ClassCard> {
 
   @override
   Widget build(BuildContext context) {
+    var textStyle = TextStyle(fontSize: 12,);
     if(first){
       week = widget.week;
       original = widget.calendar;
@@ -56,13 +57,17 @@ class _ClassCard extends State<ClassCard> {
       classInfo = thisClass.name.toString();
     }
     if(calendar.type() == 0)
-      thisClass.setColor(Colors.red);
+      textStyle = TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: Colors.white);
+      //thisClass.setColor(Colors.red);
     else if(calendar.type() == 1)
-      thisClass.setColor(Colors.blue);
+      textStyle = TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: Colors.white);
+      //thisClass.setColor(Colors.blue);
     else if(calendar.type() == 2)
-      thisClass.setColor(Colors.green);
+      textStyle = TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: Colors.white);
+      //thisClass.setColor(Colors.green);
     else
-      thisClass.setColor(Color(0x2A));
+      textStyle = TextStyle(fontSize: 12,color: Colors.white);
+      //thisClass.setColor(Color(0x2A));
     return Card(
       color: thisClass.getColor(),
       child: TextButton(
@@ -229,9 +234,7 @@ class _ClassCard extends State<ClassCard> {
             child: Text(
               classInfo,
               textAlign : TextAlign.center,
-              style: TextStyle(
-                fontSize: 12,
-              ),
+              style: textStyle,
             ),
           ),
         ),
