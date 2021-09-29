@@ -139,12 +139,7 @@ class _GraduationHourState extends State<GraduationHour> {
                                 "about"
                               ].contains(uri.scheme) ||
                               !uri.toString().contains("niu.edu.tw")) {
-                            if (await canLaunch(uri.toString())) {
-                              await launch(
-                                uri.toString(),
-                              );
-                              return NavigationActionPolicy.CANCEL;
-                            }
+                            return NavigationActionPolicy.CANCEL;
                           }
 
                           return NavigationActionPolicy.ALLOW;
@@ -154,6 +149,10 @@ class _GraduationHourState extends State<GraduationHour> {
                           setState(() {
                             this.url = url.toString();
                           });
+                          if (url.toString() == 'https://ep.niu.edu.tw/login') {
+                            Navigator.pop(context);
+                            showToast('網路異常！');
+                          }
                           if (url.toString() ==
                               'https://ep.niu.edu.tw/search/learning_certification') {
                             cleanJs.forEach((element) async {
@@ -199,7 +198,10 @@ class _GraduationHourState extends State<GraduationHour> {
                           print(consoleMessage);
                         },
                         onDownloadStart: (controller, url) async {
-                          print('onDownLoad:' + url.toString());
+                          await controller.loadUrl(
+                              urlRequest: URLRequest(
+                                  url: Uri.parse(
+                                      "https://ep.niu.edu.tw/search/learning_certification")));
                         },
                       ),
                     )
