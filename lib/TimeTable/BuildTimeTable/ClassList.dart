@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -22,7 +24,8 @@ class ClassList{
   }
   List<List<bool>> tableInfo = []; //在某個禮拜某節是不是有課
   //arr[weekday][classNum]
-
+  HashMap colorMap = new HashMap<String,Color>();
+  int colorIndex = 0;
 
   ClassList(this._classList,this.calendarMap,this.week){
 
@@ -76,6 +79,13 @@ class ClassList{
 
   ///<--有課程新增ClassCard到list裡-->///
   void putClass(Class thisClass,Map<Class,Calendar> calendarMap){
+    String saveString = thisClass.save();
+    if(colorMap[saveString] != null){
+      thisClass.setColor(colorMap[saveString]);
+    }else{
+      colorMap[saveString] = colors[colorIndex++];
+      thisClass.setColor(colorMap[saveString]);
+    }
     Calendar calendar = Calendar(null,null,null);
     calendarMap.forEach((key, value) {
       if(key.equal(thisClass)){
@@ -101,7 +111,7 @@ class ClassList{
   }
 
 }
-/*
+
 List<Color> colors = <Color>[
   Colors.red,
   Colors.blue,
@@ -116,4 +126,3 @@ List<Color> colors = <Color>[
   Colors.tealAccent,
   Colors.cyanAccent
 ];
- */
