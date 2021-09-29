@@ -53,7 +53,7 @@ class CustomEventCard extends StatefulWidget {
 class _CustomEventCardState extends State<CustomEventCard> {
   ScrollController _scrollController = ScrollController();
 
-  Future<void> showListDialog(String JS) async {
+  Future<void> showListDialog(String js) async {
     // String? index = await showDialog<String>(
     //   context: context,
     //   builder: (BuildContext context) => EventInfoDialog(),
@@ -63,7 +63,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
     // }
     showDialog(
       context: context,
-      builder: (BuildContext context) => EventInfoDialog(eventJS: JS,),
+      builder: (BuildContext context) => EventInfoDialog(eventJS: js,),
     );
   }
 

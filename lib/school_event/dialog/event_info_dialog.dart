@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
@@ -15,27 +16,51 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
   HeadlessInAppWebView? headlessWebView;
   bool dataLoaded = false;
   String url = "";
-  
-  // Future<void> getEventInfo(String js) async{
-  //   for (int i = 1; i <= 30; i++) {
-  //     await Future.delayed(Duration(milliseconds: 1000), () {});
-  //     print('計時器 $i');
-  //     if (headlessWebView?.webViewController.evaluateJavascript(source: 'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > caption")') != 'null') {
-  //       break;
-  //     } else if (i == 30 && loginState == 'null') {
-  //       loginState = '網路異常，連線超時！';
-  //       break;
-  //     } else if (i == 5 && webProgress == 100) {
-  //       await headlessWebView?.webViewController.loadUrl(
-  //           urlRequest: URLRequest(
-  //               url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx")));
-  //       print('頁面閒置過長，重新載入');
-  //     } else if (i > 5 && i % 5 == 0 && webProgress == 100) {
-  //       jsLogin();
-  //       print('執行 jsLogin()');
-  //     }
-  //   }
-  // }
+  List data = [];
+
+  void getEventInfo(String js) async {
+    data.clear();
+    for (int i = 1; i <= 30; i++) {
+      await headlessWebView?.webViewController
+          .evaluateJavascript(source: widget.eventJS);
+      await Future.delayed(Duration(milliseconds: 1000), () {});
+      print('計時器 $i');
+
+      String? loadState = await headlessWebView?.webViewController
+          .evaluateJavascript(
+              source:
+                  'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > caption").innerText');
+
+      if (loadState == '活動詳細內容') {
+        print('載入完成');
+
+        for (int i = 2;
+            await headlessWebView?.webViewController.evaluateJavascript(
+                    source:
+                        'document.querySelector(\"#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(1)\")') !=
+                null;
+            i++) {
+          print(i);
+          data.add([
+            await headlessWebView?.webViewController.evaluateJavascript(
+                source:
+                    'document.querySelector(\"#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(1)\").innerText'),
+            await headlessWebView?.webViewController.evaluateJavascript(
+                source:
+                    'document.querySelector(\"#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(2)\").innerText')
+          ]);
+
+          setState(() {
+            dataLoaded = true;
+          });
+        }
+        break;
+      } else if (i == 30 && loadState == null) {
+        print('網路異常，連線超時！');
+        break;
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -67,6 +92,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
       },
       onLoadStop: (controller, url) async {
         print("onLoadStop $url");
+        getEventInfo(widget.eventJS);
       },
       onUpdateVisitedHistory: (controller, url, androidIsReload) {
         print("onUpdateVisitedHistory $url");
@@ -85,12 +111,12 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
       child: Column(children: <Widget>[
         Row(
           children: <Widget>[
+            dataLoaded?
             TextButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               child: Text('報名'),
               style: ButtonStyle(),
-            ),
+            ):SizedBox(),
             Expanded(child: SizedBox()),
             IconButton(
                 onPressed: () {
@@ -102,7 +128,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
         dataLoaded
             ? Expanded(
                 child: ListView.separated(
-                    itemCount: 1,
+                    itemCount: data.length,
                     separatorBuilder: (BuildContext context, int index) =>
                         Divider(),
                     itemBuilder: (BuildContext context, int index) => Column(
@@ -111,18 +137,26 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                               key: PageStorageKey(
                                   'event_info' + index.toString()),
                               title: Text(
-                                '　詳細資料',
+                                data[index][0],
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Text(
+                                    data[index][1],
+                                  ),
+                                ),
+                              ],
                             )
                           ],
                         )),
               )
             : Expanded(
-              child: NiuIconLoading(
-                size: 80.0,
+                child: NiuIconLoading(
+                  size: 80.0,
+                ),
               ),
-            ),
       ]),
     );
   }
