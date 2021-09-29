@@ -268,7 +268,6 @@ class _StartMenu extends State<StartMenu> {
           MaterialPageRoute(
               builder: (context) => LoginPage(
                     cancelPop: true,
-                    //TODO 登入左滑會跳出lodding
                   ),
               maintainState: false));
     } else {
