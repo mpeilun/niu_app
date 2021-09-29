@@ -199,7 +199,7 @@ class _GraduationHourState extends State<GraduationHour> {
                           print(consoleMessage);
                         },
                         onDownloadStart: (controller, url) async {
-                          // download(url, context);
+                          print('onDownLoad:' + url.toString());
                         },
                       ),
                     )

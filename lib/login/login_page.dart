@@ -174,9 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                   flushbarTitleError: '錯誤',
                 ),
               )
-            : WillPopScope(
-                onWillPop: widget.cancelPop ? () async => false : null,
-                child: Loading()),
+            : Loading(),
       ),
     );
   }

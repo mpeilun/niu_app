@@ -174,7 +174,7 @@ class _StartMenu extends State<StartMenu> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => LoginPage(
-                                            cancelPop: false,
+                                            cancelPop: true,
                                           ),
                                       maintainState: false));
                             },
