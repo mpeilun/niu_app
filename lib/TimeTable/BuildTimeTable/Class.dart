@@ -28,6 +28,9 @@ class Class{
   String save(){
     return "Class($name$indexChar$teacher$indexChar$classroom$indexChar$weekDay$indexChar$startTime$indexChar$endTime)";
   }
+  String getName(){
+    return name!;
+  }
   bool equal(Class a){
     return (a.save()==this.save());
   }

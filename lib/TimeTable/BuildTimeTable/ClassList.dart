@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -22,7 +24,8 @@ class ClassList{
   }
   List<List<bool>> tableInfo = []; //在某個禮拜某節是不是有課
   //arr[weekday][classNum]
-
+  HashMap colorMap = new HashMap<String,Color>();
+  int colorIndex = 0;
 
   ClassList(this._classList,this.calendarMap,this.week){
 
@@ -76,6 +79,15 @@ class ClassList{
 
   ///<--有課程新增ClassCard到list裡-->///
   void putClass(Class thisClass,Map<Class,Calendar> calendarMap){
+    String className = thisClass.getName();
+    if(colorIndex == colors.length)
+      colorIndex = 0;
+    if(colorMap[className] != null){
+      thisClass.setColor(colorMap[className]);
+    }else{
+      colorMap[className] = colors[colorIndex++];
+      thisClass.setColor(colorMap[className]);
+    }
     Calendar calendar = Calendar(null,null,null);
     calendarMap.forEach((key, value) {
       if(key.equal(thisClass)){
@@ -101,19 +113,57 @@ class ClassList{
   }
 
 }
-/*
+
 List<Color> colors = <Color>[
-  Colors.red,
-  Colors.blue,
-  Colors.green,
-  Colors.yellow,
-  Colors.amber,
-  Colors.cyan,
-  Colors.purple,
-  Colors.indigo,
-  Colors.greenAccent,
-  Colors.lightBlueAccent,
-  Colors.tealAccent,
-  Colors.cyanAccent
+  Color(0xff2364AA).withOpacity(0.7),
+  //Color(0xff3085C2).withOpacity(0.7),
+  Color(0xff3DA5D9).withOpacity(0.7),
+  //Color(0xff58B2C9).withOpacity(0.7),
+  Color(0xff73BFB8).withOpacity(0.7),
+  Color(0xffB9C35D).withOpacity(0.7),
+  Color(0xffFEC601).withOpacity(0.7),
+  Color(0xffF49D0C).withOpacity(0.7),
+  Color(0xffEF8812).withOpacity(0.7),
+  Color(0xffEA7317).withOpacity(0.7),
+  //Color(0xff264653).withOpacity(0.7),
+  Color(0xff287271).withOpacity(0.7),
+  Color(0xff2A9D8F).withOpacity(0.7),
+  Color(0xff8AB17D).withOpacity(0.7),
+  Color(0xffBABB74).withOpacity(0.7),
+  Color(0xffE9C46A).withOpacity(0.7),
+  Color(0xffEFB366).withOpacity(0.7),
+  Color(0xffF4A261).withOpacity(0.7),
+  Color(0xffEE8959).withOpacity(0.7),
+  Color(0xffE76F51).withOpacity(0.7),
 ];
+
+/*
+  Color(0xED71D2D4),
+  Color(0xEE71B8D4),
+  Color(0xEE71A6D4),
+  Color(0xEE7871D4),
+  Color(0xEEAE71D4),
+  Color(0xEED471C7),
+  Color(0xEED47190),
+  Color(0xEED47171),
+  Color(0xEED49971),
+  Color(0xEED4BF71),
+  Color(0xEEB1D471),
+  Color(0xEE71D473),
+  Color(0xEE71D4C5),
+ */
+/*
+  Color(0x8071D2D4),
+  Color(0x8071B8D4),
+  Color(0x8071A6D4),
+  Color(0x807871D4),
+  Color(0x80AE71D4),
+  Color(0x80D471C7),
+  Color(0x80D47190),
+  Color(0x80D47171),
+  Color(0x80D49971),
+  Color(0x80D4BF71),
+  Color(0x80B1D471),
+  Color(0x8071D473),
+  Color(0x8071D4C5),
  */
