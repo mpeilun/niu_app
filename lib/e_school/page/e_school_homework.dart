@@ -114,6 +114,7 @@ class _ESchoolHomeWorkState extends State<ESchoolHomeWork> {
                 globalAdvancedTile = [];
                 Navigator.pop(context);
                 showToast('網路異常');
+                break;
               }
             }
           }

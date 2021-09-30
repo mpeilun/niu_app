@@ -114,6 +114,7 @@ class _ESchoolGradeState extends State<ESchoolGrade> {
                 globalAdvancedTile = [];
                 Navigator.pop(context);
                 showToast('網路異常');
+                break;
               }
             }
           }

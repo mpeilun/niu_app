@@ -113,6 +113,7 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
                 globalAdvancedTile = [];
                 Navigator.pop(context);
                 showToast('網路異常');
+                break;
               }
             }
           }

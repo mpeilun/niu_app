@@ -155,13 +155,31 @@ class _GraduationHourState extends State<GraduationHour> {
                           }
                           if (url.toString() ==
                               'https://ep.niu.edu.tw/search/learning_certification') {
-                            cleanJs.forEach((element) async {
-                              await controller.evaluateJavascript(
-                                  source: element);
-                            });
-                            setState(() {
-                              loadState = true;
-                            });
+                            for (int i = 1; i <= 30; i++) {
+                              await Future.delayed(
+                                  Duration(milliseconds: 1000), () {});
+                              print('讀取資料 $i');
+                              var raw = await controller.evaluateJavascript(
+                                  source:
+                                      'document.querySelector("body > div.mainwrapper > section.common__section > div > div.paging > a").innerText');
+                              if (raw != null) {
+                                await Future.delayed(
+                                    Duration(milliseconds: 200), () async {
+                                  cleanJs.forEach((element) async {
+                                    await controller.evaluateJavascript(
+                                        source: element);
+                                  });
+                                  setState(() {
+                                    loadState = true;
+                                  });
+                                });
+                                break;
+                              } else if (i == 30) {
+                                Navigator.pop(context);
+                                showToast('網路異常');
+                                break;
+                              }
+                            }
                           }
                           if (url.toString() ==
                               'https://ep.niu.edu.tw/login/student') {
