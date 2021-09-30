@@ -45,7 +45,6 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
 
   late String url;
   late bool loadState = false;
-  late bool headlessLoadState = false;
   double progress = 0;
 
   @override
@@ -88,6 +87,35 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
             Navigator.pop(context);
             showToast('登入逾時，重新登入中！');
           }
+          if (url.toString() == 'https://eschool.niu.edu.tw/learn/index.php') {
+            for (int i = 1; i <= 30; i++) {
+              await Future.delayed(Duration(milliseconds: 1000), () {});
+              print('讀取資料 $i');
+              String raw = await controller.evaluateJavascript(
+                  source: 'window.frames["s_main"].document.body.innerText');
+              if (raw.contains('課程公告板') || raw.contains('請點選課程名稱進入教室')) {
+                await Future.delayed(Duration(milliseconds: 200), () async {
+                  await controller.evaluateJavascript(
+                      source:
+                          'parent.chgCourse(' + widget.courseId + ', 1, 1)');
+                });
+                await Future.delayed(Duration(milliseconds: 1000), () async {
+                  await webViewController!.loadUrl(
+                      urlRequest: URLRequest(
+                          url: Uri.parse(
+                              "https://eschool.niu.edu.tw/forum/m_node_list.php")));
+                  setState(() {
+                    loadState = true;
+                  });
+                });
+                break;
+              } else if (i == 30) {
+                globalAdvancedTile = [];
+                Navigator.pop(context);
+                showToast('網路異常');
+              }
+            }
+          }
         },
         onUpdateVisitedHistory: (controller, url, androidIsReload) {
           print("onUpdateVisitedHistory $url");
@@ -100,30 +128,8 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
           return JsAlertResponse(
               handledByClient: true, action: JsAlertResponseAction.CONFIRM);
         },
-        onLoadResource:
-            (InAppWebViewController controller, LoadedResource resource) async {
-          print(resource.toString());
-          if ((resource.url.toString() ==
-                      'https://eschool.niu.edu.tw/learn/mycourse/index.php' ||
-                  resource.url.toString() ==
-                      'https://eschool.niu.edu.tw/forum/m_node_list.php') &&
-              headlessLoadState == false) {
-            headlessLoadState = true;
-            await Future.delayed(Duration(milliseconds: 200), () async {
-              await controller.evaluateJavascript(
-                  source: 'parent.chgCourse(' + widget.courseId + ', 1, 1)');
-            });
-            await Future.delayed(Duration(milliseconds: 1000), () async {
-              await webViewController!.loadUrl(
-                  urlRequest: URLRequest(
-                      url: Uri.parse(
-                          "https://eschool.niu.edu.tw/forum/m_node_list.php")));
-              setState(() {
-                loadState = true;
-              });
-            });
-          }
-        });
+        onLoadResource: (InAppWebViewController controller,
+            LoadedResource resource) async {});
 
     headlessWebView?.run();
   }

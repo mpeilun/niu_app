@@ -149,32 +149,44 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                             Navigator.pop(context);
                             showToast('登入逾時，重新登入中！');
                           }
-                        },
-                        onLoadResource: (InAppWebViewController controller,
-                            LoadedResource resource) async {
-                          print('onLoadResource: ' + resource.toString());
-                          if ((resource.url.toString() ==
-                                  'https://eschool.niu.edu.tw/learn/mycourse/index.php' ||
-                              resource.url.toString() ==
-                                  'https://eschool.niu.edu.tw/forum/m_node_list.php')) {
-                            await Future.delayed(Duration(milliseconds: 200),
-                                () async {
-                              await controller.evaluateJavascript(
-                                  source: 'parent.chgCourse(' +
-                                      widget.courseId +
-                                      ', 1, 1,\'SYS_04_01_002\')');
-                              await Future.delayed(Duration(milliseconds: 200),
-                                  () async {
-                                await controller.evaluateJavascript(
-                                    source:
-                                        'document.querySelector("#envStudent").rows = \'0,*\'');
-                              });
-                              setState(() {
-                                loadState = true;
-                              });
-                            });
+                          if (url.toString() ==
+                              'https://eschool.niu.edu.tw/learn/index.php') {
+                            for (int i = 1; i <= 30; i++) {
+                              await Future.delayed(
+                                  Duration(milliseconds: 1000), () {});
+                              print('讀取資料 $i');
+                              String raw = await controller.evaluateJavascript(
+                                  source:
+                                      'window.frames["s_main"].document.body.innerText');
+                              if (raw.contains('課程公告板') ||
+                                  raw.contains('請點選課程名稱進入教室')) {
+                                await Future.delayed(
+                                    Duration(milliseconds: 200), () async {
+                                  await controller.evaluateJavascript(
+                                      source: 'parent.chgCourse(' +
+                                          widget.courseId +
+                                          ', 1, 1,\'SYS_04_01_002\')');
+                                  await Future.delayed(
+                                      Duration(milliseconds: 200), () async {
+                                    await controller.evaluateJavascript(
+                                        source:
+                                            'document.querySelector("#envStudent").rows = \'0,*\'');
+                                  });
+                                  setState(() {
+                                    loadState = true;
+                                  });
+                                });
+                                break;
+                              } else if (i == 30) {
+                                globalAdvancedTile = [];
+                                Navigator.pop(context);
+                                showToast('網路異常');
+                              }
+                            }
                           }
                         },
+                        onLoadResource: (InAppWebViewController controller,
+                            LoadedResource resource) async {},
                         onLoadError: (controller, url, code, message) {},
                         onProgressChanged: (controller, progress) {
                           setState(() {
