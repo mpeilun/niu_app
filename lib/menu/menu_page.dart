@@ -23,6 +23,7 @@ import 'package:provider/src/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 
 import '../course＿select.dart';
+import '../zuvio.dart';
 
 class StartMenu extends StatefulWidget {
   StartMenu({Key? key}) : super(key: key);
@@ -130,7 +131,13 @@ class _StartMenu extends State<StartMenu> {
                           CustomIcons(
                             title: 'ZUVIO',
                             icon: MenuIcon.icon_zuvio,
-                            press: () {},
+                            press: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Zuvio(),
+                                      maintainState: false));
+                            },
                           ),
                           CustomIcons(
                             title: '畢業門檻',
@@ -200,7 +207,7 @@ class _StartMenu extends State<StartMenu> {
         },
       ),
       TestAnnouncementPage(),
-      //AnnouncementPage(),
+      // AnnouncementPage(),
       SettingPage(),
       AboutPage(),
       ReportPage()
