@@ -13,7 +13,7 @@ class TestAnnouncementPage extends StatefulWidget {
 
 class _TestAnnouncementPageState extends State<TestAnnouncementPage> {
   List contents = [];
-  List links = [];
+  List<String> links = [];
   Future<bool> isFinish() async{
     await getPost(1);
     return true;
@@ -71,8 +71,15 @@ class _TestAnnouncementPageState extends State<TestAnnouncementPage> {
       contents.add(content);
     }*/
     for(var content in contents){
-      links.add(content.children[1].attributes['href']);
-      print(content.children[1].attributes['href']);
+      if(content.children[1].attributes['href'][0].toString()==("/")){
+        links.add("https://academic.niu.edu.tw${content.children[1].attributes['href']}");
+      }
+      else{
+        links.add(content.children[1].attributes['href']);
+      }
+    }
+    for(var content in links) {
+      print(content);
     }
     //document.getElementsByClassName("h5").getElementsByClassName("ptname ").attributes['href'];
     //content.attributes['href'];
