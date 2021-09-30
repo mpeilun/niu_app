@@ -66,10 +66,6 @@ class _TestAnnouncementPageState extends State<TestAnnouncementPage> {
     var tempList = document.getElementsByClassName("h5");//print(tempList[i].text.replaceAll("\n","")  =>   [ 2021-07-26  ] 【公告】本校110學年度教務處行事曆
     tempList.removeRange(0,8);
     contents.addAll(tempList);
-    /*
-    for(var content in tempList){
-      contents.add(content);
-    }*/
     for(var content in contents){
       if(content.children[1].attributes['href'][0].toString()==("/")){
         links.add("https://academic.niu.edu.tw${content.children[1].attributes['href']}");
@@ -78,10 +74,5 @@ class _TestAnnouncementPageState extends State<TestAnnouncementPage> {
         links.add(content.children[1].attributes['href']);
       }
     }
-    for(var content in links) {
-      print(content);
-    }
-    //document.getElementsByClassName("h5").getElementsByClassName("ptname ").attributes['href'];
-    //content.attributes['href'];
   }
 }
