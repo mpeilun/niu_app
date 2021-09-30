@@ -93,7 +93,7 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
               print('讀取資料 $i');
               var raw = await controller.evaluateJavascript(
                   source: 'window.frames["s_main"].document.body.innerText');
-              print('rawData $i');
+              print('rawData $raw');
               if (raw != null || raw != '') {
                 await Future.delayed(Duration(milliseconds: 200), () async {
                   await controller.evaluateJavascript(

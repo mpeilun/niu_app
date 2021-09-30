@@ -162,10 +162,11 @@ class _GraduationHourState extends State<GraduationHour> {
                               var raw = await controller.evaluateJavascript(
                                   source:
                                       'document.querySelector("body > div.mainwrapper > section.common__section > div > div.paging > a").innerText');
-                              print('rawData $i');
+                              print('rawData $raw');
                               if (raw != null || raw != '') {
                                 await Future.delayed(
                                     Duration(milliseconds: 200), () async {
+                                  //TODO：Android有顯示問題
                                   cleanJs.forEach((element) async {
                                     await controller.evaluateJavascript(
                                         source: element);
