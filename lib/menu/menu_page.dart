@@ -18,6 +18,7 @@ import 'package:niu_app/menu/drawer/about.dart';
 import 'package:niu_app/menu/drawer/announcement.dart';
 import 'package:niu_app/menu/drawer/report.dart';
 import 'package:niu_app/menu/drawer/setting.dart';
+import 'package:niu_app/menu/drawer/test_announcement.dart';
 import 'package:provider/src/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 
@@ -198,7 +199,8 @@ class _StartMenu extends State<StartMenu> {
           );
         },
       ),
-      AnnouncementPage(),
+      TestAnnouncementPage(),
+      //AnnouncementPage(),
       SettingPage(),
       AboutPage(),
       ReportPage()
