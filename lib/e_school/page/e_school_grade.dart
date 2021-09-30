@@ -92,9 +92,10 @@ class _ESchoolGradeState extends State<ESchoolGrade> {
             for (int i = 1; i <= 30; i++) {
               await Future.delayed(Duration(milliseconds: 1000), () {});
               print('讀取資料 $i');
-              String raw = await controller.evaluateJavascript(
+              var raw = await controller.evaluateJavascript(
                   source: 'window.frames["s_main"].document.body.innerText');
-              if (raw.contains('課程公告板') || raw.contains('請點選課程名稱進入教室')) {
+              print('rawData $i');
+              if (raw != null || raw != '') {
                 await Future.delayed(Duration(milliseconds: 200), () async {
                   await controller.evaluateJavascript(
                       source:

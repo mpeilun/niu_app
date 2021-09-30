@@ -70,6 +70,6 @@ SPEC CHECKSUMS:
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
-PODFILE CHECKSUM: cd3f244d2b3ac3ca3d59f6138a58206bd2eb8d24
+PODFILE CHECKSUM: 5a30faf9dbc7ab73c1280177b40d7b4fdcfe242f
 
 COCOAPODS: 1.10.1

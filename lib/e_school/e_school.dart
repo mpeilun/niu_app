@@ -147,7 +147,9 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
           //print(resource.toString());
         });
 
-    headlessWebView?.run();
+    if (globalAdvancedTile.isEmpty) {
+      headlessWebView?.run();
+    }
   }
 
   @override
