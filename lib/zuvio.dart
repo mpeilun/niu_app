@@ -178,11 +178,6 @@ class _ZuvioState extends State<Zuvio> {
                           setState(() {
                             this.url = url.toString();
                           });
-                          if (url.toString() ==
-                              'https://irs.zuvio.com.tw/irs/login') {
-                            Navigator.pop(context);
-                            showToast('網路異常');
-                          }
                           if (url
                               .toString()
                               .contains('irs.zuvio.com.tw/student5')) {
