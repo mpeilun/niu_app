@@ -273,6 +273,7 @@ class _StartMenu extends State<StartMenu> {
     }
   }
 
+  //TODO:卡登問題看跳轉解決？
   _checkAccount() async {
     prefs = await SharedPreferences.getInstance();
     if (prefs.get('id') == null || prefs.get('pwd') == null) {
