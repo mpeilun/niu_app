@@ -297,7 +297,7 @@ class _StartMenu extends State<StartMenu> {
             javaScriptCanOpenWindowsAutomatically: true,
           ),
         ),
-        onWebViewCreated: (controller) {
+        onWebViewCreated: (controller) async {
           print('HeadlessInAppWebView created!');
         },
         onConsoleMessage: (controller, consoleMessage) {
@@ -308,7 +308,8 @@ class _StartMenu extends State<StartMenu> {
           setState(() {
             this.url = url.toString();
           });
-          if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
+          if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx' &&
+              countState != true) {
             for (int i = 1; i <= 120; i++) {
               await Future.delayed(Duration(milliseconds: 1000), () {});
               print('登入檢測 $i');
@@ -329,6 +330,7 @@ class _StartMenu extends State<StartMenu> {
                 countState = true;
                 break;
               } else if (i == 120) {
+                countState = false;
                 break;
               }
             }
