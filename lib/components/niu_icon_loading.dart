@@ -36,6 +36,9 @@ class _NiuIconLoadingState extends State<NiuIconLoading>
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            SizedBox(
+              height: 20.0,
+            ),
             Container(
               width: widget.size,
               height: widget.size,
@@ -51,10 +54,10 @@ class _NiuIconLoadingState extends State<NiuIconLoading>
               ),
             ),
             SizedBox(
-              height: 4,
+              height: 3,
             ),
             Text(
-              '載入中...',
+              '  載入中...',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             )
