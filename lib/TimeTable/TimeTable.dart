@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/service/SemesterDate.dart';
-import 'package:niu_app/service/CalendarMessage.dart';
 import 'ViewPage.dart';
 import './BuildTimeTable/Class.dart';
 import './GetTimeTable/GetHTML.dart';
