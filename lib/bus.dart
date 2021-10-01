@@ -11,17 +11,17 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Zuvio extends StatefulWidget {
-  const Zuvio({
+class Bus extends StatefulWidget {
+  const Bus({
     Key? key,
   }) : super(key: key);
 
   @override
-  _ZuvioState createState() => new _ZuvioState();
+  _BusState createState() => new _BusState();
 }
 
-class _ZuvioState extends State<Zuvio> {
-  final GlobalKey zuvio = GlobalKey();
+class _BusState extends State<Bus> {
+  final GlobalKey bus = GlobalKey();
   InAppWebViewController? webViewController;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
@@ -39,9 +39,22 @@ class _ZuvioState extends State<Zuvio> {
 
   late String url;
   late bool loadState = false;
-  bool loginState = false;
 
   double progress = 0;
+
+  List<String> cleanJs = [
+    'document.querySelector(\"#topNav\").style.display=\'none\'',
+    'document.querySelector(\"head\").style.display=\'none\'',
+    'document.querySelector(\"#main > div.container > nav\").style.display=\'none\'',
+    'document.querySelector(\"#main > div.container > div.srch-input\").style.display=\'none\'',
+    'document.querySelector(\"#main > div.page-title.page-title-srch\").style.display=\'none\'',
+    'document.querySelector(\"#main > a\").style.display=\'none\'',
+    'document.querySelector(\"#footer > a\").style.display=\'none\'',
+    'document.querySelector(\"#footer > div.footer-info\").style.display=\'none\'',
+    'document.querySelector(\"#btnFPMenuOpen\").style.display=\'none\'',
+    'document.querySelector(\"#MasterPageBodyTag > a\").style.display=\'none\'',
+    'document.querySelector(\"#MasterPageBodyTag > div\").style = \'padding-top: 10px\'',
+  ];
 
   @override
   void initState() {
@@ -76,23 +89,13 @@ class _ZuvioState extends State<Zuvio> {
                       visible: loadState,
                       maintainState: true,
                       child: InAppWebView(
-                        key: zuvio,
+                        key: bus,
+                        initialUrlRequest: URLRequest(
+                            url: Uri.parse(
+                                "https://www.taiwanbus.tw/eBUSPage/Query/RouteQuery.aspx?key=%E5%AE%9C%E8%98%AD%E5%A4%A7%E5%AD%B8")),
                         initialOptions: options,
                         onWebViewCreated: (controller) async {
                           webViewController = controller;
-
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          String? id =
-                              prefs.getString('id')! + '@ms.niu.edu.tw';
-                          String? pwd = prefs.getString('pwd');
-
-                          var postData = Uint8List.fromList(utf8.encode(
-                              "email=$id&password=$pwd&current_language=zh-TW"));
-                          controller.postUrl(
-                              url: Uri.parse(
-                                  "https://irs.zuvio.com.tw/irs/submitLogin"),
-                              postData: postData);
                         },
                         onLoadStart: (controller, url) async {
                           setState(() {
@@ -100,7 +103,7 @@ class _ZuvioState extends State<Zuvio> {
                           });
                           if (url
                               .toString()
-                              .contains('irs.zuvio.com.tw/student5')) {
+                              .contains('https://www.taiwanbus.tw/eBUSPage/')) {
                             setState(() {
                               loadState = false;
                             });
@@ -126,49 +129,6 @@ class _ZuvioState extends State<Zuvio> {
                             "about"
                           ].contains(uri.scheme)) {
                             return NavigationActionPolicy.CANCEL;
-                          } else if (loginState == true &&
-                              !uri
-                                  .toString()
-                                  .contains('irs.zuvio.com.tw/student5')) {
-                            Alert(
-                              context: context,
-                              type: AlertType.warning,
-                              title: "是否開啟外部連結?",
-                              desc: uri.toString(),
-                              buttons: [
-                                DialogButton(
-                                  child: Text(
-                                    "是",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18),
-                                  ),
-                                  onPressed: () async {
-                                    Navigator.pop(context);
-                                    if (await canLaunch(url)) {
-                                      await launch(
-                                        url,
-                                      );
-                                    } else {
-                                      Navigator.pop(context);
-                                      showToast('無法開啟');
-                                    }
-                                  },
-                                  color: Colors.blueAccent,
-                                ),
-                                DialogButton(
-                                  child: Text(
-                                    "否",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  color: Colors.pinkAccent,
-                                )
-                              ],
-                            ).show();
-                            return NavigationActionPolicy.CANCEL;
                           }
 
                           return NavigationActionPolicy.ALLOW;
@@ -178,33 +138,13 @@ class _ZuvioState extends State<Zuvio> {
                           setState(() {
                             this.url = url.toString();
                           });
-                          if (url.toString() ==
-                              'https://irs.zuvio.com.tw/irs/login') {
-                            Navigator.pop(context);
-                            showToast('網路異常');
-                          }
                           if (url
                               .toString()
-                              .contains('irs.zuvio.com.tw/student5')) {
-                            loginState = true;
-                            await controller.evaluateJavascript(
-                                source:
-                                    'document.querySelector("#content > div.irs-main-page > div.i-m-p-wisdomhall-area").style = \'display: none;\'');
-                            await controller.evaluateJavascript(
-                                source:
-                                    'document.querySelector("#content > div.private-message-list > div > div.p-m-download-app-box").style = \'display: none;\'');
-                            for (int i = 1; i < 7; i++) {
-                              var raw = await controller.evaluateJavascript(
-                                  source:
-                                      'document.querySelector("#footer > div > div:nth-child($i) > div.g-f-b-b-title").innerText');
-                              if (raw.toString().contains('話題') ||
-                                  raw.toString().contains('ZOOK') ||
-                                  raw.toString().contains('配對')) {
-                                await controller.evaluateJavascript(
-                                    source:
-                                        'document.querySelector("#footer > div > div:nth-child($i)").style.display=\'none\'');
-                              }
-                            }
+                              .contains('www.taiwanbus.tw/eBUSPage/')) {
+                            cleanJs.forEach((element) async {
+                              await controller.evaluateJavascript(
+                                  source: element);
+                            });
                             setState(() {
                               loadState = true;
                             });
@@ -241,16 +181,7 @@ class _ZuvioState extends State<Zuvio> {
         ),
         onWillPop: () async {
           if (progress == 1.0) {
-            if ((await webViewController!.evaluateJavascript(
-                        source:
-                            'document.querySelector("#header > div > div > div.back").align'))
-                    .toString() !=
-                'null') {
-              await webViewController!.evaluateJavascript(
-                  source:
-                      'document.querySelector("#header > div > div > div.back").click()');
-            } else if (url.toString() !=
-                'https://irs.zuvio.com.tw/student5/irs/index') {
+            if (await webViewController!.canGoBack()) {
               webViewController!.goBack();
             } else {
               Navigator.pop(context);

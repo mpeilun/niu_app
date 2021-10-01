@@ -22,6 +22,7 @@ import 'package:niu_app/menu/drawer/test_announcement.dart';
 import 'package:provider/src/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 
+import '../bus.dart';
 import '../course＿select.dart';
 import '../zuvio.dart';
 
@@ -169,7 +170,13 @@ class _StartMenu extends State<StartMenu> {
                           CustomIcons(
                             title: '公車動態',
                             icon: MenuIcon.icon_bus,
-                            press: () {},
+                            press: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Bus(),
+                                      maintainState: false));
+                            },
                           ),
                           CustomIcons(
                             title: '更改帳號',
