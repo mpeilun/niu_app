@@ -111,7 +111,9 @@ class _MyDrawer extends State<MyDrawer> {
                         CookieManager().deleteAllCookies();
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
-                        prefs.clear(); //清空键值对
+                        prefs.clear();
+                        Navigator.of(context).pop();
+                        context.read<OnItemClick>().onclick(0);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
