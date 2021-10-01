@@ -109,18 +109,6 @@ class _CourseSelectState extends State<CourseSelect> {
             this.url = url.toString();
           });
         },
-        onJsAlert: (InAppWebViewController controller,
-            JsAlertRequest jsAlertRequest) async {
-          print(jsAlertRequest.message.toString());
-          if (jsAlertRequest.message.toString().contains('使用時間逾時')) {
-            await headlessWebView?.webViewController.loadUrl(
-                urlRequest: URLRequest(
-                    url:
-                        Uri.parse("https://acade.niu.edu.tw/NIU/logout.aspx")));
-          }
-          return JsAlertResponse(
-              handledByClient: true, action: JsAlertResponseAction.CONFIRM);
-        },
         onLoadResource:
             (InAppWebViewController controller, LoadedResource resource) {
           //print(resource.toString());
@@ -252,6 +240,19 @@ class _CourseSelectState extends State<CourseSelect> {
                               'Uncaught TypeError: Cannot read property \'focus\' of null')) {
                             showToast('無法使用此功能');
                           }
+                        },
+                        onJsAlert: (InAppWebViewController controller,
+                            JsAlertRequest jsAlertRequest) async {
+                          print(jsAlertRequest.message.toString());
+                          if (jsAlertRequest.message
+                              .toString()
+                              .contains('選課期間')) {
+                            Navigator.pop(context);
+                            showToast('目前非選課時間！');
+                          }
+                          return JsAlertResponse(
+                              handledByClient: true,
+                              action: JsAlertResponseAction.CONFIRM);
                         },
                         onDownloadStart: (controller, url) async {
                           download(url, context);

@@ -40,6 +40,7 @@ class _StartMenu extends State<StartMenu> {
   bool loginState = false;
   bool reLogin = false;
   bool isNotification = true;
+  bool countState = false;
 
   @override
   void initState() {
@@ -273,7 +274,7 @@ class _StartMenu extends State<StartMenu> {
     }
   }
 
-  //TODO:卡登問題看跳轉解決？
+  //TODO:檢測進度太久沒反應重新來
   _checkAccount() async {
     prefs = await SharedPreferences.getInstance();
     if (prefs.get('id') == null || prefs.get('pwd') == null) {
@@ -307,6 +308,31 @@ class _StartMenu extends State<StartMenu> {
           setState(() {
             this.url = url.toString();
           });
+          if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
+            for (int i = 1; i <= 120; i++) {
+              await Future.delayed(Duration(milliseconds: 1000), () {});
+              print('登入檢測 $i');
+              if (countState == true) {
+                print('------跳過卡登------');
+                loginState = true;
+                break;
+              } else if (loginState == true) {
+                break;
+              } else if (i % 10 == 0 && loginState == false) {
+                print("Logout and Clean cache");
+                headlessWebView?.webViewController.clearCache();
+                CookieManager().deleteAllCookies();
+                await headlessWebView?.webViewController.loadUrl(
+                    urlRequest: URLRequest(
+                        url: Uri.parse(
+                            "https://acade.niu.edu.tw/NIU/Default.aspx")));
+                countState = true;
+                break;
+              } else if (i == 120) {
+                break;
+              }
+            }
+          }
         },
         onLoadStop: (controller, url) async {
           print("onLoadStop $url");
@@ -323,11 +349,19 @@ class _StartMenu extends State<StartMenu> {
             }
           }
         },
+        onLoadResource:
+            (InAppWebViewController controller, LoadedResource resource) {
+          print('onLoadResource' + resource.toString());
+        },
         onUpdateVisitedHistory: (controller, url, androidIsReload) {
           // print("onUpdateVisitedHistory $url");
           setState(() {
             this.url = url.toString();
           });
+        },
+        onProgressChanged: (controller, progress) {
+          print('onProgressChanged:' + progress.toString());
+          //print('進度 $webProgress');
         },
         onJsAlert: (InAppWebViewController controller,
             JsAlertRequest jsAlertRequest) async {
