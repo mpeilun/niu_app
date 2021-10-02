@@ -40,6 +40,8 @@ class _EventPageState extends State<EventPage> {
       String name = await headlessWebView?.webViewController.evaluateJavascript(
           source:
               'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText');
+      if (name[name.length-1] =='\n')
+        name.substring(0, name.length-2);
       String department = await headlessWebView?.webViewController
           .evaluateJavascript(
               source:

@@ -83,6 +83,10 @@ class _EventSignedPageState extends State<EventSignedPage> {
       String signTime = await headlessWebView?.webViewController.evaluateJavascript(
           source:
               'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(6)").innerText');
+
+      String js = await headlessWebView?.webViewController.evaluateJavascript(
+          source:
+              'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(1) > a").href');
       temp.add(EventSigned(
         name: name,
         eventTimeStart: eventTimeStart,
@@ -90,6 +94,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
         status: status,
         signTime: signTime,
         signedStatus: signedStatus,
+        js: js,
       ));
     }
     await Future.delayed(Duration(milliseconds: 500));

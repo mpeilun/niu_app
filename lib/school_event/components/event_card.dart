@@ -53,20 +53,6 @@ class CustomEventCard extends StatefulWidget {
 class _CustomEventCardState extends State<CustomEventCard> {
   ScrollController _scrollController = ScrollController();
 
-  Future<void> showListDialog(String js) async {
-    // String? index = await showDialog<String>(
-    //   context: context,
-    //   builder: (BuildContext context) => EventInfoDialog(),
-    // );
-    // if (index != null) {
-    //   print("點了：$index");
-    // }
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => EventInfoDialog(eventJS: js,),
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -95,8 +81,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                   flex: 3,
                   child: Container(
                     child: Text(
-                      widget.data[index].name
-                          .substring(0, widget.data[index].name.length - 1),
+                      widget.data[index].name,
                       style: TextStyle(
                           fontSize: 16.0,
                           color: Colors.black,
@@ -223,7 +208,10 @@ class _CustomEventCardState extends State<CustomEventCard> {
                           ? ElevatedButton(
                               onPressed: () {
                                 print(widget.data[index].signUpJS);
-                                showListDialog(widget.data[index].signUpJS);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => EventInfoDialog(eventJS: widget.data[index].signUpJS),
+                                );
                               },
                               child: Text('我要報名'),
                               style: ButtonStyle(
