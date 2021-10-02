@@ -70,7 +70,8 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                 InAppWebView(
                   key: webViewKey,
                   initialUrlRequest: URLRequest(
-                      url: Uri.parse("https://bestvpn.org/html5demos/geo/")),
+                      url: Uri.parse(
+                          "https://acade.niu.edu.tw/NIU/MainFrame.aspx")),
                   initialOptions: options,
                   pullToRefreshController: pullToRefreshController,
                   onWebViewCreated: (controller) {

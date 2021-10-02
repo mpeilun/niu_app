@@ -246,7 +246,10 @@ class _ZuvioState extends State<Zuvio> {
                       'document.querySelector("#header > div > div > div.back").click()');
             } else if (url.toString() !=
                 'https://irs.zuvio.com.tw/student5/irs/index') {
-              webViewController!.goBack();
+              await webViewController!.loadUrl(
+                  urlRequest: URLRequest(
+                      url: Uri.parse(
+                          "https://irs.zuvio.com.tw/student5/irs/index")));
             } else {
               Navigator.pop(context);
             }

@@ -82,12 +82,16 @@ class _CourseSelectState extends State<CourseSelect> {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             String? id = prefs.getString('id');
             String? pwd = prefs.getString('pwd');
-            await headlessWebView?.webViewController.evaluateJavascript(
-                source:
-                    'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
-            await headlessWebView?.webViewController.evaluateJavascript(
-                source: 'document.querySelector("#M_PW").value=\'$pwd\';');
+            Future.delayed(Duration(milliseconds: 100), () async {
+              print('keying');
+              await headlessWebView?.webViewController.evaluateJavascript(
+                  source:
+                      'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
+              await headlessWebView?.webViewController.evaluateJavascript(
+                  source: 'document.querySelector("#M_PW").value=\'$pwd\';');
+            });
             Future.delayed(Duration(milliseconds: 1000), () async {
+              print('clickLogin');
               await headlessWebView?.webViewController.evaluateJavascript(
                   source: 'document.querySelector("#LGOIN_BTN").click();');
             });
@@ -112,6 +116,18 @@ class _CourseSelectState extends State<CourseSelect> {
         onLoadResource:
             (InAppWebViewController controller, LoadedResource resource) {
           //print(resource.toString());
+        },
+        onJsAlert: (InAppWebViewController controller,
+            JsAlertRequest jsAlertRequest) async {
+          print(jsAlertRequest.message.toString());
+          if (jsAlertRequest.message.toString().contains('使用時間逾時')) {
+            await headlessWebView?.webViewController.loadUrl(
+                urlRequest: URLRequest(
+                    url: Uri.parse(
+                        "https://acade.niu.edu.tw/NIU/Default.aspx")));
+          }
+          return JsAlertResponse(
+              handledByClient: true, action: JsAlertResponseAction.CONFIRM);
         });
 
     headlessWebView?.run();

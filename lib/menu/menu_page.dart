@@ -214,8 +214,8 @@ class _StartMenu extends State<StartMenu> {
           );
         },
       ),
-      TestAnnouncementPage(),
-      // AnnouncementPage(),
+      // TestAnnouncementPage(),
+      AnnouncementPage(),
       SettingPage(),
       AboutPage(),
       ReportPage()
@@ -309,7 +309,8 @@ class _StartMenu extends State<StartMenu> {
             this.url = url.toString();
           });
           if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx' &&
-              countState != true) {
+              countState != true &&
+              loginState == false) {
             for (int i = 1; i <= 120; i++) {
               await Future.delayed(Duration(milliseconds: 1000), () {});
               print('登入檢測 $i');
