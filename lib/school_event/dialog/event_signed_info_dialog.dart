@@ -72,11 +72,10 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                 source:
                     'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child($i) > td:nth-child(2)").innerText')
           ]);
-
-          setState(() {
-            dataLoaded = true;
-          });
         }
+        setState(() {
+          dataLoaded = true;
+        });
         break;
       } else if (i == 30 && loadState == null) {
         print('網路異常，連線超時！');
