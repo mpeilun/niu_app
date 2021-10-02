@@ -139,7 +139,6 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
         await webViewController!.evaluateJavascript(
             source:
                 'document.querySelector("#ctl00_MainContentPlaceholder_LoginButton").click()');
-        
 
         break;
       } else if (i == 5 && userTypeLoadState == "") {
@@ -150,6 +149,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
       }
     }
   }
+
 //登入完檢查是否跳轉至填寫資料處
   void checkPage() async {
     for (int i = 1; i <= 30; i++) {
@@ -163,8 +163,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
 
       if (loginLoadState == '活動名稱') {
         cleanJS.forEach((element) async {
-          await webViewController!.evaluateJavascript(
-              source: element);
+          await webViewController!.evaluateJavascript(source: element);
         });
         webViewController!.zoomBy(zoomFactor: 3.0);
         print('載入完成');
@@ -199,18 +198,37 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
         Row(
           children: <Widget>[
             dataLoaded
-                ? signUpClicked
-                    ? SizedBox()
-                    : TextButton(
-                        onPressed: () {
+                ? Row(children: [
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        if (signUpClicked) {
+                          webViewController!.evaluateJavascript(
+                              source:
+                                  'document.querySelector("#ctl00_MainContentPlaceholder_btnStd").click()');
+                        } else {
                           setState(() {
                             signUpClicked = true;
                           });
                           _login();
-                        },
-                        child: Text('報名'),
-                        style: ButtonStyle(),
-                      )
+                        }
+                      },
+                      child: Text(
+                        signUpClicked ? '送出' : '報名',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ])
                 : SizedBox(),
             Expanded(child: SizedBox()),
             IconButton(
@@ -230,7 +248,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                 ),
               ),
               Visibility(
-                visible: dataLoaded&&!signUpClicked,
+                visible: dataLoaded && !signUpClicked,
                 child: data.isNotEmpty
                     ? ListView.separated(
                         itemCount: data.length,
@@ -239,30 +257,26 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                         itemBuilder: (BuildContext context, int index) =>
                             Column(
                               children: [
-                                ExpansionTile(
-                                  key: PageStorageKey(
-                                      'event_info' + index.toString()),
+                                ListTile(
                                   title: Text(
+                                    data[index][1],
+                                    textAlign: TextAlign.end,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  leading: Text(
                                     data[index][0],
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(20.0),
-                                      child: Text(
-                                        data[index][1],
-                                      ),
-                                    ),
-                                  ],
-                                )
+                                ),
                               ],
                             ))
                     : SizedBox(),
               ),
               Visibility(
                 maintainState: true,
-                visible: dataLoaded&&signUpClicked,
+                visible: dataLoaded && signUpClicked,
                 child: InAppWebView(
                   key: eventInfo,
                   initialOptions: options,
@@ -285,7 +299,8 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                         resources: resources,
                         action: PermissionRequestResponseAction.GRANT);
                   },
-                  shouldOverrideUrlLoading: (controller, navigationAction) async {
+                  shouldOverrideUrlLoading:
+                      (controller, navigationAction) async {
                     var uri = navigationAction.request.url!;
 
                     if (![
@@ -338,7 +353,8 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                     print(jsAlertRequest.message!);
                     print("Logout and Clean cache");
                     return JsAlertResponse(
-                        handledByClient: true, action: JsAlertResponseAction.CONFIRM);
+                        handledByClient: true,
+                        action: JsAlertResponseAction.CONFIRM);
                   },
                 ),
               ),
