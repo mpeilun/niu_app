@@ -126,6 +126,9 @@ class _ZuvioState extends State<Zuvio> {
                             "about"
                           ].contains(uri.scheme)) {
                             return NavigationActionPolicy.CANCEL;
+                          } else if (uri.toString().contains('s3.hicloud')) {
+                            download(uri, context);
+                            return NavigationActionPolicy.CANCEL;
                           } else if (loginState == true &&
                               !uri
                                   .toString()
