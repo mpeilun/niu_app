@@ -65,18 +65,19 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
             i++) {
           print(i);
           data.add([
-            await webViewController!.evaluateJavascript(
-                source:
-                    'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child($i) > td:nth-child(1)").innerText'),
-            await webViewController!.evaluateJavascript(
-                source:
-                    'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child($i) > td:nth-child(2)").innerText')
+            (await webViewController!.evaluateJavascript(
+                    source:
+                        'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child($i) > td:nth-child(1)").innerText'))
+                as String,
+            (await webViewController!.evaluateJavascript(
+                    source:
+                        'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child($i) > td:nth-child(2)").innerText'))
+                as String
           ]);
-
-          setState(() {
-            dataLoaded = true;
-          });
         }
+        setState(() {
+          dataLoaded = true;
+        });
         break;
       } else if (i == 30 && loadState == null) {
         print('網路異常，連線超時！');
@@ -208,8 +209,8 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                 ? buttonClicked
                     ? SizedBox()
                     : Row(
-                      children: [
-                        TextButton(
+                        children: [
+                          TextButton(
                             onPressed: () {
                               setState(() {
                                 buttonClicked = true;
@@ -219,18 +220,18 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                             child: Text('修改'),
                             style: ButtonStyle(),
                           ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              buttonClicked = true;
-                            });
-                            _login();
-                          },
-                          child: Text('取消'),
-                          style: ButtonStyle(),
-                        ),
-                      ],
-                    )
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                buttonClicked = true;
+                              });
+                              _login();
+                            },
+                            child: Text('取消'),
+                            style: ButtonStyle(),
+                          ),
+                        ],
+                      )
                 : SizedBox(),
             Expanded(child: SizedBox()),
             IconButton(
@@ -259,49 +260,48 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                         itemBuilder: (BuildContext context, int index) =>
                             (index == 3)
                                 ? ExpansionTile(
-                                  key: PageStorageKey(
-                                      'event_signed' + index.toString()),
-                                  title: Text(
-                                    '　其他資料',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  children: [
-                                    ListView.separated(
-                                        key: PageStorageKey(
-                                            'event_signed_listview_other'),
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.vertical,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: data.length - 3,
-                                        separatorBuilder:
-                                            (BuildContext context,
-                                                    int index) =>
-                                                Divider(),
-                                        itemBuilder: (BuildContext context,
-                                                int index) =>
-                                            Column(
-                                              children: [
-                                                ListTile(
-                                                  title: Text(
-                                                    data[index][1],
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight
-                                                                .bold),
-                                                  ),
-                                                  leading: Text(
-                                                    data[index][0],
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight
-                                                                .bold),
-                                                  ),
-                                                )
-                                              ],
-                                            ))
-                                  ],
-                                )
+                                    key: PageStorageKey(
+                                        'event_signed' + index.toString()),
+                                    title: Text(
+                                      '　其他資料',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    children: [
+                                      ListView.separated(
+                                          key: PageStorageKey(
+                                              'event_signed_listview_other'),
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.vertical,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemCount: data.length - 3,
+                                          separatorBuilder:
+                                              (BuildContext context,
+                                                      int index) =>
+                                                  Divider(),
+                                          itemBuilder: (BuildContext context,
+                                                  int index) =>
+                                              Column(
+                                                children: [
+                                                  ListTile(
+                                                    title: Text(
+                                                      data[index][1],
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    leading: Text(
+                                                      data[index][0],
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  )
+                                                ],
+                                              ))
+                                    ],
+                                  )
                                 : Column(
                                     children: [
                                       ListTile(
