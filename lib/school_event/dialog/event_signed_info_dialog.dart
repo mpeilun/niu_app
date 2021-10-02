@@ -285,6 +285,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                                                 ListTile(
                                                   title: Text(
                                                     data[index][1],
+                                                    textAlign: TextAlign.end,
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight
@@ -307,6 +308,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                                       ListTile(
                                         title: Text(
                                           data[index][1],
+                                          textAlign: TextAlign.end,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
