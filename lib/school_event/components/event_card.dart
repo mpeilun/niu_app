@@ -9,18 +9,18 @@ import 'package:niu_app/school_event/school_event.dart';
 import 'custom_list_info.dart';
 
 class Event {
-  final String name;
-  final String department;
-  final String signTimeStart;
-  final String signTimeEnd;
-  final String eventTimeStart;
-  final String eventTimeEnd;
-  final String status;
-  final String positive;
-  final String positiveLimit;
-  final String wait;
-  final String waitLimit;
-  final String signUpJS;
+  final String? name;
+  final String? department;
+  final String? signTimeStart;
+  final String? signTimeEnd;
+  final String? eventTimeStart;
+  final String? eventTimeEnd;
+  final String? status;
+  final String? positive;
+  final String? positiveLimit;
+  final String? wait;
+  final String? waitLimit;
+  final String? signUpJS;
 
   Event({
     required this.name,
@@ -81,7 +81,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                   flex: 3,
                   child: Container(
                     child: Text(
-                      widget.data[index].name,
+                      widget.data[index].name!,
                       style: TextStyle(
                           fontSize: 16.0,
                           color: Colors.black,
@@ -96,7 +96,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                   flex: 1,
                   child: Container(
                     child: Text(
-                      widget.data[index].department,
+                      widget.data[index].department!,
                       style: TextStyle(
                         fontSize: 14.0,
                         color: Colors.grey[600],
@@ -143,7 +143,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                       ListInfo(
                         icon: Icons.info,
                         title: '活動狀態',
-                        widget: Text(widget.data[index].status,
+                        widget: Text(widget.data[index].status!,
                             style: TextStyle(fontSize: 14)),
                       ),
                       ListInfo(
@@ -152,11 +152,11 @@ class _CustomEventCardState extends State<CustomEventCard> {
                         widget: Column(
                           children: [
                             Text(
-                              widget.data[index].eventTimeStart + '起',
+                              widget.data[index].eventTimeStart! + '起',
                               style: TextStyle(fontSize: 14),
                             ),
                             Text(
-                              widget.data[index].eventTimeEnd + '止',
+                              widget.data[index].eventTimeEnd! + '止',
                               style: TextStyle(fontSize: 14),
                             ),
                           ],
@@ -168,11 +168,11 @@ class _CustomEventCardState extends State<CustomEventCard> {
                         widget: Column(
                           children: [
                             Text(
-                              widget.data[index].signTimeStart + '起',
+                              widget.data[index].signTimeStart! + '起',
                               style: TextStyle(fontSize: 14),
                             ),
                             Text(
-                              widget.data[index].signTimeEnd + '止',
+                              widget.data[index].signTimeEnd! + '止',
                               style: TextStyle(fontSize: 14),
                             ),
                           ],
@@ -186,17 +186,17 @@ class _CustomEventCardState extends State<CustomEventCard> {
                           children: [
                             Text(
                               '正取: ' +
-                                  widget.data[index].positive +
+                                  widget.data[index].positive! +
                                   '/' +
-                                  widget.data[index].positiveLimit +
+                                  widget.data[index].positiveLimit! +
                                   '人',
                               style: TextStyle(fontSize: 14),
                             ),
                             Text(
                               '備取: ' +
-                                  widget.data[index].wait +
+                                  widget.data[index].wait! +
                                   '/' +
-                                  widget.data[index].waitLimit +
+                                  widget.data[index].waitLimit! +
                                   '人',
                               style: TextStyle(fontSize: 14),
                             ),
@@ -210,7 +210,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                 print(widget.data[index].signUpJS);
                                 showDialog(
                                   context: context,
-                                  builder: (BuildContext context) => EventInfoDialog(eventJS: widget.data[index].signUpJS),
+                                  builder: (BuildContext context) => EventInfoDialog(eventJS: widget.data[index].signUpJS!),
                                 );
                               },
                               child: Text('我要報名'),
@@ -227,7 +227,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                               onPressed: () {
                                 final scaffold = ScaffoldMessenger.of(context);
                                 final snackBar = SnackBar(
-                                  content: Text(widget.data[index].status + ' 無法報名'),
+                                  content: Text(widget.data[index].status! + ' 無法報名'),
                                   action: SnackBarAction(
                                     label: '確定',
                                     onPressed: () {
