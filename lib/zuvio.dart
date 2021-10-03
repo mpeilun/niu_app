@@ -40,8 +40,9 @@ class _ZuvioState extends State<Zuvio> {
   late String url;
   late bool loadState = false;
   bool loginState = false;
-
+  bool isExtended = true;
   double progress = 0;
+  int scrollY = 0;
 
   @override
   void initState() {
@@ -76,165 +77,193 @@ class _ZuvioState extends State<Zuvio> {
                       visible: loadState,
                       maintainState: true,
                       child: InAppWebView(
-                        key: zuvio,
-                        initialOptions: options,
-                        onWebViewCreated: (controller) async {
-                          webViewController = controller;
+                          key: zuvio,
+                          initialOptions: options,
+                          onWebViewCreated: (controller) async {
+                            webViewController = controller;
 
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          String? id =
-                              prefs.getString('id')! + '@ms.niu.edu.tw';
-                          String? pwd = prefs.getString('pwd');
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            String? id =
+                                prefs.getString('id')! + '@ms.niu.edu.tw';
+                            String? pwd = prefs.getString('pwd');
 
-                          var postData = Uint8List.fromList(utf8.encode(
-                              "email=$id&password=$pwd&current_language=zh-TW"));
-                          controller.postUrl(
-                              url: Uri.parse(
-                                  "https://irs.zuvio.com.tw/irs/submitLogin"),
-                              postData: postData);
-                        },
-                        onLoadStart: (controller, url) async {
-                          setState(() {
-                            this.url = url.toString();
-                          });
-                          if (url
-                              .toString()
-                              .contains('irs.zuvio.com.tw/student5')) {
+                            var postData = Uint8List.fromList(utf8.encode(
+                                "email=$id&password=$pwd&current_language=zh-TW"));
+                            controller.postUrl(
+                                url: Uri.parse(
+                                    "https://irs.zuvio.com.tw/irs/submitLogin"),
+                                postData: postData);
+                          },
+                          onLoadStart: (controller, url) async {
                             setState(() {
-                              loadState = false;
+                              this.url = url.toString();
                             });
-                          }
-                        },
-                        androidOnPermissionRequest:
-                            (controller, origin, resources) async {
-                          return PermissionRequestResponse(
-                              resources: resources,
-                              action: PermissionRequestResponseAction.GRANT);
-                        },
-                        shouldOverrideUrlLoading:
-                            (controller, navigationAction) async {
-                          var uri = navigationAction.request.url!;
-
-                          if (![
-                            "http",
-                            "https",
-                            "file",
-                            "chrome",
-                            "data",
-                            "javascript",
-                            "about"
-                          ].contains(uri.scheme)) {
-                            return NavigationActionPolicy.CANCEL;
-                          } else if (uri.toString().contains('s3.hicloud')) {
-                            download(uri, context);
-                            return NavigationActionPolicy.CANCEL;
-                          } else if (loginState == true &&
-                              !uri
-                                  .toString()
-                                  .contains('irs.zuvio.com.tw/student5')) {
-                            Alert(
-                              context: context,
-                              type: AlertType.warning,
-                              title: "是否開啟外部連結?",
-                              desc: uri.toString(),
-                              buttons: [
-                                DialogButton(
-                                  child: Text(
-                                    "是",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18),
-                                  ),
-                                  onPressed: () async {
-                                    Navigator.pop(context);
-                                    if (await canLaunch(url)) {
-                                      await launch(
-                                        url,
-                                      );
-                                    } else {
-                                      Navigator.pop(context);
-                                      showToast('無法開啟');
-                                    }
-                                  },
-                                  color: Colors.blueAccent,
-                                ),
-                                DialogButton(
-                                  child: Text(
-                                    "否",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  color: Colors.pinkAccent,
-                                )
-                              ],
-                            ).show();
-                            return NavigationActionPolicy.CANCEL;
-                          }
-
-                          return NavigationActionPolicy.ALLOW;
-                        },
-                        onLoadStop: (controller, url) async {
-                          print("onLoadStop $url");
-                          setState(() {
-                            this.url = url.toString();
-                          });
-                          if (url
-                              .toString()
-                              .contains('irs.zuvio.com.tw/student5')) {
-                            loginState = true;
-                            await controller.evaluateJavascript(
-                                source:
-                                    'document.querySelector("#content > div.irs-main-page > div.i-m-p-wisdomhall-area").style = \'display: none;\'');
-                            await controller.evaluateJavascript(
-                                source:
-                                    'document.querySelector("#content > div.private-message-list > div > div.p-m-download-app-box").style = \'display: none;\'');
-                            for (int i = 1; i < 7; i++) {
-                              var raw = await controller.evaluateJavascript(
-                                  source:
-                                      'document.querySelector("#footer > div > div:nth-child($i) > div.g-f-b-b-title").innerText');
-                              if (raw.toString().contains('話題') ||
-                                  raw.toString().contains('ZOOK') ||
-                                  raw.toString().contains('配對')) {
-                                await controller.evaluateJavascript(
-                                    source:
-                                        'document.querySelector("#footer > div > div:nth-child($i)").style.display=\'none\'');
-                              }
+                            if (url
+                                .toString()
+                                .contains('irs.zuvio.com.tw/student5')) {
+                              setState(() {
+                                loadState = false;
+                              });
                             }
+                          },
+                          androidOnPermissionRequest:
+                              (controller, origin, resources) async {
+                            return PermissionRequestResponse(
+                                resources: resources,
+                                action: PermissionRequestResponseAction.GRANT);
+                          },
+                          shouldOverrideUrlLoading:
+                              (controller, navigationAction) async {
+                            var uri = navigationAction.request.url!;
+
+                            if (![
+                              "http",
+                              "https",
+                              "file",
+                              "chrome",
+                              "data",
+                              "javascript",
+                              "about"
+                            ].contains(uri.scheme)) {
+                              return NavigationActionPolicy.CANCEL;
+                            } else if (uri.toString().contains('s3.hicloud')) {
+                              download(uri, context);
+                              return NavigationActionPolicy.CANCEL;
+                            } else if (loginState == true &&
+                                !uri
+                                    .toString()
+                                    .contains('irs.zuvio.com.tw/student5')) {
+                              Alert(
+                                context: context,
+                                type: AlertType.warning,
+                                title: "是否開啟外部連結?",
+                                desc: uri.toString(),
+                                buttons: [
+                                  DialogButton(
+                                    child: Text(
+                                      "是",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 18),
+                                    ),
+                                    onPressed: () async {
+                                      Navigator.pop(context);
+                                      if (await canLaunch(url)) {
+                                        await launch(
+                                          url,
+                                        );
+                                      } else {
+                                        Navigator.pop(context);
+                                        showToast('無法開啟');
+                                      }
+                                    },
+                                    color: Colors.blueAccent,
+                                  ),
+                                  DialogButton(
+                                    child: Text(
+                                      "否",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 18),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    color: Colors.pinkAccent,
+                                  )
+                                ],
+                              ).show();
+                              return NavigationActionPolicy.CANCEL;
+                            }
+
+                            return NavigationActionPolicy.ALLOW;
+                          },
+                          onLoadStop: (controller, url) async {
+                            print("onLoadStop $url");
                             setState(() {
-                              loadState = true;
+                              this.url = url.toString();
                             });
-                          }
-                        },
-                        onLoadResource: (InAppWebViewController controller,
-                            LoadedResource resource) {},
-                        onLoadError: (controller, url, code, message) {},
-                        onProgressChanged: (controller, progress) {
-                          setState(() {
-                            this.progress = progress / 100;
-                          });
-                        },
-                        onUpdateVisitedHistory:
-                            (controller, url, androidIsReload) {
-                          setState(() {
-                            this.url = url.toString();
-                          });
-                          print('onUpdateVisitedHistory:' + url.toString());
-                        },
-                        onConsoleMessage: (controller, consoleMessage) {
-                          print(consoleMessage);
-                        },
-                        onDownloadStart: (controller, url) async {
-                          download(url, context);
-                        },
-                      ),
+                            if (url
+                                .toString()
+                                .contains('irs.zuvio.com.tw/student5')) {
+                              loginState = true;
+                              await controller.evaluateJavascript(
+                                  source:
+                                      'document.querySelector("#content > div.irs-main-page > div.i-m-p-wisdomhall-area").style = \'display: none;\'');
+                              await controller.evaluateJavascript(
+                                  source:
+                                      'document.querySelector("#content > div.private-message-list > div > div.p-m-download-app-box").style = \'display: none;\'');
+                              for (int i = 1; i < 7; i++) {
+                                var raw = await controller.evaluateJavascript(
+                                    source:
+                                        'document.querySelector("#footer > div > div:nth-child($i) > div.g-f-b-b-title").innerText');
+                                if (raw.toString().contains('話題') ||
+                                    raw.toString().contains('ZOOK') ||
+                                    raw.toString().contains('配對')) {
+                                  await controller.evaluateJavascript(
+                                      source:
+                                          'document.querySelector("#footer > div > div:nth-child($i)").style.display=\'none\'');
+                                }
+                              }
+                              setState(() {
+                                loadState = true;
+                              });
+                            }
+                          },
+                          onLoadResource: (InAppWebViewController controller,
+                              LoadedResource resource) {},
+                          onLoadError: (controller, url, code, message) {},
+                          onProgressChanged: (controller, progress) {
+                            setState(() {
+                              this.progress = progress / 100;
+                            });
+                          },
+                          onUpdateVisitedHistory:
+                              (controller, url, androidIsReload) {
+                            setState(() {
+                              this.url = url.toString();
+                            });
+                            print('onUpdateVisitedHistory:' + url.toString());
+                          },
+                          onConsoleMessage: (controller, consoleMessage) {
+                            print(consoleMessage);
+                          },
+                          onDownloadStart: (controller, url) async {
+                            download(url, context);
+                          },
+                          onScrollChanged: (InAppWebViewController controller,
+                              int x, int y) {
+                            print('onScrollChanged: x:$x y:$y oldY:$scrollY');
+                            if ((y - scrollY) <= 0 && scrollY > 0) {
+                              setState(() {
+                                isExtended = false;
+                              });
+                            } else {
+                              setState(() {
+                                isExtended = true;
+                              });
+                            }
+                            if ((scrollY - y).abs() > 1) {
+                              scrollY = y;
+                            }
+                          }),
                     )
                   ],
                 ),
               ),
             ])),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            floatingActionButton: Visibility(
+              visible: loadState,
+              child: Visibility(
+                visible: isExtended,
+                child: FloatingActionButton(
+                  child: Icon(Icons.home),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ),
           ),
         ),
         onWillPop: () async {
