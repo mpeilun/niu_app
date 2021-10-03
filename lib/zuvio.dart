@@ -58,6 +58,7 @@ class _ZuvioState extends State<Zuvio> {
     super.dispose();
   }
 
+//TODO:GPS點名功能
   @override
   Widget build(BuildContext context) {
     return ConditionalWillPopScope(

@@ -275,7 +275,7 @@ class _StartMenu extends State<StartMenu> {
     }
   }
 
-  //TODO:檢測進度太久沒反應重新來
+  //TODO:卡登問題
   _checkAccount() async {
     prefs = await SharedPreferences.getInstance();
     if (prefs.get('id') == null || prefs.get('pwd') == null) {
