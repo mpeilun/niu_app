@@ -118,14 +118,16 @@ class _ZuvioState extends State<Zuvio> {
                             var uri = navigationAction.request.url!;
 
                             if (![
-                              "http",
-                              "https",
-                              "file",
-                              "chrome",
-                              "data",
-                              "javascript",
-                              "about"
-                            ].contains(uri.scheme)) {
+                                  "http",
+                                  "https",
+                                  "file",
+                                  "chrome",
+                                  "data",
+                                  "javascript",
+                                  "about"
+                                ].contains(uri.scheme) ||
+                                uri.toString().contains('facebook.com/tr/') ||
+                                uri.toString().contains('about:blank')) {
                               return NavigationActionPolicy.CANCEL;
                             } else if (uri.toString().contains('s3.hicloud')) {
                               download(uri, context);
@@ -232,35 +234,43 @@ class _ZuvioState extends State<Zuvio> {
                           },
                           onScrollChanged: (InAppWebViewController controller,
                               int x, int y) {
-                            print('onScrollChanged: x:$x y:$y oldY:$scrollY');
-                            if ((y - scrollY) <= 0 && scrollY > 0) {
-                              setState(() {
-                                isExtended = false;
-                              });
-                            } else {
-                              setState(() {
-                                isExtended = true;
-                              });
-                            }
-                            if ((scrollY - y).abs() > 1) {
-                              scrollY = y;
-                            }
+                            // print('onScrollChanged: x:$x y:$y oldY:$scrollY');
+                            // if ((y - scrollY) <= 0 && scrollY > 0) {
+                            //   setState(() {
+                            //     isExtended = false;
+                            //   });
+                            // } else {
+                            //   setState(() {
+                            //     isExtended = true;
+                            //   });
+                            // }
+                            // if ((scrollY - y).abs() > 1) {
+                            //   scrollY = y;
+                            // }
                           }),
                     )
                   ],
                 ),
               ),
             ])),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.miniEndFloat,
             floatingActionButton: Visibility(
               visible: loadState,
-              child: Visibility(
-                visible: isExtended,
-                child: FloatingActionButton(
-                  child: Icon(Icons.home),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+              child: Padding(
+                padding: EdgeInsets.only(right: 14, bottom: 20),
+                child: Opacity(
+                  opacity: 0.5,
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    child: FloatingActionButton(
+                      child: Icon(Icons.home),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),

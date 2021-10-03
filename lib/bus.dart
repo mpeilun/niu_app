@@ -177,6 +177,27 @@ class _BusState extends State<Bus> {
                 ),
               ),
             ])),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.miniEndFloat,
+            floatingActionButton: Visibility(
+              visible: loadState,
+              child: Padding(
+                padding: EdgeInsets.only(right: 9, bottom: 50),
+                child: Opacity(
+                  opacity: 0.5,
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    child: FloatingActionButton(
+                      child: Icon(Icons.home),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
         onWillPop: () async {
