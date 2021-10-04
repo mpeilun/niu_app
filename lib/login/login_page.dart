@@ -40,7 +40,10 @@ class _LoginPageState extends State<LoginPage> {
       } else if (i == 30 && loginState == 'null') {
         loginState = '網路異常，連線超時！';
         break;
-      } else if (i == 5 && webProgress == 100) {
+      } else if (i % 10 == 0 && webProgress != 100) {
+        print("Logout and Clean cache");
+        headlessWebView?.webViewController.clearCache();
+        CookieManager().deleteAllCookies();
         await headlessWebView?.webViewController.loadUrl(
             urlRequest: URLRequest(
                 url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx")));
@@ -121,6 +124,7 @@ class _LoginPageState extends State<LoginPage> {
         },
         onProgressChanged: (controller, progress) {
           webProgress = progress;
+          print('onProgressChanged:' + progress.toString());
           //print('進度 $webProgress');
         },
         onJsAlert: (InAppWebViewController controller,

@@ -15,41 +15,60 @@ class EventInfoDialog extends StatefulWidget {
 }
 
 class _EventInfoDialogState extends State<EventInfoDialog> {
-  HeadlessInAppWebView? headlessWebView;
+  final GlobalKey eventInfo = GlobalKey();
+  InAppWebViewController? webViewController;
+  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
+      crossPlatform: InAppWebViewOptions(
+        useOnDownloadStart: true,
+        useOnLoadResource: true,
+        useShouldOverrideUrlLoading: true,
+        mediaPlaybackRequiresUserGesture: false,
+      ),
+      android: AndroidInAppWebViewOptions(
+        useHybridComposition: true,
+      ),
+      ios: IOSInAppWebViewOptions(
+        allowsInlineMediaPlayback: true,
+      ));
+  double progress = 0;
   bool dataLoaded = false;
   bool signUpClicked = false;
-  bool loginLoaded = false;
   String url = '';
   List data = [];
+  List cleanJS = [
+    'document.querySelector(\"#MainContent\").style = "border-style: none;"',
+    'document.querySelector(\"#MainMenu > ul\").style = "visibility: hidden;"',
+    'document.querySelector(\"#IMG2\").style = "visibility: hidden;"',
+    'document.querySelector(\"#master_content\").style = "visibility: hidden;"',
+    'document.querySelector(\"#PageWrapper\").style = "height:  100%; margin: 0px;"',
+  ];
 
   void getEventInfo(String js) async {
     data.clear();
     for (int i = 1; i <= 30; i++) {
-      await headlessWebView?.webViewController
-          .evaluateJavascript(source: widget.eventJS);
+      await webViewController!.evaluateJavascript(source: widget.eventJS);
       await Future.delayed(Duration(milliseconds: 1000), () {});
       print('計時器 $i');
 
-      String? loadState = await headlessWebView?.webViewController
-          .evaluateJavascript(
-              source:
-                  'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > caption").innerText');
+      String? loadState = await webViewController!.evaluateJavascript(
+          source:
+              'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > caption").innerText');
 
       if (loadState == '活動詳細內容') {
         print('載入完成');
 
         for (int i = 2;
-            await headlessWebView?.webViewController.evaluateJavascript(
+            await webViewController!.evaluateJavascript(
                     source:
                         'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(1)")') !=
                 null;
             i++) {
           print(i);
           data.add([
-            await headlessWebView?.webViewController.evaluateJavascript(
+            await webViewController!.evaluateJavascript(
                 source:
                     'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(1)").innerText'),
-            await headlessWebView?.webViewController.evaluateJavascript(
+            await webViewController!.evaluateJavascript(
                 source:
                     'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(2)").innerText')
           ]);
@@ -68,108 +87,28 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
     }
   }
 
-  void timer() async{
-    for(int i=1; i<=30; i++){
-      await Future.delayed(Duration(milliseconds: 1000), () {});
-      print('計時器 $i');
-
-      String? userTypeLoadState = await headlessWebView?.webViewController
-          .evaluateJavascript(
-          source:
-          '');
-
-      if (userTypeLoadState == '') {
-        print('載入完成');
-        await headlessWebView?.webViewController.evaluateJavascript(
-            source:
-            '');
-        break;
-      } else if (i == 30 && userTypeLoadState == null) {
-        print('網路異常，連線超時！');
-        Navigator.pop(context);
-        showToast('登入逾時');
-        break;
-      }
-    }
-  }
-
-  void _login() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? id = prefs.getString('id');
-    String? pwd = prefs.getString('pwd');
+  void selectUserType() async {
     for (int i = 1; i <= 30; i++) {
-      await headlessWebView?.webViewController.evaluateJavascript(
+      await webViewController!.evaluateJavascript(
           source:
               'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply_btnApply").click()');
       await Future.delayed(Duration(milliseconds: 1000), () {});
       print('計時器 $i');
 
-      String? userTypeClickState = await headlessWebView?.webViewController
-          .evaluateJavascript(
-              source:
-                  'document.querySelector("#ctl00_MainContentPlaceholder_rblApplySel > tbody > tr > td:nth-child(1)").innerText');
+      String? userTypeClickState = await webViewController!.evaluateJavascript(
+          source:
+              'document.querySelector("#ctl00_MainContentPlaceholder_rblApplySel > tbody > tr > td:nth-child(1)").innerText');
 
       if (userTypeClickState == '本校在校生') {
         print('載入完成');
-        await headlessWebView?.webViewController.evaluateJavascript(
+        await webViewController!.evaluateJavascript(
             source:
                 'document.querySelector("#ctl00_MainContentPlaceholder_rblApplySel_0").click()');
-        await headlessWebView?.webViewController.evaluateJavascript(
+        await webViewController!.evaluateJavascript(
             source:
-            'document.querySelector("#ctl00_MainContentPlaceholder_btnSel").click()');
+                'document.querySelector("#ctl00_MainContentPlaceholder_btnSel").click()');
         //點完身分別後送出
-        for(int i=0; i<=5; i++)
-        {
-          await Future.delayed(Duration(milliseconds: 1000), () {});
-          print('身分計時器 $i');
 
-          String? userTypeLoadState = await headlessWebView?.webViewController
-              .evaluateJavascript(
-              source:
-              'document.querySelector("#ctl00_MainContentPlaceholder_lblTitle").innerText');
-
-          if (userTypeLoadState == '本校在校生登入') {
-            print('身分載入完成');
-            await headlessWebView?.webViewController.evaluateJavascript(
-                source:
-                'document.querySelector("#ctl00_MainContentPlaceholder_UserName").value="$id"');
-            await headlessWebView?.webViewController.evaluateJavascript(
-                source:
-                'document.querySelector("#ctl00_MainContentPlaceholder_Password").value="$pwd"');
-            await headlessWebView?.webViewController.evaluateJavascript(
-                source:
-                'document.querySelector("#ctl00_MainContentPlaceholder_LoginButton").click()');
-            //登入完檢查是否跳轉至填寫資料處
-            for(int i=1; i<=30; i++){
-              await Future.delayed(Duration(milliseconds: 1000), () {});
-              print('登入計時器 $i');
-
-              String? loginLoadState = await headlessWebView?.webViewController
-                  .evaluateJavascript(
-                  source:
-                  'document.querySelector("#ctl00_MainContentPlaceholder_lblActTitle_T").innerText');
-              print(loginLoadState);
-
-              if (loginLoadState=='活動名稱') {
-                print('載入完成');
-                loginLoaded = true;
-                break;
-              } else if (i == 30) {
-                print('網路異常，連線超時！');
-                Navigator.pop(context);
-                showToast('登入逾時');
-                break;
-              }
-            }
-
-            break;
-          } else if (i == 5 && userTypeLoadState == "") {
-            print('網路異常，連線超時！');
-            Navigator.pop(context);
-            showToast('登入逾時');
-            break;
-          }
-        }
         break;
       } else if (i == 5 && userTypeClickState == "") {
         print('網路異常，連線超時！');
@@ -180,52 +119,76 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    headlessWebView = new HeadlessInAppWebView(
-      initialUrlRequest: URLRequest(
-          url: Uri.parse("https://syscc.niu.edu.tw/Activity/ApplyList.aspx")),
-      initialOptions: InAppWebViewGroupOptions(
-        crossPlatform: InAppWebViewOptions(
-          useOnLoadResource: true,
-          javaScriptCanOpenWindowsAutomatically: true,
-        ),
-      ),
-      onWebViewCreated: (controller) {
-        print('HeadlessInAppWebView created!');
-      },
-      onConsoleMessage: (controller, consoleMessage) {
-        print("CONSOLE MESSAGE: " + consoleMessage.message);
-      },
-      onLoadStart: (controller, url) async {
-        print("onLoadStart $url");
-        setState(() {
-          this.url = url.toString();
-        });
-      },
-      onLoadResource:
-          (InAppWebViewController controller, LoadedResource resource) {
-        print(resource.toString());
-      },
-      onLoadStop: (controller, url) async {
-        print("onLoadStop $url");
-        if (url.toString() ==
-                'https://syscc.niu.edu.tw/Activity/ApplyList.aspx' &&
-            !dataLoaded) getEventInfo(widget.eventJS);
-        else if (url.toString().contains(
-            'https://syscc.niu.edu.tw/Activity/SignManagement/AddStdSignData.aspx'))
-          print('填寫資料');
-      },
-      onUpdateVisitedHistory: (controller, url, androidIsReload) {
-        print("onUpdateVisitedHistory $url");
-        setState(() {
-          this.url = url.toString();
-        });
-      },
-    );
+  void _signUp(String? _id, String? _pwd) async {
+    for (int i = 0; i <= 5; i++) {
+      await Future.delayed(Duration(milliseconds: 1000), () {});
+      print('身分計時器 $i');
 
-    headlessWebView?.run();
+      String? userTypeLoadState = await webViewController!.evaluateJavascript(
+          source:
+              'document.querySelector("#ctl00_MainContentPlaceholder_lblTitle").innerText');
+
+      if (userTypeLoadState == '本校在校生登入') {
+        print('身分載入完成');
+        await webViewController!.evaluateJavascript(
+            source:
+                'document.querySelector("#ctl00_MainContentPlaceholder_UserName").value="$_id"');
+        await webViewController!.evaluateJavascript(
+            source:
+                'document.querySelector("#ctl00_MainContentPlaceholder_Password").value="$_pwd"');
+        await webViewController!.evaluateJavascript(
+            source:
+                'document.querySelector("#ctl00_MainContentPlaceholder_LoginButton").click()');
+
+        break;
+      } else if (i == 5 && userTypeLoadState == "") {
+        print('網路異常，連線超時！');
+        Navigator.pop(context);
+        showToast('登入逾時');
+        break;
+      }
+    }
+  }
+
+//登入完檢查是否跳轉至填寫資料處
+  void checkPage() async {
+    for (int i = 1; i <= 30; i++) {
+      await Future.delayed(Duration(milliseconds: 1000), () {});
+      print('登入計時器 $i');
+
+      String? loginLoadState = await webViewController!.evaluateJavascript(
+          source:
+              'document.querySelector("#ctl00_MainContentPlaceholder_lblActTitle_T").innerText');
+      print(loginLoadState);
+
+      if (loginLoadState == '活動名稱') {
+        cleanJS.forEach((element) async {
+          await webViewController!.evaluateJavascript(source: element);
+        });
+        webViewController!.zoomBy(zoomFactor: 3.0);
+        print('載入完成');
+        setState(() {
+          dataLoaded = true;
+        });
+        break;
+      } else if (i == 30) {
+        print('網路異常，連線超時！');
+        Navigator.pop(context);
+        showToast('登入逾時');
+        break;
+      }
+    }
+  }
+
+  void _login() async {
+    dataLoaded = false;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? _id = prefs.getString('id');
+    String? _pwd = prefs.getString('pwd');
+
+    selectUserType();
+    _signUp(_id, _pwd);
+    checkPage();
   }
 
   @override
@@ -235,13 +198,37 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
         Row(
           children: <Widget>[
             dataLoaded
-                ? TextButton(
-                    onPressed: () {
-                      _login();
-                    },
-                    child: Text('報名'),
-                    style: ButtonStyle(),
-                  )
+                ? Row(children: [
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        if (signUpClicked) {
+                          webViewController!.evaluateJavascript(
+                              source:
+                                  'document.querySelector("#ctl00_MainContentPlaceholder_btnStd").click()');
+                        } else {
+                          setState(() {
+                            signUpClicked = true;
+                          });
+                          _login();
+                        }
+                      },
+                      child: Text(
+                        signUpClicked ? '送出' : '報名',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ])
                 : SizedBox(),
             Expanded(child: SizedBox()),
             IconButton(
@@ -251,38 +238,129 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                 icon: Icon(Icons.close)),
           ],
         ),
-        dataLoaded
-            ? Expanded(
-                child: ListView.separated(
-                    itemCount: data.length,
-                    separatorBuilder: (BuildContext context, int index) =>
-                        Divider(),
-                    itemBuilder: (BuildContext context, int index) => Column(
-                          children: [
-                            ExpansionTile(
-                              key: PageStorageKey(
-                                  'event_info' + index.toString()),
-                              title: Text(
-                                data[index][0],
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(20.0),
-                                  child: Text(
-                                    data[index][1],
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        )),
-              )
-            : Expanded(
+        Expanded(
+          child: Stack(
+            children: [
+              Visibility(
+                visible: !dataLoaded,
                 child: NiuIconLoading(
                   size: 80.0,
                 ),
               ),
+              Visibility(
+                visible: dataLoaded && !signUpClicked,
+                child: data.isNotEmpty
+                    ? ListView.separated(
+                        itemCount: data.length,
+                        separatorBuilder: (BuildContext context, int index) =>
+                            Divider(),
+                        itemBuilder: (BuildContext context, int index) =>
+                            Column(
+                              children: [
+                                ListTile(
+                                  title: Text(
+                                    data[index][1],
+                                    textAlign: TextAlign.end,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  leading: Text(
+                                    data[index][0],
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ))
+                    : SizedBox(),
+              ),
+              Visibility(
+                maintainState: true,
+                visible: dataLoaded && signUpClicked,
+                child: InAppWebView(
+                  key: eventInfo,
+                  initialOptions: options,
+                  onWebViewCreated: (controller) async {
+                    webViewController = controller;
+
+                    controller.loadUrl(
+                        urlRequest: URLRequest(
+                            url: Uri.parse(
+                                'https://syscc.niu.edu.tw/Activity/ApplyList.aspx')));
+                  },
+                  onLoadStart: (controller, url) async {
+                    setState(() {
+                      this.url = url.toString();
+                    });
+                  },
+                  androidOnPermissionRequest:
+                      (controller, origin, resources) async {
+                    return PermissionRequestResponse(
+                        resources: resources,
+                        action: PermissionRequestResponseAction.GRANT);
+                  },
+                  shouldOverrideUrlLoading:
+                      (controller, navigationAction) async {
+                    var uri = navigationAction.request.url!;
+
+                    if (![
+                      "http",
+                      "https",
+                      "file",
+                      "chrome",
+                      "data",
+                      "javascript",
+                      "about"
+                    ].contains(uri.scheme)) {
+                      return NavigationActionPolicy.CANCEL;
+                    } //非上述條件，不做任何事
+                    return NavigationActionPolicy.ALLOW;
+                  },
+                  onLoadStop: (controller, url) async {
+                    print("onLoadStop $url");
+                    setState(() {
+                      this.url = url.toString();
+                    });
+                    if (url.toString() ==
+                            'https://syscc.niu.edu.tw/Activity/ApplyList.aspx' &&
+                        !dataLoaded)
+                      getEventInfo(widget.eventJS);
+                    else if (url.toString().contains(
+                        'https://syscc.niu.edu.tw/Activity/SignManagement/AddStdSignData.aspx'))
+                      print('填寫資料');
+                  },
+                  onLoadResource: (InAppWebViewController controller,
+                      LoadedResource resource) {},
+                  onLoadError: (controller, url, code, message) {},
+                  onProgressChanged: (controller, progress) {
+                    setState(() {
+                      this.progress = progress / 100;
+                    });
+                  },
+                  onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                    setState(() {
+                      this.url = url.toString();
+                    });
+                    print('onUpdateVisitedHistory:' + url.toString());
+                  },
+                  onConsoleMessage: (controller, consoleMessage) {
+                    print(consoleMessage);
+                  },
+                  onJsAlert: (InAppWebViewController controller,
+                      JsAlertRequest jsAlertRequest) async {
+                    showToast(jsAlertRequest.message!);
+                    Navigator.pop(context, true);
+                    print(jsAlertRequest.message!);
+                    print("Logout and Clean cache");
+                    return JsAlertResponse(
+                        handledByClient: true,
+                        action: JsAlertResponseAction.CONFIRM);
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
       ]),
     );
   }

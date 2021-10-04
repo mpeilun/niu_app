@@ -53,115 +53,142 @@ class CustomLessonCard extends StatefulWidget {
 }
 
 class _CustomLessonCardState extends State<CustomLessonCard> {
+  bool delay = false;
+
+  Future<void> runDelay() async {
+    await Future.delayed(Duration(milliseconds: 200), () {
+      setState(() {
+        delay = true;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    runDelay();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        padding: EdgeInsets.all(8.0),
-        itemCount: 1,
-        itemBuilder: (BuildContext context, int index) {
-          return ExpansionPanelList.radio(
-            animationDuration: Duration(milliseconds: 500),
-            children: widget.tile
-                .map((tile) => ExpansionPanelRadio(
-                    value: tile.title,
-                    canTapOnHeader: true,
-                    headerBuilder: (BuildContext context, bool isExpanded) =>
-                        ListTile(
-                          title: Text(
-                            tile.title,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+    return delay
+        ? ListView.builder(
+            padding: EdgeInsets.all(8.0),
+            itemCount: 1,
+            itemBuilder: (BuildContext context, int index) {
+              return ExpansionPanelList.radio(
+                animationDuration: Duration(milliseconds: 500),
+                children: widget.tile
+                    .map((tile) => ExpansionPanelRadio(
+                        value: tile.title,
+                        canTapOnHeader: true,
+                        headerBuilder: (BuildContext context,
+                                bool isExpanded) =>
+                            ListTile(
+                              title: Text(
+                                tile.title,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                        body: Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 24.0),
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Tooltip(
+                                    showDuration: Duration(milliseconds: 500),
+                                    message: '前往課程公告',
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 12.0, vertical: 6.0),
+                                          minimumSize: Size(0.0, 0.0),
+                                        ),
+                                        child: Text("課程公告",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.white)),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ESchoolAnnouncement(
+                                                          courseId:
+                                                              tile.courseId,
+                                                          advancedTile:
+                                                              widget.tile),
+                                                  maintainState: false));
+                                        }),
+                                  ),
+                                  // SizedBox(
+                                  //   width: 16.0,
+                                  // ),
+                                  Tooltip(
+                                    showDuration: Duration(milliseconds: 500),
+                                    message: '前往開始上課',
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 12.0, vertical: 6.0),
+                                          minimumSize: Size(0.0, 0.0),
+                                        ),
+                                        child: Text("開始上課",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.white)),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ESchoolLearning(
+                                                          courseId:
+                                                              tile.courseId,
+                                                          advancedTile:
+                                                              widget.tile),
+                                                  maintainState: false));
+                                        }),
+                                  ),
+                                  // SizedBox(
+                                  //   width: 16.0,
+                                  // ),
+                                  Tooltip(
+                                    showDuration: Duration(milliseconds: 500),
+                                    message: '前往成績資訊',
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 12.0, vertical: 6.0),
+                                          minimumSize: Size(0.0, 0.0),
+                                        ),
+                                        child: Text("成績資訊",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.white)),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ESchoolGrade(
+                                                          courseId:
+                                                              tile.courseId,
+                                                          advancedTile:
+                                                              widget.tile),
+                                                  maintainState: false));
+                                        }),
+                                  ),
+                                ]),
                           ),
-                        ),
-                    body: Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 24.0),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Tooltip(
-                                showDuration: Duration(milliseconds: 500),
-                                message: '前往課程公告',
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 12.0, vertical: 6.0),
-                                      minimumSize: Size(0.0, 0.0),
-                                    ),
-                                    child: Text("課程公告",
-                                        style: TextStyle(
-                                            fontSize: 14, color: Colors.white)),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ESchoolAnnouncement(
-                                                      courseId: tile.courseId,
-                                                      advancedTile:
-                                                          widget.tile),
-                                              maintainState: false));
-                                    }),
-                              ),
-                              // SizedBox(
-                              //   width: 16.0,
-                              // ),
-                              Tooltip(
-                                showDuration: Duration(milliseconds: 500),
-                                message: '前往開始上課',
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 12.0, vertical: 6.0),
-                                      minimumSize: Size(0.0, 0.0),
-                                    ),
-                                    child: Text("開始上課",
-                                        style: TextStyle(
-                                            fontSize: 14, color: Colors.white)),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ESchoolLearning(
-                                                      courseId: tile.courseId,
-                                                      advancedTile:
-                                                          widget.tile),
-                                              maintainState: false));
-                                    }),
-                              ),
-                              // SizedBox(
-                              //   width: 16.0,
-                              // ),
-                              Tooltip(
-                                showDuration: Duration(milliseconds: 500),
-                                message: '前往成績資訊',
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 12.0, vertical: 6.0),
-                                      minimumSize: Size(0.0, 0.0),
-                                    ),
-                                    child: Text("成績資訊",
-                                        style: TextStyle(
-                                            fontSize: 14, color: Colors.white)),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ESchoolGrade(
-                                                      courseId: tile.courseId,
-                                                      advancedTile:
-                                                          widget.tile),
-                                              maintainState: false));
-                                    }),
-                              ),
-                            ]),
-                      ),
-                    )))
-                .toList(),
-          );
-        });
+                        )))
+                    .toList(),
+              );
+            })
+        : NiuIconLoading(size: 80);
   }
 }

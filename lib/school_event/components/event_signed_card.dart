@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
+import 'package:niu_app/school_event/dialog/event_signed_info_dialog.dart';
 
 import 'custom_list_info.dart';
 import '../school_event.dart';
@@ -13,6 +14,7 @@ class EventSigned {
   final String signTime;
   final String eventTimeStart;
   final String eventTimeEnd;
+  final String js;
 
   EventSigned({
     required this.name,
@@ -21,6 +23,7 @@ class EventSigned {
     required this.eventTimeStart,
     required this.eventTimeEnd,
     required this.signedStatus,
+    required this.js,
   });
 }
 
@@ -55,46 +58,51 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
     return ListView.separated(
       controller: _scrollController,
       itemCount: widget.data.length,
-      separatorBuilder: (BuildContext context, int index) => Divider(
-        thickness: 1.5,
-        indent: 12,
-        endIndent: 10,
-      ),
-      itemBuilder: (BuildContext context, int index) => GestureDetector(
-        onTap: () {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(index.toString())));
-          //showListDialog();
-        },
-        child: Container(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(screenSizeWidth * 0.05,
-                    screenSizeHeight * 0.01, screenSizeWidth * 0.05, 0.0),
-                child: Text(
-                  widget.data[index].name,
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+      separatorBuilder: (BuildContext context, int index) => Divider(),
+      itemBuilder: (BuildContext context, int index) => Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(screenSizeWidth * 0.05,
+                screenSizeHeight * 0.01, screenSizeWidth * 0.05, 0.0),
+            child: Text(
+              widget.data[index].name,
+              style: TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.shade50,
+              borderRadius: BorderRadius.circular(20.0),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(1.0, 1.0), //陰影y軸偏移量
+                    blurRadius: 0, //陰影模糊程度
+                    spreadRadius: 0 //陰影擴散程度
+                )
+              ],
+            ),
+            margin: EdgeInsets.fromLTRB(
+                screenSizeWidth * 0.05,
+                screenSizeHeight * 0.01,
+                screenSizeWidth * 0.05,
+                screenSizeHeight * 0.01),
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                accentColor: Colors.black,
+                dividerColor: Colors.transparent,
               ),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+              child: ExpansionTile(
+                key: PageStorageKey('event_signed' + index.toString()),
+                title: Text(
+                  '　詳細資料',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                elevation: 1.5,
-                margin: EdgeInsets.fromLTRB(
-                    screenSizeWidth * 0.05,
-                    screenSizeHeight * 0.005,
-                    screenSizeWidth * 0.05,
-                    screenSizeHeight * 0.01),
-                child: Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
                     children: [
                       ListInfo(
                         icon: Icons.calendar_today,
@@ -130,24 +138,37 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                         widget: Text(widget.data[index].status,
                             style: TextStyle(fontSize: 14)),
                       ),
+                      ElevatedButton(
+                        onPressed: () {
+                          print(widget.data[index].js);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => EventSignedInfoDialog(
+                              js: widget.data[index].js,
+                            ),
+                          );
+                        },
+                        child: Text('詳細'),
+                        style: ButtonStyle(
+                          shape:
+                          MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: screenSizeHeight * 0.015,
+                      )
                     ],
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
-  }
-
-  Future<void> showListDialog() async {
-  //   int? index = await showDialog<int>(
-  //     context: context,
-  //     builder: (BuildContext context) => Dialog(child: EventInfoDialog()),
-  //   );
-  //   if (index != null) {
-  //     print("點了：$index");
-  //   }
   }
 }
