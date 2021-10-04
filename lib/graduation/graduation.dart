@@ -25,6 +25,7 @@ class _GraduationState extends State<Graduation> {
   late Time time;
   late Pass pass;
 
+  //TODO: 學分學程
   @override
   void initState() {
     super.initState();

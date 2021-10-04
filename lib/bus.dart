@@ -54,6 +54,7 @@ class _BusState extends State<Bus> {
     'document.querySelector(\"#btnFPMenuOpen\").style.display=\'none\'',
     'document.querySelector(\"#MasterPageBodyTag > a\").style.display=\'none\'',
     'document.querySelector(\"#MasterPageBodyTag > div\").style = \'padding-top: 10px\'',
+    'document.querySelector("#main > div.bus-header.container-md > div:nth-child(1) > div.bus-title.mb-1.mb-md-3 > div.bus-title__icon > i").style.display=\'none\''
   ];
 
   @override
