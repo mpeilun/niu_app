@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/graduation/graduation.dart';
@@ -183,8 +184,8 @@ class _StartMenu extends State<StartMenu> {
                             },
                           ),
                           CustomIcons(
-                            title: '更改帳號',
-                            icon: MenuIcon.icon_account,
+                            title: '學校行事曆',
+                            icon: FontAwesomeIcons.calendarAlt,
                             press: () async {
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
