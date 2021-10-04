@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
+
+import 'button_provider.dart';
 
 class TimeCard extends StatefulWidget {
   TimeCard.build({
@@ -19,18 +22,16 @@ class _TimeCardState extends State<TimeCard> {
     return Container(
       child: GestureDetector(
         onTap: () {
-          setState(() {
-            if (state) {
-              time = timeName;
-            } else {
-              time = timeRange;
-            }
-            state = !state;
-          });
+          if (state) {
+            context.read<OnTimeCardClick>().setTime(timeName);
+          } else {
+            context.read<OnTimeCardClick>().setTime(timeRange);
+          }
+          state = !state;
           print("Tap");
         },
         child: Text(
-          time[widget.thisTime],
+          context.watch<OnTimeCardClick>().getTime[widget.thisTime],
           style: TextStyle(
             fontSize: 12,
           ),

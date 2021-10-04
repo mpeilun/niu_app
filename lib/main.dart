@@ -9,16 +9,18 @@ import 'package:niu_app/provider/notification_provider.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
+import 'TimeTable/BuildTimeTable/button_provider.dart';
+
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => OnItemClick()),
+    ChangeNotifierProvider(create: (_) => OnTimeCardClick()),
     ChangeNotifierProvider(create: (_) => OnNotifyClick()),
   ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;

@@ -11,6 +11,7 @@ import 'package:niu_app/menu/notification/notification_page.dart';
 import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/provider/notification_provider.dart';
+import 'package:niu_app/menu/school%EF%BC%BFschedule.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 
@@ -191,9 +192,7 @@ class _StartMenu extends State<StartMenu> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoginPage(
-                                            cancelPop: true,
-                                          ),
+                                      builder: (context) => SchoolSchedule(),
                                       maintainState: false));
                             },
                           ),
