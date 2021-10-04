@@ -10,6 +10,7 @@ import 'package:niu_app/menu/loading.dart';
 import 'package:niu_app/menu/notification/notification_page.dart';
 import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
+import 'package:niu_app/provider/notification_provider.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 
@@ -235,9 +236,7 @@ class _StartMenu extends State<StartMenu> {
                     IconButton(
                       icon: Icon(Icons.notifications_none),
                       onPressed: () {
-                        setState(() {
-                          isNotification = false;
-                        });
+                        context.read<OnNotifyClick>().onclick(false);
                         Scaffold.of(context).openEndDrawer();
                       },
                     ),
@@ -245,8 +244,9 @@ class _StartMenu extends State<StartMenu> {
                       right: 10.0,
                       top: 13.0,
                       child: Icon(Icons.brightness_1,
-                          color:
-                              isNotification ? Colors.red : Colors.transparent,
+                          color: context.watch<OnNotifyClick>().notify
+                              ? Colors.red
+                              : Colors.transparent,
                           size: 9.0),
                     )
                   ],

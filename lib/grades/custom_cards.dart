@@ -277,6 +277,9 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
       itemCount: widget.grade.length,
       separatorBuilder: (BuildContext context, int index) => Divider(
         height: 30.0,
+        thickness: 1.5,
+        indent: 10,
+        endIndent: 10,
       ),
       itemBuilder: (BuildContext context, int index) => Column(
         children: [

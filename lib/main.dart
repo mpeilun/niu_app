@@ -5,12 +5,14 @@ import 'package:niu_app/menu/menu_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
+import 'package:niu_app/provider/notification_provider.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => OnItemClick()),
+    ChangeNotifierProvider(create: (_) => OnNotifyClick()),
   ], child: MyApp()));
 }
 
@@ -32,11 +34,11 @@ class MyApp extends StatelessWidget {
             systemOverlayStyle:
                 SystemUiOverlayStyle(statusBarColor: Colors.blue[900]),
           ),
-          dividerTheme: DividerThemeData(
-            thickness: 1.5,
-            indent: 10,
-            endIndent: 10,
-          ),
+          // dividerTheme: DividerThemeData(
+          //   thickness: 1.5,
+          //   indent: 10,
+          //   endIndent: 10,
+          // ),
           primaryColor: Colors.blue[900],
           scaffoldBackgroundColor: Colors.grey[200],
           textTheme: GoogleFonts.notoSansTextTheme(textTheme).copyWith(

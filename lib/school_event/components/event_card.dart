@@ -69,7 +69,11 @@ class _CustomEventCardState extends State<CustomEventCard> {
     return ListView.separated(
       controller: _scrollController,
       itemCount: widget.data.length,
-      separatorBuilder: (BuildContext context, int index) => Divider(),
+      separatorBuilder: (BuildContext context, int index) => Divider(
+        thickness: 1.5,
+        indent: 10,
+        endIndent: 10,
+      ),
       itemBuilder: (BuildContext context, int index) => Column(
         children: [
           Padding(
