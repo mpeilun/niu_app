@@ -187,6 +187,7 @@ class _StartMenu extends State<StartMenu> {
                           CustomIcons(
                             title: '學校行事曆',
                             icon: MyFlutterApp.calendar,
+                            size: 40.0,
                             press: () async {
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();

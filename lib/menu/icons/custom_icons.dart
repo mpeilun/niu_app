@@ -3,6 +3,7 @@ import 'package:niu_app/Components/circle.dart';
 
 
 class CustomIcons extends StatelessWidget {
+  final double size;
   final String title;
   final IconData icon;
   final VoidCallback press;
@@ -11,6 +12,7 @@ class CustomIcons extends StatelessWidget {
     required this.title,
     required this.icon,
     required this.press,
+    this.size = 40.0,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,7 @@ class CustomIcons extends StatelessWidget {
           child: CustomPaint(
             painter: CirclePainter(),
             child: IconButton(
-              iconSize: 40,
+              iconSize: size,
               icon: Icon(icon, color: Colors.black),
               onPressed: press,
             ),
