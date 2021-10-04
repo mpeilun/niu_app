@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:niu_app/components/menuIcon.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-
 class NotificationDrawer extends StatefulWidget {
   NotificationDrawer({Key? key}) : super(key: key);
 
@@ -38,18 +37,25 @@ class _NotificationDrawer extends State<NotificationDrawer> {
             Expanded(
               child: ListView.separated(
                   itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      leading: Icon(
-                        notificationItems[index].icon,
-                        size: 40.0,
+                    bool newNotify = false;
+                    if(index < 3){
+                      newNotify = true;
+                    }
+                    return Ink(
+                      color: newNotify ? Color.fromARGB(255, 171, 212, 231) : Colors.grey[200] ,
+                      child: ListTile(
+                        leading: Icon(
+                          notificationItems[index].icon,
+                          size: 40.0,
+                        ),
+                        title: Text(notificationItems[index].title),
+                        onTap: () {},
                       ),
-                      title: Text(notificationItems[index].title),
-                      onTap: () {},
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
                     return Divider(
-                      thickness: 1.0,
+                      thickness: 1.2,
                       height: .0,
                     );
                   },
