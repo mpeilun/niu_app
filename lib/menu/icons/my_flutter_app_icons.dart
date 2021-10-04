@@ -16,6 +16,10 @@
 ///         Author:    Daniel Bruce
 ///         License:   SIL (http://scripts.sil.org/OFL)
 ///         Homepage:  http://www.entypo.com
+/// * Linecons, Copyright (C) 2013 by Designmodo
+///         Author:    Designmodo for Smashing Magazine
+///         License:   CC BY ()
+///         Homepage:  http://designmodo.com/linecons-free/
 /// * Font Awesome 5, Copyright (C) 2016 by Dave Gandy
 ///         Author:    Dave Gandy
 ///         License:   SIL (https://github.com/FortAwesome/Font-Awesome/blob/master/LICENSE.txt)
@@ -30,6 +34,8 @@ class MyFlutterApp {
   static const String? _kFontPkg = null;
 
   static const IconData megaphone = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData calendar = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData times_circle = IconData(0xf057, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData exclamation_circle = IconData(0xf06a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData trash = IconData(0xf1f8, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
