@@ -20,12 +20,12 @@ class _SchoolScheduleState extends State<SchoolSchedule> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Example'),
+        title: Text('教務處行事曆'),
       ),
       body: Center(
           child: isLoading
-              ? Center(child: CircularProgressIndicator())
-              : PDFViewer(document: document)),
+              ? PDFViewer(document: document)
+              : Center(child: CircularProgressIndicator())),
     );
   }
 
