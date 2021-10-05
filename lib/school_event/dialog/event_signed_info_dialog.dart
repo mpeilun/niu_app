@@ -251,7 +251,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
               AbsorbPointer(
                 absorbing: !(dataLoaded && buttonClicked),
                 child: Opacity(
-                  opacity: dataLoaded && buttonClicked?1:0.001,
+                  opacity: dataLoaded && buttonClicked?1:0.01,
                   child: InAppWebView(
                     key: eventInfo,
                     initialOptions: options,
