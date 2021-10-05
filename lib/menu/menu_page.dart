@@ -12,6 +12,7 @@ import 'package:niu_app/menu/loading.dart';
 import 'package:niu_app/menu/notification/notification_page.dart';
 import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
+import 'package:niu_app/menu/notification/notificatioon_items.dart';
 import 'package:niu_app/provider/notification_provider.dart';
 import 'package:niu_app/school%EF%BC%BFschedule.dart';
 import 'package:niu_app/school_event/school_event.dart';
@@ -239,6 +240,7 @@ class _StartMenu extends State<StartMenu> {
                       icon: Icon(Icons.notifications_none),
                       onPressed: () {
                         context.read<OnNotifyClick>().onclick(false);
+                        //context.watch<OnNotifyClick>().newNotifications;
                         Scaffold.of(context).openEndDrawer();
                       },
                     ),
