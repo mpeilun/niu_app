@@ -17,7 +17,7 @@ class TimeTable extends StatefulWidget {
 class _TimeTableState extends State<TimeTable> {
   SemesterDate a = SemesterDate();
   var b = getHTML();
-
+/*
   List<Class> myTable = <Class>[
     // Class("電子電路", "朱志明", "教416", 1, 2, 4),
     // Class("工程數學", "黃朝曦", "教102", 1, 5, 5),
@@ -35,7 +35,7 @@ class _TimeTableState extends State<TimeTable> {
     Class("微處理器系統", "卓信宏", "教416", 4, 0, 13),
     Class("微處理器系統", "卓信宏", "教416", 5, 0, 13)
   ];
-
+*/
   @override
   Widget build(BuildContext context) {
     a.getIsFinish();
@@ -52,7 +52,7 @@ class _TimeTableState extends State<TimeTable> {
             List<Class> tempClassList = temp.classList(htmlCode);
             Map<Class, Calendar> calendarMap = b.calendarMap;
             return ViewPage.build(
-                myTable: /*tempClassList*/ myTable,
+                myTable: tempClassList /*myTable*/,
                 date: a,
                 calendarMap: calendarMap);
             //return the widget that you want to display after loading
