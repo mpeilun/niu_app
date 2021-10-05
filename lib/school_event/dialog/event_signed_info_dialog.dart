@@ -47,7 +47,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
   void getEventInfo(String js) async {
     data.clear();
     for (int i = 1; i <= 30; i++) {
-      await webViewController!.evaluateJavascript(source: widget.js);
+      await webViewController!.evaluateJavascript(source: js);
       await Future.delayed(Duration(milliseconds: 1000), () {});
       print('計時器 $i');
 
@@ -55,7 +55,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
           source:
               'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign > caption").innerText');
 
-      if (loadState == '報名資料詳細內容') {
+      if (loadState!.contains('報名資料詳細內容')) {
         print('載入完成');
 
         for (int i = 2;
@@ -248,6 +248,92 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
         Expanded(
           child: Stack(
             children: [
+              AbsorbPointer(
+                absorbing: !(dataLoaded && buttonClicked),
+                child: Opacity(
+                  opacity: dataLoaded && buttonClicked?1:0.001,
+                  child: InAppWebView(
+                    key: eventInfo,
+                    initialOptions: options,
+                    onWebViewCreated: (controller) async {
+                      webViewController = controller;
+
+                      controller.loadUrl(
+                          urlRequest: URLRequest(
+                              url: Uri.parse(
+                                  'https://syscc.niu.edu.tw/Activity/MaintainSelPeople.aspx')));
+                    },
+                    onLoadStart: (controller, url) async {
+                      setState(() {
+                        this.url = url.toString();
+                      });
+                    },
+                    androidOnPermissionRequest:
+                        (controller, origin, resources) async {
+                      return PermissionRequestResponse(
+                          resources: resources,
+                          action: PermissionRequestResponseAction.GRANT);
+                    },
+                    shouldOverrideUrlLoading:
+                        (controller, navigationAction) async {
+                      var uri = navigationAction.request.url!;
+
+                      if (![
+                        "http",
+                        "https",
+                        "file",
+                        "chrome",
+                        "data",
+                        "javascript",
+                        "about"
+                      ].contains(uri.scheme)) {
+                        return NavigationActionPolicy.CANCEL;
+                      } //非上述條件，不做任何事
+                      return NavigationActionPolicy.ALLOW;
+                    },
+                    onLoadStop: (controller, url) async {
+                      print("onLoadStop $url");
+                      setState(() {
+                        this.url = url.toString();
+                      });
+                      if (url.toString().contains(
+                          'https://syscc.niu.edu.tw/Activity/MaintainSign/signMaintain.aspx')) {
+                        getEventInfo(widget.js);
+                      } else {
+                        print('TEST LOGINNNNNNNNNNNNNNNNNNNNNNNN');
+                        _login();
+                      }
+                    },
+                    onLoadResource: (InAppWebViewController controller,
+                        LoadedResource resource) {},
+                    onLoadError: (controller, url, code, message) {},
+                    onProgressChanged: (controller, progress) {
+                      setState(() {
+                        this.progress = progress / 100;
+                      });
+                    },
+                    onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                      setState(() {
+                        this.url = url.toString();
+                      });
+                      print('onUpdateVisitedHistory:' + url.toString());
+                    },
+                    onConsoleMessage: (controller, consoleMessage) {
+                      print(consoleMessage);
+                    },
+                    onJsAlert: (InAppWebViewController controller,
+                        JsAlertRequest jsAlertRequest) async {
+                      showToast(jsAlertRequest.message!);
+                      Navigator.pop(context, true);
+                      print(jsAlertRequest.message!);
+                      print("Logout and Clean cache");
+                      return JsAlertResponse(
+                          handledByClient: true,
+                          action: JsAlertResponseAction.CONFIRM);
+                    },
+                  ),
+                ),
+              ),
               Visibility(
                 visible: !dataLoaded,
                 child: NiuIconLoading(
@@ -326,90 +412,6 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                                     ],
                                   ))
                     : SizedBox(),
-              ),
-              Visibility(
-                maintainState: true,
-                visible: dataLoaded && buttonClicked,
-                child: InAppWebView(
-                  key: eventInfo,
-                  initialOptions: options,
-                  onWebViewCreated: (controller) async {
-                    webViewController = controller;
-
-                    controller.loadUrl(
-                        urlRequest: URLRequest(
-                            url: Uri.parse(
-                                'https://syscc.niu.edu.tw/Activity/MaintainSelPeople.aspx')));
-                  },
-                  onLoadStart: (controller, url) async {
-                    setState(() {
-                      this.url = url.toString();
-                    });
-                  },
-                  androidOnPermissionRequest:
-                      (controller, origin, resources) async {
-                    return PermissionRequestResponse(
-                        resources: resources,
-                        action: PermissionRequestResponseAction.GRANT);
-                  },
-                  shouldOverrideUrlLoading:
-                      (controller, navigationAction) async {
-                    var uri = navigationAction.request.url!;
-
-                    if (![
-                      "http",
-                      "https",
-                      "file",
-                      "chrome",
-                      "data",
-                      "javascript",
-                      "about"
-                    ].contains(uri.scheme)) {
-                      return NavigationActionPolicy.CANCEL;
-                    } //非上述條件，不做任何事
-                    return NavigationActionPolicy.ALLOW;
-                  },
-                  onLoadStop: (controller, url) async {
-                    print("onLoadStop $url");
-                    setState(() {
-                      this.url = url.toString();
-                    });
-                    if (url.toString().contains(
-                        'https://syscc.niu.edu.tw/Activity/MaintainSign/signMaintain.aspx')) {
-                      getEventInfo(widget.js);
-                    } else {
-                      print('TEST LOGINNNNNNNNNNNNNNNNNNNNNNNN');
-                      _login();
-                    }
-                  },
-                  onLoadResource: (InAppWebViewController controller,
-                      LoadedResource resource) {},
-                  onLoadError: (controller, url, code, message) {},
-                  onProgressChanged: (controller, progress) {
-                    setState(() {
-                      this.progress = progress / 100;
-                    });
-                  },
-                  onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                    setState(() {
-                      this.url = url.toString();
-                    });
-                    print('onUpdateVisitedHistory:' + url.toString());
-                  },
-                  onConsoleMessage: (controller, consoleMessage) {
-                    print(consoleMessage);
-                  },
-                  onJsAlert: (InAppWebViewController controller,
-                      JsAlertRequest jsAlertRequest) async {
-                    showToast(jsAlertRequest.message!);
-                    Navigator.pop(context, true);
-                    print(jsAlertRequest.message!);
-                    print("Logout and Clean cache");
-                    return JsAlertResponse(
-                        handledByClient: true,
-                        action: JsAlertResponseAction.CONFIRM);
-                  },
-                ),
               ),
             ],
           ),

@@ -46,7 +46,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
   void getEventInfo(String js) async {
     data.clear();
     for (int i = 1; i <= 30; i++) {
-      await webViewController!.evaluateJavascript(source: widget.eventJS);
+      await webViewController!.evaluateJavascript(source: js);
       await Future.delayed(Duration(milliseconds: 1000), () {});
       print('計時器 $i');
 
@@ -241,6 +241,92 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
         Expanded(
           child: Stack(
             children: [
+              AbsorbPointer(
+                absorbing: !(dataLoaded && signUpClicked),
+                child: Opacity(
+                  opacity: dataLoaded && signUpClicked?1:0.001,
+                  child: InAppWebView(
+                    key: eventInfo,
+                    initialOptions: options,
+                    onWebViewCreated: (controller) async {
+                      webViewController = controller;
+
+                      controller.loadUrl(
+                          urlRequest: URLRequest(
+                              url: Uri.parse(
+                                  'https://syscc.niu.edu.tw/Activity/ApplyList.aspx')));
+                    },
+                    onLoadStart: (controller, url) async {
+                      setState(() {
+                        this.url = url.toString();
+                      });
+                    },
+                    androidOnPermissionRequest:
+                        (controller, origin, resources) async {
+                      return PermissionRequestResponse(
+                          resources: resources,
+                          action: PermissionRequestResponseAction.GRANT);
+                    },
+                    shouldOverrideUrlLoading:
+                        (controller, navigationAction) async {
+                      var uri = navigationAction.request.url!;
+
+                      if (![
+                        "http",
+                        "https",
+                        "file",
+                        "chrome",
+                        "data",
+                        "javascript",
+                        "about"
+                      ].contains(uri.scheme)) {
+                        return NavigationActionPolicy.CANCEL;
+                      } //非上述條件，不做任何事
+                      return NavigationActionPolicy.ALLOW;
+                    },
+                    onLoadStop: (controller, url) async {
+                      print("onLoadStop $url");
+                      setState(() {
+                        this.url = url.toString();
+                      });
+                      if (url.toString() ==
+                          'https://syscc.niu.edu.tw/Activity/ApplyList.aspx' &&
+                          !dataLoaded)
+                        getEventInfo(widget.eventJS);
+                      else if (url.toString().contains(
+                          'https://syscc.niu.edu.tw/Activity/SignManagement/AddStdSignData.aspx'))
+                        print('填寫資料');
+                    },
+                    onLoadResource: (InAppWebViewController controller,
+                        LoadedResource resource) {},
+                    onLoadError: (controller, url, code, message) {},
+                    onProgressChanged: (controller, progress) {
+                      setState(() {
+                        this.progress = progress / 100;
+                      });
+                    },
+                    onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                      setState(() {
+                        this.url = url.toString();
+                      });
+                      print('onUpdateVisitedHistory:' + url.toString());
+                    },
+                    onConsoleMessage: (controller, consoleMessage) {
+                      print(consoleMessage);
+                    },
+                    onJsAlert: (InAppWebViewController controller,
+                        JsAlertRequest jsAlertRequest) async {
+                      showToast(jsAlertRequest.message!);
+                      Navigator.pop(context, true);
+                      print(jsAlertRequest.message!);
+                      print("Logout and Clean cache");
+                      return JsAlertResponse(
+                          handledByClient: true,
+                          action: JsAlertResponseAction.CONFIRM);
+                    },
+                  ),
+                ),
+              ),
               Visibility(
                 visible: !dataLoaded,
                 child: NiuIconLoading(
@@ -273,90 +359,6 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                               ],
                             ))
                     : SizedBox(),
-              ),
-              Visibility(
-                maintainState: true,
-                visible: dataLoaded && signUpClicked,
-                child: InAppWebView(
-                  key: eventInfo,
-                  initialOptions: options,
-                  onWebViewCreated: (controller) async {
-                    webViewController = controller;
-
-                    controller.loadUrl(
-                        urlRequest: URLRequest(
-                            url: Uri.parse(
-                                'https://syscc.niu.edu.tw/Activity/ApplyList.aspx')));
-                  },
-                  onLoadStart: (controller, url) async {
-                    setState(() {
-                      this.url = url.toString();
-                    });
-                  },
-                  androidOnPermissionRequest:
-                      (controller, origin, resources) async {
-                    return PermissionRequestResponse(
-                        resources: resources,
-                        action: PermissionRequestResponseAction.GRANT);
-                  },
-                  shouldOverrideUrlLoading:
-                      (controller, navigationAction) async {
-                    var uri = navigationAction.request.url!;
-
-                    if (![
-                      "http",
-                      "https",
-                      "file",
-                      "chrome",
-                      "data",
-                      "javascript",
-                      "about"
-                    ].contains(uri.scheme)) {
-                      return NavigationActionPolicy.CANCEL;
-                    } //非上述條件，不做任何事
-                    return NavigationActionPolicy.ALLOW;
-                  },
-                  onLoadStop: (controller, url) async {
-                    print("onLoadStop $url");
-                    setState(() {
-                      this.url = url.toString();
-                    });
-                    if (url.toString() ==
-                            'https://syscc.niu.edu.tw/Activity/ApplyList.aspx' &&
-                        !dataLoaded)
-                      getEventInfo(widget.eventJS);
-                    else if (url.toString().contains(
-                        'https://syscc.niu.edu.tw/Activity/SignManagement/AddStdSignData.aspx'))
-                      print('填寫資料');
-                  },
-                  onLoadResource: (InAppWebViewController controller,
-                      LoadedResource resource) {},
-                  onLoadError: (controller, url, code, message) {},
-                  onProgressChanged: (controller, progress) {
-                    setState(() {
-                      this.progress = progress / 100;
-                    });
-                  },
-                  onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                    setState(() {
-                      this.url = url.toString();
-                    });
-                    print('onUpdateVisitedHistory:' + url.toString());
-                  },
-                  onConsoleMessage: (controller, consoleMessage) {
-                    print(consoleMessage);
-                  },
-                  onJsAlert: (InAppWebViewController controller,
-                      JsAlertRequest jsAlertRequest) async {
-                    showToast(jsAlertRequest.message!);
-                    Navigator.pop(context, true);
-                    print(jsAlertRequest.message!);
-                    print("Logout and Clean cache");
-                    return JsAlertResponse(
-                        handledByClient: true,
-                        action: JsAlertResponseAction.CONFIRM);
-                  },
-                ),
               ),
             ],
           ),
