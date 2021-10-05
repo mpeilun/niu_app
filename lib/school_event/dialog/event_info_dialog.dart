@@ -271,8 +271,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                       resources: resources,
                       action: PermissionRequestResponseAction.GRANT);
                 },
-                shouldOverrideUrlLoading:
-                    (controller, navigationAction) async {
+                shouldOverrideUrlLoading: (controller, navigationAction) async {
                   var uri = navigationAction.request.url!;
 
                   if (![
@@ -294,7 +293,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                     this.url = url.toString();
                   });
                   if (url.toString() ==
-                      'https://syscc.niu.edu.tw/Activity/ApplyList.aspx' &&
+                          'https://syscc.niu.edu.tw/Activity/ApplyList.aspx' &&
                       !dataLoaded)
                     getEventInfo(widget.eventJS);
                   else if (url.toString().contains(
@@ -339,30 +338,30 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                 visible: dataLoaded && !signUpClicked,
                 child: data.isNotEmpty
                     ? Container(
-                  color: Colors.grey.shade200,
-                      child: ListView.separated(
-                          itemCount: data.length,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              Divider(),
-                          itemBuilder: (BuildContext context, int index) =>
-                              Column(
-                                children: [
-                                  ListTile(
-                                    title: Text(
-                                      data[index][1],
-                                      textAlign: TextAlign.end,
-                                      style:
-                                          TextStyle(fontWeight: FontWeight.bold),
+                        color: Colors.grey.shade200,
+                        child: ListView.separated(
+                            itemCount: data.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) => Divider(),
+                            itemBuilder: (BuildContext context, int index) =>
+                                Column(
+                                  children: [
+                                    ListTile(
+                                      title: Text(
+                                        data[index][1],
+                                        textAlign: TextAlign.end,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      leading: Text(
+                                        data[index][0],
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
-                                    leading: Text(
-                                      data[index][0],
-                                      style:
-                                          TextStyle(fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              )),
-                    )
+                                  ],
+                                )),
+                      )
                     : SizedBox(),
               ),
             ],
