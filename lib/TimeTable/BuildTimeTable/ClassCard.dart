@@ -229,9 +229,9 @@ class _ClassCard extends State<ClassCard> {
           );
           print(input.save());
           if (input.typeEnable || input.nameEnable || input.rangeEnable)
-            WeekCalendar().push(thisClass, input);
+            WeekCalendar().push(thisClass, input, null);
           else
-            WeekCalendar().del(thisClass);
+            WeekCalendar().del(thisClass, null);
           setState(() {
             calendar = input;
             select = true;
