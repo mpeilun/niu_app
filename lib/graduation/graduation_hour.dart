@@ -167,6 +167,7 @@ class _GraduationHourState extends State<GraduationHour> {
                                 await Future.delayed(
                                     Duration(milliseconds: 200), () async {
                                   //TODO：Android有顯示問題
+                                  //TODO: 改用Stack遮蓋?
                                   cleanJs.forEach((element) async {
                                     await controller.evaluateJavascript(
                                         source: element);
