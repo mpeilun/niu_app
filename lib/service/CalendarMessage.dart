@@ -115,9 +115,9 @@ class _ModifyCalenderState extends State<ModifyCalender> {
                   ),
                   onChanged: (text) {
                     if (text != "") {
-                      calendarName = text;
                       calendarName!.replaceAll(",", "");
                     }
+                    calendarName = text;
                   },
                 ),
               ),
@@ -133,9 +133,9 @@ class _ModifyCalenderState extends State<ModifyCalender> {
                     ),
                     onChanged: (text) {
                       if (text != "") {
-                        calendarRange = text;
                         calendarRange!.replaceAll(",", "");
                       }
+                      calendarRange = text;
                     },
                   )),
               Row(
