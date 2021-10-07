@@ -11,6 +11,8 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'components/geolocator.dart';
+
 class Zuvio extends StatefulWidget {
   const Zuvio({
     Key? key,
@@ -232,6 +234,16 @@ class _ZuvioState extends State<Zuvio> {
                           },
                           onDownloadStart: (controller, url) async {
                             download(url, context);
+                          },
+                          androidOnGeolocationPermissionsShowPrompt:
+                              (InAppWebViewController controller, String origin) async {
+                            print('androidOnGeolocationPermissionsShowPrompt: $origin');
+                            alertGeolocation(context);
+                            return GeolocationPermissionShowPromptResponse(
+                                origin: origin,
+                                allow: true,
+                                retain: true
+                            );
                           },
                           onScrollChanged: (InAppWebViewController controller,
                               int x, int y) {
