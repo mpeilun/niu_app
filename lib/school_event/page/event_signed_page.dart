@@ -52,9 +52,9 @@ class _EventSignedPageState extends State<EventSignedPage> {
             null;
         i++) {
       print(i);
-      String name = await headlessWebView?.webViewController.evaluateJavascript(
+      String name = ((await headlessWebView?.webViewController.evaluateJavascript(
           source:
-              'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(4)").innerText');
+              'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(4)").innerText')) as String).trim();
       String status = await headlessWebView?.webViewController.evaluateJavascript(
           source:
               'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(2)").innerText');
