@@ -59,6 +59,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^19.3.44-beta
   pull_to_refresh: ^2.0.0
   badges: ^2.0.1
+  geolocator: ^7.7.0
 
 dev_dependencies:
   flutter_test:

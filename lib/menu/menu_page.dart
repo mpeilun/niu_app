@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/graduation/graduation.dart';
@@ -12,20 +11,19 @@ import 'package:niu_app/menu/loading.dart';
 import 'package:niu_app/menu/notification/notification_page.dart';
 import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
-import 'package:niu_app/menu/notification/notificatioon_items.dart';
 import 'package:niu_app/provider/notification_provider.dart';
 import 'package:niu_app/school%EF%BC%BFschedule.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 import 'package:niu_app/service/SemesterDate.dart';
 import 'package:niu_app/testcode/test_calendar.dart';
+import 'package:niu_app/testcode/test_webview.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:niu_app/menu/drawer/about.dart';
 import 'package:niu_app/menu/drawer/announcement.dart';
 import 'package:niu_app/menu/drawer/report.dart';
 import 'package:niu_app/menu/drawer/setting.dart';
-import 'package:niu_app/menu/drawer/announcement.dart';
 import 'package:provider/src/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 
@@ -231,7 +229,7 @@ class _StartMenu extends State<StartMenu> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Bus(),
+                                      builder: (context) => TestWebView(),
                                       maintainState: false));
                             },
                           ),
