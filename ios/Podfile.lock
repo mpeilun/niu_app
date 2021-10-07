@@ -70,12 +70,12 @@ SPEC CHECKSUMS:
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
-  path_provider: d1e9807085df1f9cc9318206cd649dc0b76be3de
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
-  shared_preferences: 5033afbb22d372e15aff8ff766df9021b845f273
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   syncfusion_flutter_pdfviewer: bb9998884b864cfedf72628df3503bdf57e397c0
-  url_launcher: b6e016d912f04be9f5bf6e8e82dc599b7ba59649
+  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
 PODFILE CHECKSUM: 5a30faf9dbc7ab73c1280177b40d7b4fdcfe242f
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
