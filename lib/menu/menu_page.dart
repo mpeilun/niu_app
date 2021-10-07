@@ -12,6 +12,7 @@ import 'package:niu_app/menu/loading.dart';
 import 'package:niu_app/menu/notification/notification_page.dart';
 import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
+import 'package:niu_app/menu/notification/notificatioon_items.dart';
 import 'package:niu_app/provider/notification_provider.dart';
 import 'package:niu_app/school%EF%BC%BFschedule.dart';
 import 'package:niu_app/school_event/school_event.dart';
@@ -31,6 +32,8 @@ import 'package:niu_app/provider/drawer_provider.dart';
 import '../bus.dart';
 import '../course＿select.dart';
 import '../zuvio.dart';
+
+import 'package:badges/badges.dart';
 
 class StartMenu extends StatefulWidget {
   StartMenu({Key? key}) : super(key: key);
@@ -214,7 +217,9 @@ class _StartMenu extends State<StartMenu> {
                             press: () {
                               showDialog(
                                 context: context,
-                                builder: (BuildContext context) => TestCalendar(semester: semester,),
+                                builder: (BuildContext context) => TestCalendar(
+                                  semester: semester,
+                                ),
                               );
                             },
                           ),
@@ -269,33 +274,30 @@ class _StartMenu extends State<StartMenu> {
 
     if (loginState) {
       return Scaffold(
+          endDrawerEnableOpenDragGesture: false,
           appBar: AppBar(
             title: Text(title[context.watch<OnItemClick>().index]),
             titleSpacing: 0.0,
             actions: [
               Builder(
-                builder: (context) => Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.notifications_none),
-                      onPressed: () {
-                        context.read<OnNotifyClick>().onclick(false);
-                        Scaffold.of(context).openEndDrawer();
-                      },
-                    ),
-                    Positioned(
-                      right: 10.0,
-                      top: 13.0,
-                      child: Icon(Icons.brightness_1,
-                          color: context.watch<OnNotifyClick>().notify
-                              ? Colors.red
-                              : Colors.transparent,
-                          size: 9.0),
-                    )
-                  ],
+                builder: (context) => Badge(
+                  padding: const EdgeInsets.fromLTRB(5.0, 3.0, 5.0, 5.0),
+                  position: BadgePosition.topEnd(top: 1, end: 2),
+                  toAnimate: false,
+                  badgeContent: Text(
+                    '${Provider.of<OnNotifyClick>(context, listen: false).newNotifications}',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.notifications_none),
+                    onPressed: () {
+                      context.read<OnNotifyClick>().onclick(false);
+                      //context.read<OnNotifyClick>().newNotification(1); //refresh
+                      Scaffold.of(context).openEndDrawer();
+                    },
+                  ),
                 ),
-              )
+              ),
             ],
           ),
           drawer: Theme(

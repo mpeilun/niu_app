@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 
 class OnNotifyClick with ChangeNotifier{
-  bool notification = true;
-  bool get notify => notification;
+  bool isNotification = true;
+  bool get noti => isNotification;
+
 
   void onclick(bool index){
-    notification = index;
+    isNotification = index;
+    notifyListeners();
+  }
+
+  int notifications = 0; //新的通知數量
+  int get newNotifications => notifications;
+
+  void newNotification(int index){
+    notifications = index;
     notifyListeners();
   }
 }
