@@ -33,6 +33,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
   double progress = 0;
   bool dataLoaded = false;
   bool signUpClicked = false;
+  double opacity = 0.5;
   String url = '';
   List data = [];
   List cleanJS = [
@@ -46,6 +47,9 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
   void getEventInfo(String js) async {
     data.clear();
     for (int i = 1; i <= 30; i++) {
+      setState(() {
+        opacity = 0.5;
+      });
       await webViewController!.evaluateJavascript(source: js);
       await Future.delayed(Duration(milliseconds: 1000), () {});
       print('計時器 $i');
@@ -56,11 +60,14 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
 
       if (loadState == '活動詳細內容') {
         print('載入完成');
+        setState(() {
+          opacity = 0;
+        });
 
         for (int i = 2;
             await webViewController!.evaluateJavascript(
                     source:
-                        'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(1)")') !=
+                        'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(1)").innerText') !=
                 null;
             i++) {
           print(i);
@@ -169,6 +176,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
         print('載入完成');
         setState(() {
           dataLoaded = true;
+          opacity = 1;
         });
         break;
       } else if (i == 30) {
@@ -241,91 +249,84 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
         Expanded(
           child: Stack(
             children: [
-              AbsorbPointer(
-                absorbing: !(dataLoaded && signUpClicked),
-                child: Opacity(
-                  opacity: dataLoaded && signUpClicked?1:0.01,
-                  child: InAppWebView(
-                    key: eventInfo,
-                    initialOptions: options,
-                    onWebViewCreated: (controller) async {
-                      webViewController = controller;
+              InAppWebView(
+                key: eventInfo,
+                initialOptions: options,
+                onWebViewCreated: (controller) async {
+                  webViewController = controller;
 
-                      controller.loadUrl(
-                          urlRequest: URLRequest(
-                              url: Uri.parse(
-                                  'https://syscc.niu.edu.tw/Activity/ApplyList.aspx')));
-                    },
-                    onLoadStart: (controller, url) async {
-                      setState(() {
-                        this.url = url.toString();
-                      });
-                    },
-                    androidOnPermissionRequest:
-                        (controller, origin, resources) async {
-                      return PermissionRequestResponse(
-                          resources: resources,
-                          action: PermissionRequestResponseAction.GRANT);
-                    },
-                    shouldOverrideUrlLoading:
-                        (controller, navigationAction) async {
-                      var uri = navigationAction.request.url!;
+                  controller.loadUrl(
+                      urlRequest: URLRequest(
+                          url: Uri.parse(
+                              'https://syscc.niu.edu.tw/Activity/ApplyList.aspx')));
+                },
+                onLoadStart: (controller, url) async {
+                  setState(() {
+                    this.url = url.toString();
+                  });
+                },
+                androidOnPermissionRequest:
+                    (controller, origin, resources) async {
+                  return PermissionRequestResponse(
+                      resources: resources,
+                      action: PermissionRequestResponseAction.GRANT);
+                },
+                shouldOverrideUrlLoading: (controller, navigationAction) async {
+                  var uri = navigationAction.request.url!;
 
-                      if (![
-                        "http",
-                        "https",
-                        "file",
-                        "chrome",
-                        "data",
-                        "javascript",
-                        "about"
-                      ].contains(uri.scheme)) {
-                        return NavigationActionPolicy.CANCEL;
-                      } //非上述條件，不做任何事
-                      return NavigationActionPolicy.ALLOW;
-                    },
-                    onLoadStop: (controller, url) async {
-                      print("onLoadStop $url");
-                      setState(() {
-                        this.url = url.toString();
-                      });
-                      if (url.toString() ==
+                  if (![
+                    "http",
+                    "https",
+                    "file",
+                    "chrome",
+                    "data",
+                    "javascript",
+                    "about"
+                  ].contains(uri.scheme)) {
+                    return NavigationActionPolicy.CANCEL;
+                  } //非上述條件，不做任何事
+                  return NavigationActionPolicy.ALLOW;
+                },
+                onLoadStop: (controller, url) async {
+                  print("onLoadStop $url");
+                  setState(() {
+                    this.url = url.toString();
+                  });
+                  if (url.toString() ==
                           'https://syscc.niu.edu.tw/Activity/ApplyList.aspx' &&
-                          !dataLoaded)
-                        getEventInfo(widget.eventJS);
-                      else if (url.toString().contains(
-                          'https://syscc.niu.edu.tw/Activity/SignManagement/AddStdSignData.aspx'))
-                        print('填寫資料');
-                    },
-                    onLoadResource: (InAppWebViewController controller,
-                        LoadedResource resource) {},
-                    onLoadError: (controller, url, code, message) {},
-                    onProgressChanged: (controller, progress) {
-                      setState(() {
-                        this.progress = progress / 100;
-                      });
-                    },
-                    onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                      setState(() {
-                        this.url = url.toString();
-                      });
-                      print('onUpdateVisitedHistory:' + url.toString());
-                    },
-                    onConsoleMessage: (controller, consoleMessage) {
-                      print(consoleMessage);
-                    },
-                    onJsAlert: (InAppWebViewController controller,
-                        JsAlertRequest jsAlertRequest) async {
-                      showToast(jsAlertRequest.message!);
-                      Navigator.pop(context, true);
-                      print(jsAlertRequest.message!);
-                      print("Logout and Clean cache");
-                      return JsAlertResponse(
-                          handledByClient: true,
-                          action: JsAlertResponseAction.CONFIRM);
-                    },
-                  ),
-                ),
+                      !dataLoaded)
+                    getEventInfo(widget.eventJS);
+                  else if (url.toString().contains(
+                      'https://syscc.niu.edu.tw/Activity/SignManagement/AddStdSignData.aspx'))
+                    print('填寫資料');
+                },
+                onLoadResource: (InAppWebViewController controller,
+                    LoadedResource resource) {},
+                onLoadError: (controller, url, code, message) {},
+                onProgressChanged: (controller, progress) {
+                  setState(() {
+                    this.progress = progress / 100;
+                  });
+                },
+                onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                  setState(() {
+                    this.url = url.toString();
+                  });
+                  print('onUpdateVisitedHistory:' + url.toString());
+                },
+                onConsoleMessage: (controller, consoleMessage) {
+                  print(consoleMessage);
+                },
+                onJsAlert: (InAppWebViewController controller,
+                    JsAlertRequest jsAlertRequest) async {
+                  showToast(jsAlertRequest.message!);
+                  Navigator.pop(context, true);
+                  print(jsAlertRequest.message!);
+                  print("Logout and Clean cache");
+                  return JsAlertResponse(
+                      handledByClient: true,
+                      action: JsAlertResponseAction.CONFIRM);
+                },
               ),
               Visibility(
                 visible: !dataLoaded,
@@ -336,28 +337,31 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
               Visibility(
                 visible: dataLoaded && !signUpClicked,
                 child: data.isNotEmpty
-                    ? ListView.separated(
-                        itemCount: data.length,
-                        separatorBuilder: (BuildContext context, int index) =>
-                            Divider(),
-                        itemBuilder: (BuildContext context, int index) =>
-                            Column(
-                              children: [
-                                ListTile(
-                                  title: Text(
-                                    data[index][1],
-                                    textAlign: TextAlign.end,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  leading: Text(
-                                    data[index][0],
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ],
-                            ))
+                    ? Container(
+                        color: Colors.grey.shade200,
+                        child: ListView.separated(
+                            itemCount: data.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) => Divider(),
+                            itemBuilder: (BuildContext context, int index) =>
+                                Column(
+                                  children: [
+                                    ListTile(
+                                      title: Text(
+                                        data[index][1],
+                                        textAlign: TextAlign.end,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      leading: Text(
+                                        data[index][0],
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                      )
                     : SizedBox(),
               ),
             ],

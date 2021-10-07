@@ -61,7 +61,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
         for (int i = 2;
             await webViewController!.evaluateJavascript(
                     source:
-                        'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child($i) > td:nth-child(1)")') !=
+                        'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child($i) > td:nth-child(1)").innerText') !=
                 null;
             i++) {
           print(i);
@@ -248,91 +248,85 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
         Expanded(
           child: Stack(
             children: [
-              AbsorbPointer(
-                absorbing: !(dataLoaded && buttonClicked),
-                child: Opacity(
-                  opacity: dataLoaded && buttonClicked?1:0.01,
-                  child: InAppWebView(
-                    key: eventInfo,
-                    initialOptions: options,
-                    onWebViewCreated: (controller) async {
-                      webViewController = controller;
+              InAppWebView(
+                key: eventInfo,
+                initialOptions: options,
+                onWebViewCreated: (controller) async {
+                  webViewController = controller;
 
-                      controller.loadUrl(
-                          urlRequest: URLRequest(
-                              url: Uri.parse(
-                                  'https://syscc.niu.edu.tw/Activity/MaintainSelPeople.aspx')));
-                    },
-                    onLoadStart: (controller, url) async {
-                      setState(() {
-                        this.url = url.toString();
-                      });
-                    },
-                    androidOnPermissionRequest:
-                        (controller, origin, resources) async {
-                      return PermissionRequestResponse(
-                          resources: resources,
-                          action: PermissionRequestResponseAction.GRANT);
-                    },
-                    shouldOverrideUrlLoading:
-                        (controller, navigationAction) async {
-                      var uri = navigationAction.request.url!;
+                  controller.loadUrl(
+                      urlRequest: URLRequest(
+                          url: Uri.parse(
+                              'https://syscc.niu.edu.tw/Activity/MaintainSelPeople.aspx')));
+                },
+                onLoadStart: (controller, url) async {
+                  setState(() {
+                    this.url = url.toString();
+                  });
+                },
+                androidOnPermissionRequest:
+                    (controller, origin, resources) async {
+                  return PermissionRequestResponse(
+                      resources: resources,
+                      action: PermissionRequestResponseAction.GRANT);
+                },
+                shouldOverrideUrlLoading:
+                    (controller, navigationAction) async {
+                  var uri = navigationAction.request.url!;
 
-                      if (![
-                        "http",
-                        "https",
-                        "file",
-                        "chrome",
-                        "data",
-                        "javascript",
-                        "about"
-                      ].contains(uri.scheme)) {
-                        return NavigationActionPolicy.CANCEL;
-                      } //非上述條件，不做任何事
-                      return NavigationActionPolicy.ALLOW;
-                    },
-                    onLoadStop: (controller, url) async {
-                      print("onLoadStop $url");
-                      setState(() {
-                        this.url = url.toString();
-                      });
-                      if (url.toString().contains(
-                          'https://syscc.niu.edu.tw/Activity/MaintainSign/signMaintain.aspx')) {
-                        getEventInfo(widget.js);
-                      } else {
-                        print('TEST LOGINNNNNNNNNNNNNNNNNNNNNNNN');
-                        _login();
-                      }
-                    },
-                    onLoadResource: (InAppWebViewController controller,
-                        LoadedResource resource) {},
-                    onLoadError: (controller, url, code, message) {},
-                    onProgressChanged: (controller, progress) {
-                      setState(() {
-                        this.progress = progress / 100;
-                      });
-                    },
-                    onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                      setState(() {
-                        this.url = url.toString();
-                      });
-                      print('onUpdateVisitedHistory:' + url.toString());
-                    },
-                    onConsoleMessage: (controller, consoleMessage) {
-                      print(consoleMessage);
-                    },
-                    onJsAlert: (InAppWebViewController controller,
-                        JsAlertRequest jsAlertRequest) async {
-                      showToast(jsAlertRequest.message!);
-                      Navigator.pop(context, true);
-                      print(jsAlertRequest.message!);
-                      print("Logout and Clean cache");
-                      return JsAlertResponse(
-                          handledByClient: true,
-                          action: JsAlertResponseAction.CONFIRM);
-                    },
-                  ),
-                ),
+                  if (![
+                    "http",
+                    "https",
+                    "file",
+                    "chrome",
+                    "data",
+                    "javascript",
+                    "about"
+                  ].contains(uri.scheme)) {
+                    return NavigationActionPolicy.CANCEL;
+                  } //非上述條件，不做任何事
+                  return NavigationActionPolicy.ALLOW;
+                },
+                onLoadStop: (controller, url) async {
+                  print("onLoadStop $url");
+                  setState(() {
+                    this.url = url.toString();
+                  });
+                  if (url.toString().contains(
+                      'https://syscc.niu.edu.tw/Activity/MaintainSign/signMaintain.aspx')) {
+                    getEventInfo(widget.js);
+                  } else {
+                    print('TEST LOGINNNNNNNNNNNNNNNNNNNNNNNN');
+                    _login();
+                  }
+                },
+                onLoadResource: (InAppWebViewController controller,
+                    LoadedResource resource) {},
+                onLoadError: (controller, url, code, message) {},
+                onProgressChanged: (controller, progress) {
+                  setState(() {
+                    this.progress = progress / 100;
+                  });
+                },
+                onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                  setState(() {
+                    this.url = url.toString();
+                  });
+                  print('onUpdateVisitedHistory:' + url.toString());
+                },
+                onConsoleMessage: (controller, consoleMessage) {
+                  print(consoleMessage);
+                },
+                onJsAlert: (InAppWebViewController controller,
+                    JsAlertRequest jsAlertRequest) async {
+                  showToast(jsAlertRequest.message!);
+                  Navigator.pop(context, true);
+                  print(jsAlertRequest.message!);
+                  print("Logout and Clean cache");
+                  return JsAlertResponse(
+                      handledByClient: true,
+                      action: JsAlertResponseAction.CONFIRM);
+                },
               ),
               Visibility(
                 visible: !dataLoaded,
@@ -343,74 +337,77 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
               Visibility(
                 visible: dataLoaded && !buttonClicked,
                 child: dataLoaded
-                    ? ListView.separated(
-                        itemCount: 4,
-                        separatorBuilder: (BuildContext context, int index) =>
-                            Divider(),
-                        itemBuilder: (BuildContext context, int index) =>
-                            (index == 3)
-                                ? ExpansionTile(
-                                    key: PageStorageKey(
-                                        'event_signed' + index.toString()),
-                                    title: Text(
-                                      '其他資料',
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    children: [
-                                      ListView.separated(
-                                          key: PageStorageKey(
-                                              'event_signed_listview_other'),
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.vertical,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemCount: data.length - 3,
-                                          separatorBuilder:
-                                              (BuildContext context,
-                                                      int index) =>
-                                                  Divider(),
-                                          itemBuilder: (BuildContext context,
-                                                  int index) =>
-                                              Column(
-                                                children: [
-                                                  ListTile(
-                                                    title: Text(
-                                                      data[index][1],
-                                                      textAlign: TextAlign.end,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    leading: Text(
-                                                      data[index][0],
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  )
-                                                ],
-                                              ))
-                                    ],
-                                  )
-                                : Column(
-                                    children: [
-                                      ListTile(
-                                        title: Text(
-                                          data[index][1],
-                                          textAlign: TextAlign.end,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        leading: Text(
-                                          data[index][0],
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                    ? Container(
+                  color: Colors.grey.shade200,
+                      child: ListView.separated(
+                          itemCount: 4,
+                          separatorBuilder: (BuildContext context, int index) =>
+                              Divider(),
+                          itemBuilder: (BuildContext context, int index) =>
+                              (index == 3)
+                                  ? ExpansionTile(
+                                      key: PageStorageKey(
+                                          'event_signed' + index.toString()),
+                                      title: Text(
+                                        '其他資料',
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                    ],
-                                  ))
+                                      children: [
+                                        ListView.separated(
+                                            key: PageStorageKey(
+                                                'event_signed_listview_other'),
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.vertical,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            itemCount: data.length - 3,
+                                            separatorBuilder:
+                                                (BuildContext context,
+                                                        int index) =>
+                                                    Divider(),
+                                            itemBuilder: (BuildContext context,
+                                                    int index) =>
+                                                Column(
+                                                  children: [
+                                                    ListTile(
+                                                      title: Text(
+                                                        data[index][1],
+                                                        textAlign: TextAlign.end,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold),
+                                                      ),
+                                                      leading: Text(
+                                                        data[index][0],
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ))
+                                      ],
+                                    )
+                                  : Column(
+                                      children: [
+                                        ListTile(
+                                          title: Text(
+                                            data[index][1],
+                                            textAlign: TextAlign.end,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          leading: Text(
+                                            data[index][0],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                    )
                     : SizedBox(),
               ),
             ],
