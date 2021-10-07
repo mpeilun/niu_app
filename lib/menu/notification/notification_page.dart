@@ -20,29 +20,6 @@ class _NotificationDrawer extends State<NotificationDrawer> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    empty();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-
-    empty();
-  }
-
-  void empty(){
-    setState(() {
-      if(notificationItems.length == 0){
-        isEmpty = true;
-      }
-    });
-  }
-
   void _onRefresh() async {
     await Future.delayed(Duration(milliseconds: 1000));
     context.read<OnNotifyClick>().newNotification(1); //refresh
@@ -60,81 +37,112 @@ class _NotificationDrawer extends State<NotificationDrawer> {
           context.read<OnNotifyClick>().newNotification(0);
           return true;
         },
-        child: Scaffold(
-          drawerEnableOpenDragGesture: false,
-          appBar: AppBar(
-            title: Text('通知'),
-          ),
-          body: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Drawer(
-              child: SmartRefresher(
-                enablePullDown: true,
-                controller: _refreshController,
-                onRefresh: _onRefresh,
-                header: WaterDropHeader(),
-                child: isEmpty
-                    ? Container(
-                  child: Center(
-                    child: Text(
-                      '目前沒有通知',
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                )
-                    : ListView.builder(
-                    itemBuilder: (BuildContext context, int index) {
-                      bool isNewNotification = false;
-                      if (index <
-                          context.watch<OnNotifyClick>().newNotifications) {
-                        isNewNotification = true;
-                      }
-                      return Dismissible(
-                              background: buildSwipeActionLeft(),
-                              secondaryBackground: buildSwipeActionRight(),
-                              onDismissed: (direction) {
-                                setState(() {
-                                  notificationItems.removeAt(index);
-                                });
-                                empty();
-                              },
-                              key: UniqueKey(),
-                              child: Column(
-                                children: [
-                                  Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      ListTile(
-                                        leading: Icon(
-                                          notificationItems[index].icon,
-                                          size: 40.0,
-                                        ),
-                                        title: Text(
-                                            notificationItems[index].title),
-                                        onTap: () {},
-                                      ),
-                                      Positioned(
-                                        top: 6.0,
-                                        left: 8.0,
-                                        child: Icon(Icons.brightness_1,
-                                            color: isNewNotification
-                                                ? Colors.red
-                                                : Colors.transparent,
-                                            size: 9.0),
-                                      )
-                                    ],
-                                  ),
-                                  Divider(
-                                    thickness: 1.2,
-                                    height: .0,
-                                  )
-                                ],
+        child: GestureDetector(
+          onHorizontalDragStart: (details) {
+            return;
+          },
+          child: Scaffold(
+            drawerEnableOpenDragGesture: false,
+            appBar: AppBar(
+              title: Text('通知'),
+            ),
+            body: Container(
+              width: MediaQuery.of(context).size.width,
+              child: AbsorbPointer(
+                absorbing: isDragging,
+                child: Drawer(
+                  child: SmartRefresher(
+                    enablePullDown: true,
+                    controller: _refreshController,
+                    onRefresh: _onRefresh,
+                    header: WaterDropHeader(),
+                    child: isEmpty
+                        ? Container(
+                            child: Center(
+                              child: Text(
+                                '目前沒有通知',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold),
                               ),
-                            );
-                    },
-                    itemCount: notificationItems.length),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemBuilder: (BuildContext context, int index) {
+                              bool isNewNotification = false;
+                              if (index <
+                                  Provider.of<OnNotifyClick>(context,
+                                          listen: false)
+                                      .newNotifications) {
+                                isNewNotification = true;
+                              }
+                              return Dismissible(
+                                resizeDuration: Duration(milliseconds: 100),
+                                movementDuration: Duration(milliseconds: 150),
+                                background: buildSwipeActionLeft(),
+                                secondaryBackground: buildSwipeActionRight(),
+                                onDismissed: (direction) {
+                                  setState(() {
+                                    isDragging = true;
+                                    notificationItems.removeAt(index);
+                                    if (index <
+                                        Provider.of<OnNotifyClick>(context,
+                                                listen: false)
+                                            .newNotifications) {
+                                      context
+                                          .read<OnNotifyClick>()
+                                          .newNotification(
+                                              Provider.of<OnNotifyClick>(
+                                                          context,
+                                                          listen: false)
+                                                      .newNotifications -
+                                                  1);
+                                    }
+                                    Future.delayed(Duration(milliseconds: 150),
+                                        () {
+                                      setState(() {
+                                        isDragging = false;
+                                      });
+                                    });
+                                  });
+                                },
+                                key: UniqueKey(),
+                                child: Column(
+                                  children: [
+                                    Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        ListTile(
+                                          leading: Icon(
+                                            notificationItems[index].icon,
+                                            size: 40.0,
+                                          ),
+                                          title: Text(
+                                              notificationItems[index].title),
+                                          onTap: () {},
+                                        ),
+                                        Positioned(
+                                          top: 6.0,
+                                          left: 8.0,
+                                          child: Icon(Icons.brightness_1,
+                                              color: isNewNotification
+                                                  ? Colors.red
+                                                  : Colors.transparent,
+                                              size: 9.0),
+                                        )
+                                      ],
+                                    ),
+                                    Divider(
+                                      thickness: 1.2,
+                                      height: .0,
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                            itemCount: notificationItems.length),
+                  ),
+                ),
               ),
             ),
           ),

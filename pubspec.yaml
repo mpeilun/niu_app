@@ -58,6 +58,7 @@ dependencies:
   font_awesome_flutter: ^9.1.0
   syncfusion_flutter_pdfviewer: ^19.3.44-beta
   pull_to_refresh: ^2.0.0
+  badges: ^2.0.1
 
 dev_dependencies:
   flutter_test:
