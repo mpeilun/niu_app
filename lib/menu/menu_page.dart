@@ -228,6 +228,7 @@ class _StartMenu extends State<StartMenu> {
 
     if (loginState) {
       return Scaffold(
+          endDrawerEnableOpenDragGesture: false,
           appBar: AppBar(
             title: Text(title[context.watch<OnItemClick>().index]),
             titleSpacing: 0.0,
@@ -240,7 +241,7 @@ class _StartMenu extends State<StartMenu> {
                       icon: Icon(Icons.notifications_none),
                       onPressed: () {
                         context.read<OnNotifyClick>().onclick(false);
-                        //context.watch<OnNotifyClick>().newNotifications;
+                        //context.read<OnNotifyClick>().newNotification(1); //refresh
                         Scaffold.of(context).openEndDrawer();
                       },
                     ),
@@ -248,7 +249,7 @@ class _StartMenu extends State<StartMenu> {
                       right: 10.0,
                       top: 13.0,
                       child: Icon(Icons.brightness_1,
-                          color: context.watch<OnNotifyClick>().notify
+                          color: context.watch<OnNotifyClick>().noti
                               ? Colors.red
                               : Colors.transparent,
                           size: 9.0),
