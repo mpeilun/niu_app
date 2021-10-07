@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:niu_app/TimeTable/Calendar/Calendar.dart';
 import 'package:niu_app/TimeTable/BuildTimeTable/Class.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/service/SemesterDate.dart';
+
 
 class CalenderMessageType {
   CalenderMessageType(this.week, this._class, this.calendar);
@@ -18,127 +20,11 @@ class CalenderMessageType {
   }
 }
 
-//----
-class CalenderMessage {
-  final List<CalenderMessageType> calenderList;
-
-  CalenderMessage({required this.calenderList});
-
-  set(BuildContext context, CalenderMessageType id) {
-    Calendar calendar = id.calendar;
-    String calendarName = calendar.name();
-    if (calendarName == "null") calendarName = "";
-    String calendarRange = calendar.range();
-    if (calendarRange == "null") calendarRange = "";
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        int? type = calendar.type();
-        if (type == -1) type = 0;
-        String? name = calendar.name();
-        String? range = calendar.range();
-        List<bool> isSelected = <bool>[false, false, false];
-        isSelected[type] = true;
-        return SingleChildScrollView(
-          child: AlertDialog(content: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              height: 284,
-              child: Center(
-                child: Column(
-                  children: [
-                    ToggleButtons(
-                      children: <Widget>[
-                        Text("作業"),
-                        Text("考試"),
-                        Text("報告"),
-                      ],
-                      onPressed: (int index) {
-                        type = index;
-                        setState(() {
-                          for (int buttonIndex = 0;
-                              buttonIndex < isSelected.length;
-                              buttonIndex++) {
-                            if (buttonIndex == index) {
-                              isSelected[buttonIndex] = true;
-                            } else {
-                              isSelected[buttonIndex] = false;
-                            }
-                          }
-                        });
-                      },
-                      isSelected: isSelected,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(15),
-                      child: TextFormField(
-                        initialValue: calendarName,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: '名稱',
-                          hintText: '清輸入名稱',
-                        ),
-                        onChanged: (text) {
-                          if (text != "") {
-                            name = text;
-                            name!.replaceAll(",", "");
-                          } else
-                            name = null;
-                        },
-                      ),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.all(15),
-                        child: TextFormField(
-                          initialValue: calendarRange,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: '內容',
-                            hintText: "清輸入內容",
-                          ),
-                          onChanged: (text) {
-                            if (text != "") {
-                              range = text;
-                              range!.replaceAll(",", "");
-                            } else
-                              range = null;
-                          },
-                        )),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        RaisedButton(
-                          onPressed: () {
-                            WeekCalendar().del(id._class, id.week);
-                          },
-                          child: Icon(Icons.delete),
-                        ),
-                        RaisedButton(
-                          onPressed: () {
-                            WeekCalendar().push(id._class,
-                                Calendar(type, name, range), id.week);
-                          },
-                          child: Icon(Icons.check),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
-          })),
-        );
-      },
-    );
-  }
-}
-//----
-
 class ModifyCalender extends StatefulWidget {
   final CalenderMessageType calenderMessage;
-  ModifyCalender({required this.calenderMessage});
+  final SemesterDate semester;
+  ModifyCalender({required this.calenderMessage,required this.semester});
+
 
   @override
   _ModifyCalenderState createState() => _ModifyCalenderState();
@@ -146,7 +32,18 @@ class ModifyCalender extends StatefulWidget {
 
 class _ModifyCalenderState extends State<ModifyCalender> {
   List<bool> isSelected = <bool>[false, false, false];
+  List<String> chineseWeekDayNum = [
+    "一",
+    "二",
+    "三",
+    "四",
+    "五",
+    "六",
+    "日"
+  ];
   late Calendar calendar;
+  late CalenderMessageType thisType;
+  late SemesterDate semester;
   late String calendarName;
   late String calendarRange;
   late int calendarType;
@@ -155,8 +52,14 @@ class _ModifyCalenderState extends State<ModifyCalender> {
   void initState() {
     super.initState();
     calendar = widget.calenderMessage.calendar;
+    thisType=widget.calenderMessage;
+    semester = widget.semester;
     calendarName = calendar.name();
+    if(calendarName == "null")
+      calendarName="";
     calendarRange = calendar.range();
+    if(calendarRange == "null")
+      calendarRange="";
     if(calendar.type() == -1){
       calendarType = 0;
     }else{
@@ -173,7 +76,11 @@ class _ModifyCalenderState extends State<ModifyCalender> {
           child: Column(
             children: [
               SizedBox(height: 5,),
-              Text('$calendarName, $calendarRange', style: TextStyle(fontSize: 18),),
+              Text(
+                  "${thisType._class.name} @ ${DateFormat("MM/dd").format(thisType.date(semester))}(${chineseWeekDayNum[thisType.date(semester).weekday-1]})",
+                  style: TextStyle(fontSize: 18),
+              ),
+              //Text('$calendarName, $calendarRange', style: TextStyle(fontSize: 18),),
               SizedBox(height: 5,),
               ToggleButtons(
                 children: <Widget>[
@@ -204,12 +111,12 @@ class _ModifyCalenderState extends State<ModifyCalender> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: '名稱',
-                    hintText: '清輸入名稱',
+                    hintText: '請輸入名稱',
                   ),
                   onChanged: (text) {
                     if (text != "") {
-                      calendarRange = text;
-                      calendarRange.replaceAll(",", "");
+                      calendarName = text;
+                      calendarName.replaceAll(",", "");
                     }
                   },
                 ),
@@ -222,7 +129,7 @@ class _ModifyCalenderState extends State<ModifyCalender> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: '內容',
-                      hintText: "清輸入內容",
+                      hintText: "請輸入內容",
                     ),
                     onChanged: (text) {
                       if (text != "") {

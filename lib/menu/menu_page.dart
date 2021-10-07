@@ -16,6 +16,7 @@ import 'package:niu_app/provider/notification_provider.dart';
 import 'package:niu_app/school%EF%BC%BFschedule.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
+import 'package:niu_app/service/SemesterDate.dart';
 import 'package:niu_app/testcode/test_calendar.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,6 +42,7 @@ class StartMenu extends StatefulWidget {
 class _StartMenu extends State<StartMenu> {
   HeadlessInAppWebView? headlessWebView;
   late SharedPreferences prefs;
+  late SemesterDate semester = SemesterDate();
   String url = "";
   bool loginState = false;
   bool reLogin = false;
@@ -212,7 +214,7 @@ class _StartMenu extends State<StartMenu> {
                             press: () {
                               showDialog(
                                 context: context,
-                                builder: (BuildContext context) => TestCalendar(),
+                                builder: (BuildContext context) => TestCalendar(semester: semester,),
                               );
                             },
                           ),

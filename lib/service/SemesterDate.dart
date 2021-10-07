@@ -53,14 +53,11 @@ class SemesterDate{
   }
 
   SemesterDate(){
-    /*
     DateTime now = DateTime.now();
     nowYear = now.year;
     nowMonths = now.month;
     nowDay = now.day;
     semester();
-
-     */
   }
   Future<void> semester() async{
     var jsonString = await Dio().get('https://my-json-server.typicode.com/ken6078/NiuSemesterJSON/db');
