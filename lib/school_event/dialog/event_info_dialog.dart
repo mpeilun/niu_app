@@ -75,9 +75,9 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
             await webViewController!.evaluateJavascript(
                 source:
                     'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(1)").innerText'),
-            await webViewController!.evaluateJavascript(
+            ((await webViewController!.evaluateJavascript(
                 source:
-                    'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(2)").innerText')
+                    'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(2)").innerText'))as String).trim()
           ]);
 
           setState(() {
@@ -348,16 +348,16 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                               Column(
                                 children: [
                                   ListTile(
+                                    leading: Text(
+                                      data[index][0],
+                                      style:
+                                      TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0),
+                                    ),
                                     title: Text(
                                       data[index][1],
                                       textAlign: TextAlign.end,
                                       style:
-                                          TextStyle(fontWeight: FontWeight.bold),
-                                    ),
-                                    leading: Text(
-                                      data[index][0],
-                                      style:
-                                          TextStyle(fontWeight: FontWeight.bold),
+                                          TextStyle(fontSize: 14.0),
                                     ),
                                   ),
                                 ],

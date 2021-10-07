@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:html/dom.dart' as prefix;
-import 'package:html/dom_parsing.dart';
 import 'package:html/parser.dart';
 
 import 'package:niu_app/components/niu_icon_loading.dart';
