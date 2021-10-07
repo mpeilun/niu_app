@@ -48,6 +48,8 @@ class ClassList {
         false,
         false,
         false,
+        false,
+        false,
         false
       ]);
     }
@@ -55,6 +57,7 @@ class ClassList {
     ///<--產生pageList-->///
     int weekDay = 1;
     int time = 0;
+    int endTime = 0;
     //星期
     _tiles.add(NullClassCard.build());
     _staggeredTiles.add(StaggeredTile.count(1, 1.1));
@@ -63,6 +66,8 @@ class ClassList {
     }
     putTime(0);
     for (int i = 0; i < _classList.length; i++) {
+      print(_classList[i].save());
+      if (endTime < _classList[i].endTime) endTime = _classList[i].endTime;
       //換行
       while (time != _classList[i].startTime) {
         for (int j = weekDay; j <= 5; j++) {
@@ -88,7 +93,15 @@ class ClassList {
         tableInfo[_classList[i].weekDay][j] = true;
         //print( "Have Class " + _classList[i].weekDay.toString() + " " + j.toString() + " because " + _classList[i].name);
       }
-      //todo: 最後一節偵測 補完時間
+      //最後一節偵測 補完時間
+      if (i == _classList.length - 1) {
+        for (int j = _classList[i].weekDay + 1; j < 5; j++)
+          if (!tableInfo[j][time]) putNullClass();
+        for (int j = time + 1; j <= endTime; j++) {
+          putTime(j);
+          for (int k = 1; k <= 5; k++) if (!tableInfo[k][j]) putNullClass();
+        }
+      }
     }
   }
 

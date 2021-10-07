@@ -1,11 +1,10 @@
-import 'dart:async';
-import 'dart:collection';
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:dio/dio.dart';
+import 'package:html/dom.dart' as prefix;
+import 'package:html/dom_parsing.dart';
+import 'package:html/parser.dart';
+
+import 'package:niu_app/components/niu_icon_loading.dart';
 
 class AnnouncementPage extends StatefulWidget {
   @override
@@ -13,45 +12,16 @@ class AnnouncementPage extends StatefulWidget {
 }
 
 class _AnnouncementPageState extends State<AnnouncementPage> {
-  final GlobalKey webViewKey = GlobalKey();
-
-  InAppWebViewController? webViewController;
-  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
-      crossPlatform: InAppWebViewOptions(
-        useShouldOverrideUrlLoading: true,
-        mediaPlaybackRequiresUserGesture: false,
-        allowFileAccessFromFileURLs: true,
-      ),
-      android: AndroidInAppWebViewOptions(
-        useHybridComposition: true,
-        allowFileAccess: true,
-      ),
-      ios: IOSInAppWebViewOptions(
-        allowsInlineMediaPlayback: true,
-      ));
-
-  late PullToRefreshController pullToRefreshController;
-  String url = "";
-  double progress = 0;
-  final urlController = TextEditingController();
-
+  List contents = [];
+  List<String> links = [];
+  Future<bool> isFinish() async{
+    await getPost(1);
+    return true;
+  }
   @override
   void initState() {
     super.initState();
 
-    pullToRefreshController = PullToRefreshController(
-      options: PullToRefreshOptions(
-        color: Colors.blue,
-      ),
-      onRefresh: () async {
-        if (Platform.isAndroid) {
-          webViewController?.reload();
-        } else if (Platform.isIOS) {
-          webViewController?.loadUrl(
-              urlRequest: URLRequest(url: await webViewController?.getUrl()));
-        }
-      },
-    );
   }
 
   @override
@@ -61,96 +31,48 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
-        body: SafeArea(
-          child: Expanded(
-            child: Stack(
-              children: [
-                InAppWebView(
-                  key: webViewKey,
-                  initialUrlRequest: URLRequest(
-                      url: Uri.parse(
-                          "https://acade.niu.edu.tw/NIU/MainFrame.aspx")),
-                  initialOptions: options,
-                  pullToRefreshController: pullToRefreshController,
-                  onWebViewCreated: (controller) {
-                    webViewController = controller;
-                  },
-                  onLoadStart: (controller, url) {
-                    setState(() {
-                      this.url = url.toString();
-                      urlController.text = this.url;
-                    });
-                  },
-                  androidOnPermissionRequest:
-                      (controller, origin, resources) async {
-                    return PermissionRequestResponse(
-                        resources: resources,
-                        action: PermissionRequestResponseAction.GRANT);
-                  },
-                  shouldOverrideUrlLoading:
-                      (controller, navigationAction) async {
-                    var uri = navigationAction.request.url!;
 
-                    if (![
-                      "http",
-                      "https",
-                      "file",
-                      "chrome",
-                      "data",
-                      "javascript",
-                      "about"
-                    ].contains(uri.scheme)) {
-                      if (await canLaunch(url)) {
-                        // Launch the App
-                        await launch(
-                          url,
-                        );
-                        // and cancel the request
-                        return NavigationActionPolicy.CANCEL;
-                      }
-                    }
+    return FutureBuilder(
+        future: isFinish(), // the function to get your data from firebase or firestore
+        builder: (BuildContext context, AsyncSnapshot snap) {
+          if (snap.data == null) {
+            return NiuIconLoading(size: 80);
+            //return loading widget
+          } else {
+            return Center(
+                child: ListView.builder(
+                  itemCount: contents.length,
+                  itemBuilder: (context, index) {
+                    var item = contents[index];
+                    return ListTile(
+                      //leading: Icon(Icons.event_seat),
+                      title: Text(item.text.replaceAll("\n","").replaceAll(" ","")),
+                      onTap: (){
 
-                    return NavigationActionPolicy.ALLOW;
+                      },
+                      //subtitle: Text('${content[index].price}'),
+                    );
                   },
-                  onLoadStop: (controller, url) async {
-                    pullToRefreshController.endRefreshing();
-                    setState(() {
-                      this.url = url.toString();
-                      urlController.text = this.url;
-                    });
-                  },
-                  onLoadError: (controller, url, code, message) {
-                    pullToRefreshController.endRefreshing();
-                  },
-                  onProgressChanged: (controller, progress) {
-                    if (progress == 100) {
-                      pullToRefreshController.endRefreshing();
-                    }
-                    setState(() {
-                      this.progress = progress / 100;
-                      urlController.text = this.url;
-                    });
-                  },
-                  onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                    setState(() {
-                      this.url = url.toString();
-                      urlController.text = this.url;
-                    });
-                  },
-                  onConsoleMessage: (controller, consoleMessage) {
-                    print(consoleMessage);
-                  },
-                ),
-                progress < 1.0
-                    ? LinearProgressIndicator(value: progress)
-                    : Container(),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+                )
+            );
+          }
+        });
+  }
+
+  Future<void> getPost(int page) async{
+    Dio dio = new Dio();
+    Response res = await dio.get("https://www.niu.edu.tw/files/501-1000-1019-$page.php?Lang=zh-tw");
+    var document = parse(res.data);
+    var tempList = document.getElementsByClassName("h5");//print(tempList[i].text.replaceAll("\n","")  =>   [ 2021-07-26  ] 【公告】本校110學年度教務處行事曆
+    tempList.removeRange(0,8);
+    contents.addAll(tempList);
+    for(var content in contents){
+      if(content.children[1].attributes['href'][0].toString()==("/")){
+        links.add("https://academic.niu.edu.tw${content.children[1].attributes['href']}");
+      }
+      else{
+        links.add(content.children[1].attributes['href']);
+      }
+    }
   }
 }

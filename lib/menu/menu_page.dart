@@ -16,13 +16,14 @@ import 'package:niu_app/provider/notification_provider.dart';
 import 'package:niu_app/school%EF%BC%BFschedule.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
+import 'package:niu_app/testcode/test_calendar.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:niu_app/menu/drawer/about.dart';
 import 'package:niu_app/menu/drawer/announcement.dart';
 import 'package:niu_app/menu/drawer/report.dart';
 import 'package:niu_app/menu/drawer/setting.dart';
-import 'package:niu_app/menu/drawer/test_announcement.dart';
+import 'package:niu_app/menu/drawer/announcement.dart';
 import 'package:provider/src/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 
@@ -185,13 +186,53 @@ class _StartMenu extends State<StartMenu> {
                             },
                           ),
                           CustomIcons(
-                            title: '學校行事曆',
+                            title: '行事曆',
                             icon: MyFlutterApp.calendar,
                             size: 40.0,
                             press: () async {
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               prefs.clear(); //清空键值对
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SchoolSchedule(),
+                                      maintainState: false));
+                            },
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          CustomIcons(
+                            title: 'Test1',
+                            icon: Icons.alarm,
+                            size: 20.0,
+                            press: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) => TestCalendar(),
+                              );
+                            },
+                          ),
+                          CustomIcons(
+                            title: 'Test2',
+                            icon: Icons.alarm,
+                            size: 20.0,
+                            press: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Bus(),
+                                      maintainState: false));
+                            },
+                          ),
+                          CustomIcons(
+                            title: 'Test3',
+                            icon: Icons.alarm,
+                            size: 20.0,
+                            press: () async {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -218,7 +259,6 @@ class _StartMenu extends State<StartMenu> {
           );
         },
       ),
-      // TestAnnouncementPage(),
       AnnouncementPage(),
       SettingPage(),
       AboutPage(),
