@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io' as dartCookies;
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
@@ -56,12 +57,16 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
 
     if (dartCookies.Platform.isAndroid) {
       AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+      SystemChrome.setEnabledSystemUIOverlays([]);
     }
   }
 
   @override
   void dispose() {
     super.dispose();
+    if (dartCookies.Platform.isAndroid) {
+      SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    }
   }
 
   @override
@@ -187,7 +192,9 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                           }
                         },
                         onLoadResource: (InAppWebViewController controller,
-                            LoadedResource resource) async {},
+                            LoadedResource resource) async {
+                          print('onLoadResource: $resource');
+                        },
                         onLoadError: (controller, url, code, message) {},
                         onProgressChanged: (controller, progress) {
                           setState(() {
