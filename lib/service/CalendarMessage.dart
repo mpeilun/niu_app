@@ -44,8 +44,8 @@ class _ModifyCalenderState extends State<ModifyCalender> {
   late Calendar calendar;
   late CalenderMessageType thisType;
   late SemesterDate semester;
-  late String calendarName;
-  late String calendarRange;
+  late String? calendarName;
+  late String? calendarRange;
   late int calendarType;
 
   @override
@@ -116,7 +116,7 @@ class _ModifyCalenderState extends State<ModifyCalender> {
                   onChanged: (text) {
                     if (text != "") {
                       calendarName = text;
-                      calendarName.replaceAll(",", "");
+                      calendarName!.replaceAll(",", "");
                     }
                   },
                 ),
@@ -134,7 +134,7 @@ class _ModifyCalenderState extends State<ModifyCalender> {
                     onChanged: (text) {
                       if (text != "") {
                         calendarRange = text;
-                        calendarRange.replaceAll(",", "");
+                        calendarRange!.replaceAll(",", "");
                       }
                     },
                   )),
@@ -143,7 +143,7 @@ class _ModifyCalenderState extends State<ModifyCalender> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      WeekCalendar().del(widget.calenderMessage._class, widget.calenderMessage.week);
+                      WeekCalendar().del(widget.calenderMessage._class, widget.calenderMessage.week-1);
                       Navigator.pop(context);
                       showToast('刪除成功');
                     },
@@ -153,7 +153,7 @@ class _ModifyCalenderState extends State<ModifyCalender> {
                   ElevatedButton(
                     onPressed: () {
                       WeekCalendar().push(widget.calenderMessage._class,
-                          Calendar(calendarType, calendarName, calendarRange), widget.calenderMessage.week);
+                          Calendar(calendarType, calendarName, calendarRange), widget.calenderMessage.week-1);
                       Navigator.pop(context);
                       showToast('更改成功');
                     },
