@@ -289,7 +289,7 @@ class _StartMenu extends State<StartMenu> {
                   child: IconButton(
                     icon: Icon(Icons.notifications_none),
                     onPressed: () {
-                      context.read<OnNotifyClick>().onclick(false);
+                      context.read<OnNotifyClick>().isNewNotifications(false);
                       //context.read<OnNotifyClick>().newNotification(1); //refresh
                       Scaffold.of(context).openEndDrawer();
                     },

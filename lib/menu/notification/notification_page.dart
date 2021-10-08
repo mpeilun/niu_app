@@ -15,7 +15,6 @@ class NotificationDrawer extends StatefulWidget {
 
 class _NotificationDrawer extends State<NotificationDrawer>
     with SingleTickerProviderStateMixin {
-  bool isEmpty = false;
   late List<NotificationItem> notificationItems;
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
 
@@ -29,10 +28,11 @@ class _NotificationDrawer extends State<NotificationDrawer>
     notificationItems.insert(
         0, NotificationItem(icon: Icons.circle, title: 'gg'));
     context.read<OnNotifyClick>().setNotificationItem(notificationItems);
-    if (mounted)
+    if (mounted){
       setState(() {
-        isEmpty = false;
+        context.read<OnNotifyClick>().isNewNotifications(false);
       });
+    }
     _refreshController.refreshCompleted();
   }
 
@@ -53,7 +53,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
       notificationItems.clear();
     });
     setState(() {
-      isEmpty = true;
+      context.read<OnNotifyClick>().isNewNotifications(true);
     });
   }
 
@@ -105,7 +105,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
                 controller: _refreshController,
                 onRefresh: _onRefresh,
                 header: WaterDropHeader(),
-                child: isEmpty
+                child: Provider.of<OnNotifyClick>(context, listen: false).isNotification
                     ? Container(
                         child: Center(
                           child: Text(
@@ -153,7 +153,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
                                   }
                                   if(notificationItems.length == 0){
                                     setState(() {
-                                      isEmpty = true;
+                                      context.read<OnNotifyClick>().isNewNotifications(true);
                                     });
                                   }
                                 });

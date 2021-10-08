@@ -7,7 +7,7 @@ class OnNotifyClick with ChangeNotifier{
   bool get notification => isNotification;
 
 
-  void onclick(bool index){
+  void isNewNotifications(bool index){
     isNotification = index;
     notifyListeners();
   }
