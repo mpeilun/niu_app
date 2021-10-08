@@ -272,6 +272,7 @@ class _StartMenu extends State<StartMenu> {
                 height: 40,
                 width: 40,
                 child: FloatingActionButton(
+                  heroTag: 'test_1',
                   backgroundColor: Colors.red,
                   child: Icon(FontAwesomeIcons.bomb),
                   onPressed: () {
@@ -292,6 +293,7 @@ class _StartMenu extends State<StartMenu> {
                 height: 40,
                 width: 40,
                 child: FloatingActionButton(
+                  heroTag: 'test_2',
                   backgroundColor: Colors.red,
                   child: Icon(FontAwesomeIcons.bomb),
                   onPressed: () {
@@ -311,6 +313,7 @@ class _StartMenu extends State<StartMenu> {
                 height: 40,
                 width: 40,
                 child: FloatingActionButton(
+                  heroTag: 'test_3',
                   backgroundColor: Colors.red,
                   child: Icon(FontAwesomeIcons.bomb),
                   onPressed: () {

@@ -319,7 +319,10 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                 },
                 onJsAlert: (InAppWebViewController controller,
                     JsAlertRequest jsAlertRequest) async {
-                  showToast(jsAlertRequest.message!);
+                  showToast(jsAlertRequest.message!
+                      .replaceAll('報名資料維護可至「檢閱及修改個人報名資料」修改或取消報名!', '')
+                      .replaceAll('填寫資料', '')
+                      .replaceAll('\n', ''));
                   Navigator.pop(context, true);
                   print(jsAlertRequest.message!);
                   print("Logout and Clean cache");
