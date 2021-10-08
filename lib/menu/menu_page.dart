@@ -34,6 +34,8 @@ import '../zuvio.dart';
 
 import 'package:badges/badges.dart';
 
+import 'notification/notification_webview.dart';
+
 class StartMenu extends StatefulWidget {
   StartMenu({Key? key}) : super(key: key);
 
@@ -399,6 +401,8 @@ class _StartMenu extends State<StartMenu> {
             if (!reLogin) {
               print('登入成功');
               loginFinished();
+              loadDataFormPrefs(context);
+              runNotificationWebViewWebView(context);
             }
           }
         },

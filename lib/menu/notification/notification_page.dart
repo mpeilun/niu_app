@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/menu/notification/notificatioon_items.dart';
 import 'package:niu_app/provider/notification_provider.dart';
 import 'package:provider/src/provider.dart';
@@ -17,6 +18,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
     with SingleTickerProviderStateMixin {
   late List<NotificationItem> notificationItems;
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
+  List<IconData> iconList = [MenuIcon.icon_e_school, Icons.blur_on];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -25,10 +27,9 @@ class _NotificationDrawer extends State<NotificationDrawer>
     await Future.delayed(Duration(milliseconds: 1000));
     context.read<OnNotifyClick>().newNotification(1);
     //refresh
-    notificationItems.insert(
-        0, NotificationItem(icon: Icons.circle, title: 'gg'));
+    notificationItems.insert(0, NotificationItem(icon: 1, title: 'gg'));
     context.read<OnNotifyClick>().setNotificationItem(notificationItems);
-    if (mounted){
+    if (mounted) {
       setState(() {
         context.read<OnNotifyClick>().isNewNotifications(false);
       });
@@ -51,6 +52,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
     }
     await Future.delayed(Duration(milliseconds: 150), () {
       notificationItems.clear();
+      context.read<OnNotifyClick>().setNotificationItem(notificationItems);
     });
     setState(() {
       context.read<OnNotifyClick>().isNewNotifications(true);
@@ -105,7 +107,8 @@ class _NotificationDrawer extends State<NotificationDrawer>
                 controller: _refreshController,
                 onRefresh: _onRefresh,
                 header: WaterDropHeader(),
-                child: Provider.of<OnNotifyClick>(context, listen: false).isNotification
+                child: Provider.of<OnNotifyClick>(context, listen: false)
+                        .isNotification
                     ? Container(
                         child: Center(
                           child: Text(
@@ -151,9 +154,11 @@ class _NotificationDrawer extends State<NotificationDrawer>
                                                     .newNotifications -
                                                 1);
                                   }
-                                  if(notificationItems.length == 0){
+                                  if (notificationItems.length == 0) {
                                     setState(() {
-                                      context.read<OnNotifyClick>().isNewNotifications(true);
+                                      context
+                                          .read<OnNotifyClick>()
+                                          .isNewNotifications(true);
                                     });
                                   }
                                 });
@@ -197,7 +202,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
             children: [
               ListTile(
                 leading: Icon(
-                  notificationItems[index].icon,
+                  iconList[notificationItems[index].icon],
                   size: 40.0,
                 ),
                 title: Text(notificationItems[index].title),
