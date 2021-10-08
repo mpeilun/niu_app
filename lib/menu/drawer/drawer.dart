@@ -65,7 +65,7 @@ class _MyDrawer extends State<MyDrawer> {
                 text: '首頁',
                 onTap: () {
                   Navigator.of(context).pop();
-                  context.read<OnItemClick>().onclick(0);
+                  context.read<DrawerProvider>().onclick(0);
                 }),
             divider(),
             createDrawerItem(
@@ -73,16 +73,16 @@ class _MyDrawer extends State<MyDrawer> {
                 text: '公告',
                 onTap: () {
                   Navigator.of(context).pop();
-                  context.read<OnItemClick>().onclick(1);
+                  context.read<DrawerProvider>().onclick(1);
                 }),
             divider(),
             createDrawerItem(
-              size: 45.0,
+                size: 45.0,
                 icon: MyFlutterApp.calendar,
                 text: '行事曆',
                 onTap: () {
                   Navigator.of(context).pop();
-                  context.read<OnItemClick>().onclick(2);
+                  context.read<DrawerProvider>().onclick(2);
                 }),
             divider(),
             createDrawerItem(
@@ -90,7 +90,7 @@ class _MyDrawer extends State<MyDrawer> {
                 text: '設定',
                 onTap: () {
                   Navigator.of(context).pop();
-                  context.read<OnItemClick>().onclick(3);
+                  context.read<DrawerProvider>().onclick(3);
                 }),
             divider(),
             createDrawerItem(
@@ -98,7 +98,7 @@ class _MyDrawer extends State<MyDrawer> {
                 text: '關於',
                 onTap: () {
                   Navigator.of(context).pop();
-                  context.read<OnItemClick>().onclick(4);
+                  context.read<DrawerProvider>().onclick(4);
                 }),
             divider(),
             createDrawerItem(
@@ -113,7 +113,7 @@ class _MyDrawer extends State<MyDrawer> {
                       await SharedPreferences.getInstance();
                   prefs.clear();
                   Navigator.of(context).pop();
-                  context.read<OnItemClick>().onclick(0);
+                  context.read<DrawerProvider>().onclick(0);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -128,7 +128,7 @@ class _MyDrawer extends State<MyDrawer> {
                 text: '回報問題',
                 onTap: () {
                   Navigator.of(context).pop();
-                  context.read<OnItemClick>().onclick(5);
+                  context.read<DrawerProvider>().onclick(5);
                 }),
             SizedBox(height: 20.0),
           ],

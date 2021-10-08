@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/provider/notification_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,16 +17,14 @@ Future<void> loadDataFormPrefs(BuildContext context) async {
     print(rawData);
     final List<NotificationItem> initialData =
         NotificationItem.decode(rawData!);
-    context.read<OnNotifyClick>().initialNotificationItem(initialData);
+    context.read<NotificationProvider>().initialNotificationItem(initialData);
   }
 }
 
 Future<void> runNotificationWebViewWebView(BuildContext context) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   List<NotificationItem> notificationItems =
-      context.read<OnNotifyClick>().notificationItem;
-  int newNotificationCount = context.read<OnNotifyClick>().newNotifications;
-  bool haveNewNotification = context.read<OnNotifyClick>().isNotification;
+      context.read<NotificationProvider>().notificationItemList;
   List<EschoolData> eschoolData = [];
   late String semester;
 
@@ -108,9 +105,6 @@ Future<void> runNotificationWebViewWebView(BuildContext context) async {
                 semester: semester,
                 announcementCount: announcementCount,
                 workCount: workCount));
-            // notificationItems.add(NotificationItem(
-            //     icon: MenuIcon.icon_eschool,
-            //     title: '$courseName 公告:$announcementCount 作業:$workCount'));
           }
           print('---Eschool Data---');
           eschoolData.forEach((element) {
@@ -146,34 +140,44 @@ Future<void> runNotificationWebViewWebView(BuildContext context) async {
                   int work = int.parse(newData.workCount) -
                       int.parse(oldData.workCount);
                   if (announcement > 0) {
-                    newNotificationCount = tempCount++;
-                    haveNewNotification = true;
+                    tempCount++;
+                    context
+                        .read<NotificationProvider>()
+                        .setNewNotifications(true);
                     notificationItems.insert(
                         0,
                         NotificationItem(
                             icon: 0,
-                            title: '在【數位學習園區】中"' +
-                                newData.courseName +
-                                '"有　$announcement 筆新的公告'));
+                            title: newData.courseName +
+                                '\n有 $announcement 筆新的公告'));
                   }
                   if (work > 0) {
-                    newNotificationCount = tempCount++;
-                    haveNewNotification = true;
+                    tempCount++;
+                    context
+                        .read<NotificationProvider>()
+                        .setNewNotifications(true);
                     notificationItems.insert(
                         0,
                         NotificationItem(
                             icon: 0,
-                            title: '在【數位學習園區】中"' +
-                                newData.courseName +
-                                '"有　$work 筆新的作業'));
+                            title: newData.courseName + '\n有 $work 筆新的作業'));
                   }
                 }
               });
             });
 
             context
-                .read<OnNotifyClick>()
-                .setNotificationItem(notificationItems);
+                .read<NotificationProvider>()
+                .setNewNotificationsCount(tempCount);
+            context
+                .read<NotificationProvider>()
+                .setNotificationItemList(notificationItems);
+            print('---' +
+                context
+                    .read<NotificationProvider>()
+                    .newNotificationsCount
+                    .toString() +
+                '---');
 
             final String encodedData = EschoolData.encode(eschoolData);
             prefs.setString('eschool_data_key', encodedData);

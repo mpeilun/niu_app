@@ -3,43 +3,43 @@ import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/menu/notification/notificatioon_items.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class OnNotifyClick with ChangeNotifier {
-  bool isNotification = false;
-  bool get notification => isNotification;
+class NotificationProvider with ChangeNotifier {
+  bool _isNotification = false;
+  bool get isNotification => _isNotification;
 
-  void isNewNotifications(bool index) {
-    isNotification = index;
+  void setNewNotifications(bool index) {
+    _isNotification = index;
     notifyListeners();
   }
 
-  int notifications = 0; //新的通知數量
-  int get newNotifications => notifications;
+  int _newNotificationsCount = 0; //新的通知數量
+  int get newNotificationsCount => _newNotificationsCount;
 
-  void newNotification(int index) {
-    notifications = index;
+  void setNewNotificationsCount(int index) {
+    _newNotificationsCount = index;
     notifyListeners();
   }
 
   //NotificationItem(icon: MenuIcon.icon_eschool, title: '在【數位園區】中"離散數學"有了新的作業'),
-  late List<NotificationItem> notificationItem;
-  List<NotificationItem> get getNotificationItem => notificationItem;
+  List<NotificationItem> _notificationItemList = [];
+  List<NotificationItem> get notificationItemList => _notificationItemList;
 
-  void setNotificationItem(List<NotificationItem> list) {
-    notificationItem = list;
+  void setNotificationItemList(List<NotificationItem> list) {
+    _notificationItemList = list;
     notifyListeners();
-    final String encodedData = NotificationItem.encode(notificationItem);
+    final String encodedData = NotificationItem.encode(_notificationItemList);
     saveToPrefs(encodedData);
   }
 
   void saveToPrefs(String data) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    print('---儲存通知數據---');
+    print('---saveToPrefs---');
     print(data);
     prefs.setString('notification_item_key', data);
   }
 
   void initialNotificationItem(List<NotificationItem> list) async {
-    notificationItem = list;
+    _notificationItemList = list;
     notifyListeners();
   }
 }

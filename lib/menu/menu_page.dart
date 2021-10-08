@@ -47,6 +47,7 @@ class _StartMenu extends State<StartMenu> {
   HeadlessInAppWebView? headlessWebView;
   late SharedPreferences prefs;
   late SemesterDate semester = SemesterDate();
+  late String newNotificationsCount;
   String url = "";
   bool loginState = false;
   bool reLogin = false;
@@ -58,6 +59,8 @@ class _StartMenu extends State<StartMenu> {
   void initState() {
     super.initState();
     _checkAccount();
+    newNotificationsCount =
+        context.read<NotificationProvider>().newNotificationsCount.toString();
   }
 
   @override
@@ -278,7 +281,7 @@ class _StartMenu extends State<StartMenu> {
       return Scaffold(
           endDrawerEnableOpenDragGesture: false,
           appBar: AppBar(
-            title: Text(title[context.watch<OnItemClick>().index]),
+            title: Text(title[context.watch<DrawerProvider>().index]),
             titleSpacing: 0.0,
             actions: [
               Builder(
@@ -287,13 +290,15 @@ class _StartMenu extends State<StartMenu> {
                   position: BadgePosition.topEnd(top: 1, end: 2),
                   toAnimate: false,
                   badgeContent: Text(
-                    '${Provider.of<OnNotifyClick>(context, listen: false).newNotifications}',
+                    newNotificationsCount,
                     style: TextStyle(color: Colors.white),
                   ),
                   child: IconButton(
                     icon: Icon(Icons.notifications_none),
                     onPressed: () {
-                      context.read<OnNotifyClick>().isNewNotifications(false);
+                      context
+                          .read<NotificationProvider>()
+                          .setNewNotifications(false);
                       //context.read<OnNotifyClick>().newNotification(1); //refresh
                       Scaffold.of(context).openEndDrawer();
                     },
@@ -316,7 +321,7 @@ class _StartMenu extends State<StartMenu> {
                 //other styles
               ),
               child: NotificationDrawer()),
-          body: pages[context.watch<OnItemClick>().index]);
+          body: pages[context.watch<DrawerProvider>().index]);
     } else {
       return WillPopScope(
           onWillPop: true ? () async => false : null, child: Loading());

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:niu_app/components/menuIcon.dart';
+import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/menu/notification/notificatioon_items.dart';
 import 'package:niu_app/provider/notification_provider.dart';
 import 'package:provider/src/provider.dart';
@@ -25,13 +26,15 @@ class _NotificationDrawer extends State<NotificationDrawer>
 
   void _onRefresh() async {
     await Future.delayed(Duration(milliseconds: 1000));
-    context.read<OnNotifyClick>().newNotification(1);
+    context.read<NotificationProvider>().setNewNotificationsCount(1);
     //refresh
     notificationItems.insert(0, NotificationItem(icon: 1, title: 'gg'));
-    context.read<OnNotifyClick>().setNotificationItem(notificationItems);
+    context
+        .read<NotificationProvider>()
+        .setNotificationItemList(notificationItems);
     if (mounted) {
       setState(() {
-        context.read<OnNotifyClick>().isNewNotifications(false);
+        context.read<NotificationProvider>().setNewNotifications(false);
       });
     }
     _refreshController.refreshCompleted();
@@ -41,7 +44,8 @@ class _NotificationDrawer extends State<NotificationDrawer>
     for (int i = notificationItems.length - 1; i >= 0; i--) {
       bool isNewNotification = false;
       if (i <
-          Provider.of<OnNotifyClick>(context, listen: false).newNotifications) {
+          Provider.of<NotificationProvider>(context, listen: false)
+              .newNotificationsCount) {
         isNewNotification = true;
       }
       listKey.currentState!.removeItem(
@@ -52,16 +56,19 @@ class _NotificationDrawer extends State<NotificationDrawer>
     }
     await Future.delayed(Duration(milliseconds: 150), () {
       notificationItems.clear();
-      context.read<OnNotifyClick>().setNotificationItem(notificationItems);
+      context
+          .read<NotificationProvider>()
+          .setNotificationItemList(notificationItems);
     });
     setState(() {
-      context.read<OnNotifyClick>().isNewNotifications(true);
+      context.read<NotificationProvider>().setNewNotifications(true);
     });
   }
 
   @override
   void initState() {
-    notificationItems = context.read<OnNotifyClick>().getNotificationItem;
+    notificationItems =
+        context.read<NotificationProvider>().notificationItemList;
     super.initState();
   }
 
@@ -70,7 +77,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
     return SafeArea(
         child: WillPopScope(
       onWillPop: () async {
-        context.read<OnNotifyClick>().newNotification(0);
+        context.read<NotificationProvider>().setNewNotificationsCount(0);
         return true;
       },
       child: GestureDetector(
@@ -107,7 +114,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
                 controller: _refreshController,
                 onRefresh: _onRefresh,
                 header: WaterDropHeader(),
-                child: Provider.of<OnNotifyClick>(context, listen: false)
+                child: Provider.of<NotificationProvider>(context, listen: false)
                         .isNotification
                     ? Container(
                         child: Center(
@@ -125,8 +132,9 @@ class _NotificationDrawer extends State<NotificationDrawer>
                             Animation animation) {
                           bool isNewNotification = false;
                           if (index <
-                              Provider.of<OnNotifyClick>(context, listen: false)
-                                  .newNotifications) {
+                              Provider.of<NotificationProvider>(context,
+                                      listen: false)
+                                  .newNotificationsCount) {
                             isNewNotification = true;
                           }
                           return Dismissible(
@@ -140,25 +148,27 @@ class _NotificationDrawer extends State<NotificationDrawer>
                                       index, (_, __) => Container());
                                   notificationItems.removeAt(index);
                                   context
-                                      .read<OnNotifyClick>()
-                                      .setNotificationItem(notificationItems);
+                                      .read<NotificationProvider>()
+                                      .setNotificationItemList(
+                                          notificationItems);
                                   if (index <
-                                      Provider.of<OnNotifyClick>(context,
+                                      Provider.of<NotificationProvider>(context,
                                               listen: false)
-                                          .newNotifications) {
+                                          .newNotificationsCount) {
                                     context
-                                        .read<OnNotifyClick>()
-                                        .newNotification(
-                                            Provider.of<OnNotifyClick>(context,
+                                        .read<NotificationProvider>()
+                                        .setNewNotificationsCount(
+                                            Provider.of<NotificationProvider>(
+                                                        context,
                                                         listen: false)
-                                                    .newNotifications -
+                                                    .newNotificationsCount -
                                                 1);
                                   }
                                   if (notificationItems.length == 0) {
                                     setState(() {
                                       context
-                                          .read<OnNotifyClick>()
-                                          .isNewNotifications(true);
+                                          .read<NotificationProvider>()
+                                          .setNewNotifications(true);
                                     });
                                   }
                                 });
@@ -206,7 +216,13 @@ class _NotificationDrawer extends State<NotificationDrawer>
                   size: 40.0,
                 ),
                 title: Text(notificationItems[index].title),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ESchool(),
+                          maintainState: false));
+                },
               ),
               Positioned(
                 top: 6.0,
