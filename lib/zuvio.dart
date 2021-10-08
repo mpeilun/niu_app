@@ -60,7 +60,6 @@ class _ZuvioState extends State<Zuvio> {
     super.dispose();
   }
 
-//TODO:GPS點名功能
   @override
   Widget build(BuildContext context) {
     return ConditionalWillPopScope(
@@ -236,14 +235,13 @@ class _ZuvioState extends State<Zuvio> {
                             download(url, context);
                           },
                           androidOnGeolocationPermissionsShowPrompt:
-                              (InAppWebViewController controller, String origin) async {
-                            print('androidOnGeolocationPermissionsShowPrompt: $origin');
+                              (InAppWebViewController controller,
+                                  String origin) async {
+                            print(
+                                'androidOnGeolocationPermissionsShowPrompt: $origin');
                             alertGeolocation(context);
                             return GeolocationPermissionShowPromptResponse(
-                                origin: origin,
-                                allow: true,
-                                retain: true
-                            );
+                                origin: origin, allow: true, retain: true);
                           },
                           onScrollChanged: (InAppWebViewController controller,
                               int x, int y) {

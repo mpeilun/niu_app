@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/graduation/graduation.dart';
-import 'package:niu_app/menu/drawer/calendar.dart';
 import 'package:niu_app/menu/drawer/drawer.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
@@ -13,7 +13,7 @@ import 'package:niu_app/menu/notification/notification_page.dart';
 import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/provider/notification_provider.dart';
-import 'package:niu_app/school%EF%BC%BFschedule.dart';
+import 'package:niu_app/menu/drawer/school%EF%BC%BFschedule.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 import 'package:niu_app/service/SemesterDate.dart';
@@ -70,7 +70,7 @@ class _StartMenu extends State<StartMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final title = ['首頁', '公告', '設定', '關於', '回報問題'];
+    final title = ['首頁', '公告', '行事曆', '設定', '關於', '回報問題'];
     final pages = [
       LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -146,13 +146,14 @@ class _StartMenu extends State<StartMenu> {
                             },
                           ),
                           CustomIcons(
-                            title: 'ZUVIO',
-                            icon: MenuIcon.icon_zuvio,
-                            press: () {
+                            title: '代辦清單',
+                            icon: MenuIcon.icon_feedback,
+                            size: 40.0,
+                            press: () async {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Zuvio(),
+                                      builder: (context) => SchoolSchedule(),
                                       maintainState: false));
                             },
                           ),
@@ -195,59 +196,13 @@ class _StartMenu extends State<StartMenu> {
                             },
                           ),
                           CustomIcons(
-                            title: '行事曆',
-                            icon: MyFlutterApp.calendar,
-                            size: 40.0,
-                            press: () async {
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              prefs.clear(); //清空键值对
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SchoolSchedule(),
-                                      maintainState: false));
-                            },
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          CustomIcons(
-                            title: 'Test1',
-                            icon: Icons.alarm,
-                            size: 20.0,
-                            press: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) => TestCalendar(
-                                  semester: semester,
-                                ),
-                              );
-                            },
-                          ),
-                          CustomIcons(
-                            title: 'Test2',
-                            icon: Icons.alarm,
-                            size: 20.0,
+                            title: 'ZUVIO',
+                            icon: MenuIcon.icon_zuvio,
                             press: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => TestWebView(),
-                                      maintainState: false));
-                            },
-                          ),
-                          CustomIcons(
-                            title: 'Test3',
-                            icon: Icons.alarm,
-                            size: 20.0,
-                            press: () async {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SchoolSchedule(),
+                                      builder: (context) => Zuvio(),
                                       maintainState: false));
                             },
                           ),
@@ -271,7 +226,7 @@ class _StartMenu extends State<StartMenu> {
         },
       ),
       AnnouncementPage(),
-      CalendarPage(),
+      SchoolSchedule(),
       SettingPage(),
       AboutPage(),
       ReportPage()
@@ -307,6 +262,68 @@ class _StartMenu extends State<StartMenu> {
               ),
             ],
           ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton:
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Opacity(
+              opacity: 0.5,
+              child: Container(
+                height: 40,
+                width: 40,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  child: Icon(FontAwesomeIcons.bomb),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => TestCalendar(
+                        semester: semester,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            SizedBox(width: 20),
+            Opacity(
+              opacity: 0.5,
+              child: Container(
+                height: 40,
+                width: 40,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  child: Icon(FontAwesomeIcons.bomb),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TestWebView(),
+                            maintainState: false));
+                  },
+                ),
+              ),
+            ),
+            SizedBox(width: 20),
+            Opacity(
+              opacity: 0.5,
+              child: Container(
+                height: 40,
+                width: 40,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  child: Icon(FontAwesomeIcons.bomb),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TestWebView(),
+                            maintainState: false));
+                  },
+                ),
+              ),
+            )
+          ]),
           drawer: Theme(
               data: Theme.of(context).copyWith(
                 canvasColor: Theme.of(context)

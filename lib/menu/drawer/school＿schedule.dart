@@ -18,11 +18,8 @@ class _SchoolScheduleState extends State<SchoolSchedule> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('教務處行事曆'),
-      ),
-      body: SfPdfViewer.network(
+    return Container(
+      child: SfPdfViewer.network(
         pdfUrl,
         key: _pdfViewerKey,
       ),
