@@ -4,6 +4,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/graduation/graduation.dart';
+import 'package:niu_app/menu/drawer/calendar.dart';
 import 'package:niu_app/menu/drawer/drawer.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
@@ -265,6 +266,7 @@ class _StartMenu extends State<StartMenu> {
         },
       ),
       AnnouncementPage(),
+      CalendarPage(),
       SettingPage(),
       AboutPage(),
       ReportPage()

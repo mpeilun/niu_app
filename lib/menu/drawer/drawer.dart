@@ -59,20 +59,7 @@ class _MyDrawer extends State<MyDrawer> {
               style: TextStyle(fontSize: 16.0, color: Colors.white),
               textAlign: TextAlign.center,
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 15.0, 4.0, 10.0),
-              child: Container(
-                height: 1.7,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  gradient: LinearGradient(colors: [
-                    Color.fromARGB(255, 33, 150, 243),
-                    Color.fromARGB(186, 33, 150, 243),
-                    Color.fromARGB(0, 33, 150, 243),
-                  ]),
-                ),
-              ),
-            ),
+            divider(),
             createDrawerItem(
                 icon: Icons.home_outlined,
                 text: '首頁',
@@ -80,20 +67,7 @@ class _MyDrawer extends State<MyDrawer> {
                   Navigator.of(context).pop();
                   context.read<OnItemClick>().onclick(0);
                 }),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 14.0, 4.0, 10.0),
-              child: Container(
-                height: 1.7,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  gradient: LinearGradient(colors: [
-                    Color.fromARGB(255, 33, 150, 243),
-                    Color.fromARGB(203, 33, 150, 243),
-                    Color.fromARGB(0, 33, 150, 243),
-                  ]),
-                ),
-              ),
-            ),
+            divider(),
             createDrawerItem(
                 icon: MyFlutterApp.megaphone,
                 text: '公告',
@@ -101,62 +75,32 @@ class _MyDrawer extends State<MyDrawer> {
                   Navigator.of(context).pop();
                   context.read<OnItemClick>().onclick(1);
                 }),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 14.0, 4.0, 10.0),
-              child: Container(
-                height: 1.7,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  gradient: LinearGradient(colors: [
-                    Color.fromARGB(255, 33, 150, 243),
-                    Color.fromARGB(203, 33, 150, 243),
-                    Color.fromARGB(0, 33, 150, 243),
-                  ]),
-                ),
-              ),
-            ),
+            divider(),
+            createDrawerItem(
+              size: 45.0,
+                icon: MyFlutterApp.calendar,
+                text: '行事曆',
+                onTap: () {
+                  Navigator.of(context).pop();
+                  context.read<OnItemClick>().onclick(2);
+                }),
+            divider(),
             createDrawerItem(
                 icon: Icons.settings_outlined,
                 text: '設定',
                 onTap: () {
                   Navigator.of(context).pop();
-                  context.read<OnItemClick>().onclick(2);
+                  context.read<OnItemClick>().onclick(3);
                 }),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 14.0, 4.0, 10.0),
-              child: Container(
-                height: 1.7,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  gradient: LinearGradient(colors: [
-                    Color.fromARGB(255, 33, 150, 243),
-                    Color.fromARGB(203, 33, 150, 243),
-                    Color.fromARGB(0, 33, 150, 243),
-                  ]),
-                ),
-              ),
-            ),
+            divider(),
             createDrawerItem(
                 icon: Icons.info_outline_rounded,
                 text: '關於',
                 onTap: () {
                   Navigator.of(context).pop();
-                  context.read<OnItemClick>().onclick(3);
+                  context.read<OnItemClick>().onclick(4);
                 }),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 14.0, 4.0, 10.0),
-              child: Container(
-                height: 1.7,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  gradient: LinearGradient(colors: [
-                    Color.fromARGB(255, 33, 150, 243),
-                    Color.fromARGB(203, 33, 150, 243),
-                    Color.fromARGB(0, 33, 150, 243),
-                  ]),
-                ),
-              ),
-            ),
+            divider(),
             createDrawerItem(
                 icon: Icons.logout_outlined,
                 text: '登出',
@@ -178,26 +122,13 @@ class _MyDrawer extends State<MyDrawer> {
                               ),
                           maintainState: false));
                 }),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 14.0, 4.0, 10.0),
-              child: Container(
-                height: 1.7,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  gradient: LinearGradient(colors: [
-                    Color.fromARGB(255, 33, 150, 243),
-                    Color.fromARGB(203, 33, 150, 243),
-                    Color.fromARGB(0, 33, 150, 243),
-                  ]),
-                ),
-              ),
-            ),
+            divider(),
             createDrawerItem(
                 icon: Icons.bug_report_outlined,
                 text: '回報問題',
                 onTap: () {
                   Navigator.of(context).pop();
-                  context.read<OnItemClick>().onclick(4);
+                  context.read<OnItemClick>().onclick(5);
                 }),
             SizedBox(height: 20.0),
           ],
@@ -218,27 +149,56 @@ class _MyDrawer extends State<MyDrawer> {
   }
 }
 
+class divider extends StatelessWidget {
+  const divider({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 14.0, 4.0, 10.0),
+      child: Container(
+        height: 1.7,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          gradient: LinearGradient(colors: [
+            Color.fromARGB(255, 33, 150, 243),
+            Color.fromARGB(203, 33, 150, 243),
+            Color.fromARGB(0, 33, 150, 243),
+          ]),
+        ),
+      ),
+    );
+  }
+}
+
 Widget createDrawerItem(
-    {required IconData icon,
+    {double size = 50.0,
+    required IconData icon,
     required String text,
     required GestureTapCallback onTap}) {
   return InkWell(
     onTap: onTap,
-    child: Column(
-      children: <Widget>[
-        Icon(
-          icon,
-          color: Colors.white,
-          size: 50.0,
-        ),
-        Text(
-          text,
-          style: TextStyle(
-              fontSize: 16.0,
-              //fontWeight: FontWeight.bold,
-              color: Colors.white),
-        )
-      ],
+    child: Container(
+      height: 75.0,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            icon,
+            color: Colors.white,
+            size: size,
+          ),
+          Text(
+            text,
+            style: TextStyle(
+                fontSize: 16.0,
+                //fontWeight: FontWeight.bold,
+                color: Colors.white),
+          )
+        ],
+      ),
     ),
   );
 }
