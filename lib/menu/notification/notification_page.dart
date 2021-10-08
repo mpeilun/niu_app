@@ -16,17 +16,26 @@ class NotificationDrawer extends StatefulWidget {
 class _NotificationDrawer extends State<NotificationDrawer> {
   bool isDragging = false;
   bool isEmpty = false;
+  late List<NotificationItem> notificationItems;
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     await Future.delayed(Duration(milliseconds: 1000));
-    context.read<OnNotifyClick>().newNotification(1); //refresh
+    context.read<OnNotifyClick>().newNotification(1);
+    //refresh
     notificationItems.insert(
         0, NotificationItem(icon: Icons.circle, title: 'gg'));
+    context.read<OnNotifyClick>().setNotificationItem(notificationItems);
     if (mounted) setState(() {});
     _refreshController.refreshCompleted();
+  }
+
+  @override
+  void initState() {
+    notificationItems = context.read<OnNotifyClick>().getNotificationItem;
+    super.initState();
   }
 
   @override
@@ -85,6 +94,7 @@ class _NotificationDrawer extends State<NotificationDrawer> {
                                   setState(() {
                                     isDragging = true;
                                     notificationItems.removeAt(index);
+                                    context.read<OnNotifyClick>().setNotificationItem(notificationItems);
                                     if (index <
                                         Provider.of<OnNotifyClick>(context,
                                                 listen: false)

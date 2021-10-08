@@ -56,7 +56,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
     super.initState();
 
     if (dartCookies.Platform.isAndroid) {
-      AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+      // AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
       SystemChrome.setEnabledSystemUIOverlays([]);
     }
   }
@@ -65,7 +65,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
   void dispose() {
     super.dispose();
     if (dartCookies.Platform.isAndroid) {
-      SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+      // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     }
   }
 
