@@ -59,7 +59,7 @@ class _MyDrawer extends State<MyDrawer> {
               style: TextStyle(fontSize: 16.0, color: Colors.white),
               textAlign: TextAlign.center,
             ),
-            divider(),
+            Divider(),
             createDrawerItem(
                 icon: Icons.home_outlined,
                 text: '首頁',
@@ -67,7 +67,7 @@ class _MyDrawer extends State<MyDrawer> {
                   Navigator.of(context).pop();
                   context.read<DrawerProvider>().onclick(0);
                 }),
-            divider(),
+            Divider(),
             createDrawerItem(
                 icon: MyFlutterApp.megaphone,
                 text: '公告',
@@ -75,7 +75,7 @@ class _MyDrawer extends State<MyDrawer> {
                   Navigator.of(context).pop();
                   context.read<DrawerProvider>().onclick(1);
                 }),
-            divider(),
+            Divider(),
             createDrawerItem(
                 size: 45.0,
                 icon: MyFlutterApp.calendar,
@@ -84,7 +84,7 @@ class _MyDrawer extends State<MyDrawer> {
                   Navigator.of(context).pop();
                   context.read<DrawerProvider>().onclick(2);
                 }),
-            divider(),
+            Divider(),
             createDrawerItem(
                 icon: Icons.settings_outlined,
                 text: '設定',
@@ -92,7 +92,7 @@ class _MyDrawer extends State<MyDrawer> {
                   Navigator.of(context).pop();
                   context.read<DrawerProvider>().onclick(3);
                 }),
-            divider(),
+            Divider(),
             createDrawerItem(
                 icon: Icons.info_outline_rounded,
                 text: '關於',
@@ -100,7 +100,7 @@ class _MyDrawer extends State<MyDrawer> {
                   Navigator.of(context).pop();
                   context.read<DrawerProvider>().onclick(4);
                 }),
-            divider(),
+            Divider(),
             createDrawerItem(
                 icon: Icons.logout_outlined,
                 text: '登出',
@@ -122,7 +122,7 @@ class _MyDrawer extends State<MyDrawer> {
                               ),
                           maintainState: false));
                 }),
-            divider(),
+            Divider(),
             createDrawerItem(
                 icon: Icons.bug_report_outlined,
                 text: '回報問題',
@@ -149,8 +149,8 @@ class _MyDrawer extends State<MyDrawer> {
   }
 }
 
-class divider extends StatelessWidget {
-  const divider({
+class Divider extends StatelessWidget {
+  const Divider({
     Key? key,
   }) : super(key: key);
 

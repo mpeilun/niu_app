@@ -4,6 +4,21 @@ import 'package:niu_app/menu/notification/notificatioon_items.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationProvider with ChangeNotifier {
+
+  void dissmisible(int index, GlobalKey<AnimatedListState> listKey) {
+    listKey.currentState!.removeItem(
+        index, (_, __) => Container());
+    _notificationItemList.removeAt(index);
+    setNotificationItemList(
+        _notificationItemList);
+    if (index < _newNotificationsCount) {
+      _newNotificationsCount--;
+    }
+    if (_notificationItemList.length == 0) {
+      _isEmpty = true;
+    }
+  }
+
   bool _isEmpty = false;
   bool get isEmpty => _isEmpty;
 
@@ -26,6 +41,19 @@ class NotificationProvider with ChangeNotifier {
   void setNewNotificationsCount(int index) {
     _newNotificationsCount = index;
     notifyListeners();
+    saveNewNotificationsCountToPrefs(_newNotificationsCount);
+  }
+
+  void saveNewNotificationsCountToPrefs(int data) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    print('---saveNewNotificationsCountToPrefs---');
+    print(data);
+    prefs.setInt('new_notifications_count_key', data);
+  }
+
+  void initialNewNotifications(int data) async {
+    _newNotificationsCount = data;
+    notifyListeners();
   }
 
   //NotificationItem(icon: MenuIcon.icon_eschool, title: '在【數位園區】中"離散數學"有了新的作業'),
@@ -36,12 +64,12 @@ class NotificationProvider with ChangeNotifier {
     _notificationItemList = list;
     notifyListeners();
     final String encodedData = NotificationItem.encode(_notificationItemList);
-    saveToPrefs(encodedData);
+    saveNotificationItemListToPrefs(encodedData);
   }
 
-  void saveToPrefs(String data) async {
+  void saveNotificationItemListToPrefs(String data) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    print('---saveToPrefs---');
+    print('---aveNotificationItemListToPrefs---');
     print(data);
     prefs.setString('notification_item_key', data);
   }

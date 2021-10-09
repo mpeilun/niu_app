@@ -19,6 +19,12 @@ Future<void> loadDataFormPrefs(BuildContext context) async {
         NotificationItem.decode(rawData!);
     context.read<NotificationProvider>().initialNotificationItem(initialData);
   }
+  if (prefs.containsKey('new_notifications_count_key')) {
+    final data = prefs.getInt('new_notifications_count_key');
+    print('---未讀通知數量---');
+    print(data);
+    context.read<NotificationProvider>().initialNewNotifications(data!);
+  }
 }
 
 Future<void> runNotificationWebViewWebView(BuildContext context) async {
@@ -131,7 +137,8 @@ Future<void> runNotificationWebViewWebView(BuildContext context) async {
                   element.workCount);
             });
 
-            int tempCount = 0;
+            int tempCount =
+                context.read<NotificationProvider>().newNotificationsCount;
             eschoolData.forEach((newData) {
               previousData.forEach((oldData) {
                 if (newData.courseName == oldData.courseName) {
