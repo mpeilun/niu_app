@@ -4,6 +4,14 @@ import 'package:niu_app/menu/notification/notificatioon_items.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationProvider with ChangeNotifier {
+  bool _isEmpty = false;
+  bool get isEmpty => _isEmpty;
+
+  void setIsEmpty(bool index) {
+    _isEmpty = index;
+    notifyListeners();
+  }
+
   bool _isNotification = false;
   bool get isNotification => _isNotification;
 

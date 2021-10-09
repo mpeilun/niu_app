@@ -29,12 +29,18 @@ class _NotificationDrawer extends State<NotificationDrawer>
     context.read<NotificationProvider>().setNewNotificationsCount(1);
     //refresh
     notificationItems.insert(0, NotificationItem(icon: 1, title: 'gg'));
+    notificationItems.insert(1, NotificationItem(icon: 1, title: 'gg'));
+    notificationItems.insert(2, NotificationItem(icon: 1, title: 'gg'));
+    notificationItems.insert(3, NotificationItem(icon: 1, title: 'gg'));
+    notificationItems.insert(4, NotificationItem(icon: 1, title: 'gg'));
     context
         .read<NotificationProvider>()
         .setNotificationItemList(notificationItems);
+    if(notificationItems.length > 20){
+      context.read<NotificationProvider>().setIsEmpty(false);
+    }
     if (mounted) {
       setState(() {
-        context.read<NotificationProvider>().setNewNotifications(false);
       });
     }
     _refreshController.refreshCompleted();
@@ -74,6 +80,9 @@ class _NotificationDrawer extends State<NotificationDrawer>
 
   @override
   Widget build(BuildContext context) {
+    if(notificationItems.length == 0){
+      context.read<NotificationProvider>().setIsEmpty(true);
+    }
     return SafeArea(
         child: WillPopScope(
       onWillPop: () async {
@@ -115,7 +124,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
                 onRefresh: _onRefresh,
                 header: WaterDropHeader(),
                 child: Provider.of<NotificationProvider>(context, listen: false)
-                        .isNotification
+                        .isEmpty
                     ? Container(
                         child: Center(
                           child: Text(
@@ -165,11 +174,9 @@ class _NotificationDrawer extends State<NotificationDrawer>
                                                 1);
                                   }
                                   if (notificationItems.length == 0) {
-                                    setState(() {
                                       context
                                           .read<NotificationProvider>()
                                           .setNewNotifications(true);
-                                    });
                                   }
                                 });
                               },
