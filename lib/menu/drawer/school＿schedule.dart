@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:niu_app/school_event/components/pdfviwer.dart';
+import 'package:niu_app/components/pdfviwer.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class SchoolSchedule extends StatefulWidget {
@@ -21,6 +21,7 @@ class _SchoolScheduleState extends State<SchoolSchedule> {
     return PdfViewer(
       title: '學校行事曆',
       url: pdfUrl,
+      showAppbar: false,
     );
   }
 }

@@ -7,12 +7,14 @@ class PdfViewer extends StatefulWidget {
   final String title;
   final String url;
   final String? fileName;
+  final bool showAppbar;
 
   const PdfViewer({
     Key? key,
     required this.title,
     required this.url,
     this.fileName,
+    this.showAppbar = true,
   }) : super(key: key);
 
   @override
@@ -32,20 +34,23 @@ class _PdfViewerState extends State<PdfViewer> {
     return Container(
       child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            title: Text(widget.title),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    if (widget.fileName == null) {
-                      download(Uri.parse(widget.url), context, null);
-                    } else {
-                      download(Uri.parse(widget.url), context, widget.fileName);
-                    }
-                  },
-                  icon: Icon(Icons.arrow_downward))
-            ],
-          ),
+          appBar: widget.showAppbar
+              ? AppBar(
+                  title: Text(widget.title),
+                  actions: [
+                    IconButton(
+                        onPressed: () {
+                          if (widget.fileName == null) {
+                            download(Uri.parse(widget.url), context, null);
+                          } else {
+                            download(Uri.parse(widget.url), context,
+                                widget.fileName);
+                          }
+                        },
+                        icon: Icon(Icons.arrow_downward))
+                  ],
+                )
+              : null,
           body: SfPdfViewer.network(
             widget.url,
             key: _pdfViewerKey,

@@ -6,7 +6,7 @@ import 'package:html/parser.dart';
 import 'package:niu_app/components/downloader.dart';
 
 import 'package:niu_app/components/niu_icon_loading.dart';
-import 'package:niu_app/school_event/components/pdfviwer.dart';
+import 'package:niu_app/components/pdfviwer.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -203,11 +203,9 @@ class _AnnouncementWebViewState extends State<AnnouncementWebView> {
                                       maintainState: false));
                               return NavigationActionPolicy.CANCEL;
                             }
-                          } else if (uri
+                          } else if (!uri
                               .toString()
                               .contains('niu.edu.tw/bin/downloadfile.php')) {
-                            print(navigationAction.toString());
-                          } else {
                             await launch(
                               uri.toString().replaceAll('http://', 'https://'),
                             );
@@ -239,7 +237,9 @@ class _AnnouncementWebViewState extends State<AnnouncementWebView> {
                           }
                         },
                         onLoadResource: (InAppWebViewController controller,
-                            LoadedResource resource) {},
+                            LoadedResource resource) {
+                          print('onLoadResource: $resource');
+                        },
                         onLoadError: (controller, url, code, message) {},
                         onProgressChanged: (controller, progress) {
                           setState(() {
@@ -275,9 +275,6 @@ class _AnnouncementWebViewState extends State<AnnouncementWebView> {
               ])),
             ),
           )
-        : PdfViewer(
-            title: '學校公告',
-            url: widget.announcementUrl,
-          );
+        : PdfViewer(title: '學校公告', url: widget.announcementUrl);
   }
 }
