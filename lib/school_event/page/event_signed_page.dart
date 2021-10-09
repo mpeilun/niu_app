@@ -104,6 +104,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
     await Future.delayed(Duration(milliseconds: 500));
     setState(() {
       this.data = temp;
+      refreshLoaded = true;
     });
   }
 
