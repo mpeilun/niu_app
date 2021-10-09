@@ -137,7 +137,8 @@ Future<void> runNotificationWebViewWebView(BuildContext context) async {
                   element.workCount);
             });
 
-            int tempCount = 0;
+            int tempCount =
+                context.read<NotificationProvider>().newNotificationsCount;
             eschoolData.forEach((newData) {
               previousData.forEach((oldData) {
                 if (newData.courseName == oldData.courseName) {
