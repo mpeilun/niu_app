@@ -22,7 +22,7 @@ class getHTML {
     else{
       print("Get from mem");
       htmlCode = saveListToList(prefs.getStringList(prefs.getString("id").toString() + "TimeTable" + date.nowSemester) );
-      await Future.delayed(const Duration(milliseconds: 1000), (){});
+      //await Future.delayed(const Duration(milliseconds: 1000), (){});
     }
     print("HTML load finish!");
     return true;
