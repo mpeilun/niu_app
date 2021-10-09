@@ -4,6 +4,21 @@ import 'package:niu_app/menu/notification/notificatioon_items.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationProvider with ChangeNotifier {
+
+  void dissmisible(int index, GlobalKey<AnimatedListState> listKey) {
+    listKey.currentState!.removeItem(
+        index, (_, __) => Container());
+    _notificationItemList.removeAt(index);
+    setNotificationItemList(
+        _notificationItemList);
+    if (index < _newNotificationsCount) {
+      _newNotificationsCount--;
+    }
+    if (_notificationItemList.length == 0) {
+      _isEmpty = true;
+    }
+  }
+
   bool _isEmpty = false;
   bool get isEmpty => _isEmpty;
 
