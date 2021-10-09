@@ -110,7 +110,7 @@ Future<void> runNotificationWebViewWebView(BuildContext context) async {
                 courseName: courseName,
                 semester: semester,
                 announcementCount: announcementCount,
-                workCount: '1'));
+                workCount: workCount));
           }
           print('---Eschool Data---');
           eschoolData.forEach((element) {
