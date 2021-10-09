@@ -203,9 +203,9 @@ class _AnnouncementWebViewState extends State<AnnouncementWebView> {
                                       maintainState: false));
                               return NavigationActionPolicy.CANCEL;
                             }
-                          } else if (!uri
-                              .toString()
-                              .contains('niu.edu.tw/bin/downloadfile.php')) {
+                          } else if (!uri.toString().contains(
+                                  'niu.edu.tw/bin/downloadfile.php') &&
+                              js) {
                             await launch(
                               uri.toString().replaceAll('http://', 'https://'),
                             );
