@@ -184,41 +184,33 @@ class _AnnouncementWebViewState extends State<AnnouncementWebView> {
                             (controller, navigationAction) async {
                           var uri = navigationAction.request.url!;
 
-                          if (js) {
+                          String? fileName = await controller.evaluateJavascript(
+                              source:
+                                  'document.querySelector("#Dyn_2_3 > div.module.module-ptattach.pt_style1 > div.md_middle > div > div > div > table > tbody > tr > td > div > span:nth-child(2) > a").title');
+
+                          if (fileName != null) {
+                            if (fileName.toString().contains('.pdf') &&
+                                uri.toString().contains(
+                                    'niu.edu.tw/bin/downloadfile.php')) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PdfViewer(
+                                            title: fileName.toString(),
+                                            url: uri.toString(),
+                                            fileName: fileName.toString(),
+                                          ),
+                                      maintainState: false));
+                              return NavigationActionPolicy.CANCEL;
+                            }
+                          } else if (!uri.toString().contains(
+                                  'niu.edu.tw/bin/downloadfile.php') &&
+                              js) {
                             await launch(
                               uri.toString().replaceAll('http://', 'https://'),
                             );
                             return NavigationActionPolicy.CANCEL;
                           }
-
-                          //
-                          // String? fileName = await controller.evaluateJavascript(
-                          //     source:
-                          //         'document.querySelector("#Dyn_2_3 > div.module.module-ptattach.pt_style1 > div.md_middle > div > div > div > table > tbody > tr > td > div > span:nth-child(2) > a").title');
-                          //
-                          // if (fileName != null) {
-                          //   if (fileName.toString().contains('.pdf') &&
-                          //       uri.toString().contains(
-                          //           'niu.edu.tw/bin/downloadfile.php')) {
-                          //     Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) => PdfViewer(
-                          //                   title: fileName.toString(),
-                          //                   url: uri.toString(),
-                          //                   fileName: fileName.toString(),
-                          //                 ),
-                          //             maintainState: false));
-                          //     return NavigationActionPolicy.CANCEL;
-                          //   }
-                          // } else if (!uri.toString().contains(
-                          //         'niu.edu.tw/bin/downloadfile.php') &&
-                          //     js) {
-                          //   await launch(
-                          //     uri.toString().replaceAll('http://', 'https://'),
-                          //   );
-                          //   return NavigationActionPolicy.CANCEL;
-                          // }
 
                           return NavigationActionPolicy.ALLOW;
                         },
