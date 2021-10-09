@@ -56,8 +56,8 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
     super.initState();
 
     if (dartCookies.Platform.isAndroid) {
-      // AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
-      SystemChrome.setEnabledSystemUIOverlays([]);
+      AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+      // SystemChrome.setEnabledSystemUIOverlays([]);
     }
   }
 
