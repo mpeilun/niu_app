@@ -182,7 +182,7 @@ class _GraduationDetailState extends State<GraduationDetail> {
                           }
                         },
                         onDownloadStart: (controller, url) async {
-                          download(url, context);
+                          download(url, context, null);
                         },
                         onJsAlert: (InAppWebViewController controller,
                             JsAlertRequest jsAlertRequest) async {

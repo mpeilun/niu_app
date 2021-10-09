@@ -170,7 +170,7 @@ class _BusState extends State<Bus> {
                           print(consoleMessage);
                         },
                         onDownloadStart: (controller, url) async {
-                          download(url, context);
+                          download(url, context, null);
                         },
                       ),
                     )

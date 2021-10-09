@@ -12,10 +12,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-Future<void> download(Uri uri, BuildContext context) async {
-  String fileName = '   ' +
-      Uri.decodeComponent(
-          uri.toString().substring(uri.toString().lastIndexOf("/") + 1));
+Future<void> download(Uri uri, BuildContext context, String? title) async {
+  if (title == null) {
+    title = '   ' +
+        Uri.decodeComponent(
+            uri.toString().substring(uri.toString().lastIndexOf("/") + 1));
+  }
 
   Color colorYes = Colors.blueAccent;
   Color colorNo = Colors.pinkAccent;
@@ -25,7 +27,7 @@ Future<void> download(Uri uri, BuildContext context) async {
       context: context,
       type: AlertType.warning,
       title: "是否要下載此檔案至裝置?",
-      desc: fileName,
+      desc: title,
       buttons: [
         DialogButton(
           child: Text(

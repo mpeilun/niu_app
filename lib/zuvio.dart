@@ -132,7 +132,7 @@ class _ZuvioState extends State<Zuvio> {
                                 uri.toString().contains('about:blank')) {
                               return NavigationActionPolicy.CANCEL;
                             } else if (uri.toString().contains('s3.hicloud')) {
-                              download(uri, context);
+                              download(uri, context, null);
                               return NavigationActionPolicy.CANCEL;
                             } else if (loginState == true &&
                                 !uri
@@ -232,7 +232,7 @@ class _ZuvioState extends State<Zuvio> {
                             print(consoleMessage);
                           },
                           onDownloadStart: (controller, url) async {
-                            download(url, context);
+                            download(url, context, null);
                           },
                           androidOnGeolocationPermissionsShowPrompt:
                               (InAppWebViewController controller,

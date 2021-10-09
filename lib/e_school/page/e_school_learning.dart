@@ -114,7 +114,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                           if (uri
                               .toString()
                               .contains('https://eschool.niu.edu.tw/base/')) {
-                            download(uri, context);
+                            download(uri, context, null);
                             return NavigationActionPolicy.ALLOW;
                           }
 
@@ -212,7 +212,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                           print(consoleMessage);
                         },
                         onDownloadStart: (controller, url) async {
-                          download(url, context);
+                          download(url, context, null);
                         },
                       ),
                     )

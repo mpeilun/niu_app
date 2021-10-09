@@ -226,7 +226,7 @@ class _ESchoolHomeWorkState extends State<ESchoolHomeWork> {
                           print(consoleMessage);
                         },
                         onDownloadStart: (controller, url) async {
-                          download(url, context);
+                          download(url, context, null);
                         },
                       ),
                     )

@@ -65,8 +65,7 @@ class _TestWebViewState extends State<TestWebView> {
                     key: testWebView,
                     initialOptions: options,
                     initialUrlRequest: URLRequest(
-                        url: Uri.parse(
-                            "https://browserleaks.com/geo")),
+                        url: Uri.parse("https://browserleaks.com/geo")),
                     onWebViewCreated: (controller) async {
                       webViewController = controller;
                     },
@@ -128,17 +127,16 @@ class _TestWebViewState extends State<TestWebView> {
                       print(consoleMessage);
                     },
                     onDownloadStart: (controller, url) async {
-                      download(url, context);
+                      download(url, context, null);
                     },
                     androidOnGeolocationPermissionsShowPrompt:
-                        (InAppWebViewController controller, String origin) async {
-                      print('androidOnGeolocationPermissionsShowPrompt: $origin');
+                        (InAppWebViewController controller,
+                            String origin) async {
+                      print(
+                          'androidOnGeolocationPermissionsShowPrompt: $origin');
                       alertGeolocation(context);
                       return GeolocationPermissionShowPromptResponse(
-                          origin: origin,
-                          allow: true,
-                          retain: true
-                      );
+                          origin: origin, allow: true, retain: true);
                     },
                     onScrollChanged:
                         (InAppWebViewController controller, int x, int y) {})
