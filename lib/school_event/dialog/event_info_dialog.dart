@@ -75,9 +75,11 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
             await webViewController!.evaluateJavascript(
                 source:
                     'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(1)").innerText'),
-            await webViewController!.evaluateJavascript(
-                source:
-                    'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(2)").innerText')
+            ((await webViewController!.evaluateJavascript(
+                        source:
+                            'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(2)").innerText'))
+                    as String)
+                .trim()
           ]);
 
           setState(() {
@@ -85,7 +87,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
           });
         }
         break;
-      } else if (i == 30 && loadState == null) {
+      } else if (i == 30) {
         print('網路異常，連線超時！');
         Navigator.pop(context);
         showToast('網路異常 連線逾時');
@@ -350,16 +352,16 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                                 Column(
                                   children: [
                                     ListTile(
-                                      title: Text(
-                                        data[index][1],
-                                        textAlign: TextAlign.end,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
                                       leading: Text(
                                         data[index][0],
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0),
+                                      ),
+                                      title: Text(
+                                        data[index][1],
+                                        textAlign: TextAlign.end,
+                                        style: TextStyle(fontSize: 14.0),
                                       ),
                                     ),
                                   ],

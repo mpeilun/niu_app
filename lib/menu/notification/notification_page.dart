@@ -27,17 +27,20 @@ class _NotificationDrawer extends State<NotificationDrawer>
   void _onRefresh() async {
     await Future.delayed(Duration(milliseconds: 1000));
     context.read<NotificationProvider>().setNewNotificationsCount(1);
-    //refresh
     notificationItems.insert(0, NotificationItem(icon: 1, title: 'gg'));
+    notificationItems.insert(1, NotificationItem(icon: 1, title: 'gg'));
+    notificationItems.insert(2, NotificationItem(icon: 1, title: 'gg'));
+    notificationItems.insert(3, NotificationItem(icon: 1, title: 'gg'));
+    notificationItems.insert(4, NotificationItem(icon: 1, title: 'gg'));
     context
         .read<NotificationProvider>()
         .setNotificationItemList(notificationItems);
-    if (mounted) {
-      setState(() {
-        context.read<NotificationProvider>().setNewNotifications(false);
-      });
-    }
+
+    /////////////////////////////////////////////////////
     _refreshController.refreshCompleted();
+    if (notificationItems.length > 0) {
+      context.read<NotificationProvider>().setIsEmpty(false);
+    }
   }
 
   void clearAllItems() async {
@@ -59,9 +62,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
       context
           .read<NotificationProvider>()
           .setNotificationItemList(notificationItems);
-    });
-    setState(() {
-      context.read<NotificationProvider>().setNewNotifications(true);
+      context.read<NotificationProvider>().setIsEmpty(true);
     });
   }
 
@@ -114,8 +115,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
                 controller: _refreshController,
                 onRefresh: _onRefresh,
                 header: WaterDropHeader(),
-                child: Provider.of<NotificationProvider>(context, listen: false)
-                        .isNotification
+                child: context.watch<NotificationProvider>().isEmpty
                     ? Container(
                         child: Center(
                           child: Text(
@@ -143,35 +143,9 @@ class _NotificationDrawer extends State<NotificationDrawer>
                               background: buildSwipeActionLeft(),
                               secondaryBackground: buildSwipeActionRight(),
                               onDismissed: (direction) {
-                                setState(() {
-                                  listKey.currentState!.removeItem(
-                                      index, (_, __) => Container());
-                                  notificationItems.removeAt(index);
-                                  context
-                                      .read<NotificationProvider>()
-                                      .setNotificationItemList(
-                                          notificationItems);
-                                  if (index <
-                                      Provider.of<NotificationProvider>(context,
-                                              listen: false)
-                                          .newNotificationsCount) {
-                                    context
-                                        .read<NotificationProvider>()
-                                        .setNewNotificationsCount(
-                                            Provider.of<NotificationProvider>(
-                                                        context,
-                                                        listen: false)
-                                                    .newNotificationsCount -
-                                                1);
-                                  }
-                                  if (notificationItems.length == 0) {
-                                    setState(() {
-                                      context
-                                          .read<NotificationProvider>()
-                                          .setNewNotifications(true);
-                                    });
-                                  }
-                                });
+                                context
+                                    .read<NotificationProvider>()
+                                    .dissmisible(index, listKey);
                               },
                               key: UniqueKey(),
                               child: buildItem(
