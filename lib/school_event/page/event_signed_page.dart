@@ -4,7 +4,6 @@ import 'package:niu_app/components/keep_alive.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/refresh.dart';
 import 'package:niu_app/school_event/components/event_signed_card.dart';
-import 'package:niu_app/school_event/components/custom_list_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EventSignedPage extends StatefulWidget {
@@ -21,6 +20,8 @@ class _EventSignedPageState extends State<EventSignedPage> {
   List<EventSigned> data = [];
 
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
+
+  bool refreshLoaded = true;
 
   Future<void> _login() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -53,8 +54,10 @@ class _EventSignedPageState extends State<EventSignedPage> {
         i++) {
       print(i);
       String name = ((await headlessWebView?.webViewController.evaluateJavascript(
-          source:
-              'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(4)").innerText')) as String).trim();
+                  source:
+                      'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(4)").innerText'))
+              as String)
+          .trim();
       String status = await headlessWebView?.webViewController.evaluateJavascript(
           source:
               'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(2)").innerText');
@@ -100,7 +103,22 @@ class _EventSignedPageState extends State<EventSignedPage> {
     await Future.delayed(Duration(milliseconds: 500));
     setState(() {
       this.data = temp;
+      refreshLoaded = true;
     });
+  }
+
+  Future<void> refresh() async {
+    setState(() {
+      refreshLoaded = false;
+    });
+
+    await headlessWebView?.webViewController.loadUrl(
+        urlRequest: URLRequest(
+            url: Uri.parse(
+                'https://syscc.niu.edu.tw/Activity/MaintainSelPeople.aspx')));
+    while (!refreshLoaded) {
+      await Future.delayed(Duration(milliseconds: 500));
+    }
   }
 
   @override
@@ -155,29 +173,33 @@ class _EventSignedPageState extends State<EventSignedPage> {
   }
 
   @override
-  Widget build(BuildContext context) => KeepAlivePage(child: buildList());
-
-  Widget buildList() => data.isEmpty
-      ? Container(
-          child: Column(
-            children: [
-              Expanded(child: NiuIconLoading(size: 80)),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                child: Text(
-                  '僅顯示前15筆報名資料',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              )
-            ],
-          ),
-        )
-      : CustomEventSignedCard(
-          key: PageStorageKey<String>('event'),
-          data: data,
-        );
+  Widget build(BuildContext context) => KeepAlivePage(
+      child: data.isEmpty
+          ? Container(
+              child: Column(
+                children: [
+                  Expanded(child: NiuIconLoading(size: 80)),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    child: Text(
+                      '僅顯示前15筆報名資料',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          : RefreshWidget(
+              keyRefresh: keyRefresh,
+              onRefresh: refresh,
+              child: refreshLoaded
+                  ? CustomEventSignedCard(
+                      key: PageStorageKey<String>('event'),
+                      data: data,
+                    )
+                  : Container()));
 }

@@ -47,7 +47,7 @@ class _StartMenu extends State<StartMenu> {
   HeadlessInAppWebView? headlessWebView;
   late SharedPreferences prefs;
   late SemesterDate semester = SemesterDate();
-  late String newNotificationsCount;
+  late int newNotificationsCount;
   String url = "";
   bool loginState = false;
   bool reLogin = false;
@@ -59,8 +59,6 @@ class _StartMenu extends State<StartMenu> {
   void initState() {
     super.initState();
     _checkAccount();
-    newNotificationsCount =
-        context.read<NotificationProvider>().newNotificationsCount.toString();
   }
 
   @override
@@ -241,16 +239,24 @@ class _StartMenu extends State<StartMenu> {
             actions: [
               Builder(
                 builder: (context) => Badge(
-                  padding: const EdgeInsets.fromLTRB(5.0, 3.0, 5.0, 5.0),
                   position: BadgePosition.topEnd(top: 1, end: 2),
                   toAnimate: false,
-                  badgeContent: Text(
-                    newNotificationsCount,
-                    style: TextStyle(color: Colors.white),
+                  badgeContent: Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      '${context.watch<NotificationProvider>()
+                          .newNotificationsCount}',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                   child: IconButton(
                     icon: Icon(Icons.notifications_none),
                     onPressed: () {
+                      if (context.read<NotificationProvider>().notificationItemList.length == 0) {
+                        context
+                            .read<NotificationProvider>()
+                            .setIsEmpty(true);
+                      }
                       context
                           .read<NotificationProvider>()
                           .setNewNotifications(false);
