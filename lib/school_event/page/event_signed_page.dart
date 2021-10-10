@@ -4,7 +4,6 @@ import 'package:niu_app/components/keep_alive.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/refresh.dart';
 import 'package:niu_app/school_event/components/event_signed_card.dart';
-import 'package:niu_app/school_event/components/custom_list_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EventSignedPage extends StatefulWidget {

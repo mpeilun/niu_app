@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "283192567280",
-    "project_id": "niu-app-82fd0",
-    "storage_bucket": "niu-app-82fd0.appspot.com"
+    "project_number": "1082554334813",
+    "project_id": "niuapp-8d468",
+    "storage_bucket": "niuapp-8d468.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:283192567280:android:99fb20024b6853d5a16935",
+        "mobilesdk_app_id": "1:1082554334813:android:0f994a17c1510b50f097b4",
         "android_client_info": {
           "package_name": "com.niu.niu_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "283192567280-mu22l4u422rnc00i0v94a8gerni83um7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.niu.niu_app",
-            "certificate_hash": "1ae18228fb5394bf3da6c5fb637bf22ed37868bf"
-          }
-        },
-        {
-          "client_id": "283192567280-p7ialbnafiapbt77a6tu0abtif50i67t.apps.googleusercontent.com",
+          "client_id": "1082554334813-68m9pciaqdo4n7aiit9g7a707upj1mkc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBIVEFzxtlWHLgR-GfFxALG8NrD3HxrMKM"
+          "current_key": "AIzaSyBwUYP9A_us45hWcQNVFNWPFWWBBBJmXu4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "283192567280-p7ialbnafiapbt77a6tu0abtif50i67t.apps.googleusercontent.com",
+              "client_id": "1082554334813-68m9pciaqdo4n7aiit9g7a707upj1mkc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
