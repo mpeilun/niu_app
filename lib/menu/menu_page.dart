@@ -359,7 +359,7 @@ class _StartMenu extends State<StartMenu> {
           onWillPop: () async {
             if (popState == false) {
               popState = true;
-              showToast('滑動第二次離開APP');
+              showToast('再返回一次離開APP');
               Future.delayed(Duration(milliseconds: 2000), () async {
                 popState = false;
               });
