@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                   print("id: " + id);
                   print("name: " + name);
                   loadDataFormPrefs(context);
-                  runNotificationWebViewWebView(context);
+                  runNotificationWebViewWebView(context, null);
                   Navigator.pop(context);
                 },
                 theme: LoginTheme(

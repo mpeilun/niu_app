@@ -8,6 +8,8 @@ import 'package:niu_app/provider/notification_provider.dart';
 import 'package:provider/src/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import 'notification_webview.dart';
+
 class NotificationDrawer extends StatefulWidget {
   NotificationDrawer({Key? key}) : super(key: key);
 
@@ -24,22 +26,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
       RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
-    await Future.delayed(Duration(milliseconds: 1000));
-    context.read<NotificationProvider>().setNewNotificationsCount(1);
-    notificationItems.insert(0, NotificationItem(icon: 1, title: 'gg'));
-    notificationItems.insert(1, NotificationItem(icon: 1, title: 'gg'));
-    notificationItems.insert(2, NotificationItem(icon: 1, title: 'gg'));
-    notificationItems.insert(3, NotificationItem(icon: 1, title: 'gg'));
-    notificationItems.insert(4, NotificationItem(icon: 1, title: 'gg'));
-    context
-        .read<NotificationProvider>()
-        .setNotificationItemList(notificationItems);
-
-    /////////////////////////////////////////////////////
-    _refreshController.refreshCompleted();
-    if (notificationItems.length > 0) {
-      context.read<NotificationProvider>().setIsEmpty(false);
-    }
+    await runNotificationWebViewWebView(context, _refreshController);
   }
 
   void clearAllItems() async {
@@ -47,6 +34,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
     context
         .read<NotificationProvider>()
         .setNotificationItemList(notificationItems);
+    context.read<NotificationProvider>().setNewNotificationsCount(0);
     context.read<NotificationProvider>().setIsEmpty(true);
   }
 

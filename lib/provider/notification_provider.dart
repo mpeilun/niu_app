@@ -4,11 +4,9 @@ import 'package:niu_app/menu/notification/notificatioon_items.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationProvider with ChangeNotifier {
-
   void dissmisible(int index) {
     _notificationItemList.removeAt(index);
-    setNotificationItemList(
-        _notificationItemList);
+    setNotificationItemList(_notificationItemList);
     if (index < _newNotificationsCount) {
       _newNotificationsCount--;
     }
@@ -67,7 +65,7 @@ class NotificationProvider with ChangeNotifier {
 
   void saveNotificationItemListToPrefs(String data) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    print('---aveNotificationItemListToPrefs---');
+    print('---saveNotificationItemListToPrefs---');
     print(data);
     prefs.setString('notification_item_key', data);
   }

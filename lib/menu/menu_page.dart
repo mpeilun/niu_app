@@ -454,7 +454,7 @@ class _StartMenu extends State<StartMenu> {
               print('登入成功');
               loginFinished();
               loadDataFormPrefs(context);
-              runNotificationWebViewWebView(context);
+              runNotificationWebViewWebView(context, null);
             }
           }
         },

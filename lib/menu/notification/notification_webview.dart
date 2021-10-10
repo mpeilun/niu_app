@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/provider/notification_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'notification_eschool.dart';
@@ -27,7 +28,8 @@ Future<void> loadDataFormPrefs(BuildContext context) async {
   }
 }
 
-Future<void> runNotificationWebViewWebView(BuildContext context) async {
+Future<void> runNotificationWebViewWebView(
+    BuildContext context, RefreshController? refreshController) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   List<NotificationItem> notificationItems =
       context.read<NotificationProvider>().notificationItemList;
@@ -191,6 +193,13 @@ Future<void> runNotificationWebViewWebView(BuildContext context) async {
           } else {
             final String encodedData = EschoolData.encode(eschoolData);
             await prefs.setString('eschool_data_key', encodedData);
+          }
+
+          if (refreshController != null) {
+            refreshController.refreshCompleted();
+            if (notificationItems.length > 0) {
+              context.read<NotificationProvider>().setIsEmpty(false);
+            }
           }
         }
       },
