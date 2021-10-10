@@ -39,6 +39,24 @@ import 'package:badges/badges.dart';
 import 'notification/notification_webview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+Route _createRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => NotificationDrawer(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
+
 class StartMenu extends StatefulWidget {
   StartMenu({Key? key}) : super(key: key);
 
@@ -58,6 +76,8 @@ class _StartMenu extends State<StartMenu> {
   bool countState = false;
   bool runTimer = false;
   bool popState = false;
+
+
 
   @override
   void initState() {
@@ -237,7 +257,6 @@ class _StartMenu extends State<StartMenu> {
     if (loginState) {
       return ConditionalWillPopScope(
           child: Scaffold(
-              endDrawerEnableOpenDragGesture: false,
               appBar: AppBar(
                 title: Text(title[context.watch<DrawerProvider>().index]),
                 titleSpacing: 0.0,
@@ -268,8 +287,8 @@ class _StartMenu extends State<StartMenu> {
                           context
                               .read<NotificationProvider>()
                               .setNewNotifications(false);
+                          Navigator.of(context).push(_createRoute());
                           //context.read<OnNotifyClick>().newNotification(1); //refresh
-                          Scaffold.of(context).openEndDrawer();
                         },
                       ),
                     ),
@@ -348,13 +367,6 @@ class _StartMenu extends State<StartMenu> {
                     //other styles
                   ),
                   child: MyDrawer()),
-              endDrawer: Theme(
-                  data: Theme.of(context).copyWith(
-                    canvasColor: Theme.of(context)
-                        .scaffoldBackgroundColor, //This will change the drawer background to blue.
-                    //other styles
-                  ),
-                  child: NotificationDrawer()),
               body: pages[context.watch<DrawerProvider>().index]),
           onWillPop: () async {
             if (popState == false) {
