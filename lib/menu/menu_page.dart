@@ -35,6 +35,7 @@ import '../zuvio.dart';
 import 'package:badges/badges.dart';
 
 import 'notification/notification_webview.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class StartMenu extends StatefulWidget {
   StartMenu({Key? key}) : super(key: key);
@@ -66,24 +67,14 @@ class _StartMenu extends State<StartMenu> {
     super.dispose();
   }
 
-  // late DateTime currentBackPressTime;
-  // Future<bool> onWillPop() {
-  //   DateTime now = DateTime.now();
-  //   if (currentBackPressTime == null ||
-  //       now.difference(currentBackPressTime) > Duration(seconds: 2)) {
-  //     currentBackPressTime = now;
-  //     Fluttertoast.showToast(msg: exit_warning);
-  //     return Future.value(false);
-  //   }
-  //   return Future.value(true);
-  // }
+  DateTime timeBackPressed = DateTime.now();
 
   Future<bool?> showWarning(BuildContext context) async {
     return showDialog<bool>(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('是否確定離開?'),
+            title: Text('確定離開?'),
             actions: [
               TextButton(
                   onPressed: () {
@@ -267,9 +258,19 @@ class _StartMenu extends State<StartMenu> {
     if (loginState) {
       return WillPopScope(
         onWillPop: () async {
+          // final difference = DateTime.now().difference(timeBackPressed);
+          // final isExitWaring = difference >= Duration(seconds: 2);
+          // if (isExitWaring) {
+          //   final message = '再按一次離開';
+          //   Fluttertoast.showToast(msg: message, fontSize: 16);
+          //   return false;
+          // } else {
+          //   Fluttertoast.cancel();
+          //   return true;
+          // }
           print('Back Button pressed!');
-          final shouldPop = await showWarning(context);
-          return shouldPop ?? false;
+             final shouldPop = await showWarning(context);
+            return shouldPop ?? false;
         },
         child: Scaffold(
             endDrawerEnableOpenDragGesture: false,

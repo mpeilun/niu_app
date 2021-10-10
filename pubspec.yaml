@@ -59,6 +59,7 @@ dependencies:
   pull_to_refresh: ^2.0.0
   badges: ^2.0.1
   geolocator: ^7.7.0
+  fluttertoast: ^8.0.8
 
 dev_dependencies:
   flutter_test:
