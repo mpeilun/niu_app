@@ -5,9 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationProvider with ChangeNotifier {
 
-  void dissmisible(int index, GlobalKey<AnimatedListState> listKey) {
-    listKey.currentState!.removeItem(
-        index, (_, __) => Container());
+  void dissmisible(int index) {
     _notificationItemList.removeAt(index);
     setNotificationItemList(
         _notificationItemList);

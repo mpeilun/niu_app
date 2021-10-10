@@ -66,6 +66,40 @@ class _StartMenu extends State<StartMenu> {
     super.dispose();
   }
 
+  // late DateTime currentBackPressTime;
+  // Future<bool> onWillPop() {
+  //   DateTime now = DateTime.now();
+  //   if (currentBackPressTime == null ||
+  //       now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+  //     currentBackPressTime = now;
+  //     Fluttertoast.showToast(msg: exit_warning);
+  //     return Future.value(false);
+  //   }
+  //   return Future.value(true);
+  // }
+
+  Future<bool?> showWarning(BuildContext context) async {
+    return showDialog<bool>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('是否確定離開?'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, false);
+                  },
+                  child: Text('取消')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
+                  child: Text('確定'))
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final title = ['首頁', '公告', '行事曆', '設定', '關於', '回報問題'];
@@ -231,123 +265,131 @@ class _StartMenu extends State<StartMenu> {
     ];
 
     if (loginState) {
-      return Scaffold(
-          endDrawerEnableOpenDragGesture: false,
-          appBar: AppBar(
-            title: Text(title[context.watch<DrawerProvider>().index]),
-            titleSpacing: 0.0,
-            actions: [
-              Builder(
-                builder: (context) => Badge(
-                  position: BadgePosition.topEnd(top: 1, end: 2),
-                  toAnimate: false,
-                  badgeContent: Align(
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      '${context.watch<NotificationProvider>()
-                          .newNotificationsCount}',
-                      style: TextStyle(color: Colors.white),
+      return WillPopScope(
+        onWillPop: () async {
+          print('Back Button pressed!');
+          final shouldPop = await showWarning(context);
+          return shouldPop ?? false;
+        },
+        child: Scaffold(
+            endDrawerEnableOpenDragGesture: false,
+            appBar: AppBar(
+              title: Text(title[context.watch<DrawerProvider>().index]),
+              titleSpacing: 0.0,
+              actions: [
+                Builder(
+                  builder: (context) => Badge(
+                    position: BadgePosition.topEnd(top: 1, end: 2),
+                    toAnimate: false,
+                    badgeContent: Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        '${context.watch<NotificationProvider>().newNotificationsCount}',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.notifications_none),
-                    onPressed: () {
-                      if (context.read<NotificationProvider>().notificationItemList.length == 0) {
+                    child: IconButton(
+                      icon: Icon(Icons.notifications_none),
+                      onPressed: () {
+                        if (context
+                                .read<NotificationProvider>()
+                                .notificationItemList
+                                .length ==
+                            0) {
+                          context.read<NotificationProvider>().setIsEmpty(true);
+                        }
                         context
                             .read<NotificationProvider>()
-                            .setIsEmpty(true);
-                      }
-                      context
-                          .read<NotificationProvider>()
-                          .setNewNotifications(false);
-                      //context.read<OnNotifyClick>().newNotification(1); //refresh
-                      Scaffold.of(context).openEndDrawer();
+                            .setNewNotifications(false);
+                        //context.read<OnNotifyClick>().newNotification(1); //refresh
+                        Scaffold.of(context).openEndDrawer();
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton:
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Opacity(
+                opacity: 0.5,
+                child: Container(
+                  height: 40,
+                  width: 40,
+                  child: FloatingActionButton(
+                    heroTag: 'test_1',
+                    backgroundColor: Colors.red,
+                    child: Icon(FontAwesomeIcons.bomb),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => TestCalendar(
+                          semester: semester,
+                        ),
+                      );
                     },
                   ),
                 ),
               ),
-            ],
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton:
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Opacity(
-              opacity: 0.5,
-              child: Container(
-                height: 40,
-                width: 40,
-                child: FloatingActionButton(
-                  heroTag: 'test_1',
-                  backgroundColor: Colors.red,
-                  child: Icon(FontAwesomeIcons.bomb),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) => TestCalendar(
-                        semester: semester,
-                      ),
-                    );
-                  },
+              SizedBox(width: 20),
+              Opacity(
+                opacity: 0.5,
+                child: Container(
+                  height: 40,
+                  width: 40,
+                  child: FloatingActionButton(
+                    heroTag: 'test_2',
+                    backgroundColor: Colors.red,
+                    child: Icon(FontAwesomeIcons.bomb),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TestWebView(),
+                              maintainState: false));
+                    },
+                  ),
                 ),
               ),
-            ),
-            SizedBox(width: 20),
-            Opacity(
-              opacity: 0.5,
-              child: Container(
-                height: 40,
-                width: 40,
-                child: FloatingActionButton(
-                  heroTag: 'test_2',
-                  backgroundColor: Colors.red,
-                  child: Icon(FontAwesomeIcons.bomb),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TestWebView(),
-                            maintainState: false));
-                  },
+              SizedBox(width: 20),
+              Opacity(
+                opacity: 0.5,
+                child: Container(
+                  height: 40,
+                  width: 40,
+                  child: FloatingActionButton(
+                    heroTag: 'test_3',
+                    backgroundColor: Colors.red,
+                    child: Icon(FontAwesomeIcons.bomb),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TestWebView(),
+                              maintainState: false));
+                    },
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(width: 20),
-            Opacity(
-              opacity: 0.5,
-              child: Container(
-                height: 40,
-                width: 40,
-                child: FloatingActionButton(
-                  heroTag: 'test_3',
-                  backgroundColor: Colors.red,
-                  child: Icon(FontAwesomeIcons.bomb),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TestWebView(),
-                            maintainState: false));
-                  },
+              )
+            ]),
+            drawer: Theme(
+                data: Theme.of(context).copyWith(
+                  canvasColor: Theme.of(context)
+                      .scaffoldBackgroundColor, //This will change the drawer background to blue.
+                  //other styles
                 ),
-              ),
-            )
-          ]),
-          drawer: Theme(
-              data: Theme.of(context).copyWith(
-                canvasColor: Theme.of(context)
-                    .scaffoldBackgroundColor, //This will change the drawer background to blue.
-                //other styles
-              ),
-              child: MyDrawer()),
-          endDrawer: Theme(
-              data: Theme.of(context).copyWith(
-                canvasColor: Theme.of(context)
-                    .scaffoldBackgroundColor, //This will change the drawer background to blue.
-                //other styles
-              ),
-              child: NotificationDrawer()),
-          body: pages[context.watch<DrawerProvider>().index]);
+                child: MyDrawer()),
+            endDrawer: Theme(
+                data: Theme.of(context).copyWith(
+                  canvasColor: Theme.of(context)
+                      .scaffoldBackgroundColor, //This will change the drawer background to blue.
+                  //other styles
+                ),
+                child: NotificationDrawer()),
+            body: pages[context.watch<DrawerProvider>().index]),
+      );
     } else {
       return WillPopScope(
           onWillPop: true ? () async => false : null, child: Loading());

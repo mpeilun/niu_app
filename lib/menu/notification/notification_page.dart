@@ -18,7 +18,6 @@ class NotificationDrawer extends StatefulWidget {
 class _NotificationDrawer extends State<NotificationDrawer>
     with SingleTickerProviderStateMixin {
   late List<NotificationItem> notificationItems;
-  final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
   List<IconData> iconList = [MenuIcon.icon_e_school, Icons.blur_on];
 
   RefreshController _refreshController =
@@ -44,26 +43,11 @@ class _NotificationDrawer extends State<NotificationDrawer>
   }
 
   void clearAllItems() async {
-    for (int i = notificationItems.length - 1; i >= 0; i--) {
-      bool isNewNotification = false;
-      if (i <
-          Provider.of<NotificationProvider>(context, listen: false)
-              .newNotificationsCount) {
-        isNewNotification = true;
-      }
-      listKey.currentState!.removeItem(
-          i,
-          (BuildContext context, Animation<double> animation) =>
-              buildItem(animation, i, isNewNotification));
-      await Future.delayed(Duration(milliseconds: 100));
-    }
-    await Future.delayed(Duration(milliseconds: 150), () {
-      notificationItems.clear();
-      context
-          .read<NotificationProvider>()
-          .setNotificationItemList(notificationItems);
-      context.read<NotificationProvider>().setIsEmpty(true);
-    });
+    notificationItems.clear();
+    context
+        .read<NotificationProvider>()
+        .setNotificationItemList(notificationItems);
+    context.read<NotificationProvider>().setIsEmpty(true);
   }
 
   @override
@@ -125,11 +109,9 @@ class _NotificationDrawer extends State<NotificationDrawer>
                           ),
                         ),
                       )
-                    : AnimatedList(
-                        initialItemCount: notificationItems.length,
-                        key: listKey,
-                        itemBuilder: (BuildContext context, int index,
-                            Animation animation) {
+                    : ListView.builder(
+                        itemCount: notificationItems.length,
+                        itemBuilder: (BuildContext context, int index) {
                           bool isNewNotification = false;
                           if (index <
                               Provider.of<NotificationProvider>(context,
@@ -145,11 +127,48 @@ class _NotificationDrawer extends State<NotificationDrawer>
                               onDismissed: (direction) {
                                 context
                                     .read<NotificationProvider>()
-                                    .dissmisible(index, listKey);
+                                    .dissmisible(index);
                               },
                               key: UniqueKey(),
-                              child: buildItem(
-                                  animation, index, isNewNotification));
+                              child: Column(
+                                children: [
+                                  Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      ListTile(
+                                        leading: Icon(
+                                          iconList[
+                                              notificationItems[index].icon],
+                                          size: 40.0,
+                                        ),
+                                        title: Text(
+                                            notificationItems[index].title),
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ESchool(),
+                                                  maintainState: false));
+                                        },
+                                      ),
+                                      Positioned(
+                                        top: 6.0,
+                                        left: 8.0,
+                                        child: Icon(Icons.brightness_1,
+                                            color: isNewNotification
+                                                ? Colors.red
+                                                : Colors.transparent,
+                                            size: 9.0),
+                                      )
+                                    ],
+                                  ),
+                                  Divider(
+                                    thickness: 1.2,
+                                    height: .0,
+                                  )
+                                ],
+                              ));
                         },
                       ),
               ),
@@ -173,46 +192,4 @@ class _NotificationDrawer extends State<NotificationDrawer>
         color: Colors.red,
         child: Icon(FontAwesomeIcons.trashAlt),
       );
-
-  Widget buildItem(Animation animation, int index, bool isNewNotification) {
-    return SlideTransition(
-      position: animation
-          .drive(CurveTween(curve: Curves.easeIn))
-          .drive(Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0))),
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              ListTile(
-                leading: Icon(
-                  iconList[notificationItems[index].icon],
-                  size: 40.0,
-                ),
-                title: Text(notificationItems[index].title),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ESchool(),
-                          maintainState: false));
-                },
-              ),
-              Positioned(
-                top: 6.0,
-                left: 8.0,
-                child: Icon(Icons.brightness_1,
-                    color: isNewNotification ? Colors.red : Colors.transparent,
-                    size: 9.0),
-              )
-            ],
-          ),
-          Divider(
-            thickness: 1.2,
-            height: .0,
-          )
-        ],
-      ),
-    );
-  }
 }
