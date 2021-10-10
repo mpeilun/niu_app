@@ -1,7 +1,9 @@
+import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/graduation/graduation.dart';
@@ -55,6 +57,7 @@ class _StartMenu extends State<StartMenu> {
   bool isNotification = true;
   bool countState = false;
   bool runTimer = false;
+  bool popState = false;
 
   @override
   void initState() {
@@ -65,30 +68,6 @@ class _StartMenu extends State<StartMenu> {
   @override
   void dispose() {
     super.dispose();
-  }
-
-  DateTime timeBackPressed = DateTime.now();
-
-  Future<bool?> showWarning(BuildContext context) async {
-    return showDialog<bool>(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('確定離開?'),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context, false);
-                  },
-                  child: Text('取消')),
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context, true);
-                  },
-                  child: Text('確定'))
-            ],
-          );
-        });
   }
 
   @override
@@ -256,141 +235,140 @@ class _StartMenu extends State<StartMenu> {
     ];
 
     if (loginState) {
-      return WillPopScope(
-        onWillPop: () async {
-          // final difference = DateTime.now().difference(timeBackPressed);
-          // final isExitWaring = difference >= Duration(seconds: 2);
-          // if (isExitWaring) {
-          //   final message = '再按一次離開';
-          //   Fluttertoast.showToast(msg: message, fontSize: 16);
-          //   return false;
-          // } else {
-          //   Fluttertoast.cancel();
-          //   return true;
-          // }
-          print('Back Button pressed!');
-             final shouldPop = await showWarning(context);
-            return shouldPop ?? false;
-        },
-        child: Scaffold(
-            endDrawerEnableOpenDragGesture: false,
-            appBar: AppBar(
-              title: Text(title[context.watch<DrawerProvider>().index]),
-              titleSpacing: 0.0,
-              actions: [
-                Builder(
-                  builder: (context) => Badge(
-                    position: BadgePosition.topEnd(top: 1, end: 2),
-                    toAnimate: false,
-                    badgeContent: Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        '${context.watch<NotificationProvider>().newNotificationsCount}',
-                        style: TextStyle(color: Colors.white),
+      return ConditionalWillPopScope(
+          child: Scaffold(
+              endDrawerEnableOpenDragGesture: false,
+              appBar: AppBar(
+                title: Text(title[context.watch<DrawerProvider>().index]),
+                titleSpacing: 0.0,
+                actions: [
+                  Builder(
+                    builder: (context) => Badge(
+                      position: BadgePosition.topEnd(top: 1, end: 2),
+                      toAnimate: false,
+                      badgeContent: Align(
+                        alignment: Alignment.topCenter,
+                        child: Text(
+                          '${context.watch<NotificationProvider>().newNotificationsCount}',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.notifications_none),
+                        onPressed: () {
+                          if (context
+                                  .read<NotificationProvider>()
+                                  .notificationItemList
+                                  .length ==
+                              0) {
+                            context
+                                .read<NotificationProvider>()
+                                .setIsEmpty(true);
+                          }
+                          context
+                              .read<NotificationProvider>()
+                              .setNewNotifications(false);
+                          //context.read<OnNotifyClick>().newNotification(1); //refresh
+                          Scaffold.of(context).openEndDrawer();
+                        },
                       ),
                     ),
-                    child: IconButton(
-                      icon: Icon(Icons.notifications_none),
+                  ),
+                ],
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerFloat,
+              floatingActionButton:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Opacity(
+                  opacity: 0.5,
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    child: FloatingActionButton(
+                      heroTag: 'test_1',
+                      backgroundColor: Colors.red,
+                      child: Icon(FontAwesomeIcons.bomb),
                       onPressed: () {
-                        if (context
-                                .read<NotificationProvider>()
-                                .notificationItemList
-                                .length ==
-                            0) {
-                          context.read<NotificationProvider>().setIsEmpty(true);
-                        }
-                        context
-                            .read<NotificationProvider>()
-                            .setNewNotifications(false);
-                        //context.read<OnNotifyClick>().newNotification(1); //refresh
-                        Scaffold.of(context).openEndDrawer();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => TestCalendar(
+                            semester: semester,
+                          ),
+                        );
                       },
                     ),
                   ),
                 ),
-              ],
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
-            floatingActionButton:
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Opacity(
-                opacity: 0.5,
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  child: FloatingActionButton(
-                    heroTag: 'test_1',
-                    backgroundColor: Colors.red,
-                    child: Icon(FontAwesomeIcons.bomb),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => TestCalendar(
-                          semester: semester,
-                        ),
-                      );
-                    },
+                SizedBox(width: 20),
+                Opacity(
+                  opacity: 0.5,
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    child: FloatingActionButton(
+                      heroTag: 'test_2',
+                      backgroundColor: Colors.red,
+                      child: Icon(FontAwesomeIcons.bomb),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TestWebView(),
+                                maintainState: false));
+                      },
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(width: 20),
-              Opacity(
-                opacity: 0.5,
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  child: FloatingActionButton(
-                    heroTag: 'test_2',
-                    backgroundColor: Colors.red,
-                    child: Icon(FontAwesomeIcons.bomb),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TestWebView(),
-                              maintainState: false));
-                    },
+                SizedBox(width: 20),
+                Opacity(
+                  opacity: 0.5,
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    child: FloatingActionButton(
+                      heroTag: 'test_3',
+                      backgroundColor: Colors.red,
+                      child: Icon(FontAwesomeIcons.bomb),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TestWebView(),
+                                maintainState: false));
+                      },
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(width: 20),
-              Opacity(
-                opacity: 0.5,
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  child: FloatingActionButton(
-                    heroTag: 'test_3',
-                    backgroundColor: Colors.red,
-                    child: Icon(FontAwesomeIcons.bomb),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TestWebView(),
-                              maintainState: false));
-                    },
+                )
+              ]),
+              drawer: Theme(
+                  data: Theme.of(context).copyWith(
+                    canvasColor: Theme.of(context)
+                        .scaffoldBackgroundColor, //This will change the drawer background to blue.
+                    //other styles
                   ),
-                ),
-              )
-            ]),
-            drawer: Theme(
-                data: Theme.of(context).copyWith(
-                  canvasColor: Theme.of(context)
-                      .scaffoldBackgroundColor, //This will change the drawer background to blue.
-                  //other styles
-                ),
-                child: MyDrawer()),
-            endDrawer: Theme(
-                data: Theme.of(context).copyWith(
-                  canvasColor: Theme.of(context)
-                      .scaffoldBackgroundColor, //This will change the drawer background to blue.
-                  //other styles
-                ),
-                child: NotificationDrawer()),
-            body: pages[context.watch<DrawerProvider>().index]),
-      );
+                  child: MyDrawer()),
+              endDrawer: Theme(
+                  data: Theme.of(context).copyWith(
+                    canvasColor: Theme.of(context)
+                        .scaffoldBackgroundColor, //This will change the drawer background to blue.
+                    //other styles
+                  ),
+                  child: NotificationDrawer()),
+              body: pages[context.watch<DrawerProvider>().index]),
+          onWillPop: () async {
+            if (popState == false) {
+              popState = true;
+              showToast('滑動第二次離開APP');
+              Future.delayed(Duration(milliseconds: 2000), () async {
+                popState = false;
+              });
+            } else {
+              return true;
+            }
+            return false;
+          },
+          shouldAddCallbacks: true);
     } else {
       return WillPopScope(
           onWillPop: true ? () async => false : null, child: Loading());
