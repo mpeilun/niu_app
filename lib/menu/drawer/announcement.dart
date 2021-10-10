@@ -58,6 +58,11 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                         MaterialPageRoute(
                             builder: (context) => AnnouncementWebView(
                                   announcementUrl: links[index],
+                                  announcementTitle: item.text
+                                      .replaceAll("\n", "")
+                                      .replaceAll(" ", "")
+                                      .toString()
+                                      .split(']')[1],
                                 ),
                             maintainState: false));
                   },
@@ -93,10 +98,12 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
 
 class AnnouncementWebView extends StatefulWidget {
   final String announcementUrl;
+  final String announcementTitle;
 
   const AnnouncementWebView({
     Key? key,
     required this.announcementUrl,
+    required this.announcementTitle,
   }) : super(key: key);
 
   @override
@@ -154,7 +161,7 @@ class _AnnouncementWebViewState extends State<AnnouncementWebView> {
         ? Container(
             child: Scaffold(
               appBar: AppBar(
-                title: Text('學校公告'),
+                title: Text(widget.announcementTitle),
               ),
               body: SafeArea(
                   child: Column(children: <Widget>[
@@ -184,28 +191,33 @@ class _AnnouncementWebViewState extends State<AnnouncementWebView> {
                             (controller, navigationAction) async {
                           var uri = navigationAction.request.url!;
 
-                          String? fileName = await controller.evaluateJavascript(
-                              source:
-                                  'document.querySelector("#Dyn_2_3 > div.module.module-ptattach.pt_style1 > div.md_middle > div > div > div > table > tbody > tr > td > div > span:nth-child(2) > a").title');
-
-                          if (fileName != null) {
-                            if (fileName.toString().contains('.pdf') &&
-                                uri.toString().contains(
-                                    'niu.edu.tw/bin/downloadfile.php')) {
+                          if (uri
+                              .toString()
+                              .contains('niu.edu.tw/bin/downloadfile.php')) {
+                            Response response = await Dio().get(uri.toString());
+                            if (response.headers
+                                    .toString()
+                                    .contains('filename=') &&
+                                response.headers
+                                        .value('content-disposition')!
+                                        .split('filename=')[1]
+                                        .split('.')
+                                        .last ==
+                                    'pdf') {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => PdfViewer(
-                                            title: fileName.toString(),
+                                            title: widget.announcementTitle,
                                             url: uri.toString(),
-                                            fileName: fileName.toString(),
+                                            fileName: '',
                                           ),
                                       maintainState: false));
                               return NavigationActionPolicy.CANCEL;
+                            } else {
+                              return NavigationActionPolicy.ALLOW;
                             }
-                          } else if (!uri.toString().contains(
-                                  'niu.edu.tw/bin/downloadfile.php') &&
-                              js) {
+                          } else if (js) {
                             await launch(
                               uri.toString().replaceAll('http://', 'https://'),
                             );
@@ -275,6 +287,7 @@ class _AnnouncementWebViewState extends State<AnnouncementWebView> {
               ])),
             ),
           )
-        : PdfViewer(title: '學校公告', url: widget.announcementUrl);
+        : PdfViewer(
+            title: widget.announcementTitle, url: widget.announcementUrl);
   }
 }

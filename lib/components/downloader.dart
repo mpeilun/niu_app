@@ -196,10 +196,12 @@ Future sendToDownload(String url, List<Cookie> cookies) async {
             DateTime.now().minute.toString() +
             '_' +
             DateTime.now().second.toString() +
+            '.' +
             response.headers
                 .value('content-disposition')!
                 .split('filename=')[1]
-                .substring(url.lastIndexOf("."));
+                .split('.')
+                .last;
       }
     }
     print('---下載網址--- ' + url);
