@@ -110,6 +110,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
                             context
                                 .read<NotificationProvider>()
                                 .dissmisible(index);
+                            isNewNotification = false;
                           },
                           key: UniqueKey(),
                           child: Column(

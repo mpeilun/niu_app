@@ -18,6 +18,7 @@ class AnnouncementPage extends StatefulWidget {
 class _AnnouncementPageState extends State<AnnouncementPage> {
   List contents = [];
   List<String> links = [];
+
   Future<bool> isFinish() async {
     await getPost(1);
     return true;
@@ -48,25 +49,33 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
               itemCount: contents.length,
               itemBuilder: (context, index) {
                 var item = contents[index];
-                return ListTile(
-                  //leading: Icon(Icons.event_seat),
-                  title:
-                      Text(item.text.replaceAll("\n", "").replaceAll(" ", "")),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AnnouncementWebView(
-                                  announcementUrl: links[index],
-                                  announcementTitle: item.text
-                                      .replaceAll("\n", "")
-                                      .replaceAll(" ", "")
-                                      .toString()
-                                      .split(']')[1],
-                                ),
-                            maintainState: false));
-                  },
-                  //subtitle: Text('${content[index].price}'),
+                return Column(
+                  children: [
+                    ListTile(
+                      //leading: Icon(Icons.event_seat),
+                      title: Text(
+                          item.text.replaceAll("\n", "").replaceAll(" ", "")),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AnnouncementWebView(
+                                      announcementUrl: links[index],
+                                      announcementTitle: item.text
+                                          .replaceAll("\n", "")
+                                          .replaceAll(" ", "")
+                                          .toString()
+                                          .split(']')[1],
+                                    ),
+                                maintainState: false));
+                      },
+                      //subtitle: Text('${content[index].price}'),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Colors.grey,
+                    )
+                  ],
                 );
               },
             ));
