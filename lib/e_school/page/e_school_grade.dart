@@ -226,7 +226,7 @@ class _ESchoolGradeState extends State<ESchoolGrade> {
                           print(consoleMessage);
                         },
                         onDownloadStart: (controller, url) async {
-                          download(url, context);
+                          download(url, context, null);
                         },
                       ),
                     )

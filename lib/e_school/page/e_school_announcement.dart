@@ -231,7 +231,7 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
                           print(consoleMessage);
                         },
                         onDownloadStart: (controller, url) async {
-                          download(url, context);
+                          download(url, context, null);
                         },
                       ),
                     )

@@ -1,35 +1,61 @@
+import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/graduation/graduation.dart';
 import 'package:niu_app/menu/drawer/drawer.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
-import 'package:niu_app/menu/loading.dart';
+import 'package:niu_app/components/login_loading.dart';
 import 'package:niu_app/menu/notification/notification_page.dart';
 import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/provider/notification_provider.dart';
-import 'package:niu_app/school%EF%BC%BFschedule.dart';
+import 'package:niu_app/menu/drawer/school%EF%BC%BFschedule.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
+import 'package:niu_app/service/SemesterDate.dart';
 import 'package:niu_app/testcode/test_calendar.dart';
+import 'package:niu_app/testcode/test_webview.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:niu_app/menu/drawer/about.dart';
 import 'package:niu_app/menu/drawer/announcement.dart';
 import 'package:niu_app/menu/drawer/report.dart';
 import 'package:niu_app/menu/drawer/setting.dart';
-import 'package:niu_app/menu/drawer/announcement.dart';
 import 'package:provider/src/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 
 import '../bus.dart';
 import '../course＿select.dart';
 import '../zuvio.dart';
+
+import 'package:badges/badges.dart';
+
+import 'notification/notification_webview.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+Route _createRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => NotificationDrawer(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
 
 class StartMenu extends StatefulWidget {
   StartMenu({Key? key}) : super(key: key);
@@ -41,12 +67,17 @@ class StartMenu extends StatefulWidget {
 class _StartMenu extends State<StartMenu> {
   HeadlessInAppWebView? headlessWebView;
   late SharedPreferences prefs;
+  late SemesterDate semester = SemesterDate();
+  late int newNotificationsCount;
   String url = "";
   bool loginState = false;
   bool reLogin = false;
   bool isNotification = true;
   bool countState = false;
   bool runTimer = false;
+  bool popState = false;
+
+
 
   @override
   void initState() {
@@ -61,7 +92,7 @@ class _StartMenu extends State<StartMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final title = ['首頁', '公告', '設定', '關於', '回報問題'];
+    final title = ['首頁', '公告', '行事曆', '設定', '關於', '回報問題'];
     final pages = [
       LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -137,13 +168,14 @@ class _StartMenu extends State<StartMenu> {
                             },
                           ),
                           CustomIcons(
-                            title: 'ZUVIO',
-                            icon: MenuIcon.icon_zuvio,
-                            press: () {
+                            title: '代辦清單',
+                            icon: MenuIcon.icon_feedback,
+                            size: 40.0,
+                            press: () async {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Zuvio(),
+                                      builder: (context) => SchoolSchedule(),
                                       maintainState: false));
                             },
                           ),
@@ -186,57 +218,13 @@ class _StartMenu extends State<StartMenu> {
                             },
                           ),
                           CustomIcons(
-                            title: '行事曆',
-                            icon: MyFlutterApp.calendar,
-                            size: 40.0,
-                            press: () async {
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              prefs.clear(); //清空键值对
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SchoolSchedule(),
-                                      maintainState: false));
-                            },
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          CustomIcons(
-                            title: 'Test1',
-                            icon: Icons.alarm,
-                            size: 20.0,
-                            press: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) => TestCalendar(),
-                              );
-                            },
-                          ),
-                          CustomIcons(
-                            title: 'Test2',
-                            icon: Icons.alarm,
-                            size: 20.0,
+                            title: 'ZUVIO',
+                            icon: MenuIcon.icon_zuvio,
                             press: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Bus(),
-                                      maintainState: false));
-                            },
-                          ),
-                          CustomIcons(
-                            title: 'Test3',
-                            icon: Icons.alarm,
-                            size: 20.0,
-                            press: () async {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SchoolSchedule(),
+                                      builder: (context) => Zuvio(),
                                       maintainState: false));
                             },
                           ),
@@ -260,57 +248,139 @@ class _StartMenu extends State<StartMenu> {
         },
       ),
       AnnouncementPage(),
+      SchoolSchedule(),
       SettingPage(),
       AboutPage(),
       ReportPage()
     ];
 
     if (loginState) {
-      return Scaffold(
-          appBar: AppBar(
-            title: Text(title[context.watch<OnItemClick>().index]),
-            titleSpacing: 0.0,
-            actions: [
-              Builder(
-                builder: (context) => Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.notifications_none),
+      return ConditionalWillPopScope(
+          child: Scaffold(
+              appBar: AppBar(
+                title: Text(title[context.watch<DrawerProvider>().index]),
+                titleSpacing: 0.0,
+                actions: [
+                  Builder(
+                    builder: (context) => Badge(
+                      position: BadgePosition.topEnd(top: 1, end: 2),
+                      toAnimate: false,
+                      badgeContent: Align(
+                        alignment: Alignment.topCenter,
+                        child: Text(
+                          '${context.watch<NotificationProvider>().newNotificationsCount}',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.notifications_none),
+                        onPressed: () {
+                          if (context
+                                  .read<NotificationProvider>()
+                                  .notificationItemList
+                                  .length ==
+                              0) {
+                            context
+                                .read<NotificationProvider>()
+                                .setIsEmpty(true);
+                          }
+                          context
+                              .read<NotificationProvider>()
+                              .setNewNotifications(false);
+                          Navigator.of(context).push(_createRoute());
+                          //context.read<OnNotifyClick>().newNotification(1); //refresh
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerFloat,
+              floatingActionButton:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Opacity(
+                  opacity: 0.5,
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    child: FloatingActionButton(
+                      heroTag: 'test_1',
+                      backgroundColor: Colors.red,
+                      child: Icon(FontAwesomeIcons.bomb),
                       onPressed: () {
-                        context.read<OnNotifyClick>().onclick(false);
-                        Scaffold.of(context).openEndDrawer();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => TestCalendar(
+                            semester: semester,
+                          ),
+                        );
                       },
                     ),
-                    Positioned(
-                      right: 10.0,
-                      top: 13.0,
-                      child: Icon(Icons.brightness_1,
-                          color: context.watch<OnNotifyClick>().notify
-                              ? Colors.red
-                              : Colors.transparent,
-                          size: 9.0),
-                    )
-                  ],
+                  ),
                 ),
-              )
-            ],
-          ),
-          drawer: Theme(
-              data: Theme.of(context).copyWith(
-                canvasColor: Theme.of(context)
-                    .scaffoldBackgroundColor, //This will change the drawer background to blue.
-                //other styles
-              ),
-              child: MyDrawer()),
-          endDrawer: Theme(
-              data: Theme.of(context).copyWith(
-                canvasColor: Theme.of(context)
-                    .scaffoldBackgroundColor, //This will change the drawer background to blue.
-                //other styles
-              ),
-              child: NotificationDrawer()),
-          body: pages[context.watch<OnItemClick>().index]);
+                SizedBox(width: 20),
+                Opacity(
+                  opacity: 0.5,
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    child: FloatingActionButton(
+                      heroTag: 'test_2',
+                      backgroundColor: Colors.red,
+                      child: Icon(FontAwesomeIcons.bomb),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TestWebView(),
+                                maintainState: false));
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(width: 20),
+                Opacity(
+                  opacity: 0.5,
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    child: FloatingActionButton(
+                      heroTag: 'test_3',
+                      backgroundColor: Colors.red,
+                      child: Icon(FontAwesomeIcons.bomb),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TestWebView(),
+                                maintainState: false));
+                      },
+                    ),
+                  ),
+                )
+              ]),
+              drawer: Theme(
+                  data: Theme.of(context).copyWith(
+                    canvasColor: Theme.of(context)
+                        .scaffoldBackgroundColor, //This will change the drawer background to blue.
+                    //other styles
+                  ),
+                  child: MyDrawer()),
+              body: pages[context.watch<DrawerProvider>().index]),
+          onWillPop: () async {
+            if (popState == false) {
+              popState = true;
+              showToast('再返回一次離開APP');
+              Future.delayed(Duration(milliseconds: 2000), () async {
+                popState = false;
+              });
+            } else {
+              return true;
+            }
+            return false;
+          },
+          shouldAddCallbacks: true);
     } else {
       return WillPopScope(
           onWillPop: true ? () async => false : null, child: Loading());
@@ -395,6 +465,8 @@ class _StartMenu extends State<StartMenu> {
             if (!reLogin) {
               print('登入成功');
               loginFinished();
+              loadDataFormPrefs(context);
+              runNotificationWebViewWebView(context, null);
             }
           }
         },

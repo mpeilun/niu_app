@@ -190,7 +190,7 @@ class WeekCalendar {
   }
 
   Future<Map<Class, Calendar>> getCalendar(int week) async {
-    print("get week:" + week.toString());
+    //print("get week:" + week.toString());
     List<String> saveList = await readMen();
     Map<String, String> tempMap;
     if (week == -1) week = 18;

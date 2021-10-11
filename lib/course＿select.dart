@@ -271,7 +271,7 @@ class _CourseSelectState extends State<CourseSelect> {
                               action: JsAlertResponseAction.CONFIRM);
                         },
                         onDownloadStart: (controller, url) async {
-                          download(url, context);
+                          download(url, context, null);
                         },
                       ),
                     )

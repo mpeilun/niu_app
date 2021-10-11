@@ -9,13 +9,14 @@ import 'package:niu_app/provider/notification_provider.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
-import 'TimeTable/BuildTimeTable/button_provider.dart';
+import 'provider/timetable_button_provider.dart';
 
 void main() {
+  //Maybe FireBase Put here
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => OnItemClick()),
-    ChangeNotifierProvider(create: (_) => OnTimeCardClick()),
-    ChangeNotifierProvider(create: (_) => OnNotifyClick()),
+    ChangeNotifierProvider(create: (_) => DrawerProvider()),
+    ChangeNotifierProvider(create: (_) => TimeCardClickProvider()),
+    ChangeNotifierProvider(create: (_) => NotificationProvider()),
   ], child: MyApp()));
 }
 

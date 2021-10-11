@@ -34,6 +34,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
   double progress = 0;
   bool dataLoaded = false;
   bool buttonClicked = false;
+  bool cancelDisable = true;
   String url = '';
   List data = [];
   List cleanJS = [
@@ -57,6 +58,9 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
 
       if (loadState!.contains('報名資料詳細內容')) {
         print('載入完成');
+        cancelDisable = await webViewController!.evaluateJavascript(
+            source:
+                'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign_btnSignDel").disabled');
 
         for (int i = 2;
             await webViewController!.evaluateJavascript(
@@ -66,10 +70,9 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
             i++) {
           print(i);
           data.add([
-            (await webViewController!.evaluateJavascript(
-                    source:
-                        'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child($i) > td:nth-child(1)").innerText'))
-                as String,
+            await webViewController!.evaluateJavascript(
+                source:
+                    'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child($i) > td:nth-child(1)").innerText'),
             ((await webViewController!.evaluateJavascript(
                         source:
                             'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child($i) > td:nth-child(2)").innerText'))
@@ -81,7 +84,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
           dataLoaded = true;
         });
         break;
-      } else if (i == 30 && loadState == null) {
+      } else if (i == 30) {
         print('網路異常，連線超時！');
         Navigator.pop(context);
         showToast('網路異常 連線逾時');
@@ -147,12 +150,6 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
             'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign_ButtonOk").click()');
   }
 
-  void submitChange() async {
-    await webViewController!.evaluateJavascript(
-        source:
-            'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign_Button1").click()');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -163,92 +160,86 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
               width: 10.0,
             ),
             Visibility(
-                visible: dataLoaded,
-                child: TextButton(
-                  onPressed: () {
-                    if (buttonClicked) {
-                      submitChange();
-                    } else {
-                      setState(() {
-                        buttonClicked = true;
-                      });
-                      editEvent();
-                    }
-                  },
-                  child: Text(
-                    buttonClicked ? '送出' : '修改資料',
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
+              child: TextButton(
+                onPressed: () {
+                  setState(() {
+                    buttonClicked = true;
+                  });
+                  editEvent();
+                },
+                child: Text(
+                  '修改資料',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
-                )),
+                ),
+              ),
+              visible: dataLoaded && !buttonClicked,
+            ),
             Visibility(
-                visible: dataLoaded && !buttonClicked,
-                child: Row(
-                  children: [
-                    Container(
-                      width: 2.0,
-                      height: 30.0,
-                      color: Colors.grey.shade200,
-                      margin: EdgeInsets.symmetric(horizontal: 5.0),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Alert(
-                          context: context,
-                          type: AlertType.warning,
-                          title: '是否要取消報名此活動',
-                          desc: '活動名稱:' + data[0][1],
-                          buttons: [
-                            DialogButton(
-                              child: Text(
-                                '是',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                              ),
-                              onPressed: () {
-                                cancelEvent();
-                                setState(() {
-                                  buttonClicked = true;
-                                });
-                                Navigator.pop(context);
-                              },
-                              color: Colors.blueAccent,
-                            ),
-                            DialogButton(
-                              child: Text(
-                                "否",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              color: Colors.pinkAccent,
-                            )
-                          ],
-                        ).show();
-                      },
-                      child: Text(
-                        '取消活動',
-                        style: TextStyle(fontSize: 16.0),
-                      ),
-                      style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
+              child: Container(
+                width: 2.0,
+                height: 30.0,
+                color: Colors.grey.shade200,
+                margin: EdgeInsets.symmetric(horizontal: 5.0),
+              ),
+              visible: dataLoaded && !buttonClicked && !cancelDisable,
+            ),
+            Visibility(
+              child: TextButton(
+                onPressed: () {
+                  Alert(
+                    context: context,
+                    type: AlertType.warning,
+                    title: '是否要取消報名此活動',
+                    desc: '活動名稱:' + data[0][1],
+                    buttons: [
+                      DialogButton(
+                        child: Text(
+                          '是',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
+                        onPressed: () {
+                          cancelEvent();
+                          setState(() {
+                            buttonClicked = true;
+                          });
+                          Navigator.pop(context);
+                        },
+                        color: Colors.blueAccent,
                       ),
+                      DialogButton(
+                        child: Text(
+                          "否",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        color: Colors.pinkAccent,
+                      )
+                    ],
+                  ).show();
+                },
+                child: Text(
+                  '取消活動',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
                     ),
-                  ],
-                )),
+                  ),
+                ),
+              ),
+              visible: dataLoaded && !buttonClicked && !cancelDisable,
+            ),
             Expanded(child: SizedBox()),
             IconButton(
                 onPressed: () {
@@ -378,30 +369,32 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                                                   (BuildContext context,
                                                           int index) =>
                                                       Divider(),
-                                              itemBuilder: (BuildContext
-                                                          context,
-                                                      int index) =>
-                                                  Column(
-                                                    children: [
-                                                      ListTile(
-                                                        leading: Text(
-                                                          data[index][0],
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 16.0),
-                                                        ),
-                                                        title: Text(
-                                                          data[index][1],
-                                                          textAlign:
-                                                              TextAlign.end,
-                                                          style: TextStyle(
-                                                              fontSize: 14.0),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ))
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                          int index) =>
+                                                      Column(
+                                                        children: [
+                                                          ListTile(
+                                                            leading: Text(
+                                                              data[index][0],
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      16.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            title: Text(
+                                                              data[index][1],
+                                                              textAlign:
+                                                                  TextAlign.end,
+                                                              style: TextStyle(
+                                                                fontSize: 14.0,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ))
                                         ],
                                       )
                                     : Column(
@@ -410,13 +403,15 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                                             leading: Text(
                                               data[index][0],
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16.0),
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             title: Text(
                                               data[index][1],
                                               textAlign: TextAlign.end,
-                                              style: TextStyle(fontSize: 14.0),
+                                              style: TextStyle(
+                                                fontSize: 14.0,
+                                              ),
                                             ),
                                           ),
                                         ],

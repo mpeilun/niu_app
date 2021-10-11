@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:niu_app/menu/loading.dart';
+import 'package:niu_app/components/login_loading.dart';
+import 'package:niu_app/menu/notification/notification_webview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -167,6 +168,8 @@ class _LoginPageState extends State<LoginPage> {
                 onSubmitAnimationCompleted: () {
                   print("id: " + id);
                   print("name: " + name);
+                  loadDataFormPrefs(context);
+                  runNotificationWebViewWebView(context, null);
                   Navigator.pop(context);
                 },
                 theme: LoginTheme(

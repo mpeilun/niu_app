@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'TimeCard.dart';
+import '../TimeTable/BuildTimeTable/TimeCard.dart';
 
-class OnTimeCardClick with ChangeNotifier {
+class TimeCardClickProvider with ChangeNotifier {
   List<String> time = timeName;
   List<String> get getTime => time;
 

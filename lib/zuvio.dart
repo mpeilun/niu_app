@@ -11,6 +11,8 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'components/geolocator.dart';
+
 class Zuvio extends StatefulWidget {
   const Zuvio({
     Key? key,
@@ -58,7 +60,6 @@ class _ZuvioState extends State<Zuvio> {
     super.dispose();
   }
 
-//TODO:GPS點名功能
   @override
   Widget build(BuildContext context) {
     return ConditionalWillPopScope(
@@ -131,7 +132,7 @@ class _ZuvioState extends State<Zuvio> {
                                 uri.toString().contains('about:blank')) {
                               return NavigationActionPolicy.CANCEL;
                             } else if (uri.toString().contains('s3.hicloud')) {
-                              download(uri, context);
+                              download(uri, context, null);
                               return NavigationActionPolicy.CANCEL;
                             } else if (loginState == true &&
                                 !uri
@@ -231,7 +232,16 @@ class _ZuvioState extends State<Zuvio> {
                             print(consoleMessage);
                           },
                           onDownloadStart: (controller, url) async {
-                            download(url, context);
+                            download(url, context, null);
+                          },
+                          androidOnGeolocationPermissionsShowPrompt:
+                              (InAppWebViewController controller,
+                                  String origin) async {
+                            print(
+                                'androidOnGeolocationPermissionsShowPrompt: $origin');
+                            alertGeolocation(context);
+                            return GeolocationPermissionShowPromptResponse(
+                                origin: origin, allow: true, retain: true);
                           },
                           onScrollChanged: (InAppWebViewController controller,
                               int x, int y) {

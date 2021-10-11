@@ -76,8 +76,10 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                 source:
                     'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(1)").innerText'),
             ((await webViewController!.evaluateJavascript(
-                source:
-                    'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(2)").innerText'))as String).trim()
+                        source:
+                            'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailApply > tbody > tr:nth-child($i) > td:nth-child(2)").innerText'))
+                    as String)
+                .trim()
           ]);
 
           setState(() {
@@ -85,7 +87,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
           });
         }
         break;
-      } else if (i == 30 && loadState == null) {
+      } else if (i == 30) {
         print('網路異常，連線超時！');
         Navigator.pop(context);
         showToast('網路異常 連線逾時');
@@ -271,8 +273,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                       resources: resources,
                       action: PermissionRequestResponseAction.GRANT);
                 },
-                shouldOverrideUrlLoading:
-                    (controller, navigationAction) async {
+                shouldOverrideUrlLoading: (controller, navigationAction) async {
                   var uri = navigationAction.request.url!;
 
                   if (![
@@ -294,7 +295,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                     this.url = url.toString();
                   });
                   if (url.toString() ==
-                      'https://syscc.niu.edu.tw/Activity/ApplyList.aspx' &&
+                          'https://syscc.niu.edu.tw/Activity/ApplyList.aspx' &&
                       !dataLoaded)
                     getEventInfo(widget.eventJS);
                   else if (url.toString().contains(
@@ -320,7 +321,10 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                 },
                 onJsAlert: (InAppWebViewController controller,
                     JsAlertRequest jsAlertRequest) async {
-                  showToast(jsAlertRequest.message!);
+                  showToast(jsAlertRequest.message!
+                      .replaceAll('報名資料維護可至「檢閱及修改個人報名資料」修改或取消報名!', '')
+                      .replaceAll('填寫資料', '')
+                      .replaceAll('\n', ''));
                   Navigator.pop(context, true);
                   print(jsAlertRequest.message!);
                   print("Logout and Clean cache");
@@ -339,30 +343,30 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                 visible: dataLoaded && !signUpClicked,
                 child: data.isNotEmpty
                     ? Container(
-                  color: Colors.grey.shade200,
-                      child: ListView.separated(
-                          itemCount: data.length,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              Divider(),
-                          itemBuilder: (BuildContext context, int index) =>
-                              Column(
-                                children: [
-                                  ListTile(
-                                    leading: Text(
-                                      data[index][0],
-                                      style:
-                                      TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0),
+                        color: Colors.grey.shade200,
+                        child: ListView.separated(
+                            itemCount: data.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) => Divider(),
+                            itemBuilder: (BuildContext context, int index) =>
+                                Column(
+                                  children: [
+                                    ListTile(
+                                      leading: Text(
+                                        data[index][0],
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0),
+                                      ),
+                                      title: Text(
+                                        data[index][1],
+                                        textAlign: TextAlign.end,
+                                        style: TextStyle(fontSize: 14.0),
+                                      ),
                                     ),
-                                    title: Text(
-                                      data[index][1],
-                                      textAlign: TextAlign.end,
-                                      style:
-                                          TextStyle(fontSize: 14.0),
-                                    ),
-                                  ),
-                                ],
-                              )),
-                    )
+                                  ],
+                                )),
+                      )
                     : SizedBox(),
               ),
             ],

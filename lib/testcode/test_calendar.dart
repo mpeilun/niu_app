@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/service/CalendarMessage.dart';
+import 'package:niu_app/service/SemesterDate.dart';
 
 class TestCalendar extends StatefulWidget {
+  final SemesterDate semester;
+  TestCalendar({required this.semester});
   @override
   State<TestCalendar> createState() => _TestCalendarState();
 }
@@ -10,11 +13,13 @@ class TestCalendar extends StatefulWidget {
 class _TestCalendarState extends State<TestCalendar> {
   List<CalenderMessageType> calenderList = [];
   bool loadState = false;
+  late SemesterDate semester = widget.semester;
 
   @override
   void initState() {
     super.initState();
     runGetCalenderList();
+    print("GetCalenderList");
   }
 
   @override
@@ -25,7 +30,8 @@ class _TestCalendarState extends State<TestCalendar> {
   @override
   Widget build(BuildContext context) {
 
-    return loadState ? ModifyCalender(calenderMessage: calenderList.first) : Container();
+    return loadState ? ModifyCalender(calenderMessage: calenderList.first,semester: semester,)
+        : Container();
   }
 
   runGetCalenderList() async{

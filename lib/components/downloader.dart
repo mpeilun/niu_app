@@ -12,10 +12,17 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-Future<void> download(Uri uri, BuildContext context) async {
-  String fileName = '   ' +
-      Uri.decodeComponent(
-          uri.toString().substring(uri.toString().lastIndexOf("/") + 1));
+Future<void> download(Uri uri, BuildContext context, String? title) async {
+  if (Uri.decodeComponent(
+              uri.toString().substring(uri.toString().lastIndexOf("/") + 1))
+          .length >
+      100) {
+    title = '';
+  } else if (title == null) {
+    title = '   ' +
+        Uri.decodeComponent(
+            uri.toString().substring(uri.toString().lastIndexOf("/") + 1));
+  }
 
   Color colorYes = Colors.blueAccent;
   Color colorNo = Colors.pinkAccent;
@@ -25,7 +32,7 @@ Future<void> download(Uri uri, BuildContext context) async {
       context: context,
       type: AlertType.warning,
       title: "是否要下載此檔案至裝置?",
-      desc: fileName,
+      desc: title,
       buttons: [
         DialogButton(
           child: Text(
@@ -34,7 +41,7 @@ Future<void> download(Uri uri, BuildContext context) async {
           ),
           onPressed: () {
             Navigator.pop(context);
-            checkDownloadInfo(uri.toString());
+            checkDownloadInfo(uri.toString(), title.toString());
           },
           color: colorYes,
         ),
@@ -119,34 +126,34 @@ Future<void> download(Uri uri, BuildContext context) async {
   }
 }
 
-void checkDownloadInfo(String url) async {
+void checkDownloadInfo(String url, String title) async {
   if (await Permission.storage.isGranted) {
-    String externalDir;
-    if (dartCookies.Platform.isAndroid) {
-      externalDir = '/storage/emulated/0/Download';
+    if (title == '') {
+      showToast('開始下載檔案');
     } else {
-      externalDir = (await getApplicationDocumentsDirectory()).path;
+      showToast('開始下載: ' + title);
     }
-
-    externalDir +=
-        '/' + Uri.decodeComponent(url.substring(url.lastIndexOf("/") + 1));
-
-    showToast('開始下載: ' +
-        Uri.decodeComponent(url.substring(url.lastIndexOf("/") + 1)));
-
-    print('---下載網址--- ' + url);
-    print('---下載位置--- ' + externalDir);
 
     List<Cookie> cookies =
         await CookieManager.instance().getCookies(url: Uri.parse(url));
-    await sendToDownload(url, externalDir, cookies)
-        .then((value) => openDownloadFile(value));
+    await sendToDownload(url, cookies).then((value) => openDownloadFile(value));
   } else {
     print('無權限存取目錄');
   }
 }
 
-Future sendToDownload(String url, String savePath, List<Cookie> cookies) async {
+Future sendToDownload(String url, List<Cookie> cookies) async {
+  late String externalDir;
+  late String rootDir;
+  String decodeName =
+      Uri.decodeComponent(url.substring(url.lastIndexOf("/") + 1));
+  if (dartCookies.Platform.isAndroid) {
+    rootDir = '/storage/emulated/0/Download';
+  } else {
+    rootDir = (await getApplicationDocumentsDirectory()).path;
+  }
+  externalDir = rootDir + '/' + decodeName;
+
   var dio = Dio();
   var cookieJar = new CookieJar();
   List<dartCookies.Cookie> dioCookies = [];
@@ -174,15 +181,39 @@ Future sendToDownload(String url, String savePath, List<Cookie> cookies) async {
           }),
     );
     print(response.headers);
-    dartCookies.File file = dartCookies.File(savePath);
+    late dartCookies.File file;
+    if (response.headers.toString().contains('filename=')) {
+      if (decodeName.substring(url.lastIndexOf(".") + 1).length > 20 ||
+          !decodeName.contains('.')) {
+        externalDir = rootDir +
+            '/' +
+            DateTime.now().month.toString() +
+            '_' +
+            DateTime.now().day.toString() +
+            '_' +
+            DateTime.now().hour.toString() +
+            '_' +
+            DateTime.now().minute.toString() +
+            '_' +
+            DateTime.now().second.toString() +
+            '.' +
+            response.headers
+                .value('content-disposition')!
+                .split('filename=')[1]
+                .split('.')
+                .last;
+      }
+    }
+    print('---下載網址--- ' + url);
+    print('---下載位置--- ' + externalDir);
+    file = dartCookies.File(externalDir);
     var raf = file.openSync(mode: dartCookies.FileMode.write);
-    // response.data is List<int> type
     raf.writeFromSync(response.data);
     await raf.close();
   } catch (e) {
     print(e);
   }
-  return savePath;
+  return externalDir;
 }
 
 Future openDownloadFile(savePath) async {
