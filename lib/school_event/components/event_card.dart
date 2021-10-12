@@ -137,9 +137,39 @@ class _CustomEventCardState extends State<CustomEventCard> {
               ),
               child: ExpansionTile(
                 key: PageStorageKey('event' + index.toString()),
-                title: Text(
-                  '　詳細資料',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                title: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '　詳細資料',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Expanded(child: SizedBox()),
+                    Container(
+                        height: 25.0,
+                        width: 55.0,
+                        padding: EdgeInsets.all(2.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 2.0,
+                              color: widget.data[index].status == "報名中"
+                                  ? Color(0xff2364aa)
+                                  : Color(0xFF954242)),
+                          borderRadius: BorderRadius.all(Radius.circular(
+                                  10.0) //         <--- border radius here
+                              ),
+                        ),
+                        child: Text(
+                          widget.data[index].status,
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: widget.data[index].status == "報名中"
+                                ? Color(0xff2364aa)
+                                : Color(0xFF954242),
+                          ),
+                          textAlign: TextAlign.center,
+                        )),
+                  ],
                 ),
                 children: [
                   Column(
@@ -214,7 +244,9 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                 print(widget.data[index].signUpJS);
                                 showDialog(
                                   context: context,
-                                  builder: (BuildContext context) => EventInfoDialog(eventJS: widget.data[index].signUpJS),
+                                  builder: (BuildContext context) =>
+                                      EventInfoDialog(
+                                          eventJS: widget.data[index].signUpJS),
                                 );
                               },
                               child: Text('我要報名'),
@@ -231,7 +263,8 @@ class _CustomEventCardState extends State<CustomEventCard> {
                               onPressed: () {
                                 final scaffold = ScaffoldMessenger.of(context);
                                 final snackBar = SnackBar(
-                                  content: Text(widget.data[index].status + ' 無法報名'),
+                                  content:
+                                      Text(widget.data[index].status + ' 無法報名'),
                                   action: SnackBarAction(
                                     label: '確定',
                                     onPressed: () {
@@ -243,14 +276,14 @@ class _CustomEventCardState extends State<CustomEventCard> {
                               },
                               child: Text('不可報名'),
                               style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                    ),
                                   ),
-                                ),
-                                backgroundColor: MaterialStateProperty.all(Colors.grey)
-                              ),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.grey)),
                             ),
                       SizedBox(
                         height: screenSizeHeight * 0.015,
