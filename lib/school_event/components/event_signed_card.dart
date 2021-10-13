@@ -97,9 +97,39 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
               ),
               child: ExpansionTile(
                 key: PageStorageKey('event_signed' + index.toString()),
-                title: Text(
-                  '　詳細資料',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                title: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '　詳細資料',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Expanded(child: SizedBox()),
+                    Container(
+                        height: 25.0,
+                        width: 55.0,
+                        padding: EdgeInsets.all(2.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 2.0,
+                              color: widget.data[index].status == '未開始'
+                                  ? Color(0xff2364aa)
+                                  : Color(0xFF954242)),
+                          borderRadius: BorderRadius.all(Radius.circular(
+                              10.0) //         <--- border radius here
+                          ),
+                        ),
+                        child: Text(
+                          widget.data[index].status,
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: widget.data[index].status == '未開始'
+                                ? Color(0xff2364aa)
+                                : Color(0xFF954242),
+                          ),
+                          textAlign: TextAlign.center,
+                        )),
+                  ],
                 ),
                 children: [
                   Column(

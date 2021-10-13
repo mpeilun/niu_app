@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
 import 'package:niu_app/school_event/school_event.dart';
 
@@ -152,7 +153,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                         decoration: BoxDecoration(
                           border: Border.all(
                               width: 2.0,
-                              color: widget.data[index].status == "報名中"
+                              color: widget.data[index].status == '報名中'
                                   ? Color(0xff2364aa)
                                   : Color(0xFF954242)),
                           borderRadius: BorderRadius.all(Radius.circular(
@@ -163,7 +164,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                           widget.data[index].status,
                           style: TextStyle(
                             fontSize: 12.0,
-                            color: widget.data[index].status == "報名中"
+                            color: widget.data[index].status == '報名中'
                                 ? Color(0xff2364aa)
                                 : Color(0xFF954242),
                           ),
@@ -238,7 +239,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                         ),
                       ),
                       (widget.data[index].status == "報名中" ||
-                              widget.data[index].status == "已額滿")
+                          (widget.data[index].status == "已額滿" && int.parse(widget.data[index].wait) < int.parse(widget.data[index].waitLimit)))
                           ? ElevatedButton(
                               onPressed: () {
                                 print(widget.data[index].signUpJS);
