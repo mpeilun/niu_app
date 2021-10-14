@@ -170,11 +170,9 @@ class _EventPageState extends State<EventPage> {
     dataCanSignUp.clear();
     dataUnable.clear();
     for (int i = 0; i < data.length; i++) {
-      if (data[i].status == '報名中' ||
-          (data[i].status == "已額滿" &&
-              int.parse(data[i].wait) < int.parse(data[i].waitLimit))) {
+      if (data[i].status == '報名中')
         dataCanSignUp.add(data[i]);
-      } else
+      else
         dataUnable.add(data[i]);
     }
   }

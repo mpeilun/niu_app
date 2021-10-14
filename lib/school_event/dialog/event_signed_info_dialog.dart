@@ -171,13 +171,6 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                   '修改資料',
                   style: TextStyle(fontSize: 16.0),
                 ),
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                ),
               ),
               visible: dataLoaded && !buttonClicked,
             ),
@@ -229,13 +222,6 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                 child: Text(
                   '取消活動',
                   style: TextStyle(fontSize: 16.0),
-                ),
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ),
-                  ),
                 ),
               ),
               visible: dataLoaded && !buttonClicked && !cancelDisable,

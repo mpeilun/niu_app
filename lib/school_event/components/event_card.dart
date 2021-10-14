@@ -99,7 +99,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
         Column(
           children: <Widget>[
             SizedBox(
-              height: 5.0,
+              height: 10.0,
             ),
             Container(
               height: 30.0,
@@ -226,8 +226,9 @@ class _CustomEventCardState extends State<CustomEventCard> {
                           title: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              SizedBox(width: screenSizeWidth*0.04,),
                               Text(
-                                '　詳細資料',
+                                '詳細資料',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               Expanded(child: SizedBox()),
@@ -325,11 +326,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                     ],
                                   ),
                                 ),
-                                (display[index].status == "報名中" ||
-                                        (display[index].status == "已額滿" &&
-                                            int.parse(display[index].wait) <
-                                                int.parse(
-                                                    display[index].waitLimit)))
+                                display[index].status == "報名中"
                                     ? ElevatedButton(
                                         onPressed: () {
                                           print(display[index].signUpJS);
