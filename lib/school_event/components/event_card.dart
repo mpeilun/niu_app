@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:anim_search_bar/anim_search_bar.dart';
@@ -353,21 +354,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                       )
                                     : ElevatedButton(
                                         onPressed: () {
-                                          final scaffold =
-                                              ScaffoldMessenger.of(context);
-                                          final snackBar = SnackBar(
-                                            content: Text(
-                                                display[index].status +
-                                                    ' 無法報名'),
-                                            action: SnackBarAction(
-                                              label: '確定',
-                                              onPressed: () {
-                                                scaffold
-                                                    .removeCurrentSnackBar();
-                                              },
-                                            ),
-                                          );
-                                          scaffold.showSnackBar(snackBar);
+                                          showToast('無法報名');
                                         },
                                         child: Text('不可報名'),
                                         style: ButtonStyle(
@@ -397,16 +384,20 @@ class _CustomEventCardState extends State<CustomEventCard> {
             ),
           ],
         ),
-        Visibility(
-          visible: _isSelected[0],
-          child: Container(
-            padding: EdgeInsets.only(right: screenSizeWidth*0.05),
-            child: AnimSearchBar(//浮動搜尋按鈕
-              rtl: true,
-              helpText: '輸入名稱或編號...',
-              width: screenSizeWidth*0.8,
-              textController: _textEditingController,
-              onSuffixTap: () {_textEditingController.clear();},
+        AnimatedOpacity(
+          opacity: _isSelected[0]?1.0:0.0,
+          duration: Duration(milliseconds: 250),
+          child: Visibility(
+            visible: _isSelected[0],
+            child: Container(
+              padding: EdgeInsets.only(right: screenSizeWidth*0.05),
+              child: AnimSearchBar(//浮動搜尋按鈕
+                rtl: true,
+                helpText: '輸入名稱或編號...',
+                width: screenSizeWidth*0.8,
+                textController: _textEditingController,
+                onSuffixTap: () {_textEditingController.clear();},
+              ),
             ),
           ),
         ),
