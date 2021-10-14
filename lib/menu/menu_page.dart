@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -586,14 +588,14 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
         },
         onAjaxProgress:
             (InAppWebViewController controller, AjaxRequest ajaxRequest) async {
-          print('ajax progress: $ajaxRequest');
-          print('---------------');
+          log('ajax progress: $ajaxRequest');
+          print('');
           return AjaxRequestAction.PROCEED;
         },
         onAjaxReadyStateChange: (controller, ajax) async {
-          print('onAjaxReadyStateChange: $ajax');
-          print('AJAX RESPONSE TEXT: ' + ajax.responseText.toString());
-          print('---------------');
+          log('onAjaxReadyStateChange: $ajax');
+          // print('AJAX RESPONSE TEXT: ' + ajax.responseText.toString());
+          print('');
           return AjaxRequestAction.PROCEED;
         },
       );
