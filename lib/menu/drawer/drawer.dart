@@ -4,10 +4,10 @@ import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/graduation/graduation.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
+import 'package:niu_app/provider/info_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class DrawerPage extends StatefulWidget {
   const DrawerPage({
@@ -50,6 +50,7 @@ class _DrawerPageState extends State<DrawerPage> {
           "https://acade.niu.edu.tw/NIU/Application/stdphoto.aspx?stno=" +
               studentId;
     });
+    context.read<InfoProvider>().setName(studentName);
   }
 
   @override
@@ -73,7 +74,7 @@ class _DrawerPageState extends State<DrawerPage> {
         children: <Widget>[
           SizedBox(height: 16.0),
           Text(
-            studentName,
+            '${context.watch<InfoProvider>().name}',
             style: TextStyle(fontSize: 16.0, color: Colors.white),
             textAlign: TextAlign.center,
           ),
@@ -127,8 +128,7 @@ class _DrawerPageState extends State<DrawerPage> {
                 saveGraduationData = false;
                 globalAdvancedTile = [];
                 CookieManager().deleteAllCookies();
-                SharedPreferences prefs =
-                await SharedPreferences.getInstance();
+                SharedPreferences prefs = await SharedPreferences.getInstance();
                 prefs.clear();
                 context.read<DrawerProvider>().closeDrawer();
                 context.read<DrawerProvider>().onclick(0);
@@ -136,8 +136,8 @@ class _DrawerPageState extends State<DrawerPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => LoginPage(
-                          cancelPop: true,
-                        ),
+                              cancelPop: true,
+                            ),
                         maintainState: false));
               }),
           Divider(),
@@ -154,7 +154,6 @@ class _DrawerPageState extends State<DrawerPage> {
     );
   }
 }
-
 
 class Divider extends StatelessWidget {
   const Divider({

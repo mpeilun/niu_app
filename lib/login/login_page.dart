@@ -5,6 +5,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:niu_app/components/login_loading.dart';
 import 'package:niu_app/menu/notification/notification_webview.dart';
+import 'package:niu_app/provider/info_provider.dart';
+import 'package:provider/src/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -195,5 +197,6 @@ class _LoginPageState extends State<LoginPage> {
     prefs.setString("id", id.toLowerCase());
     prefs.setString("pwd", pwd);
     prefs.setString("name", name);
+    context.read<InfoProvider>().setName(name);
   }
 }

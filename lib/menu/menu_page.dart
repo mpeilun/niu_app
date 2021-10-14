@@ -587,11 +587,13 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
         onAjaxProgress:
             (InAppWebViewController controller, AjaxRequest ajaxRequest) async {
           print('ajax progress: $ajaxRequest');
+          print('---------------');
           return AjaxRequestAction.PROCEED;
         },
         onAjaxReadyStateChange: (controller, ajax) async {
           print('onAjaxReadyStateChange: $ajax');
           print('AJAX RESPONSE TEXT: ' + ajax.responseText.toString());
+          print('---------------');
           return AjaxRequestAction.PROCEED;
         },
       );

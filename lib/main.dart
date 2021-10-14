@@ -5,6 +5,7 @@ import 'package:niu_app/menu/menu_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
+import 'package:niu_app/provider/info_provider.dart';
 import 'package:niu_app/provider/notification_provider.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ void main() {
     ChangeNotifierProvider(create: (_) => DrawerProvider()),
     ChangeNotifierProvider(create: (_) => TimeCardClickProvider()),
     ChangeNotifierProvider(create: (_) => NotificationProvider()),
+    ChangeNotifierProvider(create: (_) => InfoProvider()),
   ], child: MyApp()));
 }
 
