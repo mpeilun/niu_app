@@ -229,14 +229,6 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                         signUpClicked ? '送出' : '報名',
                         style: TextStyle(fontSize: 16.0),
                       ),
-                      style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                      ),
                     ),
                   ])
                 : SizedBox(),

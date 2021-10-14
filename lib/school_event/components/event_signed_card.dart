@@ -100,8 +100,9 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                 title: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    SizedBox(width: screenSizeWidth*0.04,),
                     Text(
-                      '　詳細資料',
+                      '詳細資料',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Expanded(child: SizedBox()),
