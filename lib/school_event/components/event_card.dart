@@ -62,9 +62,10 @@ class _CustomEventCardState extends State<CustomEventCard> {
   TextEditingController _textEditingController = TextEditingController();
   List<bool> _isSelected = [true, false, false];
   late List<Event> display = widget.data;
+  List<Event> tmp = [];
 
   void search(){
-    List<Event> tmp = [];
+    tmp.clear();
     setState(() {
       _isSelected = [true, false, false];
     });
@@ -396,7 +397,8 @@ class _CustomEventCardState extends State<CustomEventCard> {
             ),
           ],
         ),
-        Container(
+        Visibility(
+          visible: _isSelected[0],
           child: Container(
             padding: EdgeInsets.only(right: screenSizeWidth*0.05),
             child: AnimSearchBar(//浮動搜尋按鈕
