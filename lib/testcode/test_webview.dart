@@ -65,7 +65,8 @@ class _TestWebViewState extends State<TestWebView> {
                     key: testWebView,
                     initialOptions: options,
                     initialUrlRequest: URLRequest(
-                        url: Uri.parse("https://browserleaks.com/geo")),
+                        url: Uri.parse(
+                            "https://acade.niu.edu.tw/NIU/MainFrame.aspx")),
                     onWebViewCreated: (controller) async {
                       webViewController = controller;
                     },

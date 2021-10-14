@@ -22,6 +22,7 @@ import 'package:niu_app/school_event/school_event.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 import 'package:niu_app/service/SemesterDate.dart';
 import 'package:niu_app/testcode/test_calendar.dart';
+import 'package:niu_app/testcode/test_login.dart';
 import 'package:niu_app/testcode/test_webview.dart';
 import 'package:provider/provider.dart';
 
@@ -267,182 +268,180 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
     if (loginState) {
       return ConditionalWillPopScope(
           child: Scaffold(
-              body: Consumer<DrawerProvider>(
-            builder: (context, controller, child) => Stack(children: [
-              DrawerPage(
-                drawerXOffset: controller.drawerXOffset,
-              ),
-              WillPopScope(
-                onWillPop: () async {
-                  if (context.read<DrawerProvider>().isDrawerOpen) {
-                    controller.closeDrawer();
-                    return false;
-                  } else {
-                    return true;
-                  }
-                },
-                child: GestureDetector(
-                  onHorizontalDragStart: (details) => isDragging = true,
-                  onHorizontalDragUpdate: (details) {
-                    if (!isDragging) return;
-                    const delta = 1;
-                    if (details.delta.dx > delta) {
-                      controller.openDrawer();
-                    }
-                    if (details.delta.dx < -delta) {
+            body: Consumer<DrawerProvider>(
+              builder: (context, controller, child) => Stack(children: [
+                DrawerPage(
+                  drawerXOffset: controller.drawerXOffset,
+                ),
+                WillPopScope(
+                  onWillPop: () async {
+                    if (context.read<DrawerProvider>().isDrawerOpen) {
                       controller.closeDrawer();
+                      return false;
+                    } else {
+                      return true;
                     }
-                    isDragging = false;
                   },
-                  onTap: () {
-                    controller.closeDrawer();
-                  },
-                  child: AnimatedContainer(
-                    duration: Duration(milliseconds: 150),
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromARGB(255, 28, 28, 28),
-                          spreadRadius: 3.0,
-                          blurRadius: 20.0,
-                          offset: Offset(3.0, 0),
-                        ),
-                      ],
-                    ),
-                    transform:
-                        Matrix4.translationValues(controller.xOffset, 0, 0),
-                    child: AbsorbPointer(
-                      absorbing: context.read<DrawerProvider>().isDrawerOpen,
-                      child: Scaffold(
-                          appBar: AppBar(
-                            leading: InkWell(
-                              borderRadius: BorderRadius.circular(25),
-                              onTap: () {
-                                context.read<DrawerProvider>().isDrawerOpen
-                                    ? controller.closeDrawer()
-                                    : controller.openDrawer();
-                              },
-                              child: RotationTransition(
-                                turns: Tween(begin: 0.0, end: 0.25)
-                                    .animate(controller.controller),
-                                child: Icon(
-                                  Icons.menu,
-                                  color: Colors.white,
+                  child: GestureDetector(
+                    onHorizontalDragStart: (details) => isDragging = true,
+                    onHorizontalDragUpdate: (details) {
+                      if (!isDragging) return;
+                      const delta = 1;
+                      if (details.delta.dx > delta) {
+                        controller.openDrawer();
+                      }
+                      if (details.delta.dx < -delta) {
+                        controller.closeDrawer();
+                      }
+                      isDragging = false;
+                    },
+                    onTap: () {
+                      controller.closeDrawer();
+                    },
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 150),
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromARGB(255, 28, 28, 28),
+                            spreadRadius: 3.0,
+                            blurRadius: 20.0,
+                            offset: Offset(3.0, 0),
+                          ),
+                        ],
+                      ),
+                      transform:
+                          Matrix4.translationValues(controller.xOffset, 0, 0),
+                      child: AbsorbPointer(
+                        absorbing: context.read<DrawerProvider>().isDrawerOpen,
+                        child: Scaffold(
+                            appBar: AppBar(
+                              leading: InkWell(
+                                borderRadius: BorderRadius.circular(25),
+                                onTap: () {
+                                  context.read<DrawerProvider>().isDrawerOpen
+                                      ? controller.closeDrawer()
+                                      : controller.openDrawer();
+                                },
+                                child: RotationTransition(
+                                  turns: Tween(begin: 0.0, end: 0.25)
+                                      .animate(controller.controller),
+                                  child: Icon(
+                                    Icons.menu,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                            ),
-                            title: Text(title[controller.index]),
-                            titleSpacing: 0.0,
-                            actions: [
-                              Builder(
-                                builder: (context) => Badge(
-                                  position:
-                                      BadgePosition.topEnd(top: 1, end: 2),
-                                  toAnimate: false,
-                                  badgeContent: Align(
-                                    alignment: Alignment.topCenter,
-                                    child: Text(
-                                      '${context.watch<NotificationProvider>().newNotificationsCount}',
-                                      style: TextStyle(color: Colors.white),
+                              title: Text(title[controller.index]),
+                              titleSpacing: 0.0,
+                              actions: [
+                                Builder(
+                                  builder: (context) => Badge(
+                                    position:
+                                        BadgePosition.topEnd(top: 1, end: 2),
+                                    toAnimate: false,
+                                    badgeContent: Align(
+                                      alignment: Alignment.topCenter,
+                                      child: Text(
+                                        '${context.watch<NotificationProvider>().newNotificationsCount}',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                                  child: IconButton(
-                                    icon: Icon(Icons.notifications_none),
-                                    onPressed: () {
-                                      if (context
+                                    child: IconButton(
+                                      icon: Icon(Icons.notifications_none),
+                                      onPressed: () {
+                                        if (context
+                                                .read<NotificationProvider>()
+                                                .notificationItemList
+                                                .length ==
+                                            0) {
+                                          context
                                               .read<NotificationProvider>()
-                                              .notificationItemList
-                                              .length ==
-                                          0) {
+                                              .setIsEmpty(true);
+                                        }
                                         context
                                             .read<NotificationProvider>()
-                                            .setIsEmpty(true);
-                                      }
-                                      context
-                                          .read<NotificationProvider>()
-                                          .setNewNotifications(false);
-                                      Navigator.of(context)
-                                          .push(_createRoute());
-                                      //context.read<OnNotifyClick>().newNotification(1); //refresh
-                                    },
+                                            .setNewNotifications(false);
+                                        Navigator.of(context)
+                                            .push(_createRoute());
+                                        //context.read<OnNotifyClick>().newNotification(1); //refresh
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          body: pages[controller.index]),
+                              ],
+                            ),
+                            body: pages[controller.index]),
+                      ),
                     ),
+                  ),
+                )
+              ]),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton:
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Opacity(
+                opacity: 0.5,
+                child: Container(
+                  height: 40,
+                  width: 40,
+                  child: FloatingActionButton(
+                    heroTag: 'test_1',
+                    backgroundColor: Colors.red,
+                    child: Icon(FontAwesomeIcons.bomb),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => TestLoginWebView(),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(width: 20),
+              Opacity(
+                opacity: 0.5,
+                child: Container(
+                  height: 40,
+                  width: 40,
+                  child: FloatingActionButton(
+                    heroTag: 'test_2',
+                    backgroundColor: Colors.red,
+                    child: Icon(FontAwesomeIcons.bomb),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TestWebView(),
+                              maintainState: false));
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(width: 20),
+              Opacity(
+                opacity: 0.5,
+                child: Container(
+                  height: 40,
+                  width: 40,
+                  child: FloatingActionButton(
+                    heroTag: 'test_3',
+                    backgroundColor: Colors.red,
+                    child: Icon(FontAwesomeIcons.bomb),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TestWebView(),
+                              maintainState: false));
+                    },
                   ),
                 ),
               )
             ]),
-          )),
-
-          // floatingActionButtonLocation:
-          //     FloatingActionButtonLocation.centerFloat,
-          // floatingActionButton:
-          //     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          //   Opacity(
-          //     opacity: 0.5,
-          //     child: Container(
-          //       height: 40,
-          //       width: 40,
-          //       child: FloatingActionButton(
-          //         heroTag: 'test_1',
-          //         backgroundColor: Colors.red,
-          //         child: Icon(FontAwesomeIcons.bomb),
-          //         onPressed: () {
-          //           showDialog(
-          //             context: context,
-          //             builder: (BuildContext context) => TestCalendar(
-          //               semester: semester,
-          //             ),
-          //           );
-          //         },
-          //       ),
-          //     ),
-          //   ),
-          //   SizedBox(width: 20),
-          //   Opacity(
-          //     opacity: 0.5,
-          //     child: Container(
-          //       height: 40,
-          //       width: 40,
-          //       child: FloatingActionButton(
-          //         heroTag: 'test_2',
-          //         backgroundColor: Colors.red,
-          //         child: Icon(FontAwesomeIcons.bomb),
-          //         onPressed: () {
-          //           Navigator.push(
-          //               context,
-          //               MaterialPageRoute(
-          //                   builder: (context) => TestWebView(),
-          //                   maintainState: false));
-          //         },
-          //       ),
-          //     ),
-          //   ),
-          //   SizedBox(width: 20),
-          //   Opacity(
-          //     opacity: 0.5,
-          //     child: Container(
-          //       height: 40,
-          //       width: 40,
-          //       child: FloatingActionButton(
-          //         heroTag: 'test_3',
-          //         backgroundColor: Colors.red,
-          //         child: Icon(FontAwesomeIcons.bomb),
-          //         onPressed: () {
-          //           Navigator.push(
-          //               context,
-          //               MaterialPageRoute(
-          //                   builder: (context) => TestWebView(),
-          //                   maintainState: false));
-          //         },
-          //       ),
-          //     ),
-          //   )
-          // ]),
+          ),
           onWillPop: () async {
             bool isOpen = true;
             if (context.read<DrawerProvider>().isDrawerOpen == false) {
