@@ -18,6 +18,9 @@ class _EventPageState extends State<EventPage> {
   String temp = "";
 
   List<Event> data = [];
+  List<Event> dataCanSignUp = [];
+  List<Event> dataUnable = [];
+
   List<Event> readTemp = [];
   bool dataLoaded = false;
   bool refreshLoaded = true;
@@ -38,8 +41,10 @@ class _EventPageState extends State<EventPage> {
       //if (status != str) continue;
       print(i);
       String name = ((await headlessWebView?.webViewController.evaluateJavascript(
-          source:
-              'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText')) as String).trim();
+                  source:
+                      'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText'))
+              as String)
+          .trim();
       String department = await headlessWebView?.webViewController
           .evaluateJavascript(
               source:
@@ -120,6 +125,10 @@ class _EventPageState extends State<EventPage> {
           .evaluateJavascript(
               source:
                   'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(1) > a").href');
+      String eventSerialNum = await headlessWebView?.webViewController
+          .evaluateJavascript(
+              source:
+                  'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(2)").innerText');
       readTemp.add(Event(
         name: name,
         //活動名稱
@@ -144,6 +153,7 @@ class _EventPageState extends State<EventPage> {
         waitLimit: waitLimit,
         //備取上限
         signUpJS: signUpJavaScript, //報名javascript連結
+        eventSerialNum: eventSerialNum,//活動編號
       ));
     }
   }
@@ -156,6 +166,19 @@ class _EventPageState extends State<EventPage> {
     }
   }
 
+  Future<void> dataClassify() async {
+    dataCanSignUp.clear();
+    dataUnable.clear();
+    for (int i = 0; i < data.length; i++) {
+      if (data[i].status == '報名中' ||
+          (data[i].status == "已額滿" &&
+              int.parse(data[i].wait) < int.parse(data[i].waitLimit))) {
+        dataCanSignUp.add(data[i]);
+      } else
+        dataUnable.add(data[i]);
+    }
+  }
+
   Future<void> getEventList() async {
     data.clear();
     await getData();
@@ -163,6 +186,7 @@ class _EventPageState extends State<EventPage> {
     await getDataByStatus('已額滿');
     await getDataByStatus('未開放');
     await getDataByStatus('已過期');
+    await dataClassify();
     setState(() {
       dataLoaded = true;
       refreshLoaded = true;
@@ -242,6 +266,8 @@ class _EventPageState extends State<EventPage> {
                     ? CustomEventCard(
                         key: PageStorageKey<String>('event'),
                         data: data,
+                        dataCanSignUp: dataCanSignUp,
+                        dataUnable: dataUnable,
                       )
                     : Container(),
               )

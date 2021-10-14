@@ -61,6 +61,7 @@ dependencies:
   badges: ^2.0.1
   geolocator: ^7.7.0
   fluttertoast: ^8.0.8
+  anim_search_bar: ^2.0.2
 
 dev_dependencies:
   flutter_test:

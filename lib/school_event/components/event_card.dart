@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
 import 'package:niu_app/school_event/school_event.dart';
+import 'package:anim_search_bar/anim_search_bar.dart';
 
 import 'custom_list_info.dart';
 
@@ -22,6 +22,7 @@ class Event {
   final String wait;
   final String waitLimit;
   final String signUpJS;
+  final String eventSerialNum;
 
   Event({
     required this.name,
@@ -36,15 +37,20 @@ class Event {
     required this.wait,
     required this.waitLimit,
     required this.signUpJS,
+    required this.eventSerialNum,
   });
 }
 
 class CustomEventCard extends StatefulWidget {
   final List<Event> data;
+  final List<Event> dataCanSignUp;
+  final List<Event> dataUnable;
 
   const CustomEventCard({
     Key? key,
     required this.data,
+    required this.dataCanSignUp,
+    required this.dataUnable,
   }) : super(key: key);
 
   @override
@@ -53,6 +59,23 @@ class CustomEventCard extends StatefulWidget {
 
 class _CustomEventCardState extends State<CustomEventCard> {
   ScrollController _scrollController = ScrollController();
+  TextEditingController _textEditingController = TextEditingController();
+  List<bool> _isSelected = [true, false, false];
+  late List<Event> display = widget.data;
+
+  void search(){
+    List<Event> tmp = [];
+    setState(() {
+      _isSelected = [true, false, false];
+    });
+    for(int i=0; i<widget.data.length; i++){
+      if(widget.data[i].name.contains(_textEditingController.text)||widget.data[i].eventSerialNum.contains(_textEditingController.text))
+        tmp.add(widget.data[i]);
+    }
+    setState(() {
+      display = tmp;
+    });
+  }
 
   @override
   void initState() {
@@ -60,6 +83,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
     _scrollController.addListener(() {
       schoolEventScrollController.jumpTo(_scrollController.offset);
     });
+    _textEditingController.addListener(search);
   }
 
   @override
@@ -67,236 +91,324 @@ class _CustomEventCardState extends State<CustomEventCard> {
     var screenSizeWidth = MediaQuery.of(context).size.width;
     var screenSizeHeight = MediaQuery.of(context).size.height;
 
-    return ListView.separated(
-      controller: _scrollController,
-      itemCount: widget.data.length,
-      separatorBuilder: (BuildContext context, int index) => Divider(
-        thickness: 1.5,
-        indent: 10,
-        endIndent: 10,
-      ),
-      itemBuilder: (BuildContext context, int index) => Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(screenSizeWidth * 0.05,
-                screenSizeHeight * 0.01, screenSizeWidth * 0.05, 0.0),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    child: Text(
-                      widget.data[index].name,
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: screenSizeWidth * 0.05,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Text(
-                      widget.data[index].department,
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.grey[600],
-                      ),
-                      textAlign: TextAlign.end,
-                    ),
-                  ),
-                ),
-              ],
+    return Stack(
+      alignment: Alignment.bottomLeft,
+      children: [
+        Column(
+          children: <Widget>[
+            SizedBox(
+              height: 5.0,
             ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey.shade50,
-              borderRadius: BorderRadius.circular(20.0),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(1.0, 1.0), //陰影y軸偏移量
-                    blurRadius: 0, //陰影模糊程度
-                    spreadRadius: 0 //陰影擴散程度
-                    )
-              ],
-            ),
-            margin: EdgeInsets.fromLTRB(
-                screenSizeWidth * 0.05,
-                screenSizeHeight * 0.01,
-                screenSizeWidth * 0.05,
-                screenSizeHeight * 0.01),
-            child: Theme(
-              data: Theme.of(context).copyWith(
-                accentColor: Colors.black,
-                dividerColor: Colors.transparent,
-              ),
-              child: ExpansionTile(
-                key: PageStorageKey('event' + index.toString()),
-                title: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      '　詳細資料',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+            Container(
+              height: 30.0,
+              child: ToggleButtons(
+                selectedColor: Colors.white,
+                fillColor: Color.fromRGBO(0, 70, 161, 1),
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                children: <Widget>[
+                  Container(
+                    child: Text(
+                      '所有活動',
+                      textAlign: TextAlign.center,
                     ),
-                    Expanded(child: SizedBox()),
-                    Container(
-                        height: 25.0,
-                        width: 55.0,
-                        padding: EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 2.0,
-                              color: widget.data[index].status == '報名中'
-                                  ? Color(0xff2364aa)
-                                  : Color(0xFF954242)),
-                          borderRadius: BorderRadius.all(Radius.circular(
-                                  10.0) //         <--- border radius here
-                              ),
-                        ),
-                        child: Text(
-                          widget.data[index].status,
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            color: widget.data[index].status == '報名中'
-                                ? Color(0xff2364aa)
-                                : Color(0xFF954242),
-                          ),
-                          textAlign: TextAlign.center,
-                        )),
-                  ],
-                ),
-                children: [
-                  Column(
-                    children: [
-                      ListInfo(
-                        icon: Icons.info,
-                        title: '活動狀態',
-                        widget: Text(widget.data[index].status,
-                            style: TextStyle(fontSize: 14)),
-                      ),
-                      ListInfo(
-                        icon: Icons.calendar_today,
-                        title: '活動時間',
-                        widget: Column(
-                          children: [
-                            Text(
-                              widget.data[index].eventTimeStart + '起',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Text(
-                              widget.data[index].eventTimeEnd + '止',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ListInfo(
-                        icon: Icons.access_time,
-                        title: '報名時間',
-                        widget: Column(
-                          children: [
-                            Text(
-                              widget.data[index].signTimeStart + '起',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Text(
-                              widget.data[index].signTimeEnd + '止',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ListInfo(
-                        icon: Icons.groups,
-                        title: '報名人數',
-                        widget: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '正取: ' +
-                                  widget.data[index].positive +
-                                  '/' +
-                                  widget.data[index].positiveLimit +
-                                  '人',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Text(
-                              '備取: ' +
-                                  widget.data[index].wait +
-                                  '/' +
-                                  widget.data[index].waitLimit +
-                                  '人',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                      (widget.data[index].status == "報名中" ||
-                          (widget.data[index].status == "已額滿" && int.parse(widget.data[index].wait) < int.parse(widget.data[index].waitLimit)))
-                          ? ElevatedButton(
-                              onPressed: () {
-                                print(widget.data[index].signUpJS);
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      EventInfoDialog(
-                                          eventJS: widget.data[index].signUpJS),
-                                );
-                              },
-                              child: Text('我要報名'),
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                  ),
-                                ),
-                              ),
-                            )
-                          : ElevatedButton(
-                              onPressed: () {
-                                final scaffold = ScaffoldMessenger.of(context);
-                                final snackBar = SnackBar(
-                                  content:
-                                      Text(widget.data[index].status + ' 無法報名'),
-                                  action: SnackBarAction(
-                                    label: '確定',
-                                    onPressed: () {
-                                      scaffold.removeCurrentSnackBar();
-                                    },
-                                  ),
-                                );
-                                scaffold.showSnackBar(snackBar);
-                              },
-                              child: Text('不可報名'),
-                              style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                    ),
-                                  ),
-                                  backgroundColor:
-                                      MaterialStateProperty.all(Colors.grey)),
-                            ),
-                      SizedBox(
-                        height: screenSizeHeight * 0.015,
-                      )
-                    ],
+                    width: screenSizeWidth * 0.3,
+                  ),
+                  Container(
+                    child: Text('可報名的', textAlign: TextAlign.center),
+                    width: screenSizeWidth * 0.3,
+                  ),
+                  Container(
+                    child: Text('不可報名', textAlign: TextAlign.center),
+                    width: screenSizeWidth * 0.3,
                   ),
                 ],
+                isSelected: _isSelected,
+                onPressed: (int index) {
+                  setState(() {
+                    for (int i = 0; i < _isSelected.length; i++) {
+                      if (i == index)
+                        _isSelected[i] = true;
+                      else
+                        _isSelected[i] = false;
+                    }
+                    switch (index) {
+                      case 0:
+                        display = widget.data;
+                        break;
+                      case 1:
+                        display = widget.dataCanSignUp;
+                        break;
+                      case 2:
+                        display = widget.dataUnable;
+                        break;
+                    }
+                  });
+                },
               ),
             ),
+            SizedBox(
+              height: 5.0,
+            ),
+            Expanded(
+              child: ListView.separated(
+                controller: _scrollController,
+                itemCount: display.length,
+                separatorBuilder: (BuildContext context, int index) => Divider(
+                  thickness: 1.5,
+                  indent: 10,
+                  endIndent: 10,
+                ),
+                itemBuilder: (BuildContext context, int index) => Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(screenSizeWidth * 0.05,
+                          screenSizeHeight * 0.01, screenSizeWidth * 0.05, 0.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              child: Text(
+                                display[index].name,
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: screenSizeWidth * 0.05,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              child: Text(
+                                display[index].department,
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.grey[600],
+                                ),
+                                textAlign: TextAlign.end,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade50,
+                        borderRadius: BorderRadius.circular(20.0),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(1.0, 1.0), //陰影y軸偏移量
+                              blurRadius: 0, //陰影模糊程度
+                              spreadRadius: 0 //陰影擴散程度
+                              )
+                        ],
+                      ),
+                      margin: EdgeInsets.fromLTRB(
+                          screenSizeWidth * 0.05,
+                          screenSizeHeight * 0.01,
+                          screenSizeWidth * 0.05,
+                          screenSizeHeight * 0.01),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+                          accentColor: Colors.black,
+                          dividerColor: Colors.transparent,
+                        ),
+                        child: ExpansionTile(
+                          key: PageStorageKey('event' + index.toString()),
+                          title: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '　詳細資料',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Expanded(child: SizedBox()),
+                              Container(
+                                  height: 25.0,
+                                  width: 55.0,
+                                  padding: EdgeInsets.all(2.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 2.0,
+                                        color: display[index].status == '報名中'
+                                            ? Color(0xff2364aa)
+                                            : Color(0xFF954242)),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            10.0) //         <--- border radius here
+                                        ),
+                                  ),
+                                  child: Text(
+                                    display[index].status,
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                      color: display[index].status == '報名中'
+                                          ? Color(0xff2364aa)
+                                          : Color(0xFF954242),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  )),
+                            ],
+                          ),
+                          children: [
+                            Column(
+                              children: [
+                                ListInfo(
+                                  icon: Icons.info,
+                                  title: '活動編號',
+                                  widget: Text(display[index].eventSerialNum,
+                                      style: TextStyle(fontSize: 14)),
+                                ),
+                                ListInfo(
+                                  icon: Icons.calendar_today,
+                                  title: '活動時間',
+                                  widget: Column(
+                                    children: [
+                                      Text(
+                                        display[index].eventTimeStart + '起',
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                      Text(
+                                        display[index].eventTimeEnd + '止',
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                ListInfo(
+                                  icon: Icons.access_time,
+                                  title: '報名時間',
+                                  widget: Column(
+                                    children: [
+                                      Text(
+                                        display[index].signTimeStart + '起',
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                      Text(
+                                        display[index].signTimeEnd + '止',
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                ListInfo(
+                                  icon: Icons.groups,
+                                  title: '報名人數',
+                                  widget: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '正取: ' +
+                                            display[index].positive +
+                                            '/' +
+                                            display[index].positiveLimit +
+                                            '人',
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                      Text(
+                                        '備取: ' +
+                                            display[index].wait +
+                                            '/' +
+                                            display[index].waitLimit +
+                                            '人',
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                (display[index].status == "報名中" ||
+                                        (display[index].status == "已額滿" &&
+                                            int.parse(display[index].wait) <
+                                                int.parse(
+                                                    display[index].waitLimit)))
+                                    ? ElevatedButton(
+                                        onPressed: () {
+                                          print(display[index].signUpJS);
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                EventInfoDialog(
+                                                    eventJS: display[index]
+                                                        .signUpJS),
+                                          );
+                                        },
+                                        child: Text('我要報名'),
+                                        style: ButtonStyle(
+                                          shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(18.0),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : ElevatedButton(
+                                        onPressed: () {
+                                          final scaffold =
+                                              ScaffoldMessenger.of(context);
+                                          final snackBar = SnackBar(
+                                            content: Text(
+                                                display[index].status +
+                                                    ' 無法報名'),
+                                            action: SnackBarAction(
+                                              label: '確定',
+                                              onPressed: () {
+                                                scaffold
+                                                    .removeCurrentSnackBar();
+                                              },
+                                            ),
+                                          );
+                                          scaffold.showSnackBar(snackBar);
+                                        },
+                                        child: Text('不可報名'),
+                                        style: ButtonStyle(
+                                            shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(18.0),
+                                              ),
+                                            ),
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Colors.grey)),
+                                      ),
+                                SizedBox(
+                                  height: screenSizeHeight * 0.015,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        Container(
+          child: Container(
+            padding: EdgeInsets.only(right: screenSizeWidth*0.05),
+            child: AnimSearchBar(//浮動搜尋按鈕
+              rtl: true,
+              helpText: '輸入名稱或編號...',
+              width: screenSizeWidth*0.8,
+              textController: _textEditingController,
+              onSuffixTap: () {_textEditingController.clear();},
+            ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
