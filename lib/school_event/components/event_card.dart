@@ -326,11 +326,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                     ],
                                   ),
                                 ),
-                                (display[index].status == "報名中" ||
-                                        (display[index].status == "已額滿" &&
-                                            int.parse(display[index].wait) <
-                                                int.parse(
-                                                    display[index].waitLimit)))
+                                display[index].status == "報名中"
                                     ? ElevatedButton(
                                         onPressed: () {
                                           print(display[index].signUpJS);
