@@ -70,7 +70,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
       _isSelected = [true, false, false];
     });
     for(int i=0; i<widget.data.length; i++){
-      if(widget.data[i].name.contains(_textEditingController.text)||widget.data[i].eventSerialNum.contains(_textEditingController.text))
+      if(widget.data[i].name.toLowerCase().contains(_textEditingController.text.toLowerCase())||widget.data[i].eventSerialNum.contains(_textEditingController.text))
         tmp.add(widget.data[i]);
     }
     setState(() {
