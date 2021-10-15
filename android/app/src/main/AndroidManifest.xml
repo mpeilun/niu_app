@@ -5,6 +5,7 @@
     Internet permissions do not affect the `permission_handler` plugin, but are required if your app needs access to
     the internet.
     -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <!-- Permissions options for the `contacts` group -->
