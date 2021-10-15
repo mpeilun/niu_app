@@ -7,6 +7,7 @@ import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
+import 'package:niu_app/components/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late DateTime start;
@@ -66,7 +67,7 @@ class _TestLoginWebViewState extends State<TestLoginWebView> {
                     child: ElevatedButton(
                         onPressed: () async {
                           start = DateTime.now();
-                          print(await login());
+                          showToast(await login());
                         },
                         child: Text('登入')),
                   )
@@ -205,6 +206,7 @@ Future<String> login() async {
   while (true) {
     await Future.delayed(Duration(milliseconds: 50), () {});
     if (callBack != '') {
+      headlessWebView.dispose();
       return callBack;
     }
   }
