@@ -206,7 +206,6 @@ Future<String> login() async {
   while (true) {
     await Future.delayed(Duration(milliseconds: 50), () {});
     if (callBack != '') {
-      headlessWebView.dispose();
       return callBack;
     }
   }
