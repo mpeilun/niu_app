@@ -22,6 +22,7 @@ import 'package:niu_app/menu/drawer/school%EF%BC%BFschedule.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 import 'package:niu_app/service/SemesterDate.dart';
+import 'package:niu_app/testcode/test_LoalNotification.dart';
 import 'package:niu_app/testcode/test_calendar.dart';
 import 'package:niu_app/testcode/test_firebase.dart';
 import 'package:niu_app/testcode/test_login.dart';
@@ -435,11 +436,14 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                     backgroundColor: Colors.red,
                     child: Icon(FontAwesomeIcons.bomb),
                     onPressed: () {
+                      TestLocalNotification.test();
+                      /*
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => TestFirebase(),
                               maintainState: false));
+                       */
                     },
                   ),
                 ),

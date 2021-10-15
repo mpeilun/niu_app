@@ -2,6 +2,7 @@ import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:niu_app/menu/menu_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
@@ -13,10 +14,32 @@ import 'package:provider/provider.dart';
 
 import 'provider/timetable_button_provider.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  //Maybe FireBase Put here
+  var initializationSettingAndroid =
+    AndroidInitializationSettings("niu_logo");
+  var initializationSettingIOS = IOSInitializationSettings(
+    requestAlertPermission: true,
+    requestBadgePermission: true,
+    requestSoundPermission: true,
+    onDidReceiveLocalNotification:
+      (int id, String? title, String? body, String? payload) async {},
+  );
+  var initalizationSettings = InitializationSettings(
+    android: initializationSettingAndroid,
+    iOS: initializationSettingIOS,
+  );
+  await flutterLocalNotificationsPlugin.initialize(
+    initalizationSettings,
+    onSelectNotification: (String? payload) async{
+      if(payload != null)
+        print("Notification Payload: " + payload);
+    }
+  );
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => DrawerProvider()),
     ChangeNotifierProvider(create: (_) => TimeCardClickProvider()),
