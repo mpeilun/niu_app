@@ -434,9 +434,8 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                     backgroundColor: Colors.red,
                     child: Icon(FontAwesomeIcons.bomb),
                     onPressed: () {
-                      FirebaseFirestore.instance
-                          .collection("testing")
-                          .add({'timestamp' : Timestamp.fromDate(DateTime.now())});
+                      FirebaseFirestore.instance.collection("testing").add(
+                          {'timestamp': Timestamp.fromDate(DateTime.now())});
                     },
                   ),
                 ),
@@ -588,14 +587,14 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
         },
         onAjaxProgress:
             (InAppWebViewController controller, AjaxRequest ajaxRequest) async {
-          log('ajax progress: $ajaxRequest');
-          print('');
+          // log('ajax progress: $ajaxRequest');
+          // print('');
           return AjaxRequestAction.PROCEED;
         },
         onAjaxReadyStateChange: (controller, ajax) async {
-          log('onAjaxReadyStateChange: $ajax');
+          // log('onAjaxReadyStateChange: $ajax');
           // print('AJAX RESPONSE TEXT: ' + ajax.responseText.toString());
-          print('');
+          // print('');
           return AjaxRequestAction.PROCEED;
         },
       );
