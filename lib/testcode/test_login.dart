@@ -6,6 +6,10 @@ import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+late DateTime start;
+late DateTime end;
 
 class TestLoginWebView extends StatefulWidget {
   const TestLoginWebView({
@@ -21,13 +25,10 @@ class _TestLoginWebViewState extends State<TestLoginWebView> {
   InAppWebViewController? webViewController;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
-        useOnDownloadStart: true,
-        useOnLoadResource: true,
-        useShouldOverrideUrlLoading: true,
-        mediaPlaybackRequiresUserGesture: false,
+        useShouldInterceptAjaxRequest: true,
       ),
       android: AndroidInAppWebViewOptions(
-        useHybridComposition: true,
+        blockNetworkLoads: true,
       ),
       ios: IOSInAppWebViewOptions(
         allowsInlineMediaPlayback: true,
@@ -57,149 +58,18 @@ class _TestLoginWebViewState extends State<TestLoginWebView> {
         child: Container(
           child: Scaffold(
             body: SafeArea(
-                child: Column(children: <Widget>[
-              Expanded(
-                child: Stack(
-                  children: [
-                    InAppWebView(
-                      key: testLoginWebViewState,
-                      initialUrlRequest: URLRequest(
-                          url: Uri.parse(
-                              "https://acade.niu.edu.tw/NIU/Default.aspx")),
-                      initialOptions: InAppWebViewGroupOptions(
-                        crossPlatform: InAppWebViewOptions(
-                          javaScriptCanOpenWindowsAutomatically: true,
-                          useShouldInterceptAjaxRequest: true,
-                        ),
-                      ),
-                      onWebViewCreated: (controller) async {
-                        webViewController = controller;
-                      },
-                      onLoadStart: (controller, url) async {
-                        setState(() {
-                          this.url = url.toString();
-                        });
-                      },
-                      androidOnPermissionRequest:
-                          (controller, origin, resources) async {
-                        return PermissionRequestResponse(
-                            resources: resources,
-                            action: PermissionRequestResponseAction.GRANT);
-                      },
-                      shouldOverrideUrlLoading:
-                          (controller, navigationAction) async {
-                        var uri = navigationAction.request.url!;
-
-                        return NavigationActionPolicy.ALLOW;
-                      },
-                      onLoadStop: (controller, url) async {
-                        print("onLoadStop $url");
-                        setState(() {
-                          this.url = url.toString();
-                        });
-                        if (url.toString().contains(
-                                'https://acade.niu.edu.tw/NIU/Default.aspx') &&
-                            !postState) {
-                          CookieManager().deleteAllCookies();
-
-                          String id = 'b0943034';
-                          String pwd = 'a1309237';
-
-                          var viewState = await controller.evaluateJavascript(
-                              source:
-                                  'document.querySelector("#__VIEWSTATE").value');
-                          var viewStateGenerator =
-                              await controller.evaluateJavascript(
-                                  source:
-                                      'document.querySelector("#__VIEWSTATEGENERATOR").value');
-                          var eventValidation = await controller.evaluateJavascript(
-                              source:
-                                  'document.querySelector("#__EVENTVALIDATION").value');
-
-                          while (await controller.evaluateJavascript(
-                                  source:
-                                      'document.querySelector("#recaptchaResponse").value') ==
-                              '') {
-                            await Future.delayed(
-                                Duration(milliseconds: 1000), () {});
-                            print('recaptchaResponse is null');
-                          }
-
-                          var recaptchaResponse =
-                              await controller.evaluateJavascript(
-                                  source:
-                                      'document.querySelector("#recaptchaResponse").value');
-
-                          String formData =
-                              'ScriptManager1=AjaxPanel%7CLGOIN_BTN'
-                              '&__EVENTTARGET='
-                              '&__EVENTARGUMENT='
-                              '&__VIEWSTATE=${Uri.encodeComponent(viewState)}'
-                              '&__VIEWSTATEGENERATOR=${Uri.encodeComponent(viewStateGenerator)}'
-                              '&__VIEWSTATEENCRYPTED='
-                              '&__EVENTVALIDATION=${Uri.encodeComponent(eventValidation)}'
-                              '&M_PORTAL_LOGIN_ACNT=$id'
-                              '&M_PW=$pwd'
-                              '&recaptchaResponse=${Uri.encodeComponent(recaptchaResponse)}'
-                              '&__ASYNCPOST=true'
-                              '&LGOIN_BTN.x=64'
-                              '&LGOIN_BTN.y=25';
-
-                          print('------test--------');
-                          print(await controller.evaluateJavascript(
-                              source:
-                                  'document.querySelector("#recaptchaResponse").value'));
-                          print('------test--------');
-                          log(formData);
-
-                          var postData =
-                              Uint8List.fromList(utf8.encode(formData));
-
-                          controller.postUrl(
-                              url: Uri.parse(
-                                  "https://acade.niu.edu.tw/NIU/Default.aspx"),
-                              postData: postData);
-                          postState = true;
-                        }
-                      },
-                      onLoadResource: (InAppWebViewController controller,
-                          LoadedResource resource) {},
-                      onLoadError: (controller, url, code, message) {},
-                      onProgressChanged: (controller, progress) {
-                        setState(() {
-                          this.progress = progress / 100;
-                        });
-                      },
-                      onUpdateVisitedHistory:
-                          (controller, url, androidIsReload) {
-                        setState(() {
-                          this.url = url.toString();
-                        });
-                        print('onUpdateVisitedHistory:' + url.toString());
-                      },
-                      onConsoleMessage: (controller, consoleMessage) {
-                        print(consoleMessage);
-                      },
-                      onDownloadStart: (controller, url) async {
-                        download(url, context, null);
-                      },
-                      onAjaxProgress: (InAppWebViewController controller,
-                          AjaxRequest ajaxRequest) async {
-                        log('ajax progress: $ajaxRequest');
-                        print('');
-                        return AjaxRequestAction.PROCEED;
-                      },
-                      onAjaxReadyStateChange: (controller, ajax) async {
-                        log('onAjaxReadyStateChange: $ajax');
-                        // print('AJAX RESPONSE TEXT: ' + ajax.responseText.toString());
-                        print('');
-                        return AjaxRequestAction.PROCEED;
-                      },
-                    )
-                  ],
-                ),
-              ),
-            ])),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                  Center(
+                    child: ElevatedButton(
+                        onPressed: () {
+                          start = DateTime.now();
+                          login();
+                        },
+                        child: Text('登入')),
+                  )
+                ])),
           ),
         ),
         onWillPop: () async {
@@ -207,4 +77,127 @@ class _TestLoginWebViewState extends State<TestLoginWebView> {
         },
         shouldAddCallbacks: true);
   }
+}
+
+Future<void> login() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? id = prefs.getString('id');
+  String? pwd = prefs.getString('pwd');
+  bool postState = false;
+  HeadlessInAppWebView headlessWebView = new HeadlessInAppWebView(
+    initialUrlRequest:
+        URLRequest(url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx")),
+    initialOptions: InAppWebViewGroupOptions(
+        crossPlatform: InAppWebViewOptions(
+          useShouldInterceptAjaxRequest: true,
+        ),
+        android: AndroidInAppWebViewOptions(
+          blockNetworkImage: true,
+        ),
+        ios: IOSInAppWebViewOptions(
+          allowsInlineMediaPlayback: true,
+        )),
+    onWebViewCreated: (controller) async {
+      print('LoginHeadlessInAppWebView created!');
+    },
+    onConsoleMessage: (controller, consoleMessage) {
+      print("CONSOLE MESSAGE: " + consoleMessage.message);
+    },
+    onLoadStart: (controller, url) async {
+      print("onLoadStart $url");
+    },
+    onLoadStop: (controller, url) async {
+      print("onLoadStop $url");
+
+      if (url.toString() == 'https://acade.niu.edu.tw/NIU/Default.aspx' &&
+          postState) {
+        var result = await controller.evaluateJavascript(
+            source: 'document.body.innerHTML');
+        end = DateTime.now();
+        if (result.toString().contains('updatePanel|AjaxPanel')) {
+          if (!result.toString().contains('alert(\'帳號或密碼錯誤，請查明後再登入!\')')) {
+            print('登入成功 耗時:${end.difference(start)}');
+          } else {
+            print('帳號密碼錯誤 耗時:${end.difference(start)}');
+          }
+        } else {
+          print('網頁異常 耗時:${end.difference(start)}');
+        }
+      }
+
+      if (url
+              .toString()
+              .contains('https://acade.niu.edu.tw/NIU/Default.aspx') &&
+          !postState) {
+        CookieManager().deleteAllCookies();
+
+        var viewState = await controller.evaluateJavascript(
+            source: 'document.querySelector("#__VIEWSTATE").value');
+        var viewStateGenerator = await controller.evaluateJavascript(
+            source: 'document.querySelector("#__VIEWSTATEGENERATOR").value');
+        var eventValidation = await controller.evaluateJavascript(
+            source: 'document.querySelector("#__EVENTVALIDATION").value');
+
+        while (await controller.evaluateJavascript(
+                source: 'document.querySelector("#recaptchaResponse").value') ==
+            '') {
+          print('recaptchaResponse is null');
+          await Future.delayed(Duration(milliseconds: 50), () {});
+        }
+
+        var recaptchaResponse = await controller.evaluateJavascript(
+            source: 'document.querySelector("#recaptchaResponse").value');
+
+        String formData = 'ScriptManager1=AjaxPanel%7CLGOIN_BTN'
+            '&__EVENTTARGET='
+            '&__EVENTARGUMENT='
+            '&__VIEWSTATE=${Uri.encodeComponent(viewState)}'
+            '&__VIEWSTATEGENERATOR=${Uri.encodeComponent(viewStateGenerator)}'
+            '&__VIEWSTATEENCRYPTED='
+            '&__EVENTVALIDATION=${Uri.encodeComponent(eventValidation)}'
+            '&M_PORTAL_LOGIN_ACNT=$id'
+            '&M_PW=$pwd'
+            '&recaptchaResponse=${Uri.encodeComponent(recaptchaResponse)}'
+            '&__ASYNCPOST=true'
+            '&LGOIN_BTN.x=0'
+            '&LGOIN_BTN.y=0';
+
+        var postData = Uint8List.fromList(utf8.encode(formData));
+
+        controller.postUrl(
+            url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx"),
+            postData: postData);
+        print('postUrl');
+        postState = true;
+      }
+    },
+    onLoadError: (InAppWebViewController controller, Uri? url, int code,
+        String message) {
+      print('onLoadError: url_$url msg_$message');
+    },
+    onLoadResource:
+        (InAppWebViewController controller, LoadedResource resource) {
+      print('onLoadResource' + resource.toString());
+    },
+    onUpdateVisitedHistory: (controller, url, androidIsReload) {},
+    onProgressChanged: (controller, progress) {
+      print('onProgressChanged:' + progress.toString());
+    },
+    onJsAlert: (InAppWebViewController controller,
+        JsAlertRequest jsAlertRequest) async {
+      return JsAlertResponse(
+          handledByClient: true, action: JsAlertResponseAction.CONFIRM);
+    },
+    onAjaxProgress:
+        (InAppWebViewController controller, AjaxRequest ajaxRequest) async {
+      log(ajaxRequest.toString());
+      return AjaxRequestAction.PROCEED;
+    },
+    onAjaxReadyStateChange: (controller, ajax) async {
+      log(ajax.toString());
+      return AjaxRequestAction.PROCEED;
+    },
+  );
+
+  headlessWebView.run();
 }
