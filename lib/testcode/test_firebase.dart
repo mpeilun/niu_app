@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class TestFirebase extends StatefulWidget {
 
   const TestFirebase({Key? key}) : super(key: key);
@@ -27,7 +28,14 @@ class _TestFirebaseState extends State<TestFirebase> {
         title: Text('FireBase理論測試'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
+        onPressed: () async{
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          //設定集合
+          FirebaseFirestore.instance
+              .collection("testing")
+              .doc(prefs.getString("id"))
+              .set({'timestamp' : Timestamp.fromDate(DateTime.now())});
+          //設定集合為亂數
           FirebaseFirestore.instance
               .collection("testing")
               .add({'timestamp' : Timestamp.fromDate(DateTime.now())});

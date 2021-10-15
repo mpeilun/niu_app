@@ -436,14 +436,14 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                     backgroundColor: Colors.red,
                     child: Icon(FontAwesomeIcons.bomb),
                     onPressed: () {
-                      TestLocalNotification.test();
-                      /*
+                      //TestLocalNotification.test();
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => TestFirebase(),
                               maintainState: false));
-                       */
+
                     },
                   ),
                 ),
@@ -635,5 +635,13 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
     setState(() {
       loginState = true;
     });
+  }
+
+  void pushLastLogin() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    FirebaseFirestore.instance
+        .collection("Student")
+        .doc(prefs.getString("id"))
+        .set({'LastLogin' : Timestamp.fromDate(DateTime.now())});
   }
 }
