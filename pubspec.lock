@@ -479,7 +479,7 @@ packages:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.1+1"
   rflutter_alert:
     dependency: "direct main"
     description:
