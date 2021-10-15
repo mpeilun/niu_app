@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io' as dartCookies;
@@ -63,9 +64,9 @@ class _TestLoginWebViewState extends State<TestLoginWebView> {
                     children: <Widget>[
                   Center(
                     child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           start = DateTime.now();
-                          login();
+                          print(await login());
                         },
                         child: Text('登入')),
                   )
@@ -79,7 +80,8 @@ class _TestLoginWebViewState extends State<TestLoginWebView> {
   }
 }
 
-Future<void> login() async {
+Future<String> login() async {
+  String callBack = '';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? id = prefs.getString('id');
   String? pwd = prefs.getString('pwd');
@@ -116,12 +118,12 @@ Future<void> login() async {
         end = DateTime.now();
         if (result.toString().contains('updatePanel|AjaxPanel')) {
           if (!result.toString().contains('alert(\'帳號或密碼錯誤，請查明後再登入!\')')) {
-            print('登入成功 耗時:${end.difference(start)}');
+            callBack = '登入成功 耗時:${end.difference(start)}';
           } else {
-            print('帳號密碼錯誤 耗時:${end.difference(start)}');
+            callBack = '帳號密碼錯誤 耗時:${end.difference(start)}';
           }
         } else {
-          print('網頁異常 耗時:${end.difference(start)}');
+          callBack = '網頁異常 耗時:${end.difference(start)}';
         }
       }
 
@@ -199,5 +201,11 @@ Future<void> login() async {
     },
   );
 
-  headlessWebView.run();
+  await headlessWebView.run();
+  while (true) {
+    await Future.delayed(Duration(milliseconds: 50), () {});
+    if (callBack != '') {
+      return callBack;
+    }
+  }
 }
