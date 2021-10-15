@@ -10,9 +10,6 @@ import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-late DateTime start;
-late DateTime end;
-
 class TestLoginWebView extends StatefulWidget {
   const TestLoginWebView({
     Key? key,
@@ -66,10 +63,17 @@ class _TestLoginWebViewState extends State<TestLoginWebView> {
                   Center(
                     child: ElevatedButton(
                         onPressed: () async {
-                          start = DateTime.now();
                           showToast(await login());
                         },
                         child: Text('登入')),
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          CookieManager().deleteAllCookies();
+                          showToast('CleanCookies');
+                        },
+                        child: Text('CleanCookies')),
                   )
                 ])),
           ),
@@ -82,6 +86,7 @@ class _TestLoginWebViewState extends State<TestLoginWebView> {
 }
 
 Future<String> login() async {
+  DateTime start = DateTime.now();
   String callBack = '';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? id = prefs.getString('id');
@@ -116,15 +121,14 @@ Future<String> login() async {
           postState) {
         var result = await controller.evaluateJavascript(
             source: 'document.body.innerHTML');
-        end = DateTime.now();
         if (result.toString().contains('updatePanel|AjaxPanel')) {
           if (!result.toString().contains('alert(\'帳號或密碼錯誤，請查明後再登入!\')')) {
-            callBack = '登入成功 耗時:${end.difference(start)}';
+            callBack = '登入成功 耗時:${DateTime.now().difference(start)}';
           } else {
-            callBack = '帳號密碼錯誤 耗時:${end.difference(start)}';
+            callBack = '帳號密碼錯誤 耗時:${DateTime.now().difference(start)}';
           }
         } else {
-          callBack = '網頁異常 耗時:${end.difference(start)}';
+          callBack = '網頁異常 耗時:${DateTime.now().difference(start)}';
         }
       }
 
@@ -132,8 +136,6 @@ Future<String> login() async {
               .toString()
               .contains('https://acade.niu.edu.tw/NIU/Default.aspx') &&
           !postState) {
-        CookieManager().deleteAllCookies();
-
         var viewState = await controller.evaluateJavascript(
             source: 'document.querySelector("#__VIEWSTATE").value');
         var viewStateGenerator = await controller.evaluateJavascript(

@@ -17,29 +17,25 @@ import 'provider/timetable_button_provider.dart';
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  var initializationSettingAndroid =
-    AndroidInitializationSettings("niu_logo");
+  var initializationSettingAndroid = AndroidInitializationSettings("niu_logo");
   var initializationSettingIOS = IOSInitializationSettings(
     requestAlertPermission: true,
     requestBadgePermission: true,
     requestSoundPermission: true,
     onDidReceiveLocalNotification:
-      (int id, String? title, String? body, String? payload) async {},
+        (int id, String? title, String? body, String? payload) async {},
   );
-  var initalizationSettings = InitializationSettings(
+  var initializationSettings = InitializationSettings(
     android: initializationSettingAndroid,
     iOS: initializationSettingIOS,
   );
-  await flutterLocalNotificationsPlugin.initialize(
-    initalizationSettings,
-    onSelectNotification: (String? payload) async{
-      if(payload != null)
-        print("Notification Payload: " + payload);
-    }
-  );
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: (String? payload) async {
+    if (payload != null) print("Notification Payload: " + payload);
+  });
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => DrawerProvider()),
     ChangeNotifierProvider(create: (_) => TimeCardClickProvider()),
@@ -55,7 +51,6 @@ class MyApp extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return OKToast(
       child: MaterialApp(
-
         debugShowCheckedModeBanner: false,
         title: 'NIU app',
         theme: ThemeData(

@@ -1,4 +1,5 @@
-import 'dart:developer';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
@@ -12,7 +13,6 @@ import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/graduation/graduation.dart';
 import 'package:niu_app/menu/drawer/drawer.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
-import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
 import 'package:niu_app/components/login_loading.dart';
 import 'package:niu_app/menu/notification/notification_page.dart';
 import 'package:niu_app/components/menuIcon.dart';
@@ -22,8 +22,6 @@ import 'package:niu_app/menu/drawer/school%EF%BC%BFschedule.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 import 'package:niu_app/service/SemesterDate.dart';
-import 'package:niu_app/testcode/test_LoalNotification.dart';
-import 'package:niu_app/testcode/test_calendar.dart';
 import 'package:niu_app/testcode/test_firebase.dart';
 import 'package:niu_app/testcode/test_login.dart';
 import 'package:niu_app/testcode/test_webview.dart';
@@ -42,9 +40,6 @@ import '../course＿select.dart';
 import '../zuvio.dart';
 
 import 'package:badges/badges.dart';
-
-import 'notification/notification_webview.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 Route _createRoute() {
   return PageRouteBuilder(
@@ -79,10 +74,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
   late int newNotificationsCount;
   String url = "";
   bool loginState = false;
-  bool reLogin = false;
   bool isNotification = true;
-  bool countState = false;
-  bool runTimer = false;
   bool popState = false;
 
   bool isDrawerOpen = false;
@@ -443,7 +435,6 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                           MaterialPageRoute(
                               builder: (context) => TestFirebase(),
                               maintainState: false));
-
                     },
                   ),
                 ),
@@ -473,7 +464,6 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
     }
   }
 
-  //TODO:卡登問題
   _checkAccount() async {
     prefs = await SharedPreferences.getInstance();
     if (prefs.get('id') == null || prefs.get('pwd') == null) {
@@ -488,147 +478,157 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                   ),
               maintainState: false));
     } else {
-      headlessWebView = new HeadlessInAppWebView(
-        initialUrlRequest: URLRequest(
-            url: Uri.parse("https://acade.niu.edu.tw/NIU/MainFrame.aspx")),
-        initialOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(
-            javaScriptCanOpenWindowsAutomatically: true,
-            // useShouldInterceptAjaxRequest: true,
-          ),
-        ),
-        onWebViewCreated: (controller) async {
-          print('HeadlessInAppWebView created!');
-        },
-        onConsoleMessage: (controller, consoleMessage) {
-          print("CONSOLE MESSAGE: " + consoleMessage.message);
-        },
-        onLoadStart: (controller, url) async {
-          print("onLoadStart $url");
-          // setState(() {
-          //   this.url = url.toString();
-          // });
-          if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx' &&
-              countState == false &&
-              loginState == false &&
-              runTimer == false) {
-            runTimer = true;
-            for (int i = 1; i <= 120; i++) {
-              await Future.delayed(Duration(milliseconds: 1000), () {});
-              print('登入檢測 $i');
-              if (countState == true) {
-                print('------跳過卡登------');
-                loginState = true;
-                break;
-              } else if (loginState == true) {
-                break;
-              } else if (i % 10 == 0 && loginState == false) {
-                print("Logout and Clean cache");
-                headlessWebView?.webViewController.clearCache();
-                CookieManager().deleteAllCookies();
-                await headlessWebView?.webViewController.loadUrl(
-                    urlRequest: URLRequest(
-                        url: Uri.parse(
-                            "https://acade.niu.edu.tw/NIU/Default.aspx")));
-                countState = true;
-                break;
-              } else if (i == 120) {
-                runTimer = false;
-                countState = false;
-                break;
-              }
-            }
-          }
-        },
-        onLoadStop: (controller, url) async {
-          print("onLoadStop $url");
-          // setState(() {
-          //   this.url = url.toString();
-          // });
-          if (url.toString() == 'https://acade.niu.edu.tw/NIU/Default.aspx') {
-            login();
-          }
-          if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
-            if (!reLogin) {
-              print('登入成功');
-              loginFinished();
-              loadDataFormPrefs(context);
-              runNotificationWebViewWebView(context, null);
-            }
-          }
-        },
-        onLoadError: (InAppWebViewController controller, Uri? url, int code,
-            String message) {
-          print('onLoadError: url_$url msg_$message');
-        },
-        onLoadResource:
-            (InAppWebViewController controller, LoadedResource resource) {
-          print('onLoadResource' + resource.toString());
-        },
-        onUpdateVisitedHistory: (controller, url, androidIsReload) {
-          // print("onUpdateVisitedHistory $url");
-          // setState(() {
-          //   this.url = url.toString();
-          // });
-        },
-        onProgressChanged: (controller, progress) {
-          print('onProgressChanged:' + progress.toString());
-          //print('進度 $webProgress');
-        },
-        onJsAlert: (InAppWebViewController controller,
-            JsAlertRequest jsAlertRequest) async {
-          reLogin = true;
-          print(jsAlertRequest.message!);
-          print("Logout and Clean cache");
-          controller.clearCache();
-          CookieManager().deleteAllCookies();
-          await headlessWebView?.webViewController
-              .loadUrl(urlRequest: URLRequest(url: Uri.parse("about:blank")));
-          await Future.delayed(Duration(milliseconds: 100), () async {
-            await headlessWebView?.webViewController.loadUrl(
-                urlRequest: URLRequest(
-                    url: Uri.parse(
-                        "https://acade.niu.edu.tw/NIU/Default.aspx")));
-          });
-          return JsAlertResponse(
-              handledByClient: true, action: JsAlertResponseAction.CONFIRM);
-        },
-        onAjaxProgress:
-            (InAppWebViewController controller, AjaxRequest ajaxRequest) async {
-          // log('ajax progress: $ajaxRequest');
-          // print('');
-          return AjaxRequestAction.PROCEED;
-        },
-        onAjaxReadyStateChange: (controller, ajax) async {
-          // log('onAjaxReadyStateChange: $ajax');
-          // print('AJAX RESPONSE TEXT: ' + ajax.responseText.toString());
-          // print('');
-          return AjaxRequestAction.PROCEED;
-        },
-      );
-
-      headlessWebView?.run();
+      String result = await login();
+      if (result == '登入成功') {
+        pushLastLogin();
+        loginFinished();
+      } else if (result == '帳號密碼錯誤') {
+        Future.delayed(Duration(milliseconds: 1000), () async {
+          loginFinished();
+        });
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => LoginPage(
+                      cancelPop: true,
+                    ),
+                maintainState: false));
+      } else if (result == '網頁異常') {
+        Navigator.pop(context);
+      }
     }
   }
 
-  void login() async {
+  Future<String> login() async {
+    DateTime start = DateTime.now();
+    String callBack = '';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? id = prefs.getString('id');
     String? pwd = prefs.getString('pwd');
-    Future.delayed(Duration(milliseconds: 500), () async {
-      print('keying');
-      await headlessWebView?.webViewController.evaluateJavascript(
-          source:
-              'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
-      await headlessWebView?.webViewController.evaluateJavascript(
-          source: 'document.querySelector("#M_PW").value=\'$pwd\';');
-    });
-    Future.delayed(Duration(milliseconds: 1000), () async {
-      print('clickLogin');
-      await headlessWebView?.webViewController.evaluateJavascript(
-          source: 'document.querySelector("#LGOIN_BTN").click();');
-    });
-    reLogin = false;
+    bool postState = false;
+    HeadlessInAppWebView headlessWebView = new HeadlessInAppWebView(
+      initialUrlRequest: URLRequest(
+          url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx")),
+      initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(
+              // useShouldInterceptAjaxRequest: true,
+              ),
+          android: AndroidInAppWebViewOptions(
+            blockNetworkImage: true,
+          ),
+          ios: IOSInAppWebViewOptions(
+            allowsInlineMediaPlayback: true,
+          )),
+      onWebViewCreated: (controller) async {
+        print('LoginHeadlessInAppWebView created!');
+      },
+      onConsoleMessage: (controller, consoleMessage) {
+        print("CONSOLE MESSAGE: " + consoleMessage.message);
+      },
+      onLoadStart: (controller, url) async {
+        print("onLoadStart $url");
+      },
+      onLoadStop: (controller, url) async {
+        print("onLoadStop $url");
+
+        if (url.toString() == 'https://acade.niu.edu.tw/NIU/Default.aspx' &&
+            postState) {
+          var result = await controller.evaluateJavascript(
+              source: 'document.body.innerHTML');
+          if (result.toString().contains('updatePanel|AjaxPanel')) {
+            if (!result.toString().contains('alert(\'帳號或密碼錯誤，請查明後再登入!\')')) {
+              callBack = '登入成功';
+              print('登入成功 耗時:${DateTime.now().difference(start)}');
+            } else {
+              callBack = '帳號密碼錯誤';
+              print('帳號密碼錯誤 耗時:${DateTime.now().difference(start)}');
+            }
+          } else {
+            callBack = '網頁異常';
+            print('網頁異常 耗時:${DateTime.now().difference(start)}');
+          }
+        }
+
+        if (url
+                .toString()
+                .contains('https://acade.niu.edu.tw/NIU/Default.aspx') &&
+            !postState) {
+          var viewState = await controller.evaluateJavascript(
+              source: 'document.querySelector("#__VIEWSTATE").value');
+          var viewStateGenerator = await controller.evaluateJavascript(
+              source: 'document.querySelector("#__VIEWSTATEGENERATOR").value');
+          var eventValidation = await controller.evaluateJavascript(
+              source: 'document.querySelector("#__EVENTVALIDATION").value');
+
+          while (await controller.evaluateJavascript(
+                  source:
+                      'document.querySelector("#recaptchaResponse").value') ==
+              '') {
+            print('recaptchaResponse is null');
+            await Future.delayed(Duration(milliseconds: 50), () {});
+          }
+
+          var recaptchaResponse = await controller.evaluateJavascript(
+              source: 'document.querySelector("#recaptchaResponse").value');
+
+          String formData = 'ScriptManager1=AjaxPanel%7CLGOIN_BTN'
+              '&__EVENTTARGET='
+              '&__EVENTARGUMENT='
+              '&__VIEWSTATE=${Uri.encodeComponent(viewState)}'
+              '&__VIEWSTATEGENERATOR=${Uri.encodeComponent(viewStateGenerator)}'
+              '&__VIEWSTATEENCRYPTED='
+              '&__EVENTVALIDATION=${Uri.encodeComponent(eventValidation)}'
+              '&M_PORTAL_LOGIN_ACNT=$id'
+              '&M_PW=$pwd'
+              '&recaptchaResponse=${Uri.encodeComponent(recaptchaResponse)}'
+              '&__ASYNCPOST=true'
+              '&LGOIN_BTN.x=0'
+              '&LGOIN_BTN.y=0';
+
+          var postData = Uint8List.fromList(utf8.encode(formData));
+
+          controller.postUrl(
+              url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx"),
+              postData: postData);
+          print('postUrl');
+          postState = true;
+        }
+      },
+      onLoadError: (InAppWebViewController controller, Uri? url, int code,
+          String message) {
+        print('onLoadError: url_$url msg_$message');
+      },
+      onLoadResource:
+          (InAppWebViewController controller, LoadedResource resource) {
+        print('onLoadResource' + resource.toString());
+      },
+      onUpdateVisitedHistory: (controller, url, androidIsReload) {},
+      onProgressChanged: (controller, progress) {
+        print('onProgressChanged:' + progress.toString());
+      },
+      onJsAlert: (InAppWebViewController controller,
+          JsAlertRequest jsAlertRequest) async {
+        return JsAlertResponse(
+            handledByClient: true, action: JsAlertResponseAction.CONFIRM);
+      },
+      onAjaxProgress:
+          (InAppWebViewController controller, AjaxRequest ajaxRequest) async {
+        // log(ajaxRequest.toString());
+        return AjaxRequestAction.PROCEED;
+      },
+      onAjaxReadyStateChange: (controller, ajax) async {
+        // log(ajax.toString());
+        return AjaxRequestAction.PROCEED;
+      },
+    );
+
+    await headlessWebView.run();
+    while (true) {
+      await Future.delayed(Duration(milliseconds: 50), () {});
+      if (callBack != '') {
+        return callBack;
+      }
+    }
   }
 
   void loginFinished() {
@@ -637,11 +637,11 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
     });
   }
 
-  void pushLastLogin() async{
+  void pushLastLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     FirebaseFirestore.instance
         .collection("Student")
         .doc(prefs.getString("id"))
-        .set({'LastLogin' : Timestamp.fromDate(DateTime.now())});
+        .set({'LastLogin': Timestamp.fromDate(DateTime.now())});
   }
 }
