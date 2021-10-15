@@ -103,6 +103,8 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final double statusHeight = MediaQuery.of(context).padding.top;
+    final double screenHeight = MediaQuery.of(context).size.height;
     final title = ['首頁', '公告', '行事曆', '設定', '關於', '回報問題'];
     final pages = [
       LayoutBuilder(
@@ -111,7 +113,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
             scrollDirection: Axis.vertical,
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxHeight: viewportConstraints.maxHeight,
+                maxHeight: screenHeight - statusHeight - 56.0,
               ),
               child: Column(children: [
                 SizedBox(

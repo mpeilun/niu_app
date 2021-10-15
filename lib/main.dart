@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return OKToast(
       child: MaterialApp(
+
         debugShowCheckedModeBanner: false,
         title: 'NIU app',
         theme: ThemeData(
