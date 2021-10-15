@@ -64,6 +64,7 @@ class _TestLoginWebViewState extends State<TestLoginWebView> {
                   Center(
                     child: ElevatedButton(
                         onPressed: () {
+                          start = DateTime.now();
                           login();
                         },
                         child: Text('登入')),
@@ -129,7 +130,6 @@ Future<void> login() async {
               .contains('https://acade.niu.edu.tw/NIU/Default.aspx') &&
           !postState) {
         CookieManager().deleteAllCookies();
-        start = DateTime.now();
 
         var viewState = await controller.evaluateJavascript(
             source: 'document.querySelector("#__VIEWSTATE").value');
