@@ -91,8 +91,8 @@ Future<String> login() async {
         URLRequest(url: Uri.parse("https://acade.niu.edu.tw/NIU/Default.aspx")),
     initialOptions: InAppWebViewGroupOptions(
         crossPlatform: InAppWebViewOptions(
-          useShouldInterceptAjaxRequest: true,
-        ),
+            // useShouldInterceptAjaxRequest: true,
+            ),
         android: AndroidInAppWebViewOptions(
           blockNetworkImage: true,
         ),
@@ -192,11 +192,11 @@ Future<String> login() async {
     },
     onAjaxProgress:
         (InAppWebViewController controller, AjaxRequest ajaxRequest) async {
-      log(ajaxRequest.toString());
+      // log(ajaxRequest.toString());
       return AjaxRequestAction.PROCEED;
     },
     onAjaxReadyStateChange: (controller, ajax) async {
-      log(ajax.toString());
+      // log(ajax.toString());
       return AjaxRequestAction.PROCEED;
     },
   );

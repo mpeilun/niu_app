@@ -490,7 +490,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
         initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
             javaScriptCanOpenWindowsAutomatically: true,
-            useShouldInterceptAjaxRequest: true,
+            // useShouldInterceptAjaxRequest: true,
           ),
         ),
         onWebViewCreated: (controller) async {
@@ -591,14 +591,14 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
         },
         onAjaxProgress:
             (InAppWebViewController controller, AjaxRequest ajaxRequest) async {
-          log('ajax progress: $ajaxRequest');
-          print('');
+          // log('ajax progress: $ajaxRequest');
+          // print('');
           return AjaxRequestAction.PROCEED;
         },
         onAjaxReadyStateChange: (controller, ajax) async {
-          log('onAjaxReadyStateChange: $ajax');
+          // log('onAjaxReadyStateChange: $ajax');
           // print('AJAX RESPONSE TEXT: ' + ajax.responseText.toString());
-          print('');
+          // print('');
           return AjaxRequestAction.PROCEED;
         },
       );
