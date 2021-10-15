@@ -23,6 +23,7 @@ import 'package:niu_app/school_event/school_event.dart';
 import 'package:niu_app/TimeTable/TimeTable.dart';
 import 'package:niu_app/service/SemesterDate.dart';
 import 'package:niu_app/testcode/test_calendar.dart';
+import 'package:niu_app/testcode/test_firebase.dart';
 import 'package:niu_app/testcode/test_login.dart';
 import 'package:niu_app/testcode/test_webview.dart';
 import 'package:provider/provider.dart';
@@ -434,9 +435,11 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                     backgroundColor: Colors.red,
                     child: Icon(FontAwesomeIcons.bomb),
                     onPressed: () {
-                      FirebaseFirestore.instance
-                          .collection("testing")
-                          .add({'timestamp' : Timestamp.fromDate(DateTime.now())});
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TestFirebase(),
+                              maintainState: false));
                     },
                   ),
                 ),
