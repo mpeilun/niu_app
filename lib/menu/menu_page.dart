@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -433,11 +434,9 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                     backgroundColor: Colors.red,
                     child: Icon(FontAwesomeIcons.bomb),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TestWebView(),
-                              maintainState: false));
+                      FirebaseFirestore.instance
+                          .collection("testing")
+                          .add({'timestamp' : Timestamp.fromDate(DateTime.now())});
                     },
                   ),
                 ),

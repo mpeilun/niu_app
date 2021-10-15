@@ -64,7 +64,7 @@ class _ClubActivityState extends State<ClubActivity> {
 
               /// Called whenever the page in the center of the viewport changes.
               onPageChanged: (value) {
-                print('Page changed: $value');
+                //print('Page changed: $value');
               },
 
               /// Auto scroll interval.

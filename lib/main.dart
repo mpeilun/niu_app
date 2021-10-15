@@ -1,4 +1,5 @@
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:niu_app/menu/menu_page.dart';
@@ -12,7 +13,9 @@ import 'package:provider/provider.dart';
 
 import 'provider/timetable_button_provider.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   //Maybe FireBase Put here
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => DrawerProvider()),
