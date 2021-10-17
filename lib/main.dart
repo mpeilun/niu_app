@@ -1,5 +1,6 @@
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -36,6 +37,29 @@ void main() async {
       onSelectNotification: (String? payload) async {
     if (payload != null) print("Notification Payload: " + payload);
   });
+
+  FirebaseMessaging  messaging = FirebaseMessaging.instance;
+  await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+  messaging.getToken().then((value){
+    print("Token : $value");
+  });
+  FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+    print("message recieved");
+    print(event.notification!.body);
+  });
+  FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    print('Message clicked!');
+  });
+
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => DrawerProvider()),
     ChangeNotifierProvider(create: (_) => TimeCardClickProvider()),

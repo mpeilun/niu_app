@@ -1,18 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niu_app/service/LocalNotification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-class TestNotificationPage extends StatefulWidget {
+class TestPage extends StatefulWidget {
 
-  const TestNotificationPage({Key? key}) : super(key: key);
+  const TestPage({Key? key}) : super(key: key);
 
   @override
-  _TestNotificationPageState createState() => _TestNotificationPageState();
+  _TestPageState createState() => _TestPageState();
 }
 
-class _TestNotificationPageState extends State<TestNotificationPage> {
+class _TestPageState extends State<TestPage> {
   var _dateTime = DateTime.now();
+  String title = "Test";
+  String body = "Test Message";
   @override
   void initState() {
     super.initState();
@@ -25,8 +28,6 @@ class _TestNotificationPageState extends State<TestNotificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    String title = "Test";
-    String body = "Test Message";
     return Scaffold(
       appBar: AppBar(
         title: Text('Notification測試區域'),
@@ -101,6 +102,17 @@ class _TestNotificationPageState extends State<TestNotificationPage> {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text("通知發佈在 : ${_dateTime.hour}:${_dateTime.minute}:${_dateTime.second}"),
               ));
+            },
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          OutlineButton(
+            child: Text("---FireBase---"),
+            onPressed: () async{
+              FirebaseFirestore.instance
+                  .collection("testing")
+                  .add({'timestamp' : Timestamp.fromDate(DateTime.now())});
             },
           ),
         ],
