@@ -50,7 +50,6 @@ void main() async {
     provisional: false,
     sound: true,
   );
-  SharedPreferences prefs = await SharedPreferences.getInstance();
   messaging.getToken().then((value){
     print("Token : $value");
     FirebaseFirestore.instance
