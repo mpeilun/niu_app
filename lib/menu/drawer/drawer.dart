@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/graduation/graduation.dart';
+import 'package:niu_app/login/login_method.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
 import 'package:niu_app/provider/info_provider.dart';
@@ -124,20 +125,13 @@ class _DrawerPageState extends State<DrawerPage> {
               icon: Icons.logout_outlined,
               text: '登出',
               onTap: () async {
-                //清除緩存
-                saveGraduationData = false;
-                globalAdvancedTile = [];
-                CookieManager().deleteAllCookies();
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.clear();
+                await cleanAllData();
                 context.read<DrawerProvider>().closeDrawer();
                 context.read<DrawerProvider>().onclick(0);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => LoginPage(
-                              cancelPop: true,
-                            ),
+                        builder: (context) => LoginPage(),
                         maintainState: false));
               }),
           Divider(),
