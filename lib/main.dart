@@ -52,9 +52,11 @@ void main() async {
   );
   messaging.getToken().then((value){
     print("Token : $value");
+    /*
     FirebaseFirestore.instance
         .collection("Token")
         .add({'string' : value.toString()});
+    */
   });
   FirebaseMessaging.onMessage.listen((RemoteMessage event) {
     print("message recieved");
