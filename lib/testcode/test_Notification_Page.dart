@@ -12,7 +12,7 @@ class TestNotificationPage extends StatefulWidget {
 }
 
 class _TestNotificationPageState extends State<TestNotificationPage> {
-
+  var _dateTime = DateTime.now();
   @override
   void initState() {
     super.initState();
@@ -25,7 +25,6 @@ class _TestNotificationPageState extends State<TestNotificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    var _dateTime = DateTime.now();
     String title = "Test";
     String body = "Test Message";
     return Scaffold(
