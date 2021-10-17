@@ -32,7 +32,7 @@ class _TestNotificationPageState extends State<TestNotificationPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           LocalNotification.set(
-                DateTime.now().add(Duration(seconds: 10)),
+                DateTime.now().add(Duration(seconds: 3)),
                 "Test",
                 "Test Message"
               );
@@ -40,14 +40,19 @@ class _TestNotificationPageState extends State<TestNotificationPage> {
         child: Icon(Icons.add),
       ),
       body: ListView(
+        padding: const EdgeInsets.all(8),
         children: [
-          CupertinoDatePicker(
-            initialDateTime: _dateTime,
-            onDateTimeChanged: (date) {
-              setState(() {
-                _dateTime = date;
-              });
-            },
+          Container(
+            height: 100,
+            color: Colors.white,
+            child: CupertinoDatePicker(
+              initialDateTime: _dateTime,
+              onDateTimeChanged: (date) {
+                setState(() {
+                  _dateTime = date;
+                });
+              },
+            ),
           ),
           OutlineButton(
             child: Text("---通知---"),
