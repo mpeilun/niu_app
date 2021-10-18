@@ -72,11 +72,10 @@ class _TestLoginWebViewState extends State<TestLoginWebView> {
                   Center(
                     child: ElevatedButton(
                         onPressed: () async {
-                          print('Name: ${await getStudioName()}');
-                          // CookieManager().deleteAllCookies();
-                          // showToast('CleanCookies');
+                          CookieManager().deleteAllCookies();
+                          showToast('CleanCookies');
                         },
-                        child: Text('GetNmae')),
+                        child: Text('CleanCookies')),
                   )
                 ])),
           ),
