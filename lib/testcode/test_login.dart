@@ -64,17 +64,19 @@ class _TestLoginWebViewState extends State<TestLoginWebView> {
                     children: <Widget>[
                   Center(
                     child: ElevatedButton(
-                        onPressed: () async {}, child: Text('登入')),
+                        onPressed: () async {
+                          Login.origin().niuLogin();
+                        },
+                        child: Text('登入')),
                   ),
                   Center(
                     child: ElevatedButton(
                         onPressed: () async {
-                          print(await getStudioName());
-                          print('----');
+                          print('Name: ${await getStudioName()}');
                           // CookieManager().deleteAllCookies();
                           // showToast('CleanCookies');
                         },
-                        child: Text('CleanCookies')),
+                        child: Text('GetNmae')),
                   )
                 ])),
           ),

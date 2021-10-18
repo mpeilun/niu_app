@@ -440,8 +440,6 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                           MaterialPageRoute(
                               builder: (context) => TestPage(),
                               maintainState: false));
-
-
                     },
                   ),
                 ),
@@ -482,7 +480,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
           MaterialPageRoute(
               builder: (context) => LoginPage(), maintainState: false));
     } else {
-      String result = await Login('', '')
+      String result = await Login.origin()
           .niuLogin()
           .timeout(Duration(seconds: 60), onTimeout: () {
         return '學校系統異常';
@@ -496,7 +494,6 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
         Future.delayed(Duration(milliseconds: 1000), () async {
           loginFinished();
         });
-        await cleanAllData();
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -504,7 +501,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
       } else if (result == '學校系統異常') {
         // Navigator.pop(context);
         showToast('學校系統異常，請重新打開APP');
-        Future.delayed(Duration(milliseconds: 3500), () {
+        Future.delayed(Duration(milliseconds: 5000), () {
           exit(0);
         });
       }

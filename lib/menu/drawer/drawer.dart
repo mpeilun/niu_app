@@ -24,12 +24,7 @@ class DrawerPage extends StatefulWidget {
 class _DrawerPageState extends State<DrawerPage> {
   late SharedPreferences prefs;
 
-  String studentId = '';
-
   String studentName = '';
-
-  String imageUrl =
-      'https://upload.wikimedia.org/wikipedia/commons/1/12/White_background.png';
 
   @override
   void initState() {
@@ -44,13 +39,9 @@ class _DrawerPageState extends State<DrawerPage> {
 
   _checkInfo() async {
     prefs = await SharedPreferences.getInstance();
-    setState(() {
-      studentId = prefs.getString('id')!;
+    if (prefs.containsKey('name')) {
       studentName = prefs.getString('name')!;
-      imageUrl =
-          "https://acade.niu.edu.tw/NIU/Application/stdphoto.aspx?stno=" +
-              studentId;
-    });
+    }
     context.read<InfoProvider>().setName(studentName);
   }
 
@@ -125,7 +116,6 @@ class _DrawerPageState extends State<DrawerPage> {
               icon: Icons.logout_outlined,
               text: '登出',
               onTap: () async {
-                await cleanAllData();
                 context.read<DrawerProvider>().closeDrawer();
                 context.read<DrawerProvider>().onclick(0);
                 Navigator.push(

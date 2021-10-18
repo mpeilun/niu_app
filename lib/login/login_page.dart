@@ -34,6 +34,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void initState() {
+    Login.origin().cleanAllData();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ConditionalWillPopScope(
         child: Container(
