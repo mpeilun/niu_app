@@ -2,10 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/graduation/graduation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'login_page.dart';
 
 class Login {
   String? id;
@@ -16,11 +21,11 @@ class Login {
   Login.origin();
 
   Future<void> cleanAllData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     saveGraduationData = false;
     globalAdvancedTile = [];
-    CookieManager().deleteAllCookies();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+    await CookieManager().deleteAllCookies();
+    await prefs.clear();
   }
 
   Future<String> niuLogin() async {
@@ -145,9 +150,36 @@ class Login {
     await headlessWebView.run();
 
     if (await callBack.future != '') {
-      headlessWebView.dispose();
-      print('headlessWebView.dispose()');
+      headlessWebView.webViewController
+          .loadUrl(urlRequest: URLRequest(url: Uri.parse('about:blank')));
     }
     return callBack.future;
+  }
+
+  Future<void> initNiuLoin(
+      BuildContext context, HeadlessInAppWebView headlessWebView) async {
+    String result = await Login.origin()
+        .niuLogin()
+        .timeout(Duration(seconds: 60), onTimeout: () {
+      return '學校系統異常';
+    });
+    if (result == '登入成功') {
+      print('登入成功');
+      headlessWebView.run();
+    } else if (result == '帳號密碼錯誤') {
+      showToast('帳號密碼錯誤，請重新登入');
+      Future.delayed(Duration(milliseconds: 3000), () {
+        Navigator.pop(context);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => LoginPage(), maintainState: false));
+      });
+    } else if (result == '學校系統異常') {
+      showToast('學校系統異常，請稍後在等開此功能');
+      Future.delayed(Duration(milliseconds: 3000), () {
+        Navigator.pop(context);
+      });
+    }
   }
 }

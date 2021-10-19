@@ -80,6 +80,8 @@ class _MidPageState extends State<MidPage> {
               return double.parse(b.score!).compareTo(double.parse(a.score!));
             }
           });
+          headlessWebView?.webViewController
+              .loadUrl(urlRequest: URLRequest(url: Uri.parse('about:blank')));
           setState(() {
             loadStates = true;
           });
@@ -96,7 +98,7 @@ class _MidPageState extends State<MidPage> {
       },
     );
 
-    _checkLoinState();
+    Login.origin().initNiuLoin(context, headlessWebView!);
   }
 
   @override
@@ -106,31 +108,5 @@ class _MidPageState extends State<MidPage> {
             grade: grades,
           )
         : NiuIconLoading(size: 80);
-  }
-
-  Future<void> _checkLoinState() async {
-    String result = await Login.origin()
-        .niuLogin()
-        .timeout(Duration(seconds: 60), onTimeout: () {
-      return '學校系統異常';
-    });
-    if (result == '登入成功') {
-      print('登入成功');
-      headlessWebView?.run();
-    } else if (result == '帳號密碼錯誤') {
-      showToast('帳號密碼錯誤，請重新登入');
-      Future.delayed(Duration(milliseconds: 3000), () {
-        Navigator.pop(context);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LoginPage(), maintainState: false));
-      });
-    } else if (result == '學校系統異常') {
-      showToast('學校系統異常，請重新打開APP');
-      Future.delayed(Duration(milliseconds: 3000), () {
-        Navigator.pop(context);
-      });
-    }
   }
 }

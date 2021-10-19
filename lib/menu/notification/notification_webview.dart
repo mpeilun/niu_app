@@ -114,6 +114,10 @@ Future<void> runNotificationWebViewWebView(
                 announcementCount: announcementCount,
                 workCount: workCount));
           }
+
+          _notificationWebView.webViewController
+              .loadUrl(urlRequest: URLRequest(url: Uri.parse('about:blank')));
+
           print('---Eschool Data---');
           eschoolData.forEach((element) {
             print(element.courseName +

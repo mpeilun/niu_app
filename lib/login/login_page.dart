@@ -7,6 +7,7 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:niu_app/components/login_loading.dart';
 import 'package:niu_app/login/studio_info.dart';
 import 'package:niu_app/menu/notification/notification_webview.dart';
+import 'package:niu_app/provider/drawer_provider.dart';
 import 'package:niu_app/provider/info_provider.dart';
 import 'package:provider/src/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,6 +25,9 @@ class _LoginPageState extends State<LoginPage> {
   late String id;
   late String pwd;
   Future<String> _authUser(LoginData data) async {
+    await Login.origin().cleanAllData();
+    context.read<DrawerProvider>().closeDrawer();
+    context.read<DrawerProvider>().onclick(0);
     id = data.name;
     pwd = data.password;
     return (await Login(id, pwd).niuLogin().timeout(Duration(seconds: 60),
@@ -35,7 +39,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    Login.origin().cleanAllData();
     super.initState();
   }
 
@@ -73,6 +76,6 @@ class _LoginPageState extends State<LoginPage> {
         onWillPop: () async {
           return false;
         },
-        shouldAddCallbacks: false);
+        shouldAddCallbacks: true);
   }
 }

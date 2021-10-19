@@ -456,7 +456,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                   popState = false;
                 });
               } else {
-                return true;
+                exit(0);
               }
               isOpen = false;
             }
@@ -464,8 +464,13 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
           },
           shouldAddCallbacks: true);
     } else {
-      return WillPopScope(
-          onWillPop: true ? () async => false : null, child: Loading());
+      return ConditionalWillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        shouldAddCallbacks: true,
+        child: Loading(),
+      );
     }
   }
 
@@ -492,12 +497,13 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
         loginFinished();
       } else if (result == '帳號密碼錯誤') {
         showToast('帳號密碼錯誤，請重新登入');
-        Future.delayed(Duration(milliseconds: 3000), () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => LoginPage(), maintainState: false));
+        Future.delayed(Duration(milliseconds: 1000), () async {
+          loginFinished();
         });
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => LoginPage(), maintainState: false));
       } else if (result == '學校系統異常') {
         showToast('學校系統異常，請重新打開APP');
         Future.delayed(Duration(milliseconds: 5000), () {

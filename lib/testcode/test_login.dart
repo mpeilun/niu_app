@@ -72,7 +72,11 @@ class _TestLoginWebViewState extends State<TestLoginWebView> {
                   Center(
                     child: ElevatedButton(
                         onPressed: () async {
-                          CookieManager().deleteAllCookies();
+                          // CookieManager().deleteAllCookies();
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setString("id", 'dasdsad');
+                          prefs.setString("pwd", 'adsadas');
                           showToast('CleanCookies');
                         },
                         child: Text('CleanCookies')),

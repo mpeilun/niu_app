@@ -116,8 +116,6 @@ class _DrawerPageState extends State<DrawerPage> {
               icon: Icons.logout_outlined,
               text: '登出',
               onTap: () async {
-                context.read<DrawerProvider>().closeDrawer();
-                context.read<DrawerProvider>().onclick(0);
                 Navigator.push(
                     context,
                     MaterialPageRoute(

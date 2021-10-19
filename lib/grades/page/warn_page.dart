@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/grades/custom_cards.dart';
+import 'package:niu_app/login/login_method.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WarmPage extends StatefulWidget {
@@ -32,28 +33,12 @@ class _WarmPageState extends State<WarmPage> {
             }),
         initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
-            useOnLoadResource: true,
-            useShouldInterceptAjaxRequest: true,
             javaScriptEnabled: true,
             javaScriptCanOpenWindowsAutomatically: true,
           ),
         ),
         onWebViewCreated: (controller) {
           print('HeadlessInAppWebView created!');
-        },
-        onConsoleMessage: (controller, consoleMessage) {
-          print("CONSOLE MESSAGE: " + consoleMessage.message);
-        },
-        onLoadStart: (controller, url) async {
-          print("onLoadStart $url");
-          setState(() {
-            this.url = url.toString();
-          });
-          if (url.toString() == 'https://acade.niu.edu.tw/NIU/Default.aspx') {
-            setState(() {
-              loadStates = false;
-            });
-          }
         },
         onLoadStop: (controller, url) async {
           print("onLoadStop $url");
@@ -141,47 +126,18 @@ class _WarmPageState extends State<WarmPage> {
               }
               return -1;
             });
+            headlessWebView?.webViewController
+                .loadUrl(urlRequest: URLRequest(url: Uri.parse('about:blank')));
             setState(() {
               loadStates = true;
             });
           }
         },
-        onUpdateVisitedHistory: (controller, url, androidIsReload) {
-          print("onUpdateVisitedHistory $url");
-          setState(() {
-            this.url = url.toString();
-          });
-        },
         onProgressChanged: (controller, progress) async {
-          setState(() {
-            webProgress = progress;
-          });
-        },
-        onJsAlert: (InAppWebViewController controller,
-            JsAlertRequest jsAlertRequest) async {
-          print(jsAlertRequest.message.toString());
-          if (jsAlertRequest.message.toString().contains('使用時間逾時')) {
-            await headlessWebView?.webViewController.loadUrl(
-                urlRequest: URLRequest(
-                    url: Uri.parse(
-                        "https://acade.niu.edu.tw/NIU/Default.aspx")));
-          }
-          return JsAlertResponse(
-              handledByClient: true, action: JsAlertResponseAction.CONFIRM);
-        },
-        onLoadResource:
-            (InAppWebViewController controller, LoadedResource resource) {
-          //print(resource.toString());
+          print('onProgressChanged: $progress');
         });
 
-    headlessWebView?.run();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    loadStates = false;
-    print('warn_page dispose');
+    Login.origin().initNiuLoin(context, headlessWebView!);
   }
 
   @override

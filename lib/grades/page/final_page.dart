@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/grades/custom_cards.dart';
+import 'package:niu_app/login/login_method.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FinalPage extends StatefulWidget {
@@ -15,7 +16,6 @@ class _FinalPageState extends State<FinalPage> {
   HeadlessInAppWebView? headlessWebView;
   bool loadStates = false;
   late String url;
-  late int webProgress;
   late List<Quote> grades = [];
   late String rank;
   late String avg;
@@ -33,28 +33,12 @@ class _FinalPageState extends State<FinalPage> {
             }),
         initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
-            useOnLoadResource: true,
-            useShouldInterceptAjaxRequest: true,
             javaScriptEnabled: true,
             javaScriptCanOpenWindowsAutomatically: true,
           ),
         ),
         onWebViewCreated: (controller) {
           print('HeadlessInAppWebView created!');
-        },
-        onConsoleMessage: (controller, consoleMessage) {
-          print("CONSOLE MESSAGE: " + consoleMessage.message);
-        },
-        onLoadStart: (controller, url) async {
-          print("onLoadStart $url");
-          setState(() {
-            this.url = url.toString();
-          });
-          if (url.toString() == 'https://acade.niu.edu.tw/NIU/Default.aspx') {
-            setState(() {
-              loadStates = false;
-            });
-          }
         },
         onLoadStop: (controller, url) async {
           print("onLoadStop $url");
@@ -121,47 +105,26 @@ class _FinalPageState extends State<FinalPage> {
                 return double.parse(b.score!).compareTo(double.parse(a.score!));
               }
             });
+            headlessWebView?.webViewController
+                .loadUrl(urlRequest: URLRequest(url: Uri.parse('about:blank')));
             setState(() {
               loadStates = true;
             });
           }
         },
         onUpdateVisitedHistory: (controller, url, androidIsReload) {
-          print("onUpdateVisitedHistory $url");
+          print("onUpdateVisitedHistory: $url");
           setState(() {
             this.url = url.toString();
           });
         },
         onProgressChanged: (controller, progress) async {
           setState(() {
-            webProgress = progress;
+            print("onProgressChanged: $progress");
           });
-        },
-        onJsAlert: (InAppWebViewController controller,
-            JsAlertRequest jsAlertRequest) async {
-          print(jsAlertRequest.message.toString());
-          if (jsAlertRequest.message.toString().contains('使用時間逾時')) {
-            await headlessWebView?.webViewController.loadUrl(
-                urlRequest: URLRequest(
-                    url:
-                        Uri.parse("https://acade.niu.edu.tw/NIU/logout.aspx")));
-          }
-          return JsAlertResponse(
-              handledByClient: true, action: JsAlertResponseAction.CONFIRM);
-        },
-        onLoadResource:
-            (InAppWebViewController controller, LoadedResource resource) {
-          //print(resource.toString());
         });
 
-    headlessWebView?.run();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    loadStates = false;
-    print('final_page dispose');
+    Login.origin().initNiuLoin(context, headlessWebView!);
   }
 
   @override

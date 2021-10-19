@@ -34,8 +34,9 @@ Future<String> getStudioName() async {
   await headlessWebView.run();
 
   if (await callBack.future != '') {
-    headlessWebView.dispose();
-    print('headlessWebView.dispose()');
+    headlessWebView.webViewController
+        .loadUrl(urlRequest: URLRequest(url: Uri.parse('about:blank')));
+    print('blank');
   }
   return callBack.future;
 }
