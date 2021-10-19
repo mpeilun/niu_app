@@ -22,7 +22,7 @@ import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/provider/notification_provider.dart';
 import 'package:niu_app/menu/drawer/school%EF%BC%BFschedule.dart';
 import 'package:niu_app/school_event/school_event.dart';
-import 'package:niu_app/TimeTable/TimeTable.dart';
+import 'package:niu_app/TimeTable/timetable.dart';
 import 'package:niu_app/service/SemesterDate.dart';
 import 'package:niu_app/testcode/test_Page.dart';
 import 'package:niu_app/testcode/test_firebase.dart';

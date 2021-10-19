@@ -156,8 +156,7 @@ class Login {
     return callBack.future;
   }
 
-  Future<void> initNiuLoin(
-      BuildContext context, HeadlessInAppWebView headlessWebView) async {
+  Future<bool> initNiuLoin(BuildContext context) async {
     String result = await Login.origin()
         .niuLogin()
         .timeout(Duration(seconds: 60), onTimeout: () {
@@ -165,7 +164,7 @@ class Login {
     });
     if (result == '登入成功') {
       print('登入成功');
-      headlessWebView.run();
+      return true;
     } else if (result == '帳號密碼錯誤') {
       showToast('帳號密碼錯誤，請重新登入');
       Future.delayed(Duration(milliseconds: 3000), () {
@@ -181,5 +180,6 @@ class Login {
         Navigator.pop(context);
       });
     }
+    return false;
   }
 }

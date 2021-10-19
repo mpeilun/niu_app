@@ -16,7 +16,7 @@ class TimeTable extends StatefulWidget {
 
 class _TimeTableState extends State<TimeTable> {
   SemesterDate a = SemesterDate();
-  var b = getHTML();
+  late var b;
 /*
   List<Class> myTable = <Class>[
     // Class("電子電路", "朱志明", "教416", 1, 2, 4),
@@ -36,6 +36,12 @@ class _TimeTableState extends State<TimeTable> {
     Class("微處理器系統", "卓信宏", "教416", 5, 0, 13)
   ];
 */
+  @override
+  void initState() {
+    super.initState();
+    b = GetHTML(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     a.getIsFinish();

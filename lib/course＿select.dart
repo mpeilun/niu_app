@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'components/toast.dart';
+import 'login/login_method.dart';
 
 class CourseSelect extends StatefulWidget {
   const CourseSelect({
@@ -51,86 +52,7 @@ class _CourseSelectState extends State<CourseSelect> {
       AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
     }
 
-    headlessWebView = new HeadlessInAppWebView(
-        initialUrlRequest: URLRequest(
-            url: Uri.parse("https://acade.niu.edu.tw/NIU/MainFrame.aspx")),
-        initialOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(
-            useOnLoadResource: true,
-            useOnDownloadStart: true,
-            javaScriptCanOpenWindowsAutomatically: true,
-          ),
-        ),
-        onWebViewCreated: (controller) {
-          print('HeadlessInAppWebView created!');
-        },
-        onConsoleMessage: (controller, consoleMessage) {
-          print("CONSOLE MESSAGE: " + consoleMessage.message);
-        },
-        onLoadStart: (controller, url) async {
-          print("onLoadStart $url");
-          setState(() {
-            this.url = url.toString();
-          });
-        },
-        onLoadStop: (controller, url) async {
-          print("onLoadStop $url");
-          setState(() {
-            this.url = url.toString();
-          });
-          if (url.toString() == 'https://acade.niu.edu.tw/NIU/Default.aspx') {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            String? id = prefs.getString('id');
-            String? pwd = prefs.getString('pwd');
-            Future.delayed(Duration(milliseconds: 100), () async {
-              print('keying');
-              await headlessWebView?.webViewController.evaluateJavascript(
-                  source:
-                      'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
-              await headlessWebView?.webViewController.evaluateJavascript(
-                  source: 'document.querySelector("#M_PW").value=\'$pwd\';');
-            });
-            Future.delayed(Duration(milliseconds: 1000), () async {
-              print('clickLogin');
-              await headlessWebView?.webViewController.evaluateJavascript(
-                  source: 'document.querySelector("#LGOIN_BTN").click();');
-            });
-          }
-          if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
-            await webViewController?.loadUrl(
-                urlRequest: URLRequest(
-                    url: Uri.parse(
-                        "https://acade.niu.edu.tw/NIU/Application/TKE/TKE20/TKE2011_01.aspx"),
-                    headers: {
-                  "Referer":
-                      "https://acade.niu.edu.tw/NIU/Application/TKE/TKE20/TKE2011_.aspx?progcd=TKE2011"
-                }));
-          }
-        },
-        onUpdateVisitedHistory: (controller, url, androidIsReload) {
-          print("onUpdateVisitedHistory $url");
-          setState(() {
-            this.url = url.toString();
-          });
-        },
-        onLoadResource:
-            (InAppWebViewController controller, LoadedResource resource) {
-          //print(resource.toString());
-        },
-        onJsAlert: (InAppWebViewController controller,
-            JsAlertRequest jsAlertRequest) async {
-          print(jsAlertRequest.message.toString());
-          if (jsAlertRequest.message.toString().contains('使用時間逾時')) {
-            await headlessWebView?.webViewController.loadUrl(
-                urlRequest: URLRequest(
-                    url: Uri.parse(
-                        "https://acade.niu.edu.tw/NIU/Default.aspx")));
-          }
-          return JsAlertResponse(
-              handledByClient: true, action: JsAlertResponseAction.CONFIRM);
-        });
-
-    headlessWebView?.run();
+    _shouldRunWebView();
   }
 
   @override
@@ -304,5 +226,18 @@ class _CourseSelectState extends State<CourseSelect> {
           return false;
         },
         shouldAddCallbacks: true);
+  }
+
+  void _shouldRunWebView() async {
+    if (await Login.origin().initNiuLoin(context)) {
+      webViewController?.loadUrl(
+          urlRequest: URLRequest(
+              url: Uri.parse(
+                  "https://acade.niu.edu.tw/NIU/Application/TKE/TKE20/TKE2011_01.aspx"),
+              headers: {
+            "Referer":
+                "https://acade.niu.edu.tw/NIU/Application/TKE/TKE20/TKE2011_.aspx?progcd=TKE2011"
+          }));
+    }
   }
 }

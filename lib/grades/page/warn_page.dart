@@ -137,7 +137,7 @@ class _WarmPageState extends State<WarmPage> {
           print('onProgressChanged: $progress');
         });
 
-    Login.origin().initNiuLoin(context, headlessWebView!);
+    _shouldRunWebView();
   }
 
   @override
@@ -164,5 +164,11 @@ class _WarmPageState extends State<WarmPage> {
               ],
             ),
           );
+  }
+
+  void _shouldRunWebView() async {
+    if (await Login.origin().initNiuLoin(context)) {
+      headlessWebView?.run();
+    }
   }
 }

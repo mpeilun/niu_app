@@ -98,7 +98,7 @@ class _MidPageState extends State<MidPage> {
       },
     );
 
-    Login.origin().initNiuLoin(context, headlessWebView!);
+    _shouldRunWebView();
   }
 
   @override
@@ -108,5 +108,11 @@ class _MidPageState extends State<MidPage> {
             grade: grades,
           )
         : NiuIconLoading(size: 80);
+  }
+
+  void _shouldRunWebView() async {
+    if (await Login.origin().initNiuLoin(context)) {
+      headlessWebView?.run();
+    }
   }
 }

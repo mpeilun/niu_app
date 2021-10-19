@@ -124,7 +124,7 @@ class _FinalPageState extends State<FinalPage> {
           });
         });
 
-    Login.origin().initNiuLoin(context, headlessWebView!);
+    _shouldRunWebView();
   }
 
   @override
@@ -136,5 +136,11 @@ class _FinalPageState extends State<FinalPage> {
             grade: grades,
           )
         : NiuIconLoading(size: 80);
+  }
+
+  void _shouldRunWebView() async {
+    if (await Login.origin().initNiuLoin(context)) {
+      headlessWebView?.run();
+    }
   }
 }
