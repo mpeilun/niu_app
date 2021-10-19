@@ -10,6 +10,7 @@ class ClassCard extends StatefulWidget {
     required this.calendar,
     required this.week,
   });
+
   final Class thisClass;
   final Calendar calendar;
   final int week;
@@ -134,97 +135,124 @@ class _ClassCard extends State<ClassCard> {
               String? range = calendar.range();
               List<bool> isSelected = <bool>[false, false, false];
               isSelected[type] = true;
-              return SingleChildScrollView(
-                child: AlertDialog(content: StatefulBuilder(
-                    builder: (BuildContext context, StateSetter setState) {
-                  return Container(
-                    height: 284,
-                    child: Center(
-                      child: Column(
-                        children: [
-                          ToggleButtons(
-                            children: <Widget>[
-                              Text("作業"),
-                              Text("考試"),
-                              Text("報告"),
-                            ],
-                            onPressed: (int index) {
-                              type = index;
-                              setState(() {
-                                for (int buttonIndex = 0;
-                                    buttonIndex < isSelected.length;
-                                    buttonIndex++) {
-                                  if (buttonIndex == index) {
-                                    isSelected[buttonIndex] = true;
-                                  } else {
-                                    isSelected[buttonIndex] = false;
-                                  }
+              return AlertDialog(content: StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                return SingleChildScrollView(
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ToggleButtons(
+                          borderRadius: BorderRadius.circular(12.0),
+                          children: <Widget>[
+                            Container(
+                                width:
+                                    (MediaQuery.of(context).size.width - 46) /
+                                        5,
+                                child: Center(child: Text("作業"))),
+                            Container(
+                                width:
+                                    (MediaQuery.of(context).size.width - 46) /
+                                        5,
+                                child: Center(child: Text("考試"))),
+                            Container(
+                                width:
+                                    (MediaQuery.of(context).size.width - 46) /
+                                        5,
+                                child: Center(child: Text("報告"))),
+                          ],
+                          onPressed: (int index) {
+                            type = index;
+                            setState(() {
+                              for (int buttonIndex = 0;
+                                  buttonIndex < isSelected.length;
+                                  buttonIndex++) {
+                                if (buttonIndex == index) {
+                                  isSelected[buttonIndex] = true;
+                                } else {
+                                  isSelected[buttonIndex] = false;
                                 }
-                              });
+                              }
+                            });
+                          },
+                          isSelected: isSelected,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 14.0, 0.0, 8.0),
+                          child: TextFormField(
+                            initialValue: calendarName,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              labelText: '名稱',
+                              hintText: '清輸入名稱',
+                            ),
+                            onChanged: (text) {
+                              if (text != "") {
+                                name = text;
+                                name!.replaceAll(",", "");
+                              } else
+                                name = null;
                             },
-                            isSelected: isSelected,
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(15),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
                             child: TextFormField(
-                              initialValue: calendarName,
+                              initialValue: calendarRange,
+                              obscureText: false,
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: '名稱',
-                                hintText: '清輸入名稱',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                labelText: '內容',
+                                hintText: "清輸入內容",
                               ),
                               onChanged: (text) {
                                 if (text != "") {
-                                  name = text;
-                                  name!.replaceAll(",", "");
+                                  range = text;
+                                  range!.replaceAll(",", "");
                                 } else
-                                  name = null;
+                                  range = null;
                               },
+                            )),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 5),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(
+                                    context, Calendar(null, null, null));
+                              },
+                              child: Icon(Icons.delete),
                             ),
-                          ),
-                          Padding(
-                              padding: EdgeInsets.all(15),
-                              child: TextFormField(
-                                initialValue: calendarRange,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: '內容',
-                                  hintText: "清輸入內容",
-                                ),
-                                onChanged: (text) {
-                                  if (text != "") {
-                                    range = text;
-                                    range!.replaceAll(",", "");
-                                  } else
-                                    range = null;
-                                },
-                              )),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              RaisedButton(
-                                onPressed: () {
-                                  Navigator.pop(
-                                      context, Calendar(null, null, null));
-                                },
-                                child: Icon(Icons.delete),
+                            SizedBox(
+                              width: 20.0,
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 5),
                               ),
-                              RaisedButton(
-                                onPressed: () {
-                                  Navigator.pop(
-                                      context, Calendar(type, name, range));
-                                },
-                                child: Icon(Icons.check),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                              onPressed: () {
+                                Navigator.pop(
+                                    context, Calendar(type, name, range));
+                              },
+                              child: Icon(Icons.check),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  );
-                })),
-              );
+                  ),
+                );
+              }));
             },
           );
           print(input.save());
