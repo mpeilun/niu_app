@@ -491,15 +491,14 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
         pushLastLogin();
         loginFinished();
       } else if (result == '帳號密碼錯誤') {
-        Future.delayed(Duration(milliseconds: 1000), () async {
-          loginFinished();
+        showToast('帳號密碼錯誤，請重新登入');
+        Future.delayed(Duration(milliseconds: 3000), () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => LoginPage(), maintainState: false));
         });
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LoginPage(), maintainState: false));
       } else if (result == '學校系統異常') {
-        // Navigator.pop(context);
         showToast('學校系統異常，請重新打開APP');
         Future.delayed(Duration(milliseconds: 5000), () {
           exit(0);

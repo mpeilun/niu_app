@@ -5,7 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<String> getStudioName() async {
   final Completer<String> callBack = new Completer<String>();
 
-  HeadlessInAppWebView headlessWebView = new HeadlessInAppWebView(
+  HeadlessInAppWebView headlessWebView;
+
+  headlessWebView = new HeadlessInAppWebView(
     initialUrlRequest: URLRequest(
         url: Uri.parse(
             "https://acade.niu.edu.tw/NIU/Application/SESSION/SESSION_.aspx?progcd=SESSION")),
@@ -31,6 +33,10 @@ Future<String> getStudioName() async {
 
   await headlessWebView.run();
 
+  if (await callBack.future != '') {
+    headlessWebView.dispose();
+    print('headlessWebView.dispose()');
+  }
   return callBack.future;
 }
 

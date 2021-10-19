@@ -144,6 +144,10 @@ class Login {
 
     await headlessWebView.run();
 
+    if (await callBack.future != '') {
+      headlessWebView.dispose();
+      print('headlessWebView.dispose()');
+    }
     return callBack.future;
   }
 }
