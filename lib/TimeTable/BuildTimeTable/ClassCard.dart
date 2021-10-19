@@ -186,7 +186,7 @@ class _ClassCard extends State<ClassCard> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               labelText: '名稱',
-                              hintText: '清輸入名稱',
+                              hintText: '請輸入名稱',
                             ),
                             onChanged: (text) {
                               if (text != "") {
@@ -207,7 +207,7 @@ class _ClassCard extends State<ClassCard> {
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 labelText: '內容',
-                                hintText: "清輸入內容",
+                                hintText: "請輸入內容",
                               ),
                               onChanged: (text) {
                                 if (text != "") {
