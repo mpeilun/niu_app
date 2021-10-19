@@ -45,30 +45,6 @@ class _WarmPageState extends State<WarmPage> {
           setState(() {
             this.url = url.toString();
           });
-          if (url.toString() == 'https://acade.niu.edu.tw/NIU/Default.aspx') {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            String? id = prefs.getString('id');
-            String? pwd = prefs.getString('pwd');
-            await headlessWebView?.webViewController.evaluateJavascript(
-                source:
-                    'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
-            await headlessWebView?.webViewController.evaluateJavascript(
-                source: 'document.querySelector("#M_PW").value=\'$pwd\';');
-            Future.delayed(Duration(milliseconds: 1000), () async {
-              await headlessWebView?.webViewController.evaluateJavascript(
-                  source: 'document.querySelector("#LGOIN_BTN").click();');
-            });
-          }
-          if (url.toString() == 'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
-            await headlessWebView?.webViewController.loadUrl(
-                urlRequest: URLRequest(
-                    url: Uri.parse(
-                        "https://acade.niu.edu.tw/NIU/Application/GRD/GRD30/GRD3060_02.aspx"),
-                    headers: {
-                  "Referer":
-                      "https://acade.niu.edu.tw/NIU/Application/GRD/GRD30/GRD3060_.aspx?progcd=GRD3060"
-                }));
-          }
           if (url.toString() ==
               'https://acade.niu.edu.tw/NIU/Application/GRD/GRD30/GRD3060_02.aspx') {
             for (int i = 2; //2~N
