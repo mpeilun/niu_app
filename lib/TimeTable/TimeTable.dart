@@ -66,18 +66,18 @@ class _TimeTableState extends State<TimeTable> {
         });
   }
 
-  void printClassList(List<Class> ClassList) {
-    for (int i = 0; i < ClassList.length; i++)
-      print(ClassList[i].name.toString() +
+  void printClassList(List<Class> classList) {
+    for (int i = 0; i < classList.length; i++)
+      print(classList[i].name.toString() +
           " " +
-          ClassList[i].teacher.toString() +
+          classList[i].teacher.toString() +
           " " +
-          ClassList[i].classroom.toString() +
+          classList[i].classroom.toString() +
           " " +
-          ClassList[i].weekDay.toString() +
+          classList[i].weekDay.toString() +
           " " +
-          ClassList[i].startTime.toString() +
+          classList[i].startTime.toString() +
           " " +
-          ClassList[i].endTime.toString());
+          classList[i].endTime.toString());
   }
 }

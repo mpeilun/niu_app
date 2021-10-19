@@ -56,7 +56,7 @@ class _ViewPage extends State<ViewPage> {
             iconSize : 36,
           ),
           PopupMenuButton<String>(
-            itemBuilder: (context) => setingGetPopupMenu(context),
+            itemBuilder: (context) => settingGetPopupMenu(context),
             onSelected: (String value) async{
               print('onSelected : ' + value);
               if( value == "Reload"){
@@ -74,7 +74,7 @@ class _ViewPage extends State<ViewPage> {
         ],
       ),
       body: Padding(
-          padding: const EdgeInsets.all(11),  //2*5課表+1時間
+          padding: const EdgeInsets.all(12),  //2*5課表+1時間
           child: StaggeredGridView.count(
             crossAxisCount: 11,
             mainAxisSpacing: 0,
@@ -89,7 +89,7 @@ class _ViewPage extends State<ViewPage> {
     );
   }
 
-  setingGetPopupMenu(BuildContext context) {
+  settingGetPopupMenu(BuildContext context) {
     return <PopupMenuEntry<String>>[
       PopupMenuItem<String>(
         value: 'Reload',
