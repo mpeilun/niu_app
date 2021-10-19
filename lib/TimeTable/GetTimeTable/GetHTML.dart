@@ -160,7 +160,7 @@ class GetHTML {
 
   void _shouldRunWebView() async {
     if (await Login.origin().initNiuLoin(context)) {
-      headlessWebView?.run();
+      headlessWebView.run();
     }
   }
 }

@@ -52,9 +52,15 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                 return Column(
                   children: [
                     ListTile(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                       //leading: Icon(Icons.event_seat),
                       title: Text(
                           item.text.replaceAll("\n", "").replaceAll(" ", "")),
+                      subtitle: Text(
+                        '[日期]',
+                        style: TextStyle(color: Colors.grey),
+                        textAlign: TextAlign.right,
+                      ),
                       onTap: () {
                         Navigator.push(
                             context,

@@ -127,6 +127,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
                                     title: Text(
                                         notificationItems[index].title),
                                     onTap: () {
+                                      isNewNotification = false;
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(

@@ -167,6 +167,18 @@ class _GraduationPageState extends State<GraduationPage> {
                             fontSize: 16.0,
                           ),
                         ),
+                        columnChild: SizedBox()),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    CustomCard(
+                        title: '學分學程',
+                        rowChild: Text(
+                          '(變數) ? 尚未修習學分學程',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
                         columnChild: SizedBox())
                   ],
                 ),
