@@ -56,7 +56,7 @@ class ClassList {
 
     ///<--產生pageList-->///
     int weekDay = 1;
-    int time = 0;
+    int time = _classList[0].startTime;
     int endTime = 0;
     //星期
     _tiles.add(NullClassCard.build());
@@ -64,7 +64,7 @@ class ClassList {
     for (int i = 0; i < 5; i++) {
       putWeekDay(i);
     }
-    putTime(0);
+    putTime(time);
     for (int i = 0; i < _classList.length; i++) {
       //print(_classList[i].save());
       if (endTime < _classList[i].endTime) endTime = _classList[i].endTime;
@@ -95,7 +95,7 @@ class ClassList {
       }
       //最後一節偵測 補完時間
       if (i == _classList.length - 1) {
-        for (int j = _classList[i].weekDay + 1; j < 5; j++)
+        for (int j = _classList[i].weekDay + 1; j <= 5; j++)
           if (!tableInfo[j][time]) putNullClass();
         for (int j = time + 1; j <= endTime; j++) {
           putTime(j);
