@@ -40,7 +40,7 @@ class Login {
       id = this.id;
       pwd = this.pwd;
     }
-    print('$id $pwd');
+    //print('$id $pwd');
     DateTime start = DateTime.now();
     bool postState = false;
     HeadlessInAppWebView headlessWebView = new HeadlessInAppWebView(
