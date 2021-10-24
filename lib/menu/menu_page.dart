@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -416,7 +417,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => TestWebView(),
+                              builder: (context) => TestPage(),
                               maintainState: false));
                     },
                   ),
@@ -434,12 +435,17 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                     child: Icon(FontAwesomeIcons.bomb),
                     onPressed: () {
                       //TestLocalNotification.test();
-
+                      try {
+                        throw 'error_example';
+                      } catch (e, s) {
+                        FirebaseCrashlytics.instance.recordError(e, s);
+                      }
+/*
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => TestPage(),
-                              maintainState: false));
+                              maintainState: false));*/
                     },
                   ),
                 ),
