@@ -435,12 +435,9 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                     child: Icon(FontAwesomeIcons.bomb),
                     onPressed: () {
                       //TestLocalNotification.test();
-                      try {
-                        throw 'error_example';
-                      } catch (e, s) {
-                        FirebaseCrashlytics.instance.recordError(e, s);
-                      }
-/*
+                      final a = [12];
+                      print(a[1]);
+                      /*
                       Navigator.push(
                           context,
                           MaterialPageRoute(

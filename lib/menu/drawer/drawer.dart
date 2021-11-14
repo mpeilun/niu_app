@@ -95,14 +95,14 @@ class _DrawerPageState extends State<DrawerPage> {
                 context.read<DrawerProvider>().closeDrawer();
                 context.read<DrawerProvider>().onclick(2);
               }),
-          Divider(),
+          /*Divider(),
           createDrawerItem(
               icon: Icons.settings_outlined,
               text: '設定',
               onTap: () {
                 context.read<DrawerProvider>().closeDrawer();
                 context.read<DrawerProvider>().onclick(3);
-              }),
+              }),*/
           Divider(),
           createDrawerItem(
               icon: Icons.info_outline_rounded,

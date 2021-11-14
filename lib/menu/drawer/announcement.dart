@@ -4,11 +4,11 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'dart:io' as dartCookies;
 import 'package:html/parser.dart';
 import 'package:niu_app/components/downloader.dart';
-
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/pdfviwer.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class AnnouncementPage extends StatefulWidget {
   @override
@@ -18,15 +18,44 @@ class AnnouncementPage extends StatefulWidget {
 class _AnnouncementPageState extends State<AnnouncementPage> {
   List contents = [];
   List<String> links = [];
+  var date;
+  int page = 1;
+
+  ScrollController _controller = ScrollController();
+  bool showToTopBtn = false;
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   Future<bool> isFinish() async {
-    await getPost(1);
+    await getPost(page);
     return true;
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 500));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    if (mounted)
+      setState(() {
+        page++;
+      });
+    _refreshController.loadComplete();
   }
 
   @override
   void initState() {
     super.initState();
+    _controller.addListener(() {
+      if (_controller.offset < 1000 && showToTopBtn) {
+        setState(() {
+          showToTopBtn = false;
+        });
+      } else if (_controller.offset >= 1000 && showToTopBtn == false) {
+        setState(() {
+          showToTopBtn = true;
+        });
+      }
+    });
   }
 
   @override
@@ -44,47 +73,72 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
             return NiuIconLoading(size: 80);
             //return loading widget
           } else {
-            return Center(
+            return Scaffold(
+              body: SmartRefresher(
+                enablePullDown: false,
+                enablePullUp: true,
+                onLoading: _onLoading,
+                controller: _refreshController,
                 child: ListView.builder(
-              itemCount: contents.length,
-              itemBuilder: (context, index) {
-                var item = contents[index];
-                return Column(
-                  children: [
-                    ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
-                      //leading: Icon(Icons.event_seat),
-                      title: Text(
-                          item.text.replaceAll("\n", "").replaceAll(" ", "")),
-                      subtitle: Text(
-                        '[日期]',
-                        style: TextStyle(color: Colors.grey),
-                        textAlign: TextAlign.right,
+                  controller: _controller,
+                  itemCount: contents.length,
+                  itemBuilder: (context, index) {
+                    var item = contents[index];
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(3.0, 4.0, 3.0, 0.0),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12.0, vertical: 6.0),
+                          //leading: Icon(Icons.event_seat),
+                          title: Text(item.text
+                              .substring(17)
+                              .replaceAll("\n", "")
+                              .replaceAll(" ", "")),
+                          subtitle: Text(
+                            item.text
+                                .substring(0, 17)
+                                .replaceAll(" ", "")
+                                .replaceAll("\n", ""),
+                            style: TextStyle(color: Colors.grey),
+                            textAlign: TextAlign.right,
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AnnouncementWebView(
+                                          announcementUrl: links[index],
+                                          announcementTitle: item.text
+                                              .replaceAll("\n", "")
+                                              .replaceAll(" ", "")
+                                              .toString()
+                                              .split(']')[1],
+                                        ),
+                                    maintainState: false));
+                          },
+                          //subtitle: Text('${content[index].price}'),
+                        ),
                       ),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AnnouncementWebView(
-                                      announcementUrl: links[index],
-                                      announcementTitle: item.text
-                                          .replaceAll("\n", "")
-                                          .replaceAll(" ", "")
-                                          .toString()
-                                          .split(']')[1],
-                                    ),
-                                maintainState: false));
-                      },
-                      //subtitle: Text('${content[index].price}'),
-                    ),
-                    Container(
-                      height: 1,
-                      color: Colors.grey,
-                    )
-                  ],
-                );
-              },
-            ));
+                    );
+                  },
+                ),
+              ),
+              floatingActionButton: !showToTopBtn
+                  ? null
+                  : FloatingActionButton(
+                      child: Icon(Icons.arrow_upward),
+                      onPressed: () {
+                        _controller.animateTo(
+                          .0,
+                          duration: Duration(milliseconds: 200),
+                          curve: Curves.ease,
+                        );
+                      }),
+            );
           }
         });
   }
