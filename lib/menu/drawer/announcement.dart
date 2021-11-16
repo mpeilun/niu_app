@@ -78,7 +78,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                 onLoading: _onLoading,
                 controller: _refreshController,
                 child: ListView.builder(
-                  //controller: _controller,
+                  controller: _controller,
                   itemCount: contents.length,
                   itemBuilder: (context, index) {
                     var item = contents[index];

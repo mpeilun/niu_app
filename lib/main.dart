@@ -107,7 +107,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.blue[900],
           scaffoldBackgroundColor: Colors.grey[200],
           textTheme: GoogleFonts.notoSansTextTheme(textTheme).copyWith(
-            headline1: GoogleFonts.oswald(textStyle: textTheme.headline1),
+            // headline1: GoogleFonts.oswald(textStyle: textTheme.headline1),
           ),
           pageTransitionsTheme: PageTransitionsTheme(
             builders: {
