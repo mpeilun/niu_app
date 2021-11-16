@@ -125,7 +125,7 @@ class _DrawerPageState extends State<DrawerPage> {
           Divider(),
           createDrawerItem(
               icon: Icons.bug_report_outlined,
-              text: '回報問題',
+              text: '聯繫我們',
               onTap: () {
                 context.read<DrawerProvider>().closeDrawer();
                 context.read<DrawerProvider>().onclick(5);
