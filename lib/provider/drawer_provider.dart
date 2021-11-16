@@ -36,4 +36,11 @@ class DrawerProvider with ChangeNotifier {
       _controller.reverse();
       notifyListeners();
   }
+
+  bool _showToTopBtn = false;
+  bool get showToTopBtn => _showToTopBtn;
+  void showBtn(bool index) {
+    _showToTopBtn = index;
+    notifyListeners();
+  }
 }

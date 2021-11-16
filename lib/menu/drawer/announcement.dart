@@ -9,6 +9,9 @@ import 'package:niu_app/components/pdfviwer.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:niu_app/provider/drawer_provider.dart';
+import 'package:provider/provider.dart';
+
 
 class AnnouncementPage extends StatefulWidget {
   @override
@@ -22,7 +25,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   int page = 1;
 
   ScrollController _controller = ScrollController();
-  bool showToTopBtn = false;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -46,17 +48,14 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   void initState() {
     super.initState();
     _controller.addListener(() {
-      if (_controller.offset < 1000 && showToTopBtn) {
-        setState(() {
-          showToTopBtn = false;
-        });
-      } else if (_controller.offset >= 1000 && showToTopBtn == false) {
-        setState(() {
-          showToTopBtn = true;
-        });
+      if (_controller.offset < 1000 && context.read<DrawerProvider>().showToTopBtn) {
+        context.read<DrawerProvider>().showBtn(false);
+      } else if (_controller.offset >= 1000 && context.read<DrawerProvider>().showToTopBtn == false) {
+        context.read<DrawerProvider>().showBtn(true);
       }
     });
   }
+
 
   @override
   void dispose() {
@@ -84,6 +83,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                   itemCount: contents.length,
                   itemBuilder: (context, index) {
                     var item = contents[index];
+                    print(page);
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(3.0, 4.0, 3.0, 0.0),
                       child: Card(
@@ -127,7 +127,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                   },
                 ),
               ),
-              floatingActionButton: !showToTopBtn
+              floatingActionButton: !context.watch<DrawerProvider>().showToTopBtn
                   ? null
                   : FloatingActionButton(
                       child: Icon(Icons.arrow_upward),
