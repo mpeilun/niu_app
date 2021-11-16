@@ -6,6 +6,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/toast.dart';
+import 'package:niu_app/login/login_method.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,18 +23,10 @@ class _GraduationDetailState extends State<GraduationDetail> {
   final GlobalKey graduationDetailState = GlobalKey();
   InAppWebViewController? webViewController;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
-      crossPlatform: InAppWebViewOptions(
-        useOnDownloadStart: true,
-        useOnLoadResource: true,
-        useShouldOverrideUrlLoading: true,
-        mediaPlaybackRequiresUserGesture: false,
-      ),
-      android: AndroidInAppWebViewOptions(
-        useHybridComposition: true,
-      ),
-      ios: IOSInAppWebViewOptions(
-        allowsInlineMediaPlayback: true,
-      ));
+    crossPlatform: InAppWebViewOptions(
+      useOnDownloadStart: true,
+    ),
+  );
 
   late String url;
   late bool loadState = false;
@@ -46,6 +39,8 @@ class _GraduationDetailState extends State<GraduationDetail> {
     if (dartCookies.Platform.isAndroid) {
       AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
     }
+
+    _shouldRunWebView();
   }
 
   @override
@@ -70,13 +65,6 @@ class _GraduationDetailState extends State<GraduationDetail> {
                       maintainState: true,
                       child: InAppWebView(
                         key: graduationDetailState,
-                        initialUrlRequest: URLRequest(
-                            url: Uri.parse(
-                                "https://acade.niu.edu.tw/NIU/Application/ENR/ENRG0/ENRG010_01.aspx"),
-                            headers: {
-                              "Referer":
-                                  "https://acade.niu.edu.tw/NIU/Application/ENR/ENRG0/ENRG010_03.aspx"
-                            }),
                         initialOptions: options,
                         onWebViewCreated: (controller) {
                           webViewController = controller;
@@ -122,45 +110,12 @@ class _GraduationDetailState extends State<GraduationDetail> {
                             this.url = url.toString();
                           });
                           if (url.toString() ==
-                              'https://acade.niu.edu.tw/NIU/Default.aspx') {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            String? id = prefs.getString('id');
-                            String? pwd = prefs.getString('pwd');
-                            await controller.evaluateJavascript(
-                                source:
-                                    'document.querySelector("#M_PORTAL_LOGIN_ACNT").value=\'$id\';');
-                            await controller.evaluateJavascript(
-                                source:
-                                    'document.querySelector("#M_PW").value=\'$pwd\';');
-                            Future.delayed(Duration(milliseconds: 1000),
-                                () async {
-                              await controller.evaluateJavascript(
-                                  source:
-                                      'document.querySelector("#LGOIN_BTN").click();');
-                            });
-                          }
-                          if (url.toString() ==
-                              'https://acade.niu.edu.tw/NIU/MainFrame.aspx') {
-                            await controller.loadUrl(
-                                urlRequest: URLRequest(
-                                    url: Uri.parse(
-                                        "https://acade.niu.edu.tw/NIU/Application/ENR/ENRG0/ENRG010_01.aspx"),
-                                    headers: {
-                                  "Referer":
-                                      "https://acade.niu.edu.tw/NIU/Application/ENR/ENRG0/ENRG010_03.aspx"
-                                }));
-                          }
-                          if (url.toString() ==
                               'https://acade.niu.edu.tw/NIU/Application/ENR/ENRG0/ENRG010_01.aspx') {
                             setState(() {
                               loadState = true;
                             });
                           }
                         },
-                        onLoadResource: (InAppWebViewController controller,
-                            LoadedResource resource) {},
-                        onLoadError: (controller, url, code, message) {},
                         onProgressChanged: (controller, progress) {
                           setState(() {
                             this.progress = progress / 100;
@@ -190,10 +145,8 @@ class _GraduationDetailState extends State<GraduationDetail> {
                           if (jsAlertRequest.message
                               .toString()
                               .contains('使用時間逾時')) {
-                            await controller.loadUrl(
-                                urlRequest: URLRequest(
-                                    url: Uri.parse(
-                                        "https://acade.niu.edu.tw/NIU/Default.aspx")));
+                            Navigator.pop(context);
+                            showToast('登入逾時，請重新進入');
                           }
                           return JsAlertResponse(
                               handledByClient: true,
@@ -208,11 +161,22 @@ class _GraduationDetailState extends State<GraduationDetail> {
           ),
         ),
         onWillPop: () async {
-          if (progress == 1.0) {
-            Navigator.pop(context);
-          }
-          return false;
+          Navigator.pop(context);
+          return true;
         },
         shouldAddCallbacks: true);
+  }
+
+  void _shouldRunWebView() async {
+    if (await Login.origin().initNiuLoin(context)) {
+      webViewController?.loadUrl(
+          urlRequest: URLRequest(
+              url: Uri.parse(
+                  "https://acade.niu.edu.tw/NIU/Application/ENR/ENRG0/ENRG010_01.aspx"),
+              headers: {
+            "Referer":
+                "https://acade.niu.edu.tw/NIU/Application/ENR/ENRG0/ENRG010_03.aspx"
+          }));
+    }
   }
 }
