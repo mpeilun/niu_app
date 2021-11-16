@@ -127,15 +127,19 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                   },
                 ),
               ),
-              floatingActionButton: FloatingActionButton(
-                      child: Icon(Icons.arrow_upward),
-                      onPressed: () {
-                        _controller.animateTo(
-                          .0,
-                          duration: Duration(milliseconds: 200),
-                          curve: Curves.ease,
-                        );
-                      }),
+              floatingActionButton: Container(
+                width: 40.0,
+                height: 40.0,
+                child: FloatingActionButton(
+                        child: Icon(Icons.arrow_upward),
+                        onPressed: () {
+                          _controller.animateTo(
+                            .0,
+                            duration: Duration(milliseconds: 200),
+                            curve: Curves.ease,
+                          );
+                        }),
+              ),
             );
           }
         });
