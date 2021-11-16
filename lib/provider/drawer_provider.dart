@@ -37,10 +37,10 @@ class DrawerProvider with ChangeNotifier {
       notifyListeners();
   }
 
-  bool _showToTopBtn = false;
-  bool get showToTopBtn => _showToTopBtn;
-  void showBtn(bool index) {
-    _showToTopBtn = index;
-    notifyListeners();
-  }
+  // bool _showToTopBtn = false;
+  // bool get showToTopBtn => _showToTopBtn;
+  // void showBtn(bool index) {
+  //   _showToTopBtn = index;
+  //   notifyListeners();
+  // }
 }

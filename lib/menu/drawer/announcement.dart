@@ -35,25 +35,24 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
 
   void _onLoading() async {
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 500));
+    await Future.delayed(Duration(milliseconds: 10000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    if (mounted)
-      setState(() {
-        page++;
-      });
+    setState(() {
+      page++;
+    });
     _refreshController.loadComplete();
   }
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() {
-      if (_controller.offset < 1000 && context.read<DrawerProvider>().showToTopBtn) {
-        context.read<DrawerProvider>().showBtn(false);
-      } else if (_controller.offset >= 1000 && context.read<DrawerProvider>().showToTopBtn == false) {
-        context.read<DrawerProvider>().showBtn(true);
-      }
-    });
+    // _controller.addListener(() {
+    //   if (_controller.offset < 1000 && context.read<DrawerProvider>().showToTopBtn) {
+    //     context.read<DrawerProvider>().showBtn(false);
+    //   } else if (_controller.offset >= 1000 && context.read<DrawerProvider>().showToTopBtn == false) {
+    //     context.read<DrawerProvider>().showBtn(true);
+    //   }
+    // });
   }
 
 
@@ -79,11 +78,12 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                 onLoading: _onLoading,
                 controller: _refreshController,
                 child: ListView.builder(
-                  controller: _controller,
+                  //controller: _controller,
                   itemCount: contents.length,
                   itemBuilder: (context, index) {
                     var item = contents[index];
                     print(page);
+                    print(contents.length);
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(3.0, 4.0, 3.0, 0.0),
                       child: Card(
@@ -127,9 +127,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                   },
                 ),
               ),
-              floatingActionButton: !context.watch<DrawerProvider>().showToTopBtn
-                  ? null
-                  : FloatingActionButton(
+              floatingActionButton: FloatingActionButton(
                       child: Icon(Icons.arrow_upward),
                       onPressed: () {
                         _controller.animateTo(
