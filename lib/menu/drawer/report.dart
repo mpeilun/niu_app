@@ -560,7 +560,7 @@ class _PageBugReport extends State<PageBugReport> {
                           osVersion = android.version.sdkInt.toString();
                         } else if (Platform.isIOS) {
                           IosDeviceInfo ios = await deviceInfo.iosInfo;
-                          hardware = ios.model;
+                          hardware = ios.utsname.machine;
                           osVersion = ios.systemVersion;
                         }
 
