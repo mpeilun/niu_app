@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io' show Platform;
 
@@ -414,7 +415,7 @@ class _PageBugReport extends State<PageBugReport> {
                         child: Padding(
                           padding: EdgeInsets.all(10),
                           child: Text(
-                            '       無論是對介面設計有想法，或是需要而外的功能，都可以告訴我們，使APP持續改進，最後感謝您願意點入此頁面，提供寶貴的意見。',
+                            '       很遺憾，發生臭蟲帶來的壞心情，如果您願意協助我們修復問題，可以填寫此表單，問題分類為兩種，如果您知道如何觸發此BUG發生，請勾選「可再現」，並詳細說明，觸發此BUG的流程與條件，亦或是您不清楚，如何觸發這個BUG或是他是無預警的問題，則勾選「不可再現」，並大略描述出現的問題，再次感謝您，讓我們的APP持續進步。',
                             style: TextStyle(fontSize: 14),
                             textAlign: TextAlign.justify,
                           ),
@@ -544,23 +545,31 @@ class _PageBugReport extends State<PageBugReport> {
                           receiveTimeout: 3000,
                         );
                         Dio dio = new Dio(options);
+
                         DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                        PackageInfo info = await PackageInfo.fromPlatform();
+
+                        String hardware = '';
+                        String osVersion = '';
+                        String appVersion = info.version;
 
                         if (Platform.isAndroid) {
                           AndroidDeviceInfo android =
                               await deviceInfo.androidInfo;
-
-                          print(android.version);
+                          hardware = android.model;
+                          osVersion = android.version.sdkInt.toString();
                         } else if (Platform.isIOS) {
                           IosDeviceInfo ios = await deviceInfo.iosInfo;
+                          hardware = ios.model;
+                          osVersion = ios.systemVersion;
                         }
 
                         FormData formData = new FormData.fromMap({
                           'entry.664827657': _canReproducible.toString(), //可否再現
                           'entry.1169887801': _contact, //內容
-                          'entry.1770154643': _contact, //系統
-                          'entry.240297325': _contact, //系統版本
-                          'entry.155630872': _contact, //app版本
+                          'entry.1770154643': hardware, //系統
+                          'entry.240297325': osVersion, //系統版本
+                          'entry.155630872': appVersion, //app版本
                         });
 
                         try {
