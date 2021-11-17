@@ -1,8 +1,10 @@
+import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io' show Platform;
 
 class ReportPage extends StatefulWidget {
   ReportPage({Key? key}) : super(key: key);
@@ -66,7 +68,7 @@ class _ReportPageState extends State<ReportPage>
         children: <Widget>[
           PageRecruit(),
           PageFeedback(),
-          Text(''),
+          PageBugReport(),
         ],
       ),
     );
@@ -356,7 +358,223 @@ class _PageFeedback extends State<PageFeedback> {
                           print('Error: $e');
                         }
                       } else {
-                        showToast('意見不能為空！');
+                        showToast('內容不能為空！');
+                      }
+                    },
+                    child: Text(
+                      '送出',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PageBugReport extends StatefulWidget {
+  PageBugReport({Key? key}) : super(key: key);
+
+  @override
+  _PageBugReport createState() => _PageBugReport();
+}
+
+class _PageBugReport extends State<PageBugReport> {
+  bool _canReproducible = true;
+  bool _checkboxSelected = false;
+  String _contact = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: SafeArea(
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Card(
+                        color: Colors.blueAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        elevation: 4,
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            '       無論是對介面設計有想法，或是需要而外的功能，都可以告訴我們，使APP持續改進，最後感謝您願意點入此頁面，提供寶貴的意見。',
+                            style: TextStyle(fontSize: 14),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      width: 300,
+                      child: Row(children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        SizedBox(
+                          width: 10,
+                          height: 10,
+                          child: Checkbox(
+                              value: _canReproducible,
+                              activeColor: Colors.blue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _canReproducible = true;
+                                });
+                              }),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          '可再現',
+                          style: TextStyle(fontSize: 12),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        SizedBox(
+                          width: 10,
+                          height: 10,
+                          child: Checkbox(
+                              value: !_canReproducible,
+                              activeColor: Colors.blue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _canReproducible = false;
+                                });
+                              }),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          '不可再現',
+                          style: TextStyle(fontSize: 12),
+                          textAlign: TextAlign.center,
+                        )
+                      ]),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    width: 300,
+                    child: Column(
+                      children: [
+                        Center(
+                          child: TextFormField(
+                            initialValue: '',
+                            style: TextStyle(fontSize: 14, color: Colors.black),
+                            decoration: InputDecoration(
+                              fillColor: Colors.black,
+                              border: OutlineInputBorder(),
+                              labelText: 'BUG問題',
+                              hintText: '文字',
+                            ),
+                            onChanged: (text) {
+                              _contact = text;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Row(children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          SizedBox(
+                            width: 10,
+                            height: 10,
+                            child: Checkbox(
+                                value: _checkboxSelected,
+                                activeColor: Colors.blue,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _checkboxSelected = value!;
+                                  });
+                                }),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            '同意傳送設備資訊',
+                            style: TextStyle(fontSize: 12),
+                            textAlign: TextAlign.center,
+                          )
+                        ]),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
+                    onPressed: () async {
+                      if (_contact != '' && _checkboxSelected != false) {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        Response response;
+                        BaseOptions options = new BaseOptions(
+                          baseUrl: "https://docs.google.com",
+                          connectTimeout: 6000,
+                          receiveTimeout: 3000,
+                        );
+                        Dio dio = new Dio(options);
+                        DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+                        if (Platform.isAndroid) {
+                          AndroidDeviceInfo android =
+                              await deviceInfo.androidInfo;
+
+                          print(android.version);
+                        } else if (Platform.isIOS) {
+                          IosDeviceInfo ios = await deviceInfo.iosInfo;
+                        }
+
+                        FormData formData = new FormData.fromMap({
+                          'entry.664827657': _canReproducible.toString(), //可否再現
+                          'entry.1169887801': _contact, //內容
+                          'entry.1770154643': _contact, //系統
+                          'entry.240297325': _contact, //系統版本
+                          'entry.155630872': _contact, //app版本
+                        });
+
+                        try {
+                          response = await dio.post(
+                              "/forms/d/e/1FAIpQLSefdKU911s_ONEtuBDLLaA_YnfzEHF2pHFpUHfxT12VxDESoA/formResponse",
+                              data: formData);
+                          showToast('成功送出！');
+                        } catch (e) {
+                          print('Error: $e');
+                        }
+                      } else if (_contact != '') {
+                        showToast('內容不能為空！');
+                      } else {
+                        showToast('請同意傳送設備資訊，以便我們修正錯誤');
                       }
                     },
                     child: Text(

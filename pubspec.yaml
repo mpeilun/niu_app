@@ -71,6 +71,8 @@ dependencies:
   geolocator: ^7.7.0
   fluttertoast: ^8.0.8
   anim_search_bar: ^2.0.2
+  device_info: ^2.0.3
+  package_info: ^2.0.2
 
 dev_dependencies:
   flutter_test:
