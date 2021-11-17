@@ -26,6 +26,7 @@ class _ClassCard extends State<ClassCard> {
   Class thisClass = Class("", "", "", -1, -1, -1);
   Calendar calendar = Calendar(null, null, null);
   Calendar original = Calendar(null, null, null);
+  Color roundColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -64,22 +65,25 @@ class _ClassCard extends State<ClassCard> {
     } else {
       classInfo = thisClass.name.toString();
     }
+    textStyle = TextStyle(
+        fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white);
     if (calendar.type() == 0)
-      textStyle = TextStyle(
-          fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white);
+      roundColor = Colors.red;
     //thisClass.setColor(Colors.red);
     else if (calendar.type() == 1)
-      textStyle = TextStyle(
-          fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white);
+      roundColor = Colors.blue;
     //thisClass.setColor(Colors.blue);
     else if (calendar.type() == 2)
-      textStyle = TextStyle(
-          fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white);
+      roundColor = Colors.green;
     //thisClass.setColor(Colors.green);
     else
-      textStyle = TextStyle(fontSize: 12, color: Colors.white);
+      roundColor = Colors.white;
     //thisClass.setColor(Color(0x2A));
     return Card(
+      shape: RoundedRectangleBorder(
+          side: new BorderSide(color: roundColor, width: 2.0),
+          borderRadius: BorderRadius.circular(4.0)),
+      //elevation: 4,
       color: thisClass.getColor(),
       child: TextButton(
         style: ButtonStyle(
