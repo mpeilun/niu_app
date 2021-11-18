@@ -12,7 +12,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 import 'package:provider/provider.dart';
 
-
 class AnnouncementPage extends StatefulWidget {
   @override
   State<AnnouncementPage> createState() => _AnnouncementPageState();
@@ -22,30 +21,36 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   List contents = [];
   List<String> links = [];
   var date;
-  int page = 1;
+  int page = 0;
 
   ScrollController _controller = ScrollController();
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   Future<bool> isFinish() async {
-    await getPost(page);
+    await getPost(++page);
     return true;
   }
 
   void _onLoading() async {
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 10000));
+    //await Future.delayed(Duration(milliseconds: 3000));
+    await getPost(++page);
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    setState(() {
-      page++;
-    });
+    if(mounted) {
+      setState(() {
+      });
+    }
     _refreshController.loadComplete();
   }
+
+  late Future _future;
 
   @override
   void initState() {
     super.initState();
+    _future = isFinish();
+    _controller.addListener(()=>print(_controller.offset));
     // _controller.addListener(() {
     //   if (_controller.offset < 1000 && context.read<DrawerProvider>().showToTopBtn) {
     //     context.read<DrawerProvider>().showBtn(false);
@@ -54,7 +59,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
     //   }
     // });
   }
-
 
   @override
   void dispose() {
@@ -65,7 +69,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future:
-            isFinish(), // the function to get your data from firebase or firestore
+            _future, // the function to get your data from firebase or firestore
         builder: (BuildContext context, AsyncSnapshot snap) {
           if (snap.data == null) {
             return NiuIconLoading(size: 80);
@@ -82,8 +86,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                   itemCount: contents.length,
                   itemBuilder: (context, index) {
                     var item = contents[index];
-                    print(page);
-                    print(contents.length);
+                    // print(page);
+                    // print(contents.length);
+                    // print(index);
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(3.0, 4.0, 3.0, 0.0),
                       child: Card(
@@ -131,14 +136,26 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                 width: 40.0,
                 height: 40.0,
                 child: FloatingActionButton(
-                        child: Icon(Icons.arrow_upward),
-                        onPressed: () {
-                          _controller.animateTo(
-                            .0,
-                            duration: Duration(milliseconds: 200),
-                            curve: Curves.ease,
-                          );
-                        }),
+                    child: Icon(Icons.arrow_upward),
+                    onPressed: () {
+                      if(_controller.offset < 3000){
+                        _controller.animateTo(
+                          .0,
+                          duration: Duration(milliseconds: 1000),
+                          curve: Curves.ease,
+                        );
+                      }else{
+                        _controller.jumpTo(
+                          3000,
+                        );
+                        _controller.animateTo(
+                          .0,
+                          duration: Duration(milliseconds: 2000),
+                          curve: Curves.ease,
+                        );
+                      }
+
+                    }),
               ),
             );
           }
@@ -164,6 +181,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
             .replaceAll('http://', 'https://'));
       }
     }
+    print('yes');
   }
 }
 
