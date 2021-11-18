@@ -12,7 +12,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 import 'package:provider/provider.dart';
 
-
 class AnnouncementPage extends StatefulWidget {
   @override
   State<AnnouncementPage> createState() => _AnnouncementPageState();
@@ -54,7 +53,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
     //   }
     // });
   }
-
 
   @override
   void dispose() {
@@ -128,14 +126,14 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                 ),
               ),
               floatingActionButton: FloatingActionButton(
-                      child: Icon(Icons.arrow_upward),
-                      onPressed: () {
-                        _controller.animateTo(
-                          .0,
-                          duration: Duration(milliseconds: 200),
-                          curve: Curves.ease,
-                        );
-                      }),
+                  child: Icon(Icons.arrow_upward),
+                  onPressed: () {
+                    _controller.animateTo(
+                      .0,
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.ease,
+                    );
+                  }),
             );
           }
         });

@@ -130,6 +130,9 @@ class _PageRecruit extends State<PageRecruit> {
                           child: TextFormField(
                             initialValue: '',
                             style: TextStyle(fontSize: 14, color: Colors.black),
+                            maxLines: null,
+                            keyboardType: TextInputType.multiline,
+                            autofocus: true,
                             decoration: InputDecoration(
                               fillColor: Colors.black,
                               border: OutlineInputBorder(),
@@ -206,7 +209,7 @@ class _PageRecruit extends State<PageRecruit> {
                       } else if (_contact == '') {
                         showToast('聯繫方式不能為空！');
                       } else {
-                        showToast('為了方便與您聯繫，請同意送出您的學號與姓名！');
+                        showToast('請同意送出您的學號與姓名，以便後續與您聯繫！');
                       }
                     },
                     child: Text(
@@ -278,6 +281,9 @@ class _PageFeedback extends State<PageFeedback> {
                           child: TextFormField(
                             initialValue: '',
                             style: TextStyle(fontSize: 14, color: Colors.black),
+                            maxLines: null,
+                            keyboardType: TextInputType.multiline,
+                            autofocus: true,
                             decoration: InputDecoration(
                               fillColor: Colors.black,
                               border: OutlineInputBorder(),
@@ -487,6 +493,9 @@ class _PageBugReport extends State<PageBugReport> {
                           child: TextFormField(
                             initialValue: '',
                             style: TextStyle(fontSize: 14, color: Colors.black),
+                            maxLines: null,
+                            keyboardType: TextInputType.multiline,
+                            autofocus: true,
                             decoration: InputDecoration(
                               fillColor: Colors.black,
                               border: OutlineInputBorder(),

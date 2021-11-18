@@ -1,6 +1,10 @@
+import 'dart:async';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
+import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/pdfviwer.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class SchoolSchedule extends StatefulWidget {
   @override
@@ -8,8 +12,32 @@ class SchoolSchedule extends StatefulWidget {
 }
 
 class _SchoolScheduleState extends State<SchoolSchedule> {
-  String pdfUrl =
-      'https://academic.niu.edu.tw/bin/downloadfile.php?file=WVhSMFlXTm9Memt4TDNCMFlWOHhNamd3TVY4ME1qWTBNakl6WHpJMU9UVTVMbkJrWmc9PQ==&amp;fname=HDJHSTOPJDSTZTQPUTRPEDQPB1VTGHFDML01UWEHGHIHB5CHCDUTEDRPHDFDNLRPUTRPCDUTJDOPDGSXUTNL51RPKLVTRLEHCDA5HDFH15IHFDUXUTVT40B5RLMLOPOPHDJHWT45SXYXDGEH1501DG4014OPGHSTGHRPJDCH35NLTWCH14FDDGB551OPHDQPEDRPEH41UXYX5045STQP51EHKLVTB1EHGHDDOPDDJDFDDG4515B531PKIHIHCD40UXRPYXPKJDWX15OPUTWXKOPK';
+  String pdfUrl = '';
+  Future<bool> getScheduleUrl() async {
+    Dio dio = new Dio();
+    Response indexRes = await dio
+        .get("https://www.niu.edu.tw/files/501-1000-1019-1.php?Lang=zh-tw");
+    String indexUrl = parse(indexRes.data)
+        .body!
+        .querySelector(
+            '#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child(2) > td.mc > div > a')!
+        .attributes
+        .values
+        .first;
+    print(indexUrl);
+    Response res = await dio.get(indexUrl);
+    String url = 'http://academic.niu.edu.tw';
+    url += parse(res.data)
+        .body!
+        .querySelector(
+            '#Dyn_2_3 > div.module.module-ptattach.pt_style1 > div.md_middle > div > div > div > table')!
+        .outerHtml
+        .split('<span><a href=\"')[1]
+        .split('\" title=\"')[0];
+    pdfUrl = url;
+    print(pdfUrl);
+    return true;
+  }
 
   @override
   void initState() {
@@ -18,10 +46,19 @@ class _SchoolScheduleState extends State<SchoolSchedule> {
 
   @override
   Widget build(BuildContext context) {
-    return PdfViewer(
-      title: '學校行事曆',
-      url: pdfUrl,
-      showAppbar: false,
-    );
+    return FutureBuilder(
+        future: getScheduleUrl(),
+        builder: (BuildContext context, AsyncSnapshot snap) {
+          if (snap.data == null) {
+            return NiuIconLoading(size: 80);
+            //return loading widget
+          } else {
+            return PdfViewer(
+              title: '學校行事曆',
+              url: pdfUrl,
+              showAppbar: false,
+            );
+          }
+        });
   }
 }
