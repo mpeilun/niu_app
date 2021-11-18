@@ -24,9 +24,9 @@ Future<String> getStudioName() async {
       if (url.toString() ==
           'https://acade.niu.edu.tw/NIU/Application/SESSION/SESSION_.aspx?progcd=SESSION') {
         callBack.complete((await controller.evaluateJavascript(
-                source: 'document.querySelector("body").innerHTML') as String)
-            .split('<br>')[8]
-            .replaceAll('NAME - ', ''));
+                source: 'document.querySelector("body").innerText') as String)
+            .split('\nNAME - ')[1]
+            .split('\nENGNAME -')[0]);
       }
     },
   );

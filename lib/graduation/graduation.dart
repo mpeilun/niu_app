@@ -166,7 +166,12 @@ class _GraduationState extends State<Graduation> {
   Widget build(BuildContext context) {
     return loadStates
         ? GraduationPage(time: globalTime, pass: globalPass)
-        : NiuIconLoading(size: 80);
+        : Scaffold(
+            appBar: AppBar(
+              title: Text("畢業門檻"),
+              centerTitle: true,
+            ),
+            body: NiuIconLoading(size: 80));
   }
 
   void _shouldRunWebView() async {

@@ -48,7 +48,12 @@ class _TimeTableState extends State<TimeTable> {
             .getIsFinish(), // the function to get your data from firebase or firestore
         builder: (BuildContext context, AsyncSnapshot snap) {
           if (snap.data == null) {
-            return NiuIconLoading(size: 80);
+            return Scaffold(
+                appBar: AppBar(
+                  title: Text("課表"),
+                  centerTitle: true,
+                ),
+                body: NiuIconLoading(size: 80));
             //return loading widget
           } else {
             List<List<String?>> htmlCode = b.htmlCode;
