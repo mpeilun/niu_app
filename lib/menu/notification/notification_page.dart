@@ -5,7 +5,7 @@ import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/e_school/e_school.dart';
 import 'package:niu_app/menu/notification/notificatioon_items.dart';
 import 'package:niu_app/provider/notification_provider.dart';
-import 'package:provider/src/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'notification_webview.dart';
@@ -51,6 +51,10 @@ class _NotificationDrawer extends State<NotificationDrawer>
         child: WillPopScope(
       onWillPop: () async {
         context.read<NotificationProvider>().setNewNotificationsCount(0);
+        notificationItems.forEach((element) {element.isNew = false;});
+        context
+            .read<NotificationProvider>()
+            .setNotificationItemList(notificationItems);
         return true;
       },
       child: Scaffold(
@@ -94,13 +98,6 @@ class _NotificationDrawer extends State<NotificationDrawer>
                 : ListView.builder(
                     itemCount: notificationItems.length,
                     itemBuilder: (BuildContext context, int index) {
-                      bool isNewNotification = false;
-                      if (index <
-                          Provider.of<NotificationProvider>(context,
-                                  listen: false)
-                              .newNotificationsCount) {
-                        isNewNotification = true;
-                      }
                       return Dismissible(
                           resizeDuration: Duration(milliseconds: 100),
                           movementDuration: Duration(milliseconds: 150),
@@ -110,7 +107,9 @@ class _NotificationDrawer extends State<NotificationDrawer>
                             context
                                 .read<NotificationProvider>()
                                 .dissmisible(index);
-                            isNewNotification = false;
+                            context
+                                .read<NotificationProvider>()
+                                .setNotificationItemList(notificationItems);
                           },
                           key: UniqueKey(),
                           child: Column(
@@ -127,7 +126,10 @@ class _NotificationDrawer extends State<NotificationDrawer>
                                     title: Text(
                                         notificationItems[index].title),
                                     onTap: () {
-                                      isNewNotification = false;
+                                      notificationItems[index].isNew = false;
+                                      context
+                                          .read<NotificationProvider>()
+                                          .setNotificationItemList(notificationItems);
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -140,7 +142,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
                                     top: 6.0,
                                     left: 8.0,
                                     child: Icon(Icons.brightness_1,
-                                        color: isNewNotification
+                                        color: notificationItems[index].isNew
                                             ? Colors.red
                                             : Colors.transparent,
                                         size: 9.0),

@@ -36,7 +36,6 @@ import 'package:niu_app/menu/drawer/about.dart';
 import 'package:niu_app/menu/drawer/announcement.dart';
 import 'package:niu_app/menu/drawer/report.dart';
 import 'package:niu_app/menu/drawer/setting.dart';
-import 'package:provider/src/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 
 import '../bus.dart';

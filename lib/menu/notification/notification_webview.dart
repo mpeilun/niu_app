@@ -111,7 +111,7 @@ Future<void> runNotificationWebViewWebView(
             eschoolData.add(EschoolData(
                 courseName: courseName,
                 semester: semester,
-                announcementCount: announcementCount,
+                announcementCount: '6',
                 workCount: workCount));
           }
 
@@ -160,9 +160,10 @@ Future<void> runNotificationWebViewWebView(
                     notificationItems.insert(
                         0,
                         NotificationItem(
-                            icon: 0,
-                            title: newData.courseName +
-                                '\n有 $announcement 筆新的公告'));
+                          icon: 0,
+                          title: newData.courseName + '\n有 $announcement 筆新的公告',
+                          isNew: true,
+                        ));
                   }
                   if (work > 0) {
                     tempCount++;
@@ -172,8 +173,10 @@ Future<void> runNotificationWebViewWebView(
                     notificationItems.insert(
                         0,
                         NotificationItem(
-                            icon: 0,
-                            title: newData.courseName + '\n有 $work 筆新的作業'));
+                          icon: 0,
+                          title: newData.courseName + '\n有 $work 筆新的作業',
+                          isNew: true,
+                        ));
                   }
                 }
               });
