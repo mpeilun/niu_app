@@ -95,14 +95,14 @@ class _DrawerPageState extends State<DrawerPage> {
                 context.read<DrawerProvider>().closeDrawer();
                 context.read<DrawerProvider>().onclick(2);
               }),
-          /*Divider(),
-          createDrawerItem(
-              icon: Icons.settings_outlined,
-              text: '設定',
-              onTap: () {
-                context.read<DrawerProvider>().closeDrawer();
-                context.read<DrawerProvider>().onclick(3);
-              }),*/
+          // Divider(),
+          // createDrawerItem(
+          //     icon: Icons.settings_outlined,
+          //     text: '設定',
+          //     onTap: () {
+          //       context.read<DrawerProvider>().closeDrawer();
+          //       context.read<DrawerProvider>().onclick(3);
+          //     }),
           Divider(),
           createDrawerItem(
               icon: Icons.info_outline_rounded,
@@ -111,6 +111,15 @@ class _DrawerPageState extends State<DrawerPage> {
                 context.read<DrawerProvider>().closeDrawer();
                 context.read<DrawerProvider>().onclick(4);
               }),
+          Divider(),
+          createDrawerItem(
+              icon: Icons.mail,
+              text: '聯絡我們',
+              onTap: () {
+                context.read<DrawerProvider>().closeDrawer();
+                context.read<DrawerProvider>().onclick(5);
+              }),
+          SizedBox(height: 20.0),
           Divider(),
           createDrawerItem(
               icon: Icons.logout_outlined,
@@ -122,15 +131,6 @@ class _DrawerPageState extends State<DrawerPage> {
                         builder: (context) => LoginPage(),
                         maintainState: false));
               }),
-          Divider(),
-          createDrawerItem(
-              icon: Icons.mail,
-              text: '聯繫我們',
-              onTap: () {
-                context.read<DrawerProvider>().closeDrawer();
-                context.read<DrawerProvider>().onclick(5);
-              }),
-          SizedBox(height: 20.0),
         ],
       ),
     );

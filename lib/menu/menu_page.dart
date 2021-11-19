@@ -106,7 +106,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     final double statusHeight = MediaQuery.of(context).padding.top;
     final double screenHeight = MediaQuery.of(context).size.height;
-    final title = ['首頁', '公告', '行事曆', '設定', '關於', '聯繫我們'];
+    final title = ['首頁', '公告', '行事曆', '設定', '關於', '聯絡我們'];
     final pages = [
       LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -381,73 +381,73 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                 )
               ]),
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
-            floatingActionButton:
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Opacity(
-                opacity: 0.5,
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  child: FloatingActionButton(
-                    heroTag: 'test_1',
-                    backgroundColor: Colors.red,
-                    child: Icon(FontAwesomeIcons.bomb),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => TestLoginWebView(),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(width: 20),
-              Opacity(
-                opacity: 0.5,
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  child: FloatingActionButton(
-                    heroTag: 'test_2',
-                    backgroundColor: Colors.red,
-                    child: Icon(FontAwesomeIcons.bomb),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TestPage(),
-                              maintainState: false));
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(width: 20),
-              Opacity(
-                opacity: 0.5,
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  child: FloatingActionButton(
-                    heroTag: 'test_3',
-                    backgroundColor: Colors.red,
-                    child: Icon(FontAwesomeIcons.bomb),
-                    onPressed: () {
-                      //TestLocalNotification.test();
-                      final a = [12];
-                      print(a[1]);
-                      /*
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TestPage(),
-                              maintainState: false));*/
-                    },
-                  ),
-                ),
-              )
-            ]),
+            // floatingActionButtonLocation:
+            //     FloatingActionButtonLocation.centerFloat,
+            // floatingActionButton:
+            //     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            //   Opacity(
+            //     opacity: 0.5,
+            //     child: Container(
+            //       height: 40,
+            //       width: 40,
+            //       child: FloatingActionButton(
+            //         heroTag: 'test_1',
+            //         backgroundColor: Colors.red,
+            //         child: Icon(FontAwesomeIcons.bomb),
+            //         onPressed: () {
+            //           showDialog(
+            //             context: context,
+            //             builder: (BuildContext context) => TestLoginWebView(),
+            //           );
+            //         },
+            //       ),
+            //     ),
+            //   ),
+            //   SizedBox(width: 20),
+            //   Opacity(
+            //     opacity: 0.5,
+            //     child: Container(
+            //       height: 40,
+            //       width: 40,
+            //       child: FloatingActionButton(
+            //         heroTag: 'test_2',
+            //         backgroundColor: Colors.red,
+            //         child: Icon(FontAwesomeIcons.bomb),
+            //         onPressed: () {
+            //           Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                   builder: (context) => TestPage(),
+            //                   maintainState: false));
+            //         },
+            //       ),
+            //     ),
+            //   ),
+            //   SizedBox(width: 20),
+            //   Opacity(
+            //     opacity: 0.5,
+            //     child: Container(
+            //       height: 40,
+            //       width: 40,
+            //       child: FloatingActionButton(
+            //         heroTag: 'test_3',
+            //         backgroundColor: Colors.red,
+            //         child: Icon(FontAwesomeIcons.bomb),
+            //         onPressed: () {
+            //           //TestLocalNotification.test();
+            //           final a = [12];
+            //           print(a[1]);
+            //           /*
+            //           Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                   builder: (context) => TestPage(),
+            //                   maintainState: false));*/
+            //         },
+            //       ),
+            //     ),
+            //   )
+            // ]),
           ),
           onWillPop: () async {
             bool isOpen = true;

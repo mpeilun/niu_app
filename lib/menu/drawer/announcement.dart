@@ -150,7 +150,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                         );
                         _controller.animateTo(
                           .0,
-                          duration: Duration(milliseconds: 2000),
+                          duration: Duration(milliseconds: 1500),
                           curve: Curves.ease,
                         );
                       }
