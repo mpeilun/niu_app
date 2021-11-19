@@ -111,7 +111,7 @@ Future<void> runNotificationWebViewWebView(
             eschoolData.add(EschoolData(
                 courseName: courseName,
                 semester: semester,
-                announcementCount: '6',
+                announcementCount: announcementCount,
                 workCount: workCount));
           }
 
