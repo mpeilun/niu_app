@@ -33,15 +33,11 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   }
 
   void _onLoading() async {
-    // monitor network fetch
-    //await Future.delayed(Duration(milliseconds: 3000));
-    await getPost(++page);
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
-    if(mounted) {
+    if (await getPost(++page)) {
       setState(() {
+        _refreshController.loadComplete();
       });
     }
-    _refreshController.loadComplete();
   }
 
   late Future _future;
@@ -50,7 +46,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   void initState() {
     super.initState();
     _future = isFinish();
-    _controller.addListener(()=>print(_controller.offset));
+    _controller.addListener(() => print(_controller.offset));
     // _controller.addListener(() {
     //   if (_controller.offset < 1000 && context.read<DrawerProvider>().showToTopBtn) {
     //     context.read<DrawerProvider>().showBtn(false);
@@ -138,13 +134,13 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                 child: FloatingActionButton(
                     child: Icon(Icons.arrow_upward),
                     onPressed: () {
-                      if(_controller.offset < 3000){
+                      if (_controller.offset < 3000) {
                         _controller.animateTo(
                           .0,
                           duration: Duration(milliseconds: 1000),
                           curve: Curves.ease,
                         );
-                      }else{
+                      } else {
                         _controller.jumpTo(
                           3000,
                         );
@@ -154,7 +150,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                           curve: Curves.ease,
                         );
                       }
-
                     }),
               ),
             );
@@ -162,7 +157,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
         });
   }
 
-  Future<void> getPost(int page) async {
+  Future<bool> getPost(int page) async {
     Dio dio = new Dio();
     Response res = await dio
         .get("https://www.niu.edu.tw/files/501-1000-1019-$page.php?Lang=zh-tw");
@@ -181,7 +176,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
             .replaceAll('http://', 'https://'));
       }
     }
-    print('yes');
+    return true;
   }
 }
 
