@@ -181,14 +181,22 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                             },
                           ),
                           CustomIcons(
-                            title: '代辦清單',
+                            title: '聯絡我們',
                             icon: MenuIcon.icon_feedback,
                             size: 40.0,
                             press: () async {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => SchoolSchedule(),
+                                      builder: (context) => Scaffold(
+                                            appBar: AppBar(
+                                              title: Text(
+                                                '聯絡我們',
+                                              ),
+                                              centerTitle: true,
+                                            ),
+                                            body: ReportPage(),
+                                          ),
                                       maintainState: false));
                             },
                           ),

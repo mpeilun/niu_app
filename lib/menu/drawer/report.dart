@@ -138,7 +138,7 @@ class _PageRecruit extends State<PageRecruit> {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   Row(children: [
                     SizedBox(
@@ -156,7 +156,6 @@ class _PageRecruit extends State<PageRecruit> {
                             });
                           }),
                     ),
-
                     Text(
                       '以記名方式送出',
                       style: TextStyle(fontSize: 14),
@@ -167,7 +166,7 @@ class _PageRecruit extends State<PageRecruit> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
@@ -284,7 +283,7 @@ class _PageFeedback extends State<PageFeedback> {
                           ),
                         ),
                         SizedBox(
-                          height: 15,
+                          height: 10,
                         ),
                         Row(children: [
                           SizedBox(
@@ -293,7 +292,7 @@ class _PageFeedback extends State<PageFeedback> {
                           Transform.scale(
                             scale: 1.4,
                             child: Checkbox(
-                              shape: CircleBorder(),
+                                shape: CircleBorder(),
                                 value: _checkboxSelected,
                                 activeColor: Colors.blue,
                                 onChanged: (value) {
@@ -312,7 +311,7 @@ class _PageFeedback extends State<PageFeedback> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
@@ -394,7 +393,7 @@ class _PageBugReport extends State<PageBugReport> {
                     height: 20,
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
+                    padding: const EdgeInsets.fromLTRB(25, 20, 25, 8),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       child: Card(
@@ -421,21 +420,14 @@ class _PageBugReport extends State<PageBugReport> {
                         SizedBox(
                           width: 10,
                         ),
-                        SizedBox(
-                          width: 10,
-                          height: 10,
-                          child: Checkbox(
-                              value: _canReproducible,
-                              activeColor: Colors.blue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _canReproducible = true;
-                                });
-                              }),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
+                        Checkbox(
+                            value: _canReproducible,
+                            activeColor: Colors.blue,
+                            onChanged: (value) {
+                              setState(() {
+                                _canReproducible = true;
+                              });
+                            }),
                         Text(
                           '可再現',
                           style: TextStyle(fontSize: 12),
@@ -444,21 +436,14 @@ class _PageBugReport extends State<PageBugReport> {
                         SizedBox(
                           width: 15,
                         ),
-                        SizedBox(
-                          width: 10,
-                          height: 10,
-                          child: Checkbox(
-                              value: !_canReproducible,
-                              activeColor: Colors.blue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _canReproducible = false;
-                                });
-                              }),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
+                        Checkbox(
+                            value: !_canReproducible,
+                            activeColor: Colors.blue,
+                            onChanged: (value) {
+                              setState(() {
+                                _canReproducible = false;
+                              });
+                            }),
                         Text(
                           '不可再現',
                           style: TextStyle(fontSize: 12),
@@ -468,7 +453,7 @@ class _PageBugReport extends State<PageBugReport> {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   Container(
                     width: 300,
@@ -521,7 +506,7 @@ class _PageBugReport extends State<PageBugReport> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
