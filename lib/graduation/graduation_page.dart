@@ -174,7 +174,7 @@ class _GraduationPageState extends State<GraduationPage> {
                     CustomCard(
                         title: '學分學程',
                         rowChild: Text(
-                          '(變數) ? 尚未修習學分學程',
+                          widget.pass.program,
                           style: TextStyle(
                             fontSize: 16.0,
                           ),

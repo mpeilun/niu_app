@@ -46,7 +46,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   void initState() {
     super.initState();
     _future = isFinish();
-    _controller.addListener(() => print(_controller.offset));
     // _controller.addListener(() {
     //   if (_controller.offset < 1000 && context.read<DrawerProvider>().showToTopBtn) {
     //     context.read<DrawerProvider>().showBtn(false);

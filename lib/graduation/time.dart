@@ -16,10 +16,11 @@ class Pass {
   final int english;
   final int physical;
   final String credit;
+  final String program;
 
-  Pass({
-    required this.english,
-    required this.physical,
-    required this.credit,
-  });
+  Pass(
+      {required this.english,
+      required this.physical,
+      required this.credit,
+      required this.program});
 }

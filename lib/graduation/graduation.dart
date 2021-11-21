@@ -122,6 +122,14 @@ class _GraduationState extends State<Graduation> {
                   source:
                       'document.querySelector("#DataGrid_CRD > tbody > tr:nth-child(7) > td:nth-child(2)").innerText');
 
+          String program = await controller.evaluateJavascript(
+              source:
+                  'document.querySelector("#table2 > tbody > tr:nth-child(18) > td.tdGrayLight").innerText');
+
+          if (program.length < 2) {
+            program = '尚未選擇';
+          }
+
           print(
               '$service $multiple $profession $flex $english $physical $credit');
 
@@ -130,7 +138,11 @@ class _GraduationState extends State<Graduation> {
               multiple: multiple,
               profession: profession,
               flex: flex);
-          pass = Pass(english: english, physical: physical, credit: credit);
+          pass = Pass(
+              english: english,
+              physical: physical,
+              credit: credit,
+              program: program);
 
           globalTime = time;
           globalPass = pass;
@@ -171,7 +183,24 @@ class _GraduationState extends State<Graduation> {
               title: Text("畢業門檻"),
               centerTitle: true,
             ),
-            body: NiuIconLoading(size: 80));
+            body: Container(
+              child: Column(
+                children: [
+                  Expanded(child: NiuIconLoading(size: 80)),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    child: Text(
+                      '此頁面載入時間較長，請耐心等候',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ));
   }
 
   void _shouldRunWebView() async {
