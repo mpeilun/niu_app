@@ -38,6 +38,7 @@ class _ViewPage extends State<ViewPage> {
         centerTitle: true,
         actions: [
           PopupMenuButton<String>(
+            padding: const EdgeInsets.all(.0),
             itemBuilder: (context) => weekGetPopupMenu(context),
             onSelected: (String value) async{
               print('Week Selected : ' + value);
@@ -122,7 +123,7 @@ class _ViewPage extends State<ViewPage> {
     List<String> chineseNum = <String>[
       "一","二","三","四","五","六","七","八","九","十","十一","十二","十三","十四","十五","十六","十七","十八"
     ];
-    return Text('第' + chineseNum[num] + "週" ,style: TextStyle(fontSize: num < 10 ? 12 : 9),);
+    return Text('第' + chineseNum[num] + "週" ,style: TextStyle(fontSize: num < 10 ? 14 : 12),);
   }
   void clean(BuildContext context) async{
     SemesterDate date = SemesterDate();

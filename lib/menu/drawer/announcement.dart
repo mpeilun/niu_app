@@ -71,6 +71,28 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
           } else {
             return Scaffold(
               body: SmartRefresher(
+                footer: CustomFooter(
+                  builder: (BuildContext context,LoadStatus? mode){
+                    Widget body ;
+                    if(mode==LoadStatus.idle){
+                      body =  Text("向上拉載入更多...");
+                    }
+
+                    else if(mode == LoadStatus.failed){
+                      body = Text("載入失敗，請重新載入");
+                    }
+                    else if(mode == LoadStatus.canLoading){
+                      body = Text("放開以載入");
+                    }
+                    else{
+                      body = Text("沒有更多資料");
+                    }
+                    return Container(
+                      height: 55.0,
+                      child: Center(child:body),
+                    );
+                  },
+                ),
                 enablePullDown: false,
                 enablePullUp: true,
                 onLoading: _onLoading,
@@ -80,7 +102,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                   itemCount: contents.length,
                   itemBuilder: (context, index) {
                     var item = contents[index];
-                    // print(page);
+                    print(page);
                     // print(contents.length);
                     // print(index);
                     return Padding(
