@@ -12,30 +12,31 @@ class SchoolSchedule extends StatefulWidget {
 }
 
 class _SchoolScheduleState extends State<SchoolSchedule> {
-  String pdfUrl = '';
+  String pdfUrl = 'http://pws.niu.edu.tw/~b0943034/110_school_timetable.pdf';
   Future<bool> getScheduleUrl() async {
-    Dio dio = new Dio();
-    Response indexRes = await dio
-        .get("https://www.niu.edu.tw/files/501-1000-1019-1.php?Lang=zh-tw");
-    String indexUrl = parse(indexRes.data)
-        .body!
-        .querySelector(
-            '#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child(2) > td.mc > div > a')!
-        .attributes
-        .values
-        .first;
-    print(indexUrl);
-    Response res = await dio.get(indexUrl);
-    String url = 'http://academic.niu.edu.tw';
-    url += parse(res.data)
-        .body!
-        .querySelector(
-            '#Dyn_2_3 > div.module.module-ptattach.pt_style1 > div.md_middle > div > div > div > table')!
-        .outerHtml
-        .split('<span><a href=\"')[1]
-        .split('\" title=\"')[0];
-    pdfUrl = url;
-    print(pdfUrl);
+    //TODO 自動搜尋行事曆網址
+    // Dio dio = new Dio();
+    // Response indexRes = await dio
+    //     .get("https://www.niu.edu.tw/files/501-1000-1019-1.php?Lang=zh-tw");
+    // String indexUrl = parse(indexRes.data)
+    //     .body!
+    //     .querySelector(
+    //         '#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child(2) > td.mc > div > a')!
+    //     .attributes
+    //     .values
+    //     .first;
+    // print(indexUrl);
+    // Response res = await dio.get(indexUrl);
+    // String url = 'http://academic.niu.edu.tw';
+    // url += parse(res.data)
+    //     .body!
+    //     .querySelector(
+    //         '#Dyn_2_3 > div.module.module-ptattach.pt_style1 > div.md_middle > div > div > div > table')!
+    //     .outerHtml
+    //     .split('<span><a href=\"')[1]
+    //     .split('\" title=\"')[0];
+    // pdfUrl = url;
+    // print(pdfUrl);
     return true;
   }
 
