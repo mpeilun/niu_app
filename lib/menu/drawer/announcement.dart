@@ -28,8 +28,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
       RefreshController(initialRefresh: false);
 
   Future<bool> isFinish() async {
-    await getPost(++page);
-    return true;
+    return await getPost(++page);
   }
 
   void _onLoading() async {
