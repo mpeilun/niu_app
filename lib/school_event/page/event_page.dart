@@ -38,7 +38,6 @@ class _EventPageState extends State<EventPage> {
         i++) {
       String js = '''javascript:(
 function() {
-    // get names from the database or API 
     let name = document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4) > div").innerText;
         department = document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText;
         state = document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(9)").innerText;
@@ -214,7 +213,7 @@ function() {
                 child: refreshLoaded
                     ? CustomEventCard(
                         key: PageStorageKey<String>('event'),
-                        data: readTemp,
+                        data: data,
                         dataCanSignUp: dataCanSignUp,
                         dataUnable: dataUnable,
                       )
