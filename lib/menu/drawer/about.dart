@@ -64,7 +64,7 @@ class _AboutPageState extends State<AboutPage>
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16.0),
                           ),
-                          Text('資工二'),
+                          Text('資工系'),
                         ],
                       ),
                       Column(
@@ -81,7 +81,7 @@ class _AboutPageState extends State<AboutPage>
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16.0),
                           ),
-                          Text('資工二'),
+                          Text('資工系'),
                         ],
                       ),
                     ],
@@ -106,7 +106,7 @@ class _AboutPageState extends State<AboutPage>
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16.0),
                           ),
-                          Text('資工二'),
+                          Text('資工系'),
                         ],
                       ),
                       Column(
@@ -123,7 +123,7 @@ class _AboutPageState extends State<AboutPage>
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16.0),
                           ),
-                          Text('資工二'),
+                          Text('資工系'),
                         ],
                       ),
                     ],

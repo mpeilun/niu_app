@@ -239,7 +239,7 @@ class _ZuvioState extends State<Zuvio> {
                                   String origin) async {
                             print(
                                 'androidOnGeolocationPermissionsShowPrompt: $origin');
-                            alertGeolocation(context);
+                            await alertGeolocation(context);
                             return GeolocationPermissionShowPromptResponse(
                                 origin: origin, allow: true, retain: true);
                           },

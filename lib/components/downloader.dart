@@ -152,7 +152,7 @@ Future sendToDownload(String url, List<Cookie> cookies) async {
   } else {
     rootDir = (await getApplicationDocumentsDirectory()).path;
   }
-  externalDir = rootDir + '/' + 'test';
+  externalDir = rootDir + '/' + decodeName;
 
   var dio = Dio();
   var cookieJar = new CookieJar();
@@ -182,7 +182,7 @@ Future sendToDownload(String url, List<Cookie> cookies) async {
     );
     print(response.headers);
     late dartCookies.File file;
-    if (url.contains('https://academic.niu.edu.tw/bin/downloadfile.php')) {
+    if (url.contains('/bin/downloadfile.php')) {
       if ((decodeName.substring(url.lastIndexOf(".") + 1).length > 20 ||
               !decodeName.contains('.')) &&
           response.headers.toString().contains('filename=')) {
