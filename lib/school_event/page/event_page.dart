@@ -39,7 +39,6 @@ class _EventPageState extends State<EventPage> {
           source:
               'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(9)").innerText');
       //if (status != str) continue;
-      print(i);
       String name = ((await headlessWebView?.webViewController.evaluateJavascript(
                   source:
                       'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4)").innerText'))
@@ -52,75 +51,27 @@ class _EventPageState extends State<EventPage> {
 
       String signTimeStart = await headlessWebView?.webViewController
           .evaluateJavascript(
-              source: i > 9
-                  ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-                      i.toString() +
-                      '_lblAttBdate").innerText'
-                  : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-                      i.toString() +
-                      '_lblAttBdate").innerText');
+              source: 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i>9?i:'0$i'}_lblAttBdate").innerText');
 
       String signTimeEnd = await headlessWebView?.webViewController.evaluateJavascript(
-          source: i > 9
-              ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-                  i.toString() +
-                  '_lblAttEdate").innerText'
-              : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-                  i.toString() +
-                  '_lblAttEdate").innerText');
+          source: 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i>9?i:'0$i'}_lblAttEdate").innerText');
 
       String eventTimeStart = await headlessWebView?.webViewController
           .evaluateJavascript(
-              source: i > 9
-                  ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-                      i.toString() +
-                      '_lblActBdate").innerText'
-                  : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-                      i.toString() +
-                      '_lblActBdate").innerText');
+              source: 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i>9?i:'0$i'}_lblActBdate").innerText');
 
       String eventTimeEnd = await headlessWebView?.webViewController.evaluateJavascript(
-          source: i > 9
-              ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-                  i.toString() +
-                  '_lblActEdate").innerText'
-              : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-                  i.toString() +
-                  '_lblActEdate").innerText');
+          source: 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i>9?i:'0$i'}_lblActEdate").innerText');
 
       String positive = await headlessWebView?.webViewController.evaluateJavascript(
-          source: i > 9
-              ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-                  i.toString() +
-                  '_lblOKNum").innerText'
-              : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-                  i.toString() +
-                  '_lblOKNum").innerText');
+          source: 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i>9?i:'0$i'}_lblOKNum").innerText');
       String positiveLimit = await headlessWebView?.webViewController
           .evaluateJavascript(
-              source: i > 9
-                  ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-                      i.toString() +
-                      '_lblLimitNum").innerText'
-                  : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-                      i.toString() +
-                      '_lblLimitNum").innerText');
+              source: 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i>9?i:'0$i'}_lblLimitNum").innerText');
       String wait = await headlessWebView?.webViewController.evaluateJavascript(
-          source: i > 9
-              ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-                  i.toString() +
-                  '_lblBKNum").innerText'
-              : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-                  i.toString() +
-                  '_lblBKNum").innerText');
+          source: 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i>9?i:'0$i'}_lblBKNum").innerText');
       String waitLimit = await headlessWebView?.webViewController.evaluateJavascript(
-          source: i > 9
-              ? 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl' +
-                  i.toString() +
-                  '_lblSecNum").innerText'
-              : 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl0' +
-                  i.toString() +
-                  '_lblSecNum").innerText');
+          source: 'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i>9?i:'0$i'}_lblSecNum").innerText');
       String signUpJavaScript = await headlessWebView?.webViewController
           .evaluateJavascript(
               source:
@@ -129,6 +80,7 @@ class _EventPageState extends State<EventPage> {
           .evaluateJavascript(
               source:
                   'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(2)").innerText');
+      print(i);
       readTemp.add(Event(
         name: name,
         //活動名稱
@@ -263,7 +215,7 @@ class _EventPageState extends State<EventPage> {
                 child: refreshLoaded
                     ? CustomEventCard(
                         key: PageStorageKey<String>('event'),
-                        data: data,
+                        data: readTemp,
                         dataCanSignUp: dataCanSignUp,
                         dataUnable: dataUnable,
                       )
