@@ -215,7 +215,7 @@ class _EventPageState extends State<EventPage> {
                 child: refreshLoaded
                     ? CustomEventCard(
                         key: PageStorageKey<String>('event'),
-                        data: readTemp,
+                        data: data,
                         dataCanSignUp: dataCanSignUp,
                         dataUnable: dataUnable,
                       )
