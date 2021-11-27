@@ -194,12 +194,12 @@ function() {
         });
       },
     );
-
     headlessWebView?.run();
   }
 
   @override
   void dispose() {
+    headlessWebView?.webViewController.loadUrl(urlRequest: URLRequest(url: Uri.parse('about:blank')));
     super.dispose();
   }
 
