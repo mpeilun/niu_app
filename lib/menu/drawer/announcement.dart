@@ -171,7 +171,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
             .toString()
             .contains('https://www.niu.edu.tw/files/501-1000-1019-')) {
           for (int i = 2; i <= 74; i += 3) {
-            print(i);
             String js = '''
             javascript:(
               function() {
@@ -182,12 +181,13 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                 })()
             ''';
             var result = await controller.evaluateJavascript(source: js);
-            String date = result['date'];
+            print(i);
+            String date = !(result['date'] == null) ? result['date'] : '';
             String title = result['title'];
             String link = result['link'].replaceAll('http://', 'https://');
-            print(link);
             data.add({'date': date, 'title': title, 'link': link});
           }
+          print('page' + page.toString());
           callBack.complete(true);
         }
       },
