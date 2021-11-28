@@ -62,6 +62,7 @@ class _SchoolEventState extends State<SchoolEvent> with SingleTickerProviderStat
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(56.0),
                 child: Container(
+                  color: Theme.of(context).primaryColor,
                   height: 56.0,
                   child: TabBar(
                     controller: _tabController,

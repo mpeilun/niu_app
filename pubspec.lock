@@ -14,7 +14,7 @@ packages:
       name: another_flushbar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.10.25"
+    version: "1.10.26"
   another_transformer_page_view:
     dependency: transitive
     description:
@@ -897,7 +897,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0"
+    version: "2.3.1"
   xdg_directories:
     dependency: transitive
     description:

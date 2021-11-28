@@ -5,6 +5,7 @@ import 'package:niu_app/graduation/graduation.dart';
 import 'package:niu_app/login/login_method.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/provider/info_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
@@ -47,6 +48,7 @@ class _DrawerPageState extends State<DrawerPage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return AnimatedContainer(
       transform: Matrix4.translationValues(widget.drawerXOffset, 0, 0),
       duration: Duration(milliseconds: 150),
@@ -56,9 +58,15 @@ class _DrawerPageState extends State<DrawerPage> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Color.fromARGB(255, 13, 71, 161),
-            Color.fromARGB(255, 14, 69, 156),
-            Color.fromARGB(255, 9, 47, 108),
+            themeChange.darkTheme
+                ? Color.fromARGB(255, 21, 21, 21)
+                : Color.fromARGB(255, 13, 71, 161),
+            themeChange.darkTheme
+                ? Color.fromARGB(255, 10, 10, 10)
+                : Color.fromARGB(255, 14, 69, 156),
+            themeChange.darkTheme
+                ? Color.fromARGB(255, 0, 0, 0)
+                : Color.fromARGB(255, 9, 47, 108),
           ],
         ),
       ),
@@ -67,7 +75,10 @@ class _DrawerPageState extends State<DrawerPage> {
           SizedBox(height: 16.0),
           Text(
             '${context.watch<InfoProvider>().name}',
-            style: TextStyle(fontSize: 16.0, color: Colors.white),
+            style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
           Divider(),
@@ -131,6 +142,14 @@ class _DrawerPageState extends State<DrawerPage> {
                         builder: (context) => LoginPage(),
                         maintainState: false));
               }),
+          SizedBox(
+            height: 20,
+          ),
+          Switch(
+              value: themeChange.darkTheme,
+              onChanged: (value) {
+                themeChange.darkTheme = value;
+              })
         ],
       ),
     );
@@ -144,6 +163,7 @@ class Divider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 14.0, 4.0, 10.0),
       child: Container(
@@ -151,9 +171,15 @@ class Divider extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
           gradient: LinearGradient(colors: [
-            Color.fromARGB(255, 33, 150, 243),
-            Color.fromARGB(203, 33, 150, 243),
-            Color.fromARGB(0, 33, 150, 243),
+            themeChange.darkTheme
+                ? Color.fromARGB(255, 125, 125, 125)
+                : Color.fromARGB(255, 33, 150, 243),
+            themeChange.darkTheme
+                ? Color.fromARGB(255, 104, 104, 104)
+                : Color.fromARGB(203, 33, 150, 243),
+            themeChange.darkTheme
+                ? Color.fromARGB(0, 104, 104, 104)
+                : Color.fromARGB(0, 33, 150, 243),
           ]),
         ),
       ),

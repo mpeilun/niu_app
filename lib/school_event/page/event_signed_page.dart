@@ -185,7 +185,6 @@ class _EventSignedPageState extends State<EventSignedPage> {
                       '僅顯示前15筆報名資料',
                       style: TextStyle(
                         fontSize: 20.0,
-                        color: Colors.black,
                         fontWeight: FontWeight.w700,
                       ),
                     ),

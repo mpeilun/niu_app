@@ -4,7 +4,7 @@ import 'package:niu_app/menu/notification/notificatioon_items.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationProvider with ChangeNotifier {
-  void dissmisible(int index) {
+  void dismissible(int index) {
     _notificationItemList.removeAt(index);
     setNotificationItemList(_notificationItemList);
     if (index < _newNotificationsCount) {
@@ -23,13 +23,6 @@ class NotificationProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  bool _isNotification = false;
-  bool get isNotification => _isNotification;
-
-  void setNewNotifications(bool index) {
-    _isNotification = index;
-    notifyListeners();
-  }
 
   int _newNotificationsCount = 0; //新的通知數量
   int get newNotificationsCount => _newNotificationsCount;

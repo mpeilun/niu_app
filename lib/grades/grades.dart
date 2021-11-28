@@ -66,6 +66,7 @@ class _GradesState extends State<Grades> {
                 bottom: PreferredSize(
                   preferredSize: Size.fromHeight(56.0),
                   child: Container(
+                    color: Theme.of(context).primaryColor,
                     height: 56.0,
                     child: TabBar(
                       labelPadding: EdgeInsets.zero,

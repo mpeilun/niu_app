@@ -92,14 +92,14 @@ class _CustomMidCardState extends State<CustomMidCard> {
                       '分數：${widget.grade[index].score}',
                       style: TextStyle(
                         fontSize: 14.0,
-                        color: isFail ? Colors.red : Colors.grey[600],
+                        color: isFail ? Colors.red : Colors.grey[400],
                       ),
                     ),
                     Text(
                       '${widget.grade[index].type}',
                       style: TextStyle(
                         fontSize: 14.0,
-                        color: Colors.grey[600],
+                        color: Colors.grey[400],
                       ),
                     ),
                   ],
@@ -217,14 +217,14 @@ class _CustomFinalCardState extends State<CustomFinalCard> {
                         '分數：${widget.grade[index-1].score}',
                         style: TextStyle(
                           fontSize: 14.0,
-                          color: isFail ? Colors.red : Colors.grey[600],
+                          color: isFail ? Colors.red : Colors.grey[400],
                         ),
                       ),
                       Text(
                         '${widget.grade[index-1].type}',
                         style: TextStyle(
                           fontSize: 14.0,
-                          color: Colors.grey[600],
+                          color: Colors.grey[400],
                         ),
                       ),
                     ],
@@ -296,7 +296,6 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                       widget.grade[index].lesson,
                       style: TextStyle(
                         fontSize: 16.0,
-                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -310,7 +309,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                       '${widget.grade[index].teacher}',
                       style: TextStyle(
                         fontSize: 16.0,
-                        color: Colors.grey[600],
+                        color: Colors.grey[400],
                       ),
                     ),
                   ),

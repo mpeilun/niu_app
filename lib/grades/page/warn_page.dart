@@ -132,7 +132,6 @@ class _WarmPageState extends State<WarmPage> {
                     '此頁面載入時間較長，請耐心等候',
                     style: TextStyle(
                       fontSize: 20.0,
-                      color: Colors.black,
                       fontWeight: FontWeight.w700,
                     ),
                   ),

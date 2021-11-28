@@ -68,17 +68,17 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
               widget.data[index].name,
               style: TextStyle(
                   fontSize: 16.0,
-                  color: Colors.black,
                   fontWeight: FontWeight.bold),
             ),
           ),
           Container(
             decoration: BoxDecoration(
-              color: Colors.grey.shade50,
+              color: Theme.of(context).primaryColor,
+              // color: Colors.grey.shade50,
               borderRadius: BorderRadius.circular(20.0),
               boxShadow: [
                 BoxShadow(
-                    color: Colors.grey,
+                    // color: Colors.grey,
                     offset: Offset(1.0, 1.0), //陰影y軸偏移量
                     blurRadius: 0, //陰影模糊程度
                     spreadRadius: 0 //陰影擴散程度

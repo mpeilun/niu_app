@@ -10,6 +10,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:niu_app/menu/menu_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
+import 'package:niu_app/provider/announcenment_provider.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 import 'package:niu_app/provider/info_provider.dart';
 import 'package:niu_app/provider/notification_provider.dart';
@@ -17,6 +19,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'dark_mode/dark_theme.dart';
 import 'provider/timetable_button_provider.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -26,8 +29,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   if (kDebugMode) {
-    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);//disable false
-  }else{
+    FirebaseCrashlytics.instance
+        .setCrashlyticsCollectionEnabled(true); //disable false
+  } else {
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   }
   print("kDebugMode : $kDebugMode");
@@ -48,7 +52,7 @@ void main() async {
     if (payload != null) print("Notification Payload: " + payload);
   });
 
-  FirebaseMessaging  messaging = FirebaseMessaging.instance;
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
   await messaging.requestPermission(
     alert: true,
     announcement: false,
@@ -58,7 +62,7 @@ void main() async {
     provisional: false,
     sound: true,
   );
-  messaging.getToken().then((value){
+  messaging.getToken().then((value) {
     print("Token : $value");
     /*
     FirebaseFirestore.instance
@@ -79,48 +83,50 @@ void main() async {
     ChangeNotifierProvider(create: (_) => TimeCardClickProvider()),
     ChangeNotifierProvider(create: (_) => NotificationProvider()),
     ChangeNotifierProvider(create: (_) => InfoProvider()),
+    ChangeNotifierProvider(create: (_) => AnnouncementProvider()),
+    ChangeNotifierProvider(create: (_) => DarkThemeProvider()),
   ], child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentAppTheme();
+  }
+
+  void getCurrentAppTheme() async {
+    themeChangeProvider.darkTheme =
+    await themeChangeProvider.darkThemePreference.getTheme();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return OKToast(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'NIU app',
-        theme: ThemeData(
-          //brightness: Brightness.dark,
-          appBarTheme: AppBarTheme(
-            color: Colors.blue[900],
-            //backwardsCompatibility: false,
-            systemOverlayStyle:
-                SystemUiOverlayStyle(statusBarColor: Colors.blue[900]),
-          ),
-          // dividerTheme: DividerThemeData(
-          //   thickness: 1.5,
-          //   indent: 10,
-          //   endIndent: 10,
-          // ),
-          primaryColor: Colors.blue[900],
-          scaffoldBackgroundColor: Colors.grey[200],
-          // textTheme: GoogleFonts.notoSansTextTheme(textTheme).copyWith(
-          //   // headline1: GoogleFonts.oswald(textStyle: textTheme.headline1),
-          // ),
-          textTheme: GoogleFonts.notoSansTextTheme(
-            Theme.of(context).textTheme,
-          ),
-          pageTransitionsTheme: PageTransitionsTheme(
-            builders: {
-              TargetPlatform.android: ZoomPageTransitionsBuilder(),
-              TargetPlatform.iOS: CupertinoWillPopScopePageTransionsBuilder(),
-            },
-          ),
-        ),
-        home: StartMenu(),
-      ),
+      child: ChangeNotifierProvider(
+        create: (_) {
+          return themeChangeProvider;
+        },
+        child: Consumer<DarkThemeProvider>(
+          builder: (BuildContext context, value, child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'NIU app',
+              themeMode: ThemeMode.dark,
+              theme: Styles.themeData(themeChangeProvider.darkTheme, context),
+              home: StartMenu(),
+            );
+          },
+        ),),
     );
   }
 }

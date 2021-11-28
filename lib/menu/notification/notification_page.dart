@@ -106,7 +106,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
                           onDismissed: (direction) {
                             context
                                 .read<NotificationProvider>()
-                                .dissmisible(index);
+                                .dismissible(index);
                             context
                                 .read<NotificationProvider>()
                                 .setNotificationItemList(notificationItems);

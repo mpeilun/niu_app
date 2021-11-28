@@ -104,7 +104,6 @@ class _CustomEventCardState extends State<CustomEventCard> {
             Container(
               height: 30.0,
               child: ToggleButtons(
-                selectedColor: Colors.white,
                 fillColor: Color.fromRGBO(0, 70, 161, 1),
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 children: <Widget>[
@@ -174,7 +173,6 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                 display[index].name,
                                 style: TextStyle(
                                     fontSize: 16.0,
-                                    color: Colors.black,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
@@ -189,7 +187,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                 display[index].department,
                                 style: TextStyle(
                                   fontSize: 14.0,
-                                  color: Colors.grey[600],
+                                  color: Colors.grey[400],
                                 ),
                                 textAlign: TextAlign.end,
                               ),
@@ -200,11 +198,12 @@ class _CustomEventCardState extends State<CustomEventCard> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade50,
+                        color: Theme.of(context).primaryColor,
+                        // color: Colors.grey.shade50,
                         borderRadius: BorderRadius.circular(20.0),
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.grey,
+                              // color: Colors.grey,
                               offset: Offset(1.0, 1.0), //陰影y軸偏移量
                               blurRadius: 0, //陰影模糊程度
                               spreadRadius: 0 //陰影擴散程度
@@ -389,6 +388,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
             child: Container(
               padding: EdgeInsets.only(right: screenSizeWidth*0.05),
               child: AnimSearchBar(//浮動搜尋按鈕
+                color: Theme.of(context).cardColor,
                 rtl: true,
                 helpText: '輸入名稱或編號...',
                 width: screenSizeWidth*0.8,

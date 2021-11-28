@@ -51,6 +51,7 @@ class _ReportPageState extends State<ReportPage>
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(56.0),
             child: Container(
+              color: Theme.of(context).primaryColor,
               height: 56.0,
               child: TabBar(
                 labelPadding: EdgeInsets.zero,
@@ -98,7 +99,6 @@ class _PageRecruit extends State<PageRecruit> {
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 child: Card(
-                  color: Colors.blueAccent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.0),
                   ),
@@ -122,11 +122,10 @@ class _PageRecruit extends State<PageRecruit> {
                   Center(
                     child: TextFormField(
                       initialValue: '',
-                      style: TextStyle(fontSize: 14, color: Colors.black),
+                      style: TextStyle(fontSize: 14,),
                       maxLines: null,
                       keyboardType: TextInputType.multiline,
                       decoration: InputDecoration(
-                        fillColor: Colors.black,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0)),
                         labelText: '聯繫方式',
@@ -149,7 +148,6 @@ class _PageRecruit extends State<PageRecruit> {
                       child: Checkbox(
                           shape: CircleBorder(),
                           value: _checkboxSelected,
-                          activeColor: Colors.blue,
                           onChanged: (value) {
                             setState(() {
                               _checkboxSelected = value!;
@@ -169,7 +167,7 @@ class _PageRecruit extends State<PageRecruit> {
               height: 10,
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
+              style: ElevatedButton.styleFrom(primary: Theme.of(context).backgroundColor),
               onPressed: () async {
                 if (_contact != '' && _checkboxSelected != false) {
                   SharedPreferences prefs =

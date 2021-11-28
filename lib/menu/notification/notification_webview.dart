@@ -154,9 +154,6 @@ Future<void> runNotificationWebViewWebView(
                       int.parse(oldData.workCount);
                   if (announcement > 0) {
                     tempCount++;
-                    context
-                        .read<NotificationProvider>()
-                        .setNewNotifications(true);
                     notificationItems.insert(
                         0,
                         NotificationItem(
@@ -167,9 +164,6 @@ Future<void> runNotificationWebViewWebView(
                   }
                   if (work > 0) {
                     tempCount++;
-                    context
-                        .read<NotificationProvider>()
-                        .setNewNotifications(true);
                     notificationItems.insert(
                         0,
                         NotificationItem(

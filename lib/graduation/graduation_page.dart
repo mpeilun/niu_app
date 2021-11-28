@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:niu_app/graduation/graduation_hour.dart';
 import 'package:niu_app/graduation/time.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 import 'graduation_detail.dart';
 
@@ -18,10 +20,12 @@ class GraduationPage extends StatefulWidget {
 
 class _GraduationPageState extends State<GraduationPage> {
   final passWord = ['通過', '尚未檢測', '未通過'];
-  final passColor = [Colors.green[600], Colors.black, Colors.red];
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+    final passColor = [Colors.green[600], themeChange.darkTheme ? Colors.white : Colors.black, Colors.red];
+
     return Scaffold(
       appBar: AppBar(
         title: Text('畢業門檻'),

@@ -20,6 +20,7 @@ import 'package:niu_app/components/login_loading.dart';
 import 'package:niu_app/menu/notification/notification_page.dart';
 import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/provider/notification_provider.dart';
 import 'package:niu_app/menu/drawer/school%EF%BC%BFschedule.dart';
 import 'package:niu_app/school_event/school_event.dart';
@@ -105,6 +106,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     final double statusHeight = MediaQuery.of(context).padding.top;
     final double screenHeight = MediaQuery.of(context).size.height;
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     final title = ['首頁', '公告', '行事曆', '設定', '關於', '聯絡我們'];
     final pages = [
       LayoutBuilder(
@@ -260,7 +262,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                 Expanded(
                   flex: 4,
                   child: Image.asset(
-                    'assets/niu_background.png',
+                    themeChange.darkTheme ? 'assets/niu_background_black.png' : 'assets/niu_background.png',
                   ),
                 ),
               ]),
@@ -301,7 +303,20 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                         controller.openDrawer();
                       }
                       if (details.delta.dx < -delta) {
-                        controller.closeDrawer();
+                        if (context.read<DrawerProvider>().isDrawerOpen) {
+                          controller.closeDrawer();
+                        } else {
+                          if (context
+                                  .read<NotificationProvider>()
+                                  .notificationItemList
+                                  .length ==
+                              0) {
+                            context
+                                .read<NotificationProvider>()
+                                .setIsEmpty(true);
+                          }
+                          Navigator.of(context).push(_createRoute());
+                        }
                       }
                       isDragging = false;
                     },
@@ -369,9 +384,9 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                                               .read<NotificationProvider>()
                                               .setIsEmpty(true);
                                         }
-                                        context
-                                            .read<NotificationProvider>()
-                                            .setNewNotifications(false);
+                                        // context
+                                        //     .read<NotificationProvider>()
+                                        //     .setNewNotifications(false);
                                         Navigator.of(context)
                                             .push(_createRoute());
                                         //context.read<OnNotifyClick>().newNotification(1); //refresh
