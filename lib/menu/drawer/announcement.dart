@@ -4,15 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'dart:io' as dartCookies;
-import 'package:html/parser.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/pdfviwer.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:niu_app/provider/drawer_provider.dart';
-import 'package:provider/provider.dart';
 
 class AnnouncementPage extends StatefulWidget {
   @override
@@ -20,52 +16,42 @@ class AnnouncementPage extends StatefulWidget {
 }
 
 class _AnnouncementPageState extends State<AnnouncementPage> {
-  String url = '';
   List data = [];
-  int page = 0;
-
+  int page = 1;
+  late HeadlessInAppWebView headlessWebView;
   ScrollController _controller = ScrollController();
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  Future<bool> isFinish() async {
-    return await getPost(++page);
-  }
-
   void _onLoading() async {
-    if (await getPost(++page)) {
-      setState(() {
-        _refreshController.loadComplete();
-      });
+    if (page < 86) {
+      if (await getPost(++page)) {
+        setState(() {
+          _refreshController.loadComplete();
+        });
+      }
+    } else {
+      _refreshController.loadComplete();
     }
   }
-
-  late Future _future;
 
   @override
   void initState() {
     super.initState();
-    _future = isFinish();
-    // _controller.addListener(() {
-    //   if (_controller.offset < 1000 && context.read<DrawerProvider>().showToTopBtn) {
-    //     context.read<DrawerProvider>().showBtn(false);
-    //   } else if (_controller.offset >= 1000 && context.read<DrawerProvider>().showToTopBtn == false) {
-    //     context.read<DrawerProvider>().showBtn(true);
-    //   }
-    // });
   }
 
   @override
   void dispose() {
-    data.clear();
     super.dispose();
+    headlessWebView.webViewController
+        .loadUrl(urlRequest: URLRequest(url: Uri.parse('about:blank')));
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future:
-            _future, // the function to get your data from firebase or firestore
+        future: getPost(
+            page), // the function to get your data from firebase or firestore
         builder: (BuildContext context, AsyncSnapshot snap) {
           if (snap.data == null) {
             return NiuIconLoading(size: 80);
@@ -106,7 +92,8 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                                 MaterialPageRoute(
                                     builder: (context) => AnnouncementWebView(
                                           announcementUrl: data[index]['link'],
-                                          announcementTitle: data[index]['title'],
+                                          announcementTitle: data[index]
+                                              ['title'],
                                         ),
                                     maintainState: false));
                           },
@@ -147,76 +134,68 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   }
 
   Future<bool> getPost(int page) async {
-    final Completer<bool> callBack = new Completer<bool>();
-    HeadlessInAppWebView headlessWebView = new HeadlessInAppWebView(
+    Completer<bool> callBack = new Completer<bool>();
+    headlessWebView = new HeadlessInAppWebView(
+      initialSize: Size(600, 800),
+      initialUrlRequest: URLRequest(
+          url: Uri.parse(
+              'https://www.niu.edu.tw/files/501-1000-1019-$page.php?Lang=zh-tw')),
       initialOptions: InAppWebViewGroupOptions(
         crossPlatform: InAppWebViewOptions(
+          userAgent:
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36',
           useOnLoadResource: true,
           javaScriptCanOpenWindowsAutomatically: true,
         ),
       ),
       onWebViewCreated: (controller) {
         print('HeadlessInAppWebView created!');
-        controller.loadUrl(urlRequest: URLRequest(
-            url: Uri.parse(
-                'https://www.niu.edu.tw/files/501-1000-1019-$page.php?Lang=zh-tw')),);
+        controller.loadUrl(
+            urlRequest: URLRequest(
+                url: Uri.parse(
+                    'https://www.niu.edu.tw/files/501-1000-1019-$page.php?Lang=zh-tw')));
       },
       onConsoleMessage: (controller, consoleMessage) {
         print("CONSOLE MESSAGE: " + consoleMessage.message);
       },
       onLoadStart: (controller, url) async {
         print("onLoadStart $url");
-        setState(() {
-          this.url = url.toString();
-        });
       },
       onLoadResource:
-          (InAppWebViewController controller, LoadedResource resource) {
-        print(resource.toString());
+          (InAppWebViewController controller, LoadedResource resource) async {
+        // print(resource.toString());
       },
       onLoadStop: (controller, url) async {
         print("onLoadStop $url");
-        print(await controller
-            .evaluateJavascript(
-            source:
-            'document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child(2) > td.mc > div > span.date")'));
-        for (int i = 2;
-        await controller
-            .evaluateJavascript(
-            source:
-            'document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > span.date")')!=null;
-        i += 3) {
-          print(i);
-          String js = '''
-      javascript:(
-function() {
-    let title = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > a").innerText;
-    	  date = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > span.date").innerText;
-    	  link = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > a").href;
-    return {title, date,link};
-}
-)()
-      ''';
-          var result = await controller
-              .evaluateJavascript(source: js);
-          String date = result['date'];
-          String title = result['title'];
-          String link = result['link'].replaceAll('http://', 'https://');
-          print(link);
-          data.add({'date': date, 'title': title, 'link':link});
-          // print(i.toString() + date+ text);
-
+        if (url
+            .toString()
+            .contains('https://www.niu.edu.tw/files/501-1000-1019-')) {
+          for (int i = 2; i <= 74; i += 3) {
+            print(i);
+            String js = '''
+            javascript:(
+              function() {
+                let title = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > a").innerText;
+                date = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > span.date").innerText;
+                link = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > a").href;
+                return {title, date,link};
+                })()
+            ''';
+            var result = await controller.evaluateJavascript(source: js);
+            String date = result['date'];
+            String title = result['title'];
+            String link = result['link'].replaceAll('http://', 'https://');
+            print(link);
+            data.add({'date': date, 'title': title, 'link': link});
+          }
+          callBack.complete(true);
         }
-        callBack.complete(true);
       },
       onUpdateVisitedHistory: (controller, url, androidIsReload) {
         print("onUpdateVisitedHistory $url");
-        setState(() {
-          this.url = url.toString();
-        });
       },
     );
-    headlessWebView.run();
+    await headlessWebView.run();
     return callBack.future;
   }
 }
