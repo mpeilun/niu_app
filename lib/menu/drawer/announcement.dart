@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -18,9 +20,8 @@ class AnnouncementPage extends StatefulWidget {
 }
 
 class _AnnouncementPageState extends State<AnnouncementPage> {
-  List contents = [];
-  List<String> links = [];
-  var date;
+  String url = '';
+  List data = [];
   int page = 0;
 
   ScrollController _controller = ScrollController();
@@ -56,6 +57,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
 
   @override
   void dispose() {
+    data.clear();
     super.dispose();
   }
 
@@ -71,38 +73,15 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
           } else {
             return Scaffold(
               body: SmartRefresher(
-                footer: CustomFooter(
-                  builder: (BuildContext context,LoadStatus? mode){
-                    Widget body ;
-                    if(mode==LoadStatus.idle){
-                      body =  Text("向上拉載入更多...");
-                    }
-
-                    else if(mode == LoadStatus.failed){
-                      body = Text("載入失敗，請重新載入");
-                    }
-                    else if(mode == LoadStatus.canLoading){
-                      body = Text("放開以載入");
-                    }
-                    else{
-                      body = Text("沒有更多資料");
-                    }
-                    return Container(
-                      height: 55.0,
-                      child: Center(child:body),
-                    );
-                  },
-                ),
                 enablePullDown: false,
                 enablePullUp: true,
                 onLoading: _onLoading,
                 controller: _refreshController,
                 child: ListView.builder(
                   controller: _controller,
-                  itemCount: contents.length,
+                  itemCount: data.length,
                   itemBuilder: (context, index) {
-                    var item = contents[index];
-                    print(page);
+                    // print(page);
                     // print(contents.length);
                     // print(index);
                     return Padding(
@@ -115,15 +94,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 12.0, vertical: 6.0),
                           //leading: Icon(Icons.event_seat),
-                          title: Text(item.text
-                              .substring(17)
-                              .replaceAll("\n", "")
-                              .replaceAll(" ", "")),
+                          title: Text(data[index]['title']),
                           subtitle: Text(
-                            item.text
-                                .substring(0, 17)
-                                .replaceAll(" ", "")
-                                .replaceAll("\n", ""),
+                            data[index]['date'],
                             style: TextStyle(color: Colors.grey),
                             textAlign: TextAlign.right,
                           ),
@@ -132,12 +105,8 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AnnouncementWebView(
-                                          announcementUrl: links[index],
-                                          announcementTitle: item.text
-                                              .replaceAll("\n", "")
-                                              .replaceAll(" ", "")
-                                              .toString()
-                                              .split(']')[1],
+                                          announcementUrl: data[index]['link'],
+                                          announcementTitle: data[index]['title'],
                                         ),
                                     maintainState: false));
                           },
@@ -178,25 +147,77 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   }
 
   Future<bool> getPost(int page) async {
-    Dio dio = new Dio();
-    Response res = await dio
-        .get("https://www.niu.edu.tw/files/501-1000-1019-$page.php?Lang=zh-tw");
-    var document = parse(res.data);
-    var tempList = document.getElementsByClassName(
-        "h5"); //print(tempList[i].text.replaceAll("\n","")  =>   [ 2021-07-26  ] 【公告】本校110學年度教務處行事曆
-    tempList.removeRange(0, 8);
-    contents.addAll(tempList);
-    for (var content in contents) {
-      if (content.children[1].attributes['href'][0].toString() == ("/")) {
-        links.add(
-            "https://academic.niu.edu.tw${content.children[1].attributes['href']}");
-      } else {
-        links.add(content.children[1].attributes['href']
-            .toString()
-            .replaceAll('http://', 'https://'));
-      }
-    }
-    return true;
+    final Completer<bool> callBack = new Completer<bool>();
+    HeadlessInAppWebView headlessWebView = new HeadlessInAppWebView(
+      initialOptions: InAppWebViewGroupOptions(
+        crossPlatform: InAppWebViewOptions(
+          useOnLoadResource: true,
+          javaScriptCanOpenWindowsAutomatically: true,
+        ),
+      ),
+      onWebViewCreated: (controller) {
+        print('HeadlessInAppWebView created!');
+        controller.loadUrl(urlRequest: URLRequest(
+            url: Uri.parse(
+                'https://www.niu.edu.tw/files/501-1000-1019-$page.php?Lang=zh-tw')),);
+      },
+      onConsoleMessage: (controller, consoleMessage) {
+        print("CONSOLE MESSAGE: " + consoleMessage.message);
+      },
+      onLoadStart: (controller, url) async {
+        print("onLoadStart $url");
+        setState(() {
+          this.url = url.toString();
+        });
+      },
+      onLoadResource:
+          (InAppWebViewController controller, LoadedResource resource) {
+        print(resource.toString());
+      },
+      onLoadStop: (controller, url) async {
+        print("onLoadStop $url");
+        print(await controller
+            .evaluateJavascript(
+            source:
+            'document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child(2) > td.mc > div > span.date")'));
+        for (int i = 2;
+        await controller
+            .evaluateJavascript(
+            source:
+            'document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > span.date")')!=null;
+        i += 3) {
+          print(i);
+          String js = '''
+      javascript:(
+function() {
+    let title = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > a").innerText;
+    	  date = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > span.date").innerText;
+    	  link = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > a").href;
+    return {title, date,link};
+}
+)()
+      ''';
+          var result = await controller
+              .evaluateJavascript(source: js);
+          String date = result['date'];
+          String title = result['title'];
+          String link = result['link'].replaceAll('http://', 'https://');
+          print(link);
+          data.add({'date': date, 'title': title, 'link':link});
+          // print(i.toString() + date+ text);
+
+        }
+        callBack.complete(true);
+      },
+      onUpdateVisitedHistory: (controller, url, androidIsReload) {
+        print("onUpdateVisitedHistory $url");
+        setState(() {
+          this.url = url.toString();
+        });
+      },
+    );
+    headlessWebView.run();
+    return callBack.future;
   }
 }
 
