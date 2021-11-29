@@ -43,9 +43,9 @@ class Event {
 }
 
 class CustomEventCard extends StatefulWidget {
-  final List<Event> data;
-  final List<Event> dataCanSignUp;
-  final List<Event> dataUnable;
+  final List<dynamic> data;
+  final List<dynamic> dataCanSignUp;
+  final List<dynamic> dataUnable;
 
   const CustomEventCard({
     Key? key,
@@ -62,7 +62,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
   ScrollController _scrollController = ScrollController();
   TextEditingController _textEditingController = TextEditingController();
   List<bool> _isSelected = [true, false, false];
-  late List<Event> display = widget.data;
+  late List<dynamic> display = widget.data;
   List<Event> tmp = [];
 
   void search(){
@@ -170,7 +170,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                             flex: 3,
                             child: Container(
                               child: Text(
-                                display[index].name,
+                                display[index]['name'],
                                 style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold),
@@ -184,7 +184,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                             flex: 1,
                             child: Container(
                               child: Text(
-                                display[index].department,
+                                display[index]['department'],
                                 style: TextStyle(
                                   fontSize: 14.0,
                                   color: Colors.grey[400],
@@ -198,12 +198,12 @@ class _CustomEventCardState extends State<CustomEventCard> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        // color: Colors.grey.shade50,
+                        // color: Theme.of(context).primaryColor,
+                        color: Colors.grey.shade50,
                         borderRadius: BorderRadius.circular(20.0),
                         boxShadow: [
                           BoxShadow(
-                              // color: Colors.grey,
+                              color: Colors.grey,
                               offset: Offset(1.0, 1.0), //陰影y軸偏移量
                               blurRadius: 0, //陰影模糊程度
                               spreadRadius: 0 //陰影擴散程度
@@ -238,7 +238,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                         width: 2.0,
-                                        color: display[index].status == '報名中'
+                                        color: display[index]['state'] == '報名中'
                                             ? Color(0xff2364aa)
                                             : Color(0xFF954242)),
                                     borderRadius: BorderRadius.all(
@@ -247,10 +247,10 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                         ),
                                   ),
                                   child: Text(
-                                    display[index].status,
+                                    display[index]['state'],
                                     style: TextStyle(
                                       fontSize: 12.0,
-                                      color: display[index].status == '報名中'
+                                      color: display[index]['state'] == '報名中'
                                           ? Color(0xff2364aa)
                                           : Color(0xFF954242),
                                     ),
@@ -264,7 +264,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                 ListInfo(
                                   icon: Icons.info,
                                   title: '活動編號',
-                                  widget: Text(display[index].eventSerialNum,
+                                  widget: Text(display[index]['eventSerialNum'],
                                       style: TextStyle(fontSize: 14)),
                                 ),
                                 ListInfo(
@@ -273,11 +273,11 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                   widget: Column(
                                     children: [
                                       Text(
-                                        display[index].eventTimeStart + '起',
+                                        display[index]['eventTimeStart'] + '起',
                                         style: TextStyle(fontSize: 14),
                                       ),
                                       Text(
-                                        display[index].eventTimeEnd + '止',
+                                        display[index]['eventTimeEnd'] + '止',
                                         style: TextStyle(fontSize: 14),
                                       ),
                                     ],
@@ -289,11 +289,11 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                   widget: Column(
                                     children: [
                                       Text(
-                                        display[index].signTimeStart + '起',
+                                        display[index]['signTimeStart'] + '起',
                                         style: TextStyle(fontSize: 14),
                                       ),
                                       Text(
-                                        display[index].signTimeEnd + '止',
+                                        display[index]['signTimeEnd'] + '止',
                                         style: TextStyle(fontSize: 14),
                                       ),
                                     ],
@@ -308,33 +308,32 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                     children: [
                                       Text(
                                         '正取: ' +
-                                            display[index].positive +
+                                            display[index]['positive'] +
                                             '/' +
-                                            display[index].positiveLimit +
+                                            display[index]['positiveLimit'] +
                                             '人',
                                         style: TextStyle(fontSize: 14),
                                       ),
                                       Text(
                                         '備取: ' +
-                                            display[index].wait +
+                                            display[index]['wait'] +
                                             '/' +
-                                            display[index].waitLimit +
+                                            display[index]['waitLimit'] +
                                             '人',
                                         style: TextStyle(fontSize: 14),
                                       ),
                                     ],
                                   ),
                                 ),
-                                display[index].status == "報名中"
+                                display[index]['state'] == "報名中"
                                     ? ElevatedButton(
                                         onPressed: () {
-                                          print(display[index].signUpJS);
+                                          print(display[index]['signUpJs']);
                                           showDialog(
                                             context: context,
                                             builder: (BuildContext context) =>
                                                 EventInfoDialog(
-                                                    eventJS: display[index]
-                                                        .signUpJS),
+                                                    eventJS: display[index]['signUpJs']),
                                           );
                                         },
                                         child: Text('我要報名'),

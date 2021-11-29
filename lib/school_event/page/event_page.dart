@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/keep_alive.dart';
@@ -17,11 +19,11 @@ class _EventPageState extends State<EventPage> {
   String url = "";
   String temp = "";
 
-  List<Event> data = [];
-  List<Event> dataCanSignUp = [];
-  List<Event> dataUnable = [];
+  List<dynamic> data = [];
+  List<dynamic> dataCanSignUp = [];
+  List<dynamic> dataUnable = [];
 
-  List<Event> readTemp = [];
+  List<dynamic> readTemp = [];
   bool dataLoaded = false;
   bool refreshLoaded = true;
 
@@ -29,88 +31,39 @@ class _EventPageState extends State<EventPage> {
 
   Future<void> getData() async {
     readTemp.clear();
-
-    for (int i = 2;
-        await headlessWebView?.webViewController.evaluateJavascript(
-                source:
-                    'document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(9)").innerText') !=
-            null;
-        i++) {
-      String js = '''javascript:(
+    String js = '''javascript:(
 function() {
-    let name = document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(4) > div").innerText;
-        department = document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(3)").innerText;
-        state = document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(9)").innerText;
-        signTimeStart=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i > 9 ? i : '0$i'}_lblAttBdate").innerText;
-        signTimeEnd=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i > 9 ? i : '0$i'}_lblAttEdate").innerText;
-        eventTimeStart=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i > 9 ? i : '0$i'}_lblActBdate").innerText;
-        eventTimeEnd=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i > 9 ? i : '0$i'}_lblActEdate").innerText;
-        positive=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i > 9 ? i : '0$i'}_lblOKNum").innerText;
-        positiveLimit=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i > 9 ? i : '0$i'}_lblLimitNum").innerText;
-        wait=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i > 9 ? i : '0$i'}_lblBKNum").innerText;
-        waitLimit=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl${i > 9 ? i : '0$i'}_lblSecNum").innerText;
-        signUpJs=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(1) > a").href;
-        eventSerialNum=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child($i) > td:nth-child(2)").innerText;
-    return {name,department,state,signTimeStart,signTimeEnd,eventTimeStart,eventTimeEnd,positive,positiveLimit,wait,waitLimit,signUpJs,eventSerialNum};
+    var data = [];
+    for(i=2;document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child("+i+") > td:nth-child(9)")!=null;i++){
+        var i_special = i.toString();
+        if(i<10){i_special = "0" + i;}
+        let name = document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child("+i+") > td:nth-child(4) > div").innerText;
+            department = document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child("+i+") > td:nth-child(3)").innerText;
+            state = document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child("+i+") > td:nth-child(9)").innerText;
+            signTimeStart=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl"+i_special+"_lblAttBdate").innerText;
+            signTimeEnd=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl"+i_special+"_lblAttEdate").innerText;
+            eventTimeStart=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl"+i_special+"_lblActBdate").innerText;
+            eventTimeEnd=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl"+i_special+"_lblActEdate").innerText;
+            positive=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl"+i_special+"_lblOKNum").innerText;
+            positiveLimit=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl"+i_special+"_lblLimitNum").innerText;
+            wait=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl"+i_special+"_lblBKNum").innerText;
+            waitLimit=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply_ctl"+i_special+"_lblSecNum").innerText;
+            signUpJs=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child("+i+") > td:nth-child(1) > a").href;
+            eventSerialNum=document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child("+i+") > td:nth-child(2)").innerText;
+        data[i-2] = {name,department,state,signTimeStart,signTimeEnd,eventTimeStart,eventTimeEnd,positive,positiveLimit,wait,waitLimit,signUpJs,eventSerialNum};
+    }
+    return data;
 }
 )()''';
 
-      var result = await headlessWebView?.webViewController
-          .evaluateJavascript(source: js);
-      print(result);
-      String status = result['state'];
-      //if (status != str) continue;
-      String name = result['name'].trim();
-      String department = result['department'];
-
-      String signTimeStart = result['signTimeStart'];
-
-      String signTimeEnd = result['signTimeEnd'];
-
-      String eventTimeStart = result['eventTimeStart'];
-
-      String eventTimeEnd = result['eventTimeEnd'];
-
-      String positive = result['positive'];
-      String positiveLimit = result['positiveLimit'];
-      String wait = result['wait'];
-      String waitLimit = result['waitLimit'];
-      String signUpJavaScript = result['signUpJs'];
-      String eventSerialNum = result['eventSerialNum'];
-      print(i);
-      readTemp.add(Event(
-        name: name,
-        //活動名稱
-        department: department,
-        //主辦部門
-        signTimeStart: signTimeStart,
-        //報名時間
-        signTimeEnd: signTimeEnd,
-        //報名時間截止
-        eventTimeStart: eventTimeStart,
-        //活動時間
-        eventTimeEnd: eventTimeEnd,
-        //活動時間截止
-        status: status,
-        //報名狀態
-        positive: positive,
-        //正取人數
-        positiveLimit: positiveLimit,
-        //正取上限
-        wait: wait,
-        //備取人數
-        waitLimit: waitLimit,
-        //備取上限
-        signUpJS: signUpJavaScript,
-        //報名javascript連結
-        eventSerialNum: eventSerialNum, //活動編號
-      ));
-    }
+    readTemp =
+        await headlessWebView?.webViewController.evaluateJavascript(source: js);
+    log(readTemp.length.toString());
   }
 
   Future<void> getDataByStatus(String keyword) async {
     for (int i = 0; i < readTemp.length; i++) {
-      if (readTemp[i].status == keyword) {
+      if (readTemp[i]['state'] == keyword) {
         data.add(readTemp[i]);
       }
     }
@@ -120,7 +73,7 @@ function() {
     dataCanSignUp.clear();
     dataUnable.clear();
     for (int i = 0; i < data.length; i++) {
-      if (data[i].status == '報名中')
+      if (data[i]['state'] == '報名中')
         dataCanSignUp.add(data[i]);
       else
         dataUnable.add(data[i]);
@@ -199,7 +152,7 @@ function() {
 
   @override
   void dispose() {
-    headlessWebView?.webViewController.loadUrl(urlRequest: URLRequest(url: Uri.parse('about:blank')));
+    //headlessWebView?.webViewController.loadUrl(urlRequest: URLRequest(url: Uri.parse('about:blank')));
     super.dispose();
   }
 
