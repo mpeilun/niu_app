@@ -24,15 +24,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
       RefreshController(initialRefresh: false);
 
   void _onLoading() async {
-    if (page < 86) {
-      if (await getPost(page++)) {
-        setState(() {
-          _refreshController.loadComplete();
-        });
-      }
-    } else {
-      _refreshController.loadComplete();
-    }
+    setState(() {
+      page++;
+    });
   }
 
   @override
@@ -163,7 +157,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
             javascript:(
               function() {
                 var data = [];
-                for(i=2; i <= 74; i += 3){
+                for(i=2; document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child("+i+") > td.mc > div > a") != null; i += 3){
                   let title = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child("+i+") > td.mc > div > a").innerText;
                       date = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child("+i+") > td.mc > div > span.date").innerText;
                       link = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child("+i+") > td.mc > div > a").href.replace("http://","https://");
@@ -173,12 +167,10 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
               }
             )()
             ''';
-          print('TEST---TEST---TEST$page');
-          print(data);
+          print('---page:$page---');
           data.addAll(await controller.evaluateJavascript(source: js));
-
-          print('page' + page.toString());
           callBack.complete(true);
+          _refreshController.loadComplete();
         }
       },
     );
