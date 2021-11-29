@@ -7,6 +7,7 @@ import 'dart:io' as dartCookies;
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/pdfviwer.dart';
+import 'package:niu_app/components/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -18,15 +19,21 @@ class AnnouncementPage extends StatefulWidget {
 class _AnnouncementPageState extends State<AnnouncementPage> {
   List data = [];
   int page = 1;
+  bool enablePullUp = true;
   late HeadlessInAppWebView headlessWebView;
   ScrollController _controller = ScrollController();
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   void _onLoading() async {
-    setState(() {
-      page++;
-    });
+    if (page < 86) {
+      setState(() {
+        page++;
+      });
+    } else {
+      showToast('已經滑到最底囉!');
+      _refreshController.loadNoData();
+    }
   }
 
   @override
