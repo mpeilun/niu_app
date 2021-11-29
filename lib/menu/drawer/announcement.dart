@@ -25,7 +25,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
 
   void _onLoading() async {
     if (page < 86) {
-      if (await getPost(++page)) {
+      if (await getPost(page++)) {
         setState(() {
           _refreshController.loadComplete();
         });
@@ -136,24 +136,17 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   Future<bool> getPost(int page) async {
     Completer<bool> callBack = new Completer<bool>();
     headlessWebView = new HeadlessInAppWebView(
-      initialSize: Size(600, 800),
       initialUrlRequest: URLRequest(
           url: Uri.parse(
               'https://www.niu.edu.tw/files/501-1000-1019-$page.php?Lang=zh-tw')),
       initialOptions: InAppWebViewGroupOptions(
         crossPlatform: InAppWebViewOptions(
-          userAgent:
-              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36',
           useOnLoadResource: true,
           javaScriptCanOpenWindowsAutomatically: true,
         ),
       ),
       onWebViewCreated: (controller) {
         print('HeadlessInAppWebView created!');
-        controller.loadUrl(
-            urlRequest: URLRequest(
-                url: Uri.parse(
-                    'https://www.niu.edu.tw/files/501-1000-1019-$page.php?Lang=zh-tw')));
       },
       onConsoleMessage: (controller, consoleMessage) {
         print("CONSOLE MESSAGE: " + consoleMessage.message);
@@ -161,38 +154,32 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
       onLoadStart: (controller, url) async {
         print("onLoadStart $url");
       },
-      onLoadResource:
-          (InAppWebViewController controller, LoadedResource resource) async {
-        // print(resource.toString());
-      },
       onLoadStop: (controller, url) async {
         print("onLoadStop $url");
         if (url
             .toString()
             .contains('https://www.niu.edu.tw/files/501-1000-1019-')) {
-          for (int i = 2; i <= 74; i += 3) {
-            String js = '''
+          String js = '''
             javascript:(
               function() {
-                let title = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > a").innerText;
-                date = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > span.date").innerText;
-                link = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child($i) > td.mc > div > a").href;
-                return {title, date,link};
-                })()
+                var data = [];
+                for(i=2; i <= 74; i += 3){
+                  let title = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child("+i+") > td.mc > div > a").innerText;
+                      date = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child("+i+") > td.mc > div > span.date").innerText;
+                      link = document.querySelector("#Dyn_2_3 > div > div.md_middle > div > div > div > table > tbody > tr:nth-child("+i+") > td.mc > div > a").href.replace("http://","https://");
+                  data[(i-2)/3] = {title, date,link};
+                }
+                return data;
+              }
+            )()
             ''';
-            var result = await controller.evaluateJavascript(source: js);
-            print(i);
-            String date = !(result['date'] == null) ? result['date'] : '';
-            String title = result['title'];
-            String link = result['link'].replaceAll('http://', 'https://');
-            data.add({'date': date, 'title': title, 'link': link});
-          }
+          print('TEST---TEST---TEST$page');
+          print(data);
+          data.addAll(await controller.evaluateJavascript(source: js));
+
           print('page' + page.toString());
           callBack.complete(true);
         }
-      },
-      onUpdateVisitedHistory: (controller, url, androidIsReload) {
-        print("onUpdateVisitedHistory $url");
       },
     );
     await headlessWebView.run();
