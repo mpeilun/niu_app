@@ -46,4 +46,6 @@ setStudioData(String id, String pwd, String name) async {
   prefs.setString("id", id.toLowerCase());
   prefs.setString("pwd", pwd);
   prefs.setString("name", name);
+  prefs.setString("first_login_time", DateTime.now().toString());
+  prefs.setBool("isDoneForm", false);
 }

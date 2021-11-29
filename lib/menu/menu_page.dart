@@ -262,7 +262,9 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                 Expanded(
                   flex: 4,
                   child: Image.asset(
-                    themeChange.darkTheme ? 'assets/niu_background_black.png' : 'assets/niu_background.png',
+                    themeChange.darkTheme
+                        ? 'assets/niu_background_black.png'
+                        : 'assets/niu_background.png',
                   ),
                 ),
               ]),
@@ -520,6 +522,15 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
         runNotificationWebViewWebView(context, null);
         pushLastLogin();
         loginFinished();
+        DateTime firstLoginTime =
+            DateTime.parse(prefs.getString('first_login_time')!);
+        if (DateTime.now().difference(firstLoginTime).inDays >= 3 &&
+            !prefs.getBool('isDoneForm')!) {
+          print('---do form---');
+        } else {
+          print('---do nothing---');
+          print(DateTime.now().difference(firstLoginTime).inDays);
+        }
       } else if (result == '帳號密碼錯誤') {
         showToast('帳號密碼錯誤，請重新登入');
         Future.delayed(Duration(milliseconds: 1000), () async {

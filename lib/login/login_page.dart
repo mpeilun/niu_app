@@ -30,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     context.read<DrawerProvider>().onclick(0);
     id = data.name;
     pwd = data.password;
+
     return (await Login(id, pwd).niuLogin().timeout(Duration(seconds: 60),
             onTimeout: () {
       return '學校系統異常';
