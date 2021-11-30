@@ -6,7 +6,6 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 void toDoFormAlert(BuildContext context) {
   Alert(
     context: context,
-    type: AlertType.info,
     image: SizedBox(
       height: 150,
       width: 150,
