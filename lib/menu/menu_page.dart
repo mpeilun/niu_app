@@ -20,6 +20,7 @@ import 'package:niu_app/components/login_loading.dart';
 import 'package:niu_app/menu/notification/notification_page.dart';
 import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
+import 'package:niu_app/menu/statisfaction_survey/form.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/provider/notification_provider.dart';
 import 'package:niu_app/menu/drawer/school%EF%BC%BFschedule.dart';
@@ -528,6 +529,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
             !prefs.getBool('isDoneForm')!) {
           print('---do form---');
         } else {
+          toDoFormAlert(context);
           print('---do nothing---');
           print(DateTime.now().difference(firstLoginTime).inDays);
         }
