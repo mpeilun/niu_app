@@ -20,7 +20,6 @@ import 'package:niu_app/components/login_loading.dart';
 import 'package:niu_app/menu/notification/notification_page.dart';
 import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/login/login_page.dart';
-import 'package:niu_app/menu/statisfaction_survey/form.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/provider/notification_provider.dart';
 import 'package:niu_app/menu/drawer/school%EF%BC%BFschedule.dart';
@@ -46,6 +45,7 @@ import '../zuvio.dart';
 
 import 'package:badges/badges.dart';
 
+import 'Satisfaction_survey/form.dart';
 import 'notification/notification_webview.dart';
 
 Route _createRoute() {

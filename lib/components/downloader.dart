@@ -17,7 +17,7 @@ Future<void> download(Uri uri, BuildContext context, String? title) async {
               uri.toString().substring(uri.toString().lastIndexOf("/") + 1))
           .length >
       100) {
-    title = '';
+    title = null;
   } else if (title == null) {
     title = '   ' +
         Uri.decodeComponent(
