@@ -7,23 +7,11 @@ void toDoFormAlert(BuildContext context) {
   Alert(
     context: context,
     style: AlertStyle(
-      animationType: AnimationType.fromTop,
-      isCloseButton: false,
-      isOverlayTapDismiss: false,
-      descStyle: TextStyle(fontWeight: FontWeight.bold),
-      descTextAlign: TextAlign.start,
-      animationDuration: Duration(milliseconds: 400),
-      alertBorder: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0.0),
-        side: BorderSide(
-          color: Colors.grey,
-        ),
-      ),
-      titleStyle: TextStyle(
-        color: Colors.red,
-      ),
-      alertAlignment: Alignment.topCenter,
-    ),
+        isCloseButton: false,
+        alertAlignment: Alignment.center,
+        constraints: BoxConstraints.expand(height: 300),
+        alertPadding: EdgeInsets.zero,
+        buttonAreaPadding: EdgeInsets.all(10)),
     image: SizedBox(
       height: 150,
       width: 150,
