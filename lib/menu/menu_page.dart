@@ -336,10 +336,10 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Color.fromARGB(255, 28, 28, 28),
-                            spreadRadius: 2.0,
-                            blurRadius: 20.0,
-                            offset: Offset(3.0, 0),
+                            color: Colors.grey.shade800,
+                            spreadRadius: 1.5,
+                            blurRadius: 10.0,
+                            offset: Offset(1.0, 0),
                           ),
                         ],
                       ),

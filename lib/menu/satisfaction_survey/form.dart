@@ -96,6 +96,10 @@ class _SatisfactionSurveyState extends State<SatisfactionSurvey> {
         allowsInlineMediaPlayback: true,
       ));
   late String url;
+  List googleFormUrl = [
+    'https://docs.google.com/forms/d/e/1FAIpQLScHj4S0Yd8gzC90PWRVfPiA8gIA1Dy1XcK7VlwNA98siDUYbg/viewform?usp=sf_link',
+    'https://docs.google.com/forms/d/e/1FAIpQLSe5l6o9TdooOHXFvutrRxtl1VihaFaKuXp7L6xnyGliVzcN0g/viewform?usp=sf_link'
+  ];
   String js = '''
     javascript:(
       function() {
@@ -130,6 +134,15 @@ class _SatisfactionSurveyState extends State<SatisfactionSurvey> {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+    String getGoogleUrl() {
+      if (themeChange.darkTheme) {
+        return googleFormUrl[1];
+      } else {
+        return googleFormUrl[0];
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('滿意度調查'),
@@ -193,9 +206,7 @@ class _SatisfactionSurveyState extends State<SatisfactionSurvey> {
                 maintainState: true,
                 child: InAppWebView(
                   key: satisfactionSurvey,
-                  initialUrlRequest: URLRequest(
-                      url: Uri.parse(
-                          "https://docs.google.com/forms/d/e/1FAIpQLScHj4S0Yd8gzC90PWRVfPiA8gIA1Dy1XcK7VlwNA98siDUYbg/viewform?usp=sf_link")),
+                  initialUrlRequest: URLRequest(url: Uri.parse(getGoogleUrl())),
                   initialOptions: options,
                   onWebViewCreated: (controller) async {
                     webViewController = controller;

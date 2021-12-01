@@ -168,16 +168,14 @@ class _PageRecruit extends State<PageRecruit> {
                       style: TextStyle(fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
-                    Expanded(
-                        flex: 2,
-                        child: SizedBox()),
+                    Expanded(flex: 2, child: SizedBox()),
                     Expanded(
                       flex: 4,
                       child: ElevatedButton(
                         onPressed: () async {
                           if (_contact != '' && _checkboxSelected != false) {
                             SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
+                                await SharedPreferences.getInstance();
                             Response response;
                             BaseOptions options = new BaseOptions(
                               baseUrl: "https://docs.google.com",
@@ -212,9 +210,7 @@ class _PageRecruit extends State<PageRecruit> {
                         ),
                       ),
                     ),
-                    Expanded(
-                        flex: 1,
-                        child: SizedBox()),
+                    Expanded(flex: 1, child: SizedBox()),
                   ]),
                 ],
               ),
@@ -368,7 +364,56 @@ class _PageFeedback extends State<PageFeedback> {
                             '以記名方式送出',
                             style: TextStyle(fontSize: 14),
                             textAlign: TextAlign.left,
-                          )
+                          ),
+                          Expanded(flex: 2, child: SizedBox()),
+                          Expanded(
+                              flex: 4,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Theme.of(context).primaryColor),
+                                onPressed: () async {
+                                  if (_contact != '') {
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    Response response;
+                                    BaseOptions options = new BaseOptions(
+                                      baseUrl: "https://docs.google.com",
+                                      connectTimeout: 6000,
+                                      receiveTimeout: 3000,
+                                    );
+                                    Dio dio = new Dio(options);
+
+                                    String name = '匿名';
+                                    String id = '';
+                                    if (_checkboxSelected) {
+                                      name = prefs.getString('name')!;
+                                      id = prefs.getString('id')!;
+                                    }
+
+                                    FormData formData = new FormData.fromMap({
+                                      'entry.1433399447': name,
+                                      'entry.1949243152': id,
+                                      'entry.180726658': _contact,
+                                    });
+
+                                    try {
+                                      response = await dio.post(
+                                          "/forms/d/e/1FAIpQLSfxIvpXwmJEedPyxBxLFpkQy6REAQxeMJrXr4aYOx5ggjfBZw/formResponse",
+                                          data: formData);
+                                      showToast('成功送出！');
+                                    } catch (e) {
+                                      print('Error: $e');
+                                    }
+                                  } else {
+                                    showToast('內容不能為空！');
+                                  }
+                                },
+                                child: Text(
+                                  '送出',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              )),
+                          Expanded(flex: 1, child: SizedBox())
                         ]),
                       ],
                     ),
@@ -376,51 +421,6 @@ class _PageFeedback extends State<PageFeedback> {
                   SizedBox(
                     height: 10,
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).primaryColor),
-                    onPressed: () async {
-                      if (_contact != '') {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        Response response;
-                        BaseOptions options = new BaseOptions(
-                          baseUrl: "https://docs.google.com",
-                          connectTimeout: 6000,
-                          receiveTimeout: 3000,
-                        );
-                        Dio dio = new Dio(options);
-
-                        String name = '匿名';
-                        String id = '';
-                        if (_checkboxSelected) {
-                          name = prefs.getString('name')!;
-                          id = prefs.getString('id')!;
-                        }
-
-                        FormData formData = new FormData.fromMap({
-                          'entry.1433399447': name,
-                          'entry.1949243152': id,
-                          'entry.180726658': _contact,
-                        });
-
-                        try {
-                          response = await dio.post(
-                              "/forms/d/e/1FAIpQLSfxIvpXwmJEedPyxBxLFpkQy6REAQxeMJrXr4aYOx5ggjfBZw/formResponse",
-                              data: formData);
-                          showToast('成功送出！');
-                        } catch (e) {
-                          print('Error: $e');
-                        }
-                      } else {
-                        showToast('內容不能為空！');
-                      }
-                    },
-                    child: Text(
-                      '送出',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  )
                 ],
               ),
             ),
@@ -561,7 +561,77 @@ class _PageBugReport extends State<PageBugReport> {
                             '同意傳送設備資訊',
                             style: TextStyle(fontSize: 14),
                             textAlign: TextAlign.left,
-                          )
+                          ),
+                          Expanded(flex: 2, child: SizedBox()),
+                          Expanded(
+                              flex: 4,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Theme.of(context).primaryColor),
+                                onPressed: () async {
+                                  if (_contact != '' &&
+                                      _checkboxSelected != false) {
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    Response response;
+                                    BaseOptions options = new BaseOptions(
+                                      baseUrl: "https://docs.google.com",
+                                      connectTimeout: 6000,
+                                      receiveTimeout: 3000,
+                                    );
+                                    Dio dio = new Dio(options);
+
+                                    DeviceInfoPlugin deviceInfo =
+                                        DeviceInfoPlugin();
+                                    PackageInfo info =
+                                        await PackageInfo.fromPlatform();
+
+                                    String hardware = '';
+                                    String osVersion = '';
+                                    String appVersion = info.version;
+
+                                    if (Platform.isAndroid) {
+                                      AndroidDeviceInfo android =
+                                          await deviceInfo.androidInfo;
+                                      hardware = android.model;
+                                      osVersion =
+                                          android.version.sdkInt.toString();
+                                    } else if (Platform.isIOS) {
+                                      IosDeviceInfo ios =
+                                          await deviceInfo.iosInfo;
+                                      hardware = ios.utsname.machine;
+                                      osVersion = ios.systemVersion;
+                                    }
+
+                                    FormData formData = new FormData.fromMap({
+                                      'entry.664827657':
+                                          _canReproducible.toString(), //可否再現
+                                      'entry.1169887801': _contact, //內容
+                                      'entry.1770154643': hardware, //系統
+                                      'entry.240297325': osVersion, //系統版本
+                                      'entry.155630872': appVersion, //app版本
+                                    });
+
+                                    try {
+                                      response = await dio.post(
+                                          "/forms/d/e/1FAIpQLSefdKU911s_ONEtuBDLLaA_YnfzEHF2pHFpUHfxT12VxDESoA/formResponse",
+                                          data: formData);
+                                      showToast('成功送出！');
+                                    } catch (e) {
+                                      print('Error: $e');
+                                    }
+                                  } else if (_contact == '') {
+                                    showToast('內容不能為空！');
+                                  } else {
+                                    showToast('請同意傳送設備資訊，以便我們修正錯誤');
+                                  }
+                                },
+                                child: Text(
+                                  '送出',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              )),
+                          Expanded(flex: 1, child: SizedBox())
                         ]),
                       ],
                     ),
@@ -569,66 +639,6 @@ class _PageBugReport extends State<PageBugReport> {
                   SizedBox(
                     height: 10,
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).primaryColor),
-                    onPressed: () async {
-                      if (_contact != '' && _checkboxSelected != false) {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        Response response;
-                        BaseOptions options = new BaseOptions(
-                          baseUrl: "https://docs.google.com",
-                          connectTimeout: 6000,
-                          receiveTimeout: 3000,
-                        );
-                        Dio dio = new Dio(options);
-
-                        DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-                        PackageInfo info = await PackageInfo.fromPlatform();
-
-                        String hardware = '';
-                        String osVersion = '';
-                        String appVersion = info.version;
-
-                        if (Platform.isAndroid) {
-                          AndroidDeviceInfo android =
-                              await deviceInfo.androidInfo;
-                          hardware = android.model;
-                          osVersion = android.version.sdkInt.toString();
-                        } else if (Platform.isIOS) {
-                          IosDeviceInfo ios = await deviceInfo.iosInfo;
-                          hardware = ios.utsname.machine;
-                          osVersion = ios.systemVersion;
-                        }
-
-                        FormData formData = new FormData.fromMap({
-                          'entry.664827657': _canReproducible.toString(), //可否再現
-                          'entry.1169887801': _contact, //內容
-                          'entry.1770154643': hardware, //系統
-                          'entry.240297325': osVersion, //系統版本
-                          'entry.155630872': appVersion, //app版本
-                        });
-
-                        try {
-                          response = await dio.post(
-                              "/forms/d/e/1FAIpQLSefdKU911s_ONEtuBDLLaA_YnfzEHF2pHFpUHfxT12VxDESoA/formResponse",
-                              data: formData);
-                          showToast('成功送出！');
-                        } catch (e) {
-                          print('Error: $e');
-                        }
-                      } else if (_contact == '') {
-                        showToast('內容不能為空！');
-                      } else {
-                        showToast('請同意傳送設備資訊，以便我們修正錯誤');
-                      }
-                    },
-                    child: Text(
-                      '送出',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  )
                 ],
               ),
             ),

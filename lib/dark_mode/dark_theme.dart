@@ -21,7 +21,7 @@ class Styles {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color?>(
-              isDarkTheme ? Color(0xff212121) : Colors.blue[900]),
+              isDarkTheme ? Color(0xff212121) : Colors.blue[700]),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0),

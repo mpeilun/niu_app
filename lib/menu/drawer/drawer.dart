@@ -53,7 +53,7 @@ class _DrawerPageState extends State<DrawerPage> {
     return AnimatedContainer(
       transform: Matrix4.translationValues(widget.drawerXOffset, 0, 0),
       duration: Duration(milliseconds: 150),
-      width: 115.0,
+      width: 110.0,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -103,7 +103,7 @@ class _DrawerPageState extends State<DrawerPage> {
           Divider(),
           createDrawerItem(
               context: context,
-              size: 45.0,
+              size: 40.0,
               icon: MyFlutterApp.calendar,
               text: '行事曆',
               onTap: () {
@@ -190,19 +190,20 @@ class Divider extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 14.0, 4.0, 10.0),
       child: Container(
+        width: 105.0,
         height: 1.7,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
           gradient: LinearGradient(colors: [
             themeChange.darkTheme
                 ? Color.fromARGB(255, 56, 56, 56)
-                : Color.fromARGB(255, 33, 150, 243),
+                : Color.fromARGB(255, 19, 97, 158),
             themeChange.darkTheme
-                ? Color.fromARGB(255, 109, 109, 109)
-                : Color.fromARGB(203, 33, 150, 243),
+                ? Color.fromARGB(255, 76, 76, 76)
+                : Color.fromARGB(203, 34, 142, 229),
             themeChange.darkTheme
                 ? Color.fromARGB(0, 72, 72, 72)
-                : Color.fromARGB(0, 33, 150, 243),
+                : Color.fromARGB(0, 34, 142, 229),
           ]),
         ),
       ),
@@ -211,7 +212,7 @@ class Divider extends StatelessWidget {
 }
 
 Widget createDrawerItem(
-    {double size = 50.0,
+    {double size = 45.0,
     required IconData icon,
     required String text,
     required GestureTapCallback onTap,
@@ -220,7 +221,7 @@ Widget createDrawerItem(
   return InkWell(
     onTap: onTap,
     child: Container(
-      height: 80.0,
+      height: 70.0,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

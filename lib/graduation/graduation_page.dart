@@ -24,7 +24,11 @@ class _GraduationPageState extends State<GraduationPage> {
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
-    final passColor = [themeChange.darkTheme ? Colors.green[300] : Colors.green[600], themeChange.darkTheme ? Colors.white : Colors.black, Colors.red];
+    final passColor = [
+      themeChange.darkTheme ? Colors.green[300] : Colors.green[600],
+      themeChange.darkTheme ? Colors.white : Colors.black,
+      Colors.red
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -79,7 +83,7 @@ class _GraduationPageState extends State<GraduationPage> {
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 18.0, vertical: 8.0),
+                                  horizontal: 12.0, vertical: 6.0),
                               minimumSize: Size(0.0, 0.0),
                             ),
                             child: Text("詳細",
@@ -211,28 +215,29 @@ class Indicator extends StatelessWidget {
     double times = double.parse('$time');
     return Container(
       child: CircularPercentIndicator(
-        header: Padding(
-          padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 4.0),
-          child: Text(
-            title,
-            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+          header: Padding(
+            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 4.0),
+            child: Text(
+              title,
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+            ),
           ),
-        ),
-        animation: true,
-        animationDuration: 750,
-        radius: 100.0,
-        lineWidth: 10.0,
-        percent: times / requiredTime,
-        center: Text(
-          "$time/${requiredTime.toStringAsFixed(0)}",
-          style: TextStyle(
-              fontSize: 16.0,
-              color: themeChange.darkTheme ? Colors.grey[400] : Colors.grey[600],
-              fontWeight: FontWeight.w500),
-        ),
-        backgroundColor: Colors.grey,
-        progressColor: Colors.blue,
-      ),
+          animation: true,
+          animationDuration: 750,
+          radius: 100.0,
+          lineWidth: 10.0,
+          percent: times / requiredTime,
+          center: Text(
+            "$time/${requiredTime.toStringAsFixed(0)}",
+            style: TextStyle(
+                fontSize: 16.0,
+                color:
+                    themeChange.darkTheme ? Colors.grey[400] : Colors.grey[600],
+                fontWeight: FontWeight.w500),
+          ),
+          backgroundColor: Colors.grey,
+          progressColor:
+              themeChange.darkTheme ? const Color(0xff212121) : Colors.blue),
     );
   }
 }
