@@ -35,6 +35,8 @@ class Styles {
       appBarTheme: AppBarTheme(
         color: isDarkTheme ? Color(0xff212121) : Colors.blue[900],
         systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarBrightness:
+                isDarkTheme ? Brightness.dark : Brightness.light,
             statusBarColor: isDarkTheme ? Color(0xff000000) : Colors.blue[900]),
       ),
       // textTheme: GoogleFonts.notoSansTextTheme(
