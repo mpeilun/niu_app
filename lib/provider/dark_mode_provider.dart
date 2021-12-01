@@ -22,18 +22,11 @@ class DarkThemeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void asyncDoneForm(BuildContext context) async {
+  void asyncDoneForm() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool('isDoneForm') == null) {
-      Provider.of<DarkThemeProvider>(context, listen: false).doneForm = false;
-    } else {
-      print('---------' + prefs.getBool('isDoneForm').toString());
-      Provider.of<DarkThemeProvider>(context, listen: false).doneForm =
-          prefs.getBool('isDoneForm')!;
-      print('---------' +
-          Provider.of<DarkThemeProvider>(context, listen: false)
-              .doneForm
-              .toString());
+    if (prefs.containsKey('isDoneForm')) {
+      _doneForm = prefs.getBool('isDoneForm')!;
+      print('isDoneForm State:' + _doneForm.toString());
     }
   }
 }

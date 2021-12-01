@@ -5,6 +5,7 @@ import 'package:niu_app/graduation/graduation.dart';
 import 'package:niu_app/login/login_method.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
+import 'package:niu_app/menu/satisfaction_survey/form.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/provider/info_provider.dart';
 import 'package:provider/provider.dart';
@@ -48,10 +49,6 @@ class _DrawerPageState extends State<DrawerPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('---------drawer' +
-        Provider.of<DarkThemeProvider>(context, listen: false)
-            .doneForm
-            .toString());
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return AnimatedContainer(
       transform: Matrix4.translationValues(widget.drawerXOffset, 0, 0),
@@ -132,15 +129,26 @@ class _DrawerPageState extends State<DrawerPage> {
                 context.read<DrawerProvider>().onclick(4);
               }),
           Divider(),
+          // createDrawerItem(
+          //     context: context,
+          //     icon: Icons.mail,
+          //     text: '聯絡我們',
+          //     onTap: () {
+          //       context.read<DrawerProvider>().closeDrawer();
+          //       context.read<DrawerProvider>().onclick(5);
+          //     }),
           createDrawerItem(
               context: context,
-              icon: Icons.mail,
-              text: '聯絡我們',
+              icon: Icons.receipt_long,
+              text: '問卷',
               onTap: () {
                 context.read<DrawerProvider>().closeDrawer();
-                context.read<DrawerProvider>().onclick(5);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SatisfactionSurvey(),
+                        maintainState: false));
               }),
-          SizedBox(height: 20.0),
           Divider(),
           createDrawerItem(
               context: context,

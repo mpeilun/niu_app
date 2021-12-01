@@ -90,7 +90,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    context.read<DarkThemeProvider>().asyncDoneForm(context);
+    context.read<DarkThemeProvider>().asyncDoneForm();
     WidgetsBinding.instance!.addPostFrameCallback((_) => _checkAccount());
     WidgetsBinding.instance!.addPostFrameCallback(
         (_) => context.read<DrawerProvider>().setController(AnimationController(
@@ -299,30 +299,34 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                     }
                   },
                   child: GestureDetector(
-                    onHorizontalDragStart: (details) => isDragging = true,
+                    onHorizontalDragStart: (details) {
+                      isDragging = true;
+                    },
                     onHorizontalDragUpdate: (details) {
-                      if (!isDragging) return;
-                      const delta = 1;
-                      if (details.delta.dx > delta) {
-                        controller.openDrawer();
-                      }
-                      if (details.delta.dx < -delta) {
-                        if (context.read<DrawerProvider>().isDrawerOpen) {
-                          controller.closeDrawer();
-                        } else {
-                          if (context
-                                  .read<NotificationProvider>()
-                                  .notificationItemList
-                                  .length ==
-                              0) {
-                            context
-                                .read<NotificationProvider>()
-                                .setIsEmpty(true);
-                          }
-                          Navigator.of(context).push(_createRoute());
+                      if (controller.index != 5 && controller.index != 4) {
+                        if (!isDragging) return;
+                        const delta = 1;
+                        if (details.delta.dx > delta) {
+                          controller.openDrawer();
                         }
+                        if (details.delta.dx < -delta) {
+                          if (context.read<DrawerProvider>().isDrawerOpen) {
+                            controller.closeDrawer();
+                          } else {
+                            if (context
+                                    .read<NotificationProvider>()
+                                    .notificationItemList
+                                    .length ==
+                                0) {
+                              context
+                                  .read<NotificationProvider>()
+                                  .setIsEmpty(true);
+                            }
+                            Navigator.of(context).push(_createRoute());
+                          }
+                        }
+                        isDragging = false;
                       }
-                      isDragging = false;
                     },
                     onTap: () {
                       controller.closeDrawer();
@@ -528,7 +532,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
         DateTime firstLoginTime =
             DateTime.parse(prefs.getString('first_login_time')!);
 
-        if (prefs.getBool('isDoneForm')!) {
+        if (context.read<DarkThemeProvider>().doneForm) {
           print('---done form---');
           print(DateTime.now().difference(firstLoginTime).inDays);
         } else if (DateTime.now().difference(firstLoginTime).inDays >= 3) {
@@ -538,6 +542,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
         } else {
           //Debug
           toDoFormAlert(context);
+          //
           print('---time not yet to do form---');
           print(DateTime.now().difference(firstLoginTime).inDays);
         }
