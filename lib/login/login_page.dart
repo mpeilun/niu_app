@@ -62,8 +62,13 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.pop(context);
           },
           theme: LoginTheme(
+
+            buttonTheme: LoginButtonTheme(
+              splashColor: Colors.grey
+            ),
+            accentColor: Theme.of(context).primaryColor,
             logoWidth: 0.45,
-            titleStyle: TextStyle(fontSize: 30),
+            titleStyle: TextStyle(fontSize: 30, color: Colors.grey[400]),
             primaryColor: Theme.of(context).primaryColor,
             //cardTheme: CardTheme(color: Colors.grey[200]),
           ),

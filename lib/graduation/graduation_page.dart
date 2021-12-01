@@ -207,6 +207,7 @@ class Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     double times = double.parse('$time');
     return Container(
       child: CircularPercentIndicator(
@@ -226,7 +227,7 @@ class Indicator extends StatelessWidget {
           "$time/${requiredTime.toStringAsFixed(0)}",
           style: TextStyle(
               fontSize: 16.0,
-              color: Colors.grey[600],
+              color: themeChange.darkTheme ? Colors.grey[400] : Colors.grey[600],
               fontWeight: FontWeight.w500),
         ),
         backgroundColor: Colors.grey,
