@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
 import 'package:niu_app/school_event/dialog/event_signed_info_dialog.dart';
+import 'package:provider/provider.dart';
 
 import 'custom_list_info.dart';
 import '../school_event.dart';
@@ -52,9 +54,9 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     var screenSizeWidth = MediaQuery.of(context).size.width;
     var screenSizeHeight = MediaQuery.of(context).size.height;
-
     return ListView.separated(
       controller: _scrollController,
       itemCount: widget.data.length,
@@ -66,23 +68,24 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                 screenSizeHeight * 0.01, screenSizeWidth * 0.05, 0.0),
             child: Text(
               widget.data[index].name,
-              style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
             ),
           ),
           Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              // color: Colors.grey.shade50,
+              color: themeChange.darkTheme
+                  ? Theme.of(context).cardColor
+                  : Colors.grey.shade50,
               borderRadius: BorderRadius.circular(20.0),
               boxShadow: [
                 BoxShadow(
-                    // color: Colors.grey,
+                    color: themeChange.darkTheme
+                        ? Colors.transparent
+                        : Colors.grey,
                     offset: Offset(1.0, 1.0), //陰影y軸偏移量
                     blurRadius: 0, //陰影模糊程度
                     spreadRadius: 0 //陰影擴散程度
-                )
+                    )
               ],
             ),
             margin: EdgeInsets.fromLTRB(
@@ -100,7 +103,9 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                 title: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(width: screenSizeWidth*0.04,),
+                    SizedBox(
+                      width: screenSizeWidth * 0.04,
+                    ),
                     Text(
                       '詳細資料',
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -113,18 +118,26 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                         decoration: BoxDecoration(
                           border: Border.all(
                               width: 2.0,
-                              color: widget.data[index].status == '未開始'
-                                  ? Color(0xff2364aa)
-                                  : Color(0xFF954242)),
+                              color: themeChange.darkTheme
+                                  ? widget.data[index].status == '未開始'
+                                      ? Color(0xff1E88E5)
+                                      : Color(0xffE53935)
+                                  : widget.data[index].status == '未開始'
+                                      ? Color(0xff2364aa)
+                                      : Color(0xFF954242)),
                           borderRadius: BorderRadius.all(Radius.circular(
-                              10.0) //         <--- border radius here
-                          ),
+                                  10.0) //         <--- border radius here
+                              ),
                         ),
                         child: Text(
                           widget.data[index].status,
                           style: TextStyle(
                             fontSize: 12.0,
-                            color: widget.data[index].status == '未開始'
+                            color: themeChange.darkTheme
+                                ? widget.data[index].status == '未開始'
+                                ? Color(0xff1E88E5)
+                                : Color(0xffE53935)
+                                : widget.data[index].status == '未開始'
                                 ? Color(0xff2364aa)
                                 : Color(0xFF954242),
                           ),
@@ -174,7 +187,8 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                           print(widget.data[index].js);
                           showDialog(
                             context: context,
-                            builder: (BuildContext context) => EventSignedInfoDialog(
+                            builder: (BuildContext context) =>
+                                EventSignedInfoDialog(
                               js: widget.data[index].js,
                             ),
                           );
@@ -182,7 +196,7 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                         child: Text('詳細'),
                         style: ButtonStyle(
                           shape:
-                          MaterialStateProperty.all<RoundedRectangleBorder>(
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
                             ),

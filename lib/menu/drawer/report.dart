@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:package_info/package_info.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io' show Platform;
 
@@ -167,7 +169,7 @@ class _PageRecruit extends State<PageRecruit> {
               height: 10,
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Theme.of(context).backgroundColor),
+              style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
               onPressed: () async {
                 if (_contact != '' && _checkboxSelected != false) {
                   SharedPreferences prefs =
@@ -241,7 +243,6 @@ class _PageFeedback extends State<PageFeedback> {
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       child: Card(
-                        color: Colors.blueAccent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0),
                         ),
@@ -265,11 +266,10 @@ class _PageFeedback extends State<PageFeedback> {
                         Center(
                           child: TextFormField(
                             initialValue: '',
-                            style: TextStyle(fontSize: 14, color: Colors.black),
+                            style: TextStyle(fontSize: 14,),
                             maxLines: null,
                             keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
-                              fillColor: Colors.black,
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12.0)),
                               labelText: '意見',
@@ -292,7 +292,6 @@ class _PageFeedback extends State<PageFeedback> {
                             child: Checkbox(
                                 shape: CircleBorder(),
                                 value: _checkboxSelected,
-                                activeColor: Colors.blue,
                                 onChanged: (value) {
                                   setState(() {
                                     _checkboxSelected = value!;
@@ -312,7 +311,7 @@ class _PageFeedback extends State<PageFeedback> {
                     height: 10,
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
+                    style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
                     onPressed: () async {
                       if (_contact != '') {
                         SharedPreferences prefs =
@@ -379,6 +378,7 @@ class _PageBugReport extends State<PageBugReport> {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return Container(
       child: SafeArea(
         child: Scaffold(
@@ -395,7 +395,6 @@ class _PageBugReport extends State<PageBugReport> {
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       child: Card(
-                        color: Colors.blueAccent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0),
                         ),
@@ -420,7 +419,6 @@ class _PageBugReport extends State<PageBugReport> {
                         ),
                         Checkbox(
                             value: _canReproducible,
-                            activeColor: Colors.blue,
                             onChanged: (value) {
                               setState(() {
                                 _canReproducible = true;
@@ -436,7 +434,6 @@ class _PageBugReport extends State<PageBugReport> {
                         ),
                         Checkbox(
                             value: !_canReproducible,
-                            activeColor: Colors.blue,
                             onChanged: (value) {
                               setState(() {
                                 _canReproducible = false;
@@ -453,41 +450,36 @@ class _PageBugReport extends State<PageBugReport> {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    width: 300,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
                     child: Column(
                       children: [
-                        Center(
-                          child: TextFormField(
-                            initialValue: '',
-                            style: TextStyle(fontSize: 14, color: Colors.black),
-                            maxLines: null,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-                              fillColor: Colors.black,
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12.0)),
-                              labelText: 'BUG問題',
-                              hintText: '文字',
-                            ),
-                            onChanged: (text) {
-                              _contact = text;
-                            },
+                        TextFormField(
+                          initialValue: '',
+                          style: TextStyle(fontSize: 14,),
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: themeChange.darkTheme ? Theme.of(context).cardColor : Colors.white,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(32.0)),
+                            labelText: 'BUG問題',
+                            hintText: '文字',
                           ),
+                          onChanged: (text) {
+                            _contact = text;
+                          },
                         ),
                         SizedBox(
                           height: 15,
                         ),
                         Row(children: [
-                          SizedBox(
-                            width: 10,
-                          ),
                           Transform.scale(
                             scale: 1.4,
                             child: Checkbox(
                                 shape: CircleBorder(),
                                 value: _checkboxSelected,
-                                activeColor: Colors.blue,
                                 onChanged: (value) {
                                   setState(() {
                                     _checkboxSelected = value!;
@@ -507,7 +499,7 @@ class _PageBugReport extends State<PageBugReport> {
                     height: 10,
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.blueAccent),
+                    style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
                     onPressed: () async {
                       if (_contact != '' && _checkboxSelected != false) {
                         SharedPreferences prefs =

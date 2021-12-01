@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:provider/provider.dart';
 
 class Quote {
   final String lesson;
@@ -48,6 +50,7 @@ class _CustomMidCardState extends State<CustomMidCard> {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return ListView.separated(
       controller: _scrollController,
       padding: const EdgeInsets.all(8.0),
@@ -92,14 +95,14 @@ class _CustomMidCardState extends State<CustomMidCard> {
                       '分數：${widget.grade[index].score}',
                       style: TextStyle(
                         fontSize: 14.0,
-                        color: isFail ? Colors.red : Colors.grey[400],
+                        color: themeChange.darkTheme ? isFail ? Colors.red : Colors.grey[400] : isFail ? Colors.red : Colors.grey[600],
                       ),
                     ),
                     Text(
                       '${widget.grade[index].type}',
                       style: TextStyle(
                         fontSize: 14.0,
-                        color: Colors.grey[400],
+                        color: themeChange.darkTheme ? Colors.grey[400] : Colors.grey[600],
                       ),
                     ),
                   ],
@@ -140,6 +143,7 @@ class _CustomFinalCardState extends State<CustomFinalCard> {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return ListView.separated(
       controller: _listScrollController,
       padding: const EdgeInsets.all(8.0),
@@ -217,14 +221,14 @@ class _CustomFinalCardState extends State<CustomFinalCard> {
                         '分數：${widget.grade[index-1].score}',
                         style: TextStyle(
                           fontSize: 14.0,
-                          color: isFail ? Colors.red : Colors.grey[400],
+                          color: themeChange.darkTheme ? isFail ? Colors.red : Colors.grey[400] : isFail ? Colors.red : Colors.grey[600],
                         ),
                       ),
                       Text(
                         '${widget.grade[index-1].type}',
                         style: TextStyle(
                           fontSize: 14.0,
-                          color: Colors.grey[400],
+                          color: themeChange.darkTheme ? Colors.grey[400] : Colors.grey[600],
                         ),
                       ),
                     ],
@@ -265,6 +269,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     isWarnList = widget.grade.map((g) => g.warn ?? false).toList();
     isGradeList = widget.grade.map((g) => g.gradeWarn ?? false).toList();
     isAttendanceList =
@@ -309,7 +314,7 @@ class _CustomWarnCardState extends State<CustomWarnCard> {
                       '${widget.grade[index].teacher}',
                       style: TextStyle(
                         fontSize: 16.0,
-                        color: Colors.grey[400],
+                        color: themeChange.darkTheme ? Colors.grey[400] : Colors.grey[600],
                       ),
                     ),
                   ),

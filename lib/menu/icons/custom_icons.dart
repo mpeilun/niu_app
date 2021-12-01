@@ -37,11 +37,11 @@ class CustomIcons extends StatelessWidget {
             width: 65.0,
             height: 65.0,
             decoration: BoxDecoration(
-              color: themeChange.darkTheme ? Colors.grey[800] : null,
+              color: themeChange.darkTheme ? Color(0xff212121) : null,
               shape: BoxShape.circle,
               border: Border.all(
                   color: themeChange.darkTheme
-                      ? Color(0xff424242)
+                      ? Color(0xff212121)
                       : Color(0xff0D47A1),
                   width: 2.0),
             ),
@@ -50,7 +50,8 @@ class CustomIcons extends StatelessWidget {
             iconSize: size,
             icon: Icon(
               icon,
-            ),
+              color: themeChange.darkTheme ? Color(0xe0ffffff) : Colors.black,
+    ),
             onPressed: press,
           )
         ]),
@@ -59,7 +60,7 @@ class CustomIcons extends StatelessWidget {
         ),
         Text(
           title,
-          //style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 14.0, fontWeight: themeChange.darkTheme ? FontWeight.normal : FontWeight.bold),
         ),
       ],
     );
