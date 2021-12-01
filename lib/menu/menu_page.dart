@@ -264,7 +264,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                   flex: 4,
                   child: Image.asset(
                     themeChange.darkTheme
-                        ? 'assets/niu_background_black.png'
+                        ? 'assets/black_background.png'
                         : 'assets/niu_background.png',
                   ),
                 ),
@@ -332,7 +332,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                         boxShadow: [
                           BoxShadow(
                             color: Color.fromARGB(255, 28, 28, 28),
-                            spreadRadius: 3.0,
+                            spreadRadius: 2.0,
                             blurRadius: 20.0,
                             offset: Offset(3.0, 0),
                           ),
@@ -356,7 +356,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                                       .animate(controller.controller),
                                   child: Icon(
                                     Icons.menu,
-                                    color: Colors.white,
+                                    // color: Colors.white,
                                   ),
                                 ),
                               ),
@@ -372,7 +372,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                                       alignment: Alignment.topCenter,
                                       child: Text(
                                         '${context.watch<NotificationProvider>().newNotificationsCount}',
-                                        style: TextStyle(color: Colors.white),
+                                        // style: TextStyle(color: Colors.white),
                                       ),
                                     ),
                                     child: IconButton(

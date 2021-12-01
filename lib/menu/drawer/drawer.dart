@@ -152,13 +152,13 @@ class _DrawerPageState extends State<DrawerPage> {
           SizedBox(
             height: 20,
           ),
-          Visibility(
-              visible: Provider.of<DarkThemeProvider>(context).getDoneForm,
-              child: Switch(
-                  value: themeChange.darkTheme,
-                  onChanged: (value) {
-                    themeChange.darkTheme = value;
-                  }))
+          Consumer<DarkThemeProvider>(
+            builder: (context, change, child) =>  change.getDoneForm ? Switch(
+                value: change.darkTheme,
+                onChanged: (value) {
+                  change.darkTheme = value;
+                }) : SizedBox(),
+          )
         ],
       ),
     );

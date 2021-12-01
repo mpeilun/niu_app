@@ -12,7 +12,7 @@ class DarkThemeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  bool _isDoneForm = false;
+  bool _isDoneForm = true;
   bool get getDoneForm => _isDoneForm;
   set setDoneForm(bool value) {
     _isDoneForm = value;
