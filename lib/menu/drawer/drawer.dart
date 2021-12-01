@@ -59,13 +59,13 @@ class _DrawerPageState extends State<DrawerPage> {
           end: Alignment.bottomRight,
           colors: [
             themeChange.darkTheme
-                ? Color.fromARGB(255, 21, 21, 21)
+                ? Color(0xff212121)
                 : Color.fromARGB(255, 13, 71, 161),
             themeChange.darkTheme
-                ? Color.fromARGB(255, 10, 10, 10)
+                ? Color(0xff212121)
                 : Color.fromARGB(255, 14, 69, 156),
             themeChange.darkTheme
-                ? Color.fromARGB(255, 0, 0, 0)
+                ? Color(0xff212121)
                 : Color.fromARGB(255, 9, 47, 108),
           ],
         ),
@@ -83,6 +83,7 @@ class _DrawerPageState extends State<DrawerPage> {
           ),
           Divider(),
           createDrawerItem(
+              context: context,
               icon: Icons.home_outlined,
               text: '首頁',
               onTap: () {
@@ -91,6 +92,7 @@ class _DrawerPageState extends State<DrawerPage> {
               }),
           Divider(),
           createDrawerItem(
+              context: context,
               icon: MyFlutterApp.megaphone,
               text: '公告',
               onTap: () {
@@ -99,6 +101,7 @@ class _DrawerPageState extends State<DrawerPage> {
               }),
           Divider(),
           createDrawerItem(
+              context: context,
               size: 45.0,
               icon: MyFlutterApp.calendar,
               text: '行事曆',
@@ -108,6 +111,7 @@ class _DrawerPageState extends State<DrawerPage> {
               }),
           // Divider(),
           // createDrawerItem(
+          //     context: context,
           //     icon: Icons.settings_outlined,
           //     text: '設定',
           //     onTap: () {
@@ -116,6 +120,7 @@ class _DrawerPageState extends State<DrawerPage> {
           //     }),
           Divider(),
           createDrawerItem(
+              context: context,
               icon: Icons.info_outline_rounded,
               text: '關於',
               onTap: () {
@@ -124,6 +129,7 @@ class _DrawerPageState extends State<DrawerPage> {
               }),
           Divider(),
           createDrawerItem(
+              context: context,
               icon: Icons.mail,
               text: '聯絡我們',
               onTap: () {
@@ -133,6 +139,7 @@ class _DrawerPageState extends State<DrawerPage> {
           SizedBox(height: 20.0),
           Divider(),
           createDrawerItem(
+              context: context,
               icon: Icons.logout_outlined,
               text: '登出',
               onTap: () async {
@@ -172,13 +179,13 @@ class Divider extends StatelessWidget {
           borderRadius: BorderRadius.circular(100),
           gradient: LinearGradient(colors: [
             themeChange.darkTheme
-                ? Color.fromARGB(255, 125, 125, 125)
+                ? Color.fromARGB(255, 56, 56, 56)
                 : Color.fromARGB(255, 33, 150, 243),
             themeChange.darkTheme
-                ? Color.fromARGB(255, 104, 104, 104)
+                ? Color.fromARGB(255, 109, 109, 109)
                 : Color.fromARGB(203, 33, 150, 243),
             themeChange.darkTheme
-                ? Color.fromARGB(0, 104, 104, 104)
+                ? Color.fromARGB(0, 72, 72, 72)
                 : Color.fromARGB(0, 33, 150, 243),
           ]),
         ),
@@ -191,7 +198,9 @@ Widget createDrawerItem(
     {double size = 50.0,
     required IconData icon,
     required String text,
-    required GestureTapCallback onTap}) {
+    required GestureTapCallback onTap,
+    required BuildContext context}) {
+  final themeChange = Provider.of<DarkThemeProvider>(context);
   return InkWell(
     onTap: onTap,
     child: Container(
@@ -201,7 +210,7 @@ Widget createDrawerItem(
         children: <Widget>[
           Icon(
             icon,
-            color: Colors.white,
+            color: themeChange.darkTheme ? Color(0xe0ffffff) : Colors.white,
             size: size,
           ),
           Text(

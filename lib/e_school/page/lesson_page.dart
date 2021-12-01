@@ -104,6 +104,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                     message: '前往課程公告',
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
+                                          // primary: Theme.of(context).primaryColor,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 12.0, vertical: 6.0),
                                           minimumSize: Size(0.0, 0.0),
@@ -133,6 +134,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                     message: '前往開始上課',
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
+                                          // primary: Theme.of(context).primaryColor,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 12.0, vertical: 6.0),
                                           minimumSize: Size(0.0, 0.0),
@@ -162,6 +164,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                     message: '前往成績資訊',
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
+                                          // primary: Theme.of(context).primaryColor,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 12.0, vertical: 6.0),
                                           minimumSize: Size(0.0, 0.0),

@@ -4,7 +4,9 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/e_school/advanced_tiles.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 import '../e_school.dart';
 import 'e_school_homework.dart';
@@ -175,6 +177,7 @@ class CustomWorkCard extends StatefulWidget {
 class _CustomWorkCardState extends State<CustomWorkCard> {
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return ListView.separated(
       //controller: _scrollController,
       padding: const EdgeInsets.all(8.0),
@@ -245,13 +248,13 @@ class _CustomWorkCardState extends State<CustomWorkCard> {
                   lineHeight: 20.0,
                   leading: Text(
                     "繳交進度",
-                    style: TextStyle(color: Colors.grey[600]),
+                    style: TextStyle(color: themeChange.darkTheme ? Colors.grey[400] : Colors.grey[600]),
                   ),
                   trailing: Container(
                     width: 48.0,
                     child: Text(
                       "${submitCount.toStringAsFixed(0)}/${workCount.toStringAsFixed(0)}",
-                      style: TextStyle(color: Colors.grey[600]),
+                      style: TextStyle(color: themeChange.darkTheme ? Colors.grey[400] : Colors.grey[600]),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -261,6 +264,7 @@ class _CustomWorkCardState extends State<CustomWorkCard> {
                         ? "沒有作業"
                         : "${(submitCount / workCount * 100).toStringAsFixed(2)}%",
                     textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.black),
                   ),
                   linearStrokeCap: LinearStrokeCap.butt,
                   progressColor: isFinish ? Colors.greenAccent : Colors.amber,

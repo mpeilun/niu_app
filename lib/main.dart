@@ -121,7 +121,6 @@ class _MyAppState extends State<MyApp> {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'NIU app',
-              themeMode: ThemeMode.dark,
               theme: Styles.themeData(themeChangeProvider.darkTheme, context),
               home: StartMenu(),
             );

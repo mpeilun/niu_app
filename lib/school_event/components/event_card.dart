@@ -4,9 +4,11 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:niu_app/components/toast.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:anim_search_bar/anim_search_bar.dart';
+import 'package:provider/provider.dart';
 
 import 'custom_list_info.dart';
 
@@ -65,13 +67,16 @@ class _CustomEventCardState extends State<CustomEventCard> {
   late List<dynamic> display = widget.data;
   List<Event> tmp = [];
 
-  void search(){
+  void search() {
     tmp.clear();
     setState(() {
       _isSelected = [true, false, false];
     });
-    for(int i=0; i<widget.data.length; i++){
-      if(widget.data[i].name.toLowerCase().contains(_textEditingController.text.toLowerCase())||widget.data[i].eventSerialNum.contains(_textEditingController.text))
+    for (int i = 0; i < widget.data.length; i++) {
+      if (widget.data[i].name
+              .toLowerCase()
+              .contains(_textEditingController.text.toLowerCase()) ||
+          widget.data[i].eventSerialNum.contains(_textEditingController.text))
         tmp.add(widget.data[i]);
     }
     setState(() {
@@ -90,9 +95,9 @@ class _CustomEventCardState extends State<CustomEventCard> {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     var screenSizeWidth = MediaQuery.of(context).size.width;
     var screenSizeHeight = MediaQuery.of(context).size.height;
-
     return Stack(
       alignment: Alignment.bottomLeft,
       children: [
@@ -104,7 +109,13 @@ class _CustomEventCardState extends State<CustomEventCard> {
             Container(
               height: 30.0,
               child: ToggleButtons(
-                fillColor: Color.fromRGBO(0, 70, 161, 1),
+                disabledColor: Color(0xffbbbbbb),
+                borderWidth: 2.0,
+                selectedColor: Colors.white,
+                selectedBorderColor: Theme.of(context).primaryColor,
+                fillColor: Theme.of(context).primaryColor,
+                // selectedBorderColor: Colors.blue[900],
+                // fillColor: Colors.blue[900],
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 children: <Widget>[
                   Container(
@@ -187,7 +198,9 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                 display[index]['department'],
                                 style: TextStyle(
                                   fontSize: 14.0,
-                                  color: Colors.grey[400],
+                                  color: themeChange.darkTheme
+                                      ? Colors.grey[400]
+                                      : Colors.grey[600],
                                 ),
                                 textAlign: TextAlign.end,
                               ),
@@ -198,12 +211,15 @@ class _CustomEventCardState extends State<CustomEventCard> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        // color: Theme.of(context).primaryColor,
-                        color: Colors.grey.shade50,
+                        color: themeChange.darkTheme
+                            ? Theme.of(context).cardColor
+                            : Colors.grey.shade50,
                         borderRadius: BorderRadius.circular(20.0),
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.grey,
+                              color: themeChange.darkTheme
+                                  ? Colors.transparent
+                                  : Colors.grey,
                               offset: Offset(1.0, 1.0), //陰影y軸偏移量
                               blurRadius: 0, //陰影模糊程度
                               spreadRadius: 0 //陰影擴散程度
@@ -225,7 +241,9 @@ class _CustomEventCardState extends State<CustomEventCard> {
                           title: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SizedBox(width: screenSizeWidth*0.04,),
+                              SizedBox(
+                                width: screenSizeWidth * 0.04,
+                              ),
                               Text(
                                 '詳細資料',
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -237,10 +255,15 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                   padding: EdgeInsets.all(2.0),
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                        width: 2.0,
-                                        color: display[index]['state'] == '報名中'
-                                            ? Color(0xff2364aa)
-                                            : Color(0xFF954242)),
+                                      width: 2.0,
+                                      color: themeChange.darkTheme
+                                          ? display[index]['state'] == '報名中'
+                                              ? Color(0xff1E88E5)
+                                              : Color(0xffE53935)
+                                          : display[index]['state'] == '報名中'
+                                              ? Color(0xff2364aa)
+                                              : Color(0xFF954242),
+                                    ),
                                     borderRadius: BorderRadius.all(
                                         Radius.circular(
                                             10.0) //         <--- border radius here
@@ -250,9 +273,13 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                     display[index]['state'],
                                     style: TextStyle(
                                       fontSize: 12.0,
-                                      color: display[index]['state'] == '報名中'
-                                          ? Color(0xff2364aa)
-                                          : Color(0xFF954242),
+                                      color: themeChange.darkTheme
+                                          ? display[index]['state'] == '報名中'
+                                              ? Color(0xff1E88E5)
+                                              : Color(0xffE53935)
+                                          : display[index]['state'] == '報名中'
+                                              ? Color(0xff2364aa)
+                                              : Color(0xFF954242),
                                     ),
                                     textAlign: TextAlign.center,
                                   )),
@@ -333,7 +360,8 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                             context: context,
                                             builder: (BuildContext context) =>
                                                 EventInfoDialog(
-                                                    eventJS: display[index]['signUpJs']),
+                                                    eventJS: display[index]
+                                                        ['signUpJs']),
                                           );
                                         },
                                         child: Text('我要報名'),
@@ -380,19 +408,22 @@ class _CustomEventCardState extends State<CustomEventCard> {
           ],
         ),
         AnimatedOpacity(
-          opacity: _isSelected[0]?1.0:0.0,
+          opacity: _isSelected[0] ? 1.0 : 0.0,
           duration: Duration(milliseconds: 250),
           child: Visibility(
             visible: _isSelected[0],
             child: Container(
-              padding: EdgeInsets.only(right: screenSizeWidth*0.05),
-              child: AnimSearchBar(//浮動搜尋按鈕
+              padding: EdgeInsets.only(right: screenSizeWidth * 0.05),
+              child: AnimSearchBar(
+                //浮動搜尋按鈕
                 color: Theme.of(context).cardColor,
                 rtl: true,
                 helpText: '輸入名稱或編號...',
-                width: screenSizeWidth*0.8,
+                width: screenSizeWidth * 0.8,
                 textController: _textEditingController,
-                onSuffixTap: () {_textEditingController.clear();},
+                onSuffixTap: () {
+                  _textEditingController.clear();
+                },
               ),
             ),
           ),
