@@ -167,7 +167,54 @@ class _PageRecruit extends State<PageRecruit> {
                       '以記名方式送出',
                       style: TextStyle(fontSize: 14),
                       textAlign: TextAlign.center,
-                    )
+                    ),
+                    Expanded(
+                        flex: 2,
+                        child: SizedBox()),
+                    Expanded(
+                      flex: 4,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_contact != '' && _checkboxSelected != false) {
+                            SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                            Response response;
+                            BaseOptions options = new BaseOptions(
+                              baseUrl: "https://docs.google.com",
+                              connectTimeout: 6000,
+                              receiveTimeout: 3000,
+                            );
+                            Dio dio = new Dio(options);
+
+                            FormData formData = new FormData.fromMap({
+                              'entry.1816632315': prefs.getString('name'),
+                              'entry.142380187': prefs.getString('id'),
+                              'entry.172291072': _contact,
+                            });
+
+                            try {
+                              response = await dio.post(
+                                  "/forms/d/e/1FAIpQLSdZ5n35T-dU7pDvRNBAGET8H3Ms9yYHz21tZS4tmQkHkNkL8w/formResponse",
+                                  data: formData);
+                              showToast('成功送出！');
+                            } catch (e) {
+                              print('Error: $e');
+                            }
+                          } else if (_contact == '') {
+                            showToast('聯繫方式不能為空！');
+                          } else {
+                            showToast('請同意送出您的學號與姓名，以便後續與您聯繫！');
+                          }
+                        },
+                        child: Text(
+                          '送出',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                        flex: 1,
+                        child: SizedBox()),
                   ]),
                 ],
               ),
@@ -175,46 +222,50 @@ class _PageRecruit extends State<PageRecruit> {
             SizedBox(
               height: 10,
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor),
-              onPressed: () async {
-                if (_contact != '' && _checkboxSelected != false) {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  Response response;
-                  BaseOptions options = new BaseOptions(
-                    baseUrl: "https://docs.google.com",
-                    connectTimeout: 6000,
-                    receiveTimeout: 3000,
-                  );
-                  Dio dio = new Dio(options);
-
-                  FormData formData = new FormData.fromMap({
-                    'entry.1816632315': prefs.getString('name'),
-                    'entry.142380187': prefs.getString('id'),
-                    'entry.172291072': _contact,
-                  });
-
-                  try {
-                    response = await dio.post(
-                        "/forms/d/e/1FAIpQLSdZ5n35T-dU7pDvRNBAGET8H3Ms9yYHz21tZS4tmQkHkNkL8w/formResponse",
-                        data: formData);
-                    showToast('成功送出！');
-                  } catch (e) {
-                    print('Error: $e');
-                  }
-                } else if (_contact == '') {
-                  showToast('聯繫方式不能為空！');
-                } else {
-                  showToast('請同意送出您的學號與姓名，以便後續與您聯繫！');
-                }
-              },
-              child: Text(
-                '送出',
-                style: TextStyle(fontSize: 14),
-              ),
-            )
+            // ElevatedButton(
+            //   style: ElevatedButton.styleFrom(
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(20.0),
+            //     ),
+            //       primary: Theme.of(context).primaryColor
+            //   ),
+            //   onPressed: () async {
+            //     if (_contact != '' && _checkboxSelected != false) {
+            //       SharedPreferences prefs =
+            //           await SharedPreferences.getInstance();
+            //       Response response;
+            //       BaseOptions options = new BaseOptions(
+            //         baseUrl: "https://docs.google.com",
+            //         connectTimeout: 6000,
+            //         receiveTimeout: 3000,
+            //       );
+            //       Dio dio = new Dio(options);
+            //
+            //       FormData formData = new FormData.fromMap({
+            //         'entry.1816632315': prefs.getString('name'),
+            //         'entry.142380187': prefs.getString('id'),
+            //         'entry.172291072': _contact,
+            //       });
+            //
+            //       try {
+            //         response = await dio.post(
+            //             "/forms/d/e/1FAIpQLSdZ5n35T-dU7pDvRNBAGET8H3Ms9yYHz21tZS4tmQkHkNkL8w/formResponse",
+            //             data: formData);
+            //         showToast('成功送出！');
+            //       } catch (e) {
+            //         print('Error: $e');
+            //       }
+            //     } else if (_contact == '') {
+            //       showToast('聯繫方式不能為空！');
+            //     } else {
+            //       showToast('請同意送出您的學號與姓名，以便後續與您聯繫！');
+            //     }
+            //   },
+            //   child: Text(
+            //     '送出',
+            //     style: TextStyle(fontSize: 14),
+            //   ),
+            // )
           ],
         ),
       ),

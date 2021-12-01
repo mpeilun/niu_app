@@ -17,8 +17,16 @@ class Styles {
         backgroundColor: isDarkTheme ? Color(0xff212121) : Colors.blue[900],
         foregroundColor: Colors.grey[200],
       ),
-      inputDecorationTheme: InputDecorationTheme(
-
+      inputDecorationTheme: InputDecorationTheme(),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color?>(
+              isDarkTheme ? Color(0xff212121) : Colors.blue[900]),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+          )),
+        ),
       ),
       // backgroundColor: isDarkTheme ? Color(0xff121212) : Colors.grey[200],
       // cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,

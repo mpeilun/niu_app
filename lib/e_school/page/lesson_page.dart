@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/e_school/advanced_tiles.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'e_school_announcement.dart';
@@ -76,6 +78,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
             padding: EdgeInsets.all(8.0),
             itemCount: 1,
             itemBuilder: (BuildContext context, int index) {
+              final themeChange = Provider.of<DarkThemeProvider>(context);
               return ExpansionPanelList.radio(
                 animationDuration: Duration(milliseconds: 500),
                 children: widget.tile
@@ -92,7 +95,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                             ),
                         body: Padding(
                           padding:
-                              const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 24.0),
+                              const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 24.0),
                           child: Align(
                             alignment: Alignment.topRight,
                             child: Row(
@@ -104,15 +107,18 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                     message: '前往課程公告',
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                          // primary: Theme.of(context).primaryColor,
+                                          // shape: RoundedRectangleBorder(
+                                          //   borderRadius:
+                                          //       BorderRadius.circular(18.0),
+                                          // ),
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 12.0, vertical: 6.0),
+                                              horizontal: 18.0, vertical:8.0),
                                           minimumSize: Size(0.0, 0.0),
                                         ),
                                         child: Text("課程公告",
                                             style: TextStyle(
                                                 fontSize: 14,
-                                                color: Colors.white)),
+                                                color: themeChange.darkTheme ? Colors.grey[200] : Colors.white)),
                                         onPressed: () {
                                           Navigator.push(
                                               context,
@@ -135,14 +141,18 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           // primary: Theme.of(context).primaryColor,
+                                          // shape: RoundedRectangleBorder(
+                                          //   borderRadius:
+                                          //   BorderRadius.circular(18.0),
+                                          // ),
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 12.0, vertical: 6.0),
+                                              horizontal: 18.0, vertical: 8.0),
                                           minimumSize: Size(0.0, 0.0),
                                         ),
                                         child: Text("開始上課",
                                             style: TextStyle(
                                                 fontSize: 14,
-                                                color: Colors.white)),
+                                                color: themeChange.darkTheme ? Colors.grey[200] : Colors.white)),
                                         onPressed: () {
                                           Navigator.push(
                                               context,
@@ -165,14 +175,18 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           // primary: Theme.of(context).primaryColor,
+                                          // shape: RoundedRectangleBorder(
+                                          //   borderRadius:
+                                          //   BorderRadius.circular(18.0),
+                                          // ),
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 12.0, vertical: 6.0),
+                                              horizontal: 18.0, vertical: 8.0),
                                           minimumSize: Size(0.0, 0.0),
                                         ),
                                         child: Text("成績資訊",
                                             style: TextStyle(
                                                 fontSize: 14,
-                                                color: Colors.white)),
+                                                color: themeChange.darkTheme ? Colors.grey[200] : Colors.white)),
                                         onPressed: () {
                                           Navigator.push(
                                               context,
