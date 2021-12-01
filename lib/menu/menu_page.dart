@@ -90,6 +90,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    context.read<DarkThemeProvider>().asyncDoneForm(context);
     WidgetsBinding.instance!.addPostFrameCallback((_) => _checkAccount());
     WidgetsBinding.instance!.addPostFrameCallback(
         (_) => context.read<DrawerProvider>().setController(AnimationController(
@@ -526,9 +527,6 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
 
         DateTime firstLoginTime =
             DateTime.parse(prefs.getString('first_login_time')!);
-
-        Provider.of<DarkThemeProvider>(context).setDoneForm =
-            prefs.getBool("isDoneForm")!;
 
         if (prefs.getBool('isDoneForm')!) {
           print('---done form---');

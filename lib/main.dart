@@ -106,7 +106,7 @@ class _MyAppState extends State<MyApp> {
 
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
-    await themeChangeProvider.darkThemePreference.getTheme();
+        await themeChangeProvider.darkThemePreference.getTheme();
   }
 
   @override
@@ -125,7 +125,8 @@ class _MyAppState extends State<MyApp> {
               home: StartMenu(),
             );
           },
-        ),),
+        ),
+      ),
     );
   }
 }

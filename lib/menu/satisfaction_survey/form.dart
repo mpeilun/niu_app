@@ -186,14 +186,15 @@ class _SatisfactionSurveyState extends State<SatisfactionSurvey> {
                                 '--- submitCount ---' + submitCount.toString());
                           } else if (submitCount == 2) {
                             print('--- 成功送出 ---');
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            prefs.setBool('isDoneForm', true);
+                            context
+                                .read<DarkThemeProvider>()
+                                .asyncDoneForm(context);
                             Navigator.pop(context);
                             Future.delayed(Duration(milliseconds: 500),
                                 () async {
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              prefs.setBool('isDoneForm', true);
-                              Provider.of<DarkThemeProvider>(context)
-                                  .setDoneForm = prefs.getBool("isDoneForm")!;
                               showToast('成功送出 (並成功解鎖黑色主題，可在設定中開啟)');
                             });
                           }
