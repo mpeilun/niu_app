@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void toDoFormAlert(BuildContext context) {
+void toDoFormAlert(BuildContext context, bool isDark) {
   Alert(
     context: context,
     style: AlertStyle(
@@ -23,14 +23,14 @@ void toDoFormAlert(BuildContext context) {
     image: SizedBox(
       height: 150,
       width: 150,
-      child: Image.asset('assets/satisfaction_black.png'),
+      child: Image.asset(isDark ? 'assets/satisfaction_white.png' : 'assets/satisfaction_black.png'),
     ),
     content: Column(
       children: [
         Text(
           '是否願意幫我們填寫意願表單呢？',
           style: TextStyle(
-              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w200),
+              fontSize: 18, fontWeight: FontWeight.w200),
           textAlign: TextAlign.center,
         ),
         SizedBox(
@@ -38,7 +38,7 @@ void toDoFormAlert(BuildContext context) {
         ),
         Text(
           ' 填寫完成將解鎖黑色主題哦！',
-          style: TextStyle(color: Colors.grey.shade800, fontSize: 16),
+          style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey.shade600, fontSize: 16),
         ),
       ],
     ),
@@ -51,7 +51,7 @@ void toDoFormAlert(BuildContext context) {
         onPressed: () {
           Navigator.pop(context);
         },
-        color: Colors.pinkAccent,
+        color: Colors.pinkAccent.shade200,
       ),
       DialogButton(
         child: Text(
@@ -66,7 +66,7 @@ void toDoFormAlert(BuildContext context) {
                   builder: (context) => SatisfactionSurvey(),
                   maintainState: false));
         },
-        color: Colors.blueAccent,
+        color: Colors.blueAccent.shade200,
       ),
     ],
   ).show();

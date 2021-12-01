@@ -17,7 +17,20 @@ class Styles {
         backgroundColor: isDarkTheme ? Color(0xff212121) : Colors.blue[900],
         foregroundColor: Colors.grey[200],
       ),
-      inputDecorationTheme: InputDecorationTheme(),
+      textSelectionTheme: TextSelectionThemeData(
+          selectionHandleColor: isDarkTheme ? Colors.grey[600] : Colors.blue[800],
+      cursorColor: isDarkTheme ? Color(0xff212121) : Colors.blue,),
+
+      inputDecorationTheme: InputDecorationTheme(
+        labelStyle: TextStyle(
+          color: isDarkTheme ? Colors.grey[200] : null,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(32.0),
+          borderSide: BorderSide(
+              width: 2.0, color: isDarkTheme ? Color(0xff212121) : Colors.blue),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color?>(

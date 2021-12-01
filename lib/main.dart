@@ -84,6 +84,7 @@ void main() async {
     ChangeNotifierProvider(create: (_) => NotificationProvider()),
     ChangeNotifierProvider(create: (_) => InfoProvider()),
     ChangeNotifierProvider(create: (_) => AnnouncementProvider()),
+    ChangeNotifierProvider(create: (_) => DarkThemeProvider()),
   ], child: MyApp()));
 }
 

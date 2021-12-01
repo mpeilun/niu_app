@@ -537,12 +537,12 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
           print('---done form---');
           print(DateTime.now().difference(firstLoginTime).inDays);
         } else if (DateTime.now().difference(firstLoginTime).inDays >= 3) {
-          toDoFormAlert(context);
+          toDoFormAlert(context, context.read<DarkThemeProvider>().darkTheme);
           print('---need do form---');
           print(DateTime.now().difference(firstLoginTime).inDays);
         } else {
           //Debug
-          toDoFormAlert(context);
+          toDoFormAlert(context, context.read<DarkThemeProvider>().darkTheme);
           //
           print('---time not yet to do form---');
           print(DateTime.now().difference(firstLoginTime).inDays);
