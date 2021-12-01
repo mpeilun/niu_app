@@ -42,10 +42,21 @@ void toDoFormAlert(BuildContext context) {
     buttons: [
       DialogButton(
         child: Text(
+          "現在不要",
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        color: Colors.pinkAccent,
+      ),
+      DialogButton(
+        child: Text(
           "前往填寫",
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),
         onPressed: () {
+          Navigator.pop(context);
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -100,7 +111,7 @@ class _SatisfactionSurveyState extends State<SatisfactionSurvey> {
 	    )()
 ''';
   int submitCount = 0;
-  bool loadState = true;
+  bool loadState = false;
 
   @override
   void initState() {
@@ -124,8 +135,20 @@ class _SatisfactionSurveyState extends State<SatisfactionSurvey> {
                   children: [
                     Visibility(
                         visible: !loadState,
-                        child: Container(
-                          child: NiuIconLoading(size: 80),
+                        child: Column(
+                          children: [
+                            Text('''您好: 
+這是一份APP使用意願調查問卷，請您仔細閱讀，並在適當的答案欄中勾選，本問卷僅供NIU學生APP內部開發使用，您所填答的資料絕對不會對外公開，請您放心作答，您的寶貴意見將有助於APP早日完成上架，感謝您的參與。
+國立宜蘭大學資訊工程學系二年級學生 章沛倫、呂紹誠、賴宥蓁、周楷崴
+指導教授 黃朝曦 副教授'''),
+                            ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    loadState = true;
+                                  });
+                                },
+                                child: Text('了解'))
+                          ],
                         )),
                     Visibility(
                       visible: loadState,
@@ -162,7 +185,11 @@ class _SatisfactionSurveyState extends State<SatisfactionSurvey> {
                           } else if (submitCount == 2) {
                             print('--- 成功送出 ---');
                             Navigator.pop(context);
-                            Future.delayed(Duration(milliseconds: 500), () {
+                            Future.delayed(Duration(milliseconds: 500),
+                                () async {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              prefs.setBool('isDoneForm', true);
                               showToast('成功送出 (並成功解鎖黑色主題，可在設定中開啟)');
                             });
                           }
