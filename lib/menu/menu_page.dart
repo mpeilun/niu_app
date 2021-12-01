@@ -366,6 +366,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                               actions: [
                                 Builder(
                                   builder: (context) => Badge(
+                                    badgeColor: Colors.redAccent,
                                     position:
                                         BadgePosition.topEnd(top: 1, end: 2),
                                     toAnimate: false,
@@ -373,7 +374,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                                       alignment: Alignment.topCenter,
                                       child: Text(
                                         '${context.watch<NotificationProvider>().newNotificationsCount}',
-                                        // style: TextStyle(color: Colors.white),
+                                        style: TextStyle(color: Colors.white),
                                       ),
                                     ),
                                     child: IconButton(

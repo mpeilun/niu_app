@@ -17,6 +17,9 @@ class Styles {
         backgroundColor: isDarkTheme ? Color(0xff212121) : Colors.blue[900],
         foregroundColor: Colors.grey[200],
       ),
+      inputDecorationTheme: InputDecorationTheme(
+
+      ),
       // backgroundColor: isDarkTheme ? Color(0xff121212) : Colors.grey[200],
       // cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,
       // hintColor: isDarkTheme ? Color(0xff280C0B) : Color(0xffEECED3),
