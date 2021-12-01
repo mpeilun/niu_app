@@ -523,14 +523,20 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
         runNotificationWebViewWebView(context, null);
         pushLastLogin();
         loginFinished();
+
         DateTime firstLoginTime =
             DateTime.parse(prefs.getString('first_login_time')!);
-        if (DateTime.now().difference(firstLoginTime).inDays >= 3 &&
-            !prefs.getBool('isDoneForm')!) {
-          print('---do form---');
-        } else {
+        if (prefs.getBool('isDoneForm')!) {
+          print('---done form---');
+          print(DateTime.now().difference(firstLoginTime).inDays);
+        } else if (DateTime.now().difference(firstLoginTime).inDays >= 3) {
           toDoFormAlert(context);
-          print('---do nothing---');
+          print('---need do form---');
+          print(DateTime.now().difference(firstLoginTime).inDays);
+        } else {
+          //Debug
+          toDoFormAlert(context);
+          print('---time not yet to do form---');
           print(DateTime.now().difference(firstLoginTime).inDays);
         }
       } else if (result == '帳號密碼錯誤') {
