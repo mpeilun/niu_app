@@ -48,6 +48,10 @@ class _DrawerPageState extends State<DrawerPage> {
 
   @override
   Widget build(BuildContext context) {
+    print('---------drawer' +
+        Provider.of<DarkThemeProvider>(context, listen: false)
+            .doneForm
+            .toString());
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return AnimatedContainer(
       transform: Matrix4.translationValues(widget.drawerXOffset, 0, 0),
@@ -153,11 +157,13 @@ class _DrawerPageState extends State<DrawerPage> {
             height: 20,
           ),
           Consumer<DarkThemeProvider>(
-            builder: (context, change, child) =>  change.getDoneForm ? Switch(
-                value: change.darkTheme,
-                onChanged: (value) {
-                  change.darkTheme = value;
-                }) : SizedBox(),
+            builder: (context, change, child) => change.doneForm
+                ? Switch(
+                    value: change.darkTheme,
+                    onChanged: (value) {
+                      change.darkTheme = value;
+                    })
+                : SizedBox(),
           )
         ],
       ),

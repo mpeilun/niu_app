@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<String> getStudioName() async {
@@ -47,5 +50,4 @@ setStudioData(String id, String pwd, String name) async {
   prefs.setString("pwd", pwd);
   prefs.setString("name", name);
   prefs.setString("first_login_time", DateTime.now().toString());
-  prefs.setBool("isDoneForm", false);
 }
