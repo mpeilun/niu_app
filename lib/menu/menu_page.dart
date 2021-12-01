@@ -526,6 +526,10 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
 
         DateTime firstLoginTime =
             DateTime.parse(prefs.getString('first_login_time')!);
+
+        Provider.of<DarkThemeProvider>(context).setDoneForm =
+            prefs.getBool("isDoneForm")!;
+
         if (prefs.getBool('isDoneForm')!) {
           print('---done form---');
           print(DateTime.now().difference(firstLoginTime).inDays);

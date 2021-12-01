@@ -7,6 +7,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/toast.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -190,6 +192,8 @@ class _SatisfactionSurveyState extends State<SatisfactionSurvey> {
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               prefs.setBool('isDoneForm', true);
+                              Provider.of<DarkThemeProvider>(context)
+                                  .setDoneForm = prefs.getBool("isDoneForm")!;
                               showToast('成功送出 (並成功解鎖黑色主題，可在設定中開啟)');
                             });
                           }
