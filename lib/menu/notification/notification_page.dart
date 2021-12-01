@@ -47,11 +47,12 @@ class _NotificationDrawer extends State<NotificationDrawer>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: WillPopScope(
+    return WillPopScope(
       onWillPop: () async {
         context.read<NotificationProvider>().setNewNotificationsCount(0);
-        notificationItems.forEach((element) {element.isNew = false;});
+        notificationItems.forEach((element) {
+          element.isNew = false;
+        });
         context
             .read<NotificationProvider>()
             .setNotificationItemList(notificationItems);
@@ -119,22 +120,20 @@ class _NotificationDrawer extends State<NotificationDrawer>
                                 children: [
                                   ListTile(
                                     leading: Icon(
-                                      iconList[
-                                          notificationItems[index].icon],
+                                      iconList[notificationItems[index].icon],
                                       size: 40.0,
                                     ),
-                                    title: Text(
-                                        notificationItems[index].title),
+                                    title: Text(notificationItems[index].title),
                                     onTap: () {
                                       notificationItems[index].isNew = false;
                                       context
                                           .read<NotificationProvider>()
-                                          .setNotificationItemList(notificationItems);
+                                          .setNotificationItemList(
+                                              notificationItems);
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ESchool(),
+                                              builder: (context) => ESchool(),
                                               maintainState: false));
                                     },
                                   ),
@@ -160,7 +159,7 @@ class _NotificationDrawer extends State<NotificationDrawer>
           ),
         ),
       ),
-    ));
+    );
   }
 
   Widget buildSwipeActionLeft() => Container(

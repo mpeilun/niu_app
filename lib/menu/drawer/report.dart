@@ -88,6 +88,7 @@ class _PageRecruit extends State<PageRecruit> {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return SingleChildScrollView(
       child: Center(
         child: Column(
@@ -124,12 +125,18 @@ class _PageRecruit extends State<PageRecruit> {
                   Center(
                     child: TextFormField(
                       initialValue: '',
-                      style: TextStyle(fontSize: 14,),
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
                       maxLines: null,
                       keyboardType: TextInputType.multiline,
                       decoration: InputDecoration(
+                        filled: true,
+                        fillColor: themeChange.darkTheme
+                            ? Theme.of(context).cardColor
+                            : Colors.white,
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.0)),
+                            borderRadius: BorderRadius.circular(32.0)),
                         labelText: '聯繫方式',
                         hintText: '請輸入Mail、LINE等聯絡方式',
                       ),
@@ -169,7 +176,8 @@ class _PageRecruit extends State<PageRecruit> {
               height: 10,
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
+              style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor),
               onPressed: () async {
                 if (_contact != '' && _checkboxSelected != false) {
                   SharedPreferences prefs =
@@ -227,6 +235,7 @@ class _PageFeedback extends State<PageFeedback> {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return Container(
       child: SafeArea(
         child: Scaffold(
@@ -266,12 +275,18 @@ class _PageFeedback extends State<PageFeedback> {
                         Center(
                           child: TextFormField(
                             initialValue: '',
-                            style: TextStyle(fontSize: 14,),
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
                             maxLines: null,
                             keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
+                              filled: true,
+                              fillColor: themeChange.darkTheme
+                                  ? Theme.of(context).cardColor
+                                  : Colors.white,
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12.0)),
+                                  borderRadius: BorderRadius.circular(32.0)),
                               labelText: '意見',
                               hintText: '文字',
                             ),
@@ -311,7 +326,8 @@ class _PageFeedback extends State<PageFeedback> {
                     height: 10,
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
+                    style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).primaryColor),
                     onPressed: () async {
                       if (_contact != '') {
                         SharedPreferences prefs =
@@ -456,12 +472,16 @@ class _PageBugReport extends State<PageBugReport> {
                       children: [
                         TextFormField(
                           initialValue: '',
-                          style: TextStyle(fontSize: 14,),
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
                           maxLines: null,
                           keyboardType: TextInputType.multiline,
                           decoration: InputDecoration(
                             filled: true,
-                            fillColor: themeChange.darkTheme ? Theme.of(context).cardColor : Colors.white,
+                            fillColor: themeChange.darkTheme
+                                ? Theme.of(context).cardColor
+                                : Colors.white,
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(32.0)),
                             labelText: 'BUG問題',
@@ -499,7 +519,8 @@ class _PageBugReport extends State<PageBugReport> {
                     height: 10,
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
+                    style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).primaryColor),
                     onPressed: () async {
                       if (_contact != '' && _checkboxSelected != false) {
                         SharedPreferences prefs =

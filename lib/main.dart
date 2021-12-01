@@ -84,7 +84,6 @@ void main() async {
     ChangeNotifierProvider(create: (_) => NotificationProvider()),
     ChangeNotifierProvider(create: (_) => InfoProvider()),
     ChangeNotifierProvider(create: (_) => AnnouncementProvider()),
-    ChangeNotifierProvider(create: (_) => DarkThemeProvider()),
   ], child: MyApp()));
 }
 
@@ -106,7 +105,7 @@ class _MyAppState extends State<MyApp> {
 
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
-    await themeChangeProvider.darkThemePreference.getTheme();
+        await themeChangeProvider.darkThemePreference.getTheme();
   }
 
   @override
@@ -125,7 +124,8 @@ class _MyAppState extends State<MyApp> {
               home: StartMenu(),
             );
           },
-        ),),
+        ),
+      ),
     );
   }
 }

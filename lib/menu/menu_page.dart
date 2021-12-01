@@ -372,7 +372,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                                       alignment: Alignment.topCenter,
                                       child: Text(
                                         '${context.watch<NotificationProvider>().newNotificationsCount}',
-                                        // style: TextStyle(color: Colors.white),
+                                        style: TextStyle(color: Colors.white),
                                       ),
                                     ),
                                     child: IconButton(
