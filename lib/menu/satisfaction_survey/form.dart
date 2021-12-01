@@ -170,7 +170,7 @@ class _SatisfactionSurveyState extends State<SatisfactionSurvey> {
                             ),
                             elevation: 4,
                             child: Padding(
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 18.0),
                               child: Center(
                                   child: HtmlWidget(
                                       '''<p style="text-align: left;">您好:</p>
@@ -186,15 +186,24 @@ class _SatisfactionSurveyState extends State<SatisfactionSurvey> {
                       SizedBox(
                         height: 10,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            loadState = true;
-                          });
-                        },
-                        child: Text(
-                          '了解',
-                          style: TextStyle(fontSize: 14),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    loadState = true;
+                                  });
+                                },
+                                child: Text(
+                                  '了解',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       )
                     ],
