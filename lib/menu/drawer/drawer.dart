@@ -165,7 +165,7 @@ class _DrawerPageState extends State<DrawerPage> {
             height: 20,
           ),
           Consumer<DarkThemeProvider>(
-            builder: (context, change, child) => change.doneForm
+            builder: (context, change, child) => true //change.doneForm
                 ? Switch(
                     value: change.darkTheme,
                     onChanged: (value) {

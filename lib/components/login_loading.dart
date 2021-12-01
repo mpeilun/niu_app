@@ -10,15 +10,13 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
 
-    return SafeArea(
-      child: Container(
+    return Container(
         color: themeChange.darkTheme ? Color(0xff212121) : Colors.blue[900],
-          child: Center(
-        child: const SpinKitSquareCircle(
-          color: Colors.white,
-          size: 60,
-        ),
-      )),
-    );
+        child: Center(
+          child: const SpinKitSquareCircle(
+            color: Colors.white,
+            size: 60,
+          ),
+        ));
   }
 }
