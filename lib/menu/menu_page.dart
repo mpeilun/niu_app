@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:animate_icons/animate_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -83,7 +84,6 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
   bool loginState = false;
   bool isNotification = true;
   bool popState = false;
-
   bool isDrawerOpen = false;
   bool isDragging = false;
 
@@ -336,7 +336,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.shade800,
+                            color: Colors.black,
                             spreadRadius: 1.5,
                             blurRadius: 10.0,
                             offset: Offset(1.0, 0),

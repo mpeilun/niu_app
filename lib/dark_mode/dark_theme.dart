@@ -18,9 +18,9 @@ class Styles {
         foregroundColor: Colors.grey[200],
       ),
       textSelectionTheme: TextSelectionThemeData(
-          selectionHandleColor: isDarkTheme ? Colors.grey[600] : Colors.blue[800],
-      cursorColor: isDarkTheme ? Color(0xff212121) : Colors.blue,),
-
+        selectionHandleColor: isDarkTheme ? Colors.grey[600] : Colors.blue[800],
+        cursorColor: isDarkTheme ? Color(0xff212121) : Colors.blue,
+      ),
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: TextStyle(
           color: isDarkTheme ? Colors.grey[200] : null,
@@ -40,6 +40,9 @@ class Styles {
             borderRadius: BorderRadius.circular(18.0),
           )),
         ),
+      ),
+      iconTheme: IconThemeData(
+        color: isDarkTheme ? Color(0xe0ffffff) : Colors.white,
       ),
       // backgroundColor: isDarkTheme ? Color(0xff121212) : Colors.grey[200],
       // cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,

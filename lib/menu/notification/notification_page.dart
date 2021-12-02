@@ -64,6 +64,9 @@ class _NotificationDrawer extends State<NotificationDrawer>
           title: Text('通知'),
           actions: [
             PopupMenuButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8.0))
+              ),
               onSelected: (result) {
                 if (result == 0) {
                   clearAllItems();

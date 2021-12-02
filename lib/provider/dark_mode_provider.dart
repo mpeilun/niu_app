@@ -1,6 +1,6 @@
+import 'package:animate_icons/animate_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:niu_app/dark_mode/shared_preferences.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DarkThemeProvider with ChangeNotifier {
@@ -12,6 +12,13 @@ class DarkThemeProvider with ChangeNotifier {
     _darkTheme = value;
     darkThemePreference.setDarkTheme(value);
     notifyListeners();
+  }
+  AnimateIconController _controller = AnimateIconController();
+  AnimateIconController get controller => _controller;
+  void isDark(){
+    if(_darkTheme){
+      _controller.animateToEnd();
+    }
   }
 
   bool _doneForm = false;

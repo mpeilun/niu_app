@@ -57,6 +57,9 @@ class _ViewPage extends State<ViewPage> {
             iconSize : 36,
           ),
           PopupMenuButton<String>(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8.0))
+            ),
             itemBuilder: (context) => settingGetPopupMenu(context),
             onSelected: (String value) async{
               print('onSelected : ' + value);
@@ -94,7 +97,7 @@ class _ViewPage extends State<ViewPage> {
     return <PopupMenuEntry<String>>[
       PopupMenuItem<String>(
         value: 'Reload',
-        child: Text('清除緩存'),
+        child: Center(child: Text('清除緩存')),
       ),
     ];
   }
