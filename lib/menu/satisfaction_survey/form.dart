@@ -101,23 +101,23 @@ class _SatisfactionSurveyState extends State<SatisfactionSurvey> {
     'https://docs.google.com/forms/d/e/1FAIpQLSe5l6o9TdooOHXFvutrRxtl1VihaFaKuXp7L6xnyGliVzcN0g/viewform?usp=sf_link'
   ];
   String js = '''
-    javascript:(
-      function() {
-	      //帳號資訊
+javascript: (
+    function() {
+        //帳號資訊
         document.querySelector("#mG61Hd > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewNoPadding > div > div.freebirdFormviewerViewHeaderHeaderFooter > div.freebirdFormviewerViewHeaderEmailAndSaveStatusContainer").style.display = 'none';
-	      //GoogleInfo
-	      document.querySelector("body > div > div:nth-child(2) > div").style.display = 'none';
-	      document.querySelector("body > div.freebirdFormviewerViewFormContentWrapper > div.freebirdFormviewerViewFeedbackSubmitFeedbackButton > div").style.display = 'none';
-	      document.querySelector("#mG61Hd > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewNoPadding > div > div.freebirdFormviewerViewHeaderHeaderBody").style.display = 'none';
-	      document.querySelector("#mG61Hd > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewNoPadding > div > div.freebirdFormviewerViewHeaderHeaderSeparator").style.display = 'none';
-	      document.querySelector("#mG61Hd > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewNavigationNavControls > div.freebirdFormviewerViewNavigationPasswordWarning").style.display = 'none';
-	      //FixBug
-	      if(document.querySelector("#mG61Hd > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewNavigationNavControls > div.freebirdFormviewerViewNavigationButtonsAndProgress.hasClearButton > div.freebirdFormviewerViewNavigationLeftButtons > div.appsMaterialWizButtonEl.appsMaterialWizButtonPaperbuttonEl.appsMaterialWizButtonPaperbuttonFilled.freebirdFormviewerViewNavigationSubmitButton.freebirdThemedFilledButtonM2 > span > span") != null){
-	        document.querySelector("#mG61Hd > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewNavigationNavControls > div.freebirdFormviewerViewNavigationButtonsAndProgress.hasClearButton > div.freebirdFormviewerViewNavigationLeftButtons > div.appsMaterialWizButtonEl.appsMaterialWizButtonPaperbuttonEl.appsMaterialWizButtonPaperbuttonProtected.freebirdFormviewerViewNavigationNoSubmitButton.freebirdThemedProtectedButtonM2 > span").style.width= '29px';
-	        document.querySelector("#mG61Hd > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewNavigationNavControls > div.freebirdFormviewerViewNavigationButtonsAndProgress.hasClearButton > div.freebirdFormviewerViewNavigationLeftButtons > div.appsMaterialWizButtonEl.appsMaterialWizButtonPaperbuttonEl.appsMaterialWizButtonPaperbuttonFilled.freebirdFormviewerViewNavigationSubmitButton.freebirdThemedFilledButtonM2 > span > span").style.width= '29px';
-	      }
-	      }
-	    )()
+        //GoogleInfo
+        document.querySelector("body > div > div:nth-child(2) > div").style.display = 'none';
+        document.querySelector("body > div.freebirdFormviewerViewFormContentWrapper > div.freebirdFormviewerViewFeedbackSubmitFeedbackButton > div").style.display = 'none';
+        document.querySelector("#mG61Hd > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewNoPadding > div > div.freebirdFormviewerViewHeaderHeaderBody").style.display = 'none';
+        document.querySelector("#mG61Hd > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewNoPadding > div > div.freebirdFormviewerViewHeaderHeaderSeparator").style.display = 'none';
+        document.querySelector("#mG61Hd > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewNavigationNavControls > div.freebirdFormviewerViewNavigationPasswordWarning").style.display = 'none';
+        //FixBug
+        if (document.querySelector("#mG61Hd > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewNavigationNavControls > div.freebirdFormviewerViewNavigationButtonsAndProgress.hasClearButton > div.freebirdFormviewerViewNavigationLeftButtons > div.appsMaterialWizButtonEl.appsMaterialWizButtonPaperbuttonEl.appsMaterialWizButtonPaperbuttonFilled.freebirdFormviewerViewNavigationSubmitButton.freebirdThemedFilledButtonM2 > span > span") != null) {
+            document.querySelector("#mG61Hd > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewNavigationNavControls > div.freebirdFormviewerViewNavigationButtonsAndProgress.hasClearButton > div.freebirdFormviewerViewNavigationLeftButtons > div.appsMaterialWizButtonEl.appsMaterialWizButtonPaperbuttonEl.appsMaterialWizButtonPaperbuttonProtected.freebirdFormviewerViewNavigationNoSubmitButton.freebirdThemedProtectedButtonM2 > span").style.width = '29px';
+            document.querySelector("#mG61Hd > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewNavigationNavControls > div.freebirdFormviewerViewNavigationButtonsAndProgress.hasClearButton > div.freebirdFormviewerViewNavigationLeftButtons > div.appsMaterialWizButtonEl.appsMaterialWizButtonPaperbuttonEl.appsMaterialWizButtonPaperbuttonFilled.freebirdFormviewerViewNavigationSubmitButton.freebirdThemedFilledButtonM2 > span > span").style.width = '29px';
+        }
+    }
+)()
 ''';
   int submitCount = 0;
   bool loadState = false;
