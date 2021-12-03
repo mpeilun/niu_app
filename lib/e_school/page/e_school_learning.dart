@@ -49,6 +49,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
       ));
 
   late String url;
+  late List<Map> learningData = [];
   bool loadState = false;
   bool setWebViewVisibility = false;
   double progress = 0;
@@ -57,7 +58,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
   //if index+1 is not directory create title
   Future<List<Map>> getData() async {
     for (int i = 0; i < 60; i++) {
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future.delayed(Duration(milliseconds: 1000));
       print('讀取資料: ' + i.toString());
       var rawText = await webViewController!.evaluateJavascript(source: '''
                                         document
@@ -116,9 +117,6 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
 
         // listTitle.removeLast();
         listJs.removeAt(0);
-
-        print(listTitle.length);
-        print(listJs.length);
 
         for (int i = 0; i < listTitle.length; i++) {
           result.add({'title': listTitle[i], 'content': listJs[i]});
@@ -311,7 +309,9 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                           print(consoleMessage);
                         },
                         onDownloadStart: (controller, url) async {
-                          // download(url, context, null);
+                          if (setWebViewVisibility) {
+                            download(url, context, null);
+                          }
                         },
                       ),
                     )
