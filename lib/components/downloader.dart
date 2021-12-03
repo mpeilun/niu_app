@@ -29,11 +29,37 @@ Future<void> download(Uri uri, BuildContext context, String? title) async {
 
   void askDownload() {
     Alert(
+      closeIcon: Icon(Icons.close, color: Colors.grey),
       context: context,
       type: AlertType.warning,
-      title: "是否要下載此檔案至裝置?",
-      desc: title,
+      // title: "是否要下載此檔案至裝置？",
+      // desc: title,
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 10.0,),
+          Text(
+            "是否要下載此檔案至裝置？",
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 10.0,),
+          Text(
+            '$title',
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
       buttons: [
+        DialogButton(
+          child: Text(
+            "取消",
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          color: colorNo,
+        ),
         DialogButton(
           child: Text(
             "下載",
@@ -45,26 +71,32 @@ Future<void> download(Uri uri, BuildContext context, String? title) async {
           },
           color: colorYes,
         ),
-        DialogButton(
-          child: Text(
-            "取消",
-            style: TextStyle(color: Colors.white, fontSize: 18),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          color: colorNo,
-        )
       ],
     ).show();
   }
 
   if (!await Permission.storage.isGranted) {
     Alert(
+      closeIcon: Icon(Icons.close, color: Colors.grey),
       context: context,
       type: AlertType.warning,
-      title: "需取得權限才能獲得完整的使用體驗",
-      desc: "請允許存取\"檔案和媒體\"權限，以便您上傳與下載檔案",
+      // title: "需取得權限才能獲得完整的使用體驗",
+      // desc: "請允許存取\"檔案和媒體\"權限，以便您上傳與下載檔案",
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 10.0,),
+          Text(
+            "需取得權限才能獲得完整的使用體驗",
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 10.0,),
+          Text(
+            "請允許存取\"檔案和媒體\"權限，以便您上傳與下載檔案",
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
       buttons: [
         DialogButton(
           child: Text(
@@ -77,10 +109,26 @@ Future<void> download(Uri uri, BuildContext context, String? title) async {
               askDownload();
             } else {
               Alert(
+                closeIcon: Icon(Icons.close, color: Colors.grey),
                 context: context,
                 type: AlertType.error,
-                title: "無權限存取，無法使用此功能",
-                desc: "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
+                // title: "無權限存取，無法使用此功能",
+                // desc: "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
+                content: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 10.0,),
+                    Text(
+                      "無權限存取，無法使用此功能",
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 10.0,),
+                    Text(
+                      "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
                 buttons: [
                   DialogButton(
                     child: Text(
