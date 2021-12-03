@@ -115,12 +115,11 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
           }
         }
 
-        // listTitle.removeLast();
+        listTitle.removeLast();
         listJs.removeAt(0);
 
         for (int i = 0; i < listTitle.length; i++) {
           result.add({'title': listTitle[i], 'content': listJs[i]});
-          print(result[i]);
         }
         return result;
       }
@@ -210,7 +209,9 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                           if (uri
                               .toString()
                               .contains('https://eschool.niu.edu.tw/base/')) {
-                            download(uri, context, null);
+                            if (setWebViewVisibility) {
+                              download(uri, context, null);
+                            }
                             return NavigationActionPolicy.ALLOW;
                           }
 
