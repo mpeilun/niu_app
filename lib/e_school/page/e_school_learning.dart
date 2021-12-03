@@ -49,54 +49,87 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
       ));
 
   late String url;
-  late bool loadState = false;
+  bool loadState = false;
+  bool setWebViewVisibility = false;
   double progress = 0;
 
-  getData() async {
-    for (int i = 0; i < 30; i++) {
-      await Future.delayed(Duration(seconds: 1));
+  //三種結果 timeout no_data result
+  //if index+1 is not directory create title
+  Future<List<Map>> getData() async {
+    for (int i = 0; i < 60; i++) {
+      await Future.delayed(Duration(milliseconds: 500));
       print('讀取資料: ' + i.toString());
-      String rawText = await webViewController!.evaluateJavascript(source: '''
+      var rawText = await webViewController!.evaluateJavascript(source: '''
                                         document
                                         .getElementById('s_catalog').contentDocument
                                         .getElementById('pathtree').contentDocument
                                         .body.outerText;
                                     ''');
-      String rawHTML = await webViewController!.evaluateJavascript(source: '''
+      var rawHTML = await webViewController!.evaluateJavascript(source: '''
                                         document
                                         .getElementById('s_catalog').contentDocument
                                         .getElementById('pathtree').contentDocument
                                         .body.innerHTML;
                                     ''');
-      List listTitle = rawText.split('''\n''');
-      List listJs = [];
-      List tempHTML = rawHTML.split('<li id="I_SCO_');
 
-      tempHTML.forEach((element) {
-        if (element.toString().contains('onclick="return ')) {
-          listJs.add(element
-              .toString()
-              .split('nclick="return ')[1]
-              .toString()
-              .split(';')[0]);
-        } else {
-          listJs.add('null');
+      if (rawHTML != null && rawText != null) {
+        //無課程
+        if (rawHTML
+            .toString()
+            .contains('''\<h4 style="text-align: center;">尚未有任何課程</h4>''')) {
+          return [
+            {'no_data': ''}
+          ];
         }
-      });
 
-      listTitle.removeLast();
-      listJs.removeAt(0);
+        List listTitle = rawText.split('''\n''');
+        List listJs = [];
+        List tempHTML = rawHTML.split('<li id="I_SCO_');
+        List<Map> result = [];
 
-      if (rawText.length > 1) {
+        //尚未抓取到資料
+        if (listTitle.length < 2 && listJs.length < 2) {
+          continue;
+        }
+
+        print(listTitle.length);
+        print(tempHTML.length);
+
+        for (int i = 0; i < tempHTML.length; i++) {
+          if (tempHTML[i].toString().contains('onclick="return ')) {
+            listJs.add(tempHTML[i]
+                .toString()
+                .split('nclick="return ')[1]
+                .toString()
+                .split(';')[0]
+                .replaceAll('''launchActivity(this,\'''', '').replaceAll(
+                    '''','null')''',
+                    '').replaceAll('expanding(this)', 'directory'));
+          } else if (i != 0 &&
+              (tempHTML[i - 1].toString().contains('<\/li></ul></li>') ||
+                  listJs[i - 1] == 'directory_no_content')) {
+            listJs.add('directory_no_content');
+          } else {
+            listJs.add('null');
+          }
+        }
+
+        // listTitle.removeLast();
+        listJs.removeAt(0);
+
         print(listTitle.length);
         print(listJs.length);
+
         for (int i = 0; i < listTitle.length; i++) {
-          print('title:' + listTitle[i] + ' js:' + listJs[i]);
+          result.add({'title': listTitle[i], 'content': listJs[i]});
+          print(result[i]);
         }
-        print('讀取完畢');
-        break;
+        return result;
       }
     }
+    return [
+      {'timeout': ''}
+    ];
   }
 
   @override
@@ -130,7 +163,24 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                     Visibility(
                         visible: !loadState, child: NiuIconLoading(size: 80)),
                     Visibility(
-                      visible: loadState,
+                        visible: loadState,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            setState(() {
+                              setWebViewVisibility = true;
+                            });
+                            await webViewController
+                                ?.evaluateJavascript(source: '''
+                                document
+                                .getElementById('s_catalog').contentDocument
+                                .getElementById('pathtree').contentDocument
+								                .querySelector("#I_SCO_10035390_1569589497393449 > span > a").onclick()
+                                ''');
+                          },
+                          child: Text('showWebView'),
+                        )),
+                    Visibility(
+                      visible: setWebViewVisibility,
                       maintainState: true,
                       child: InAppWebView(
                         key: eSchoolLearning,
@@ -225,10 +275,10 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                                         source:
                                             'document.querySelector("#envStudent").rows = \'0,*\'');
                                   });
-                                  await getData();
-                                  setState(() {
-                                    loadState = true;
-                                  });
+                                });
+                                log((await getData()).toString());
+                                setState(() {
+                                  loadState = true;
                                 });
                                 break;
                               } else if (i == 30) {
@@ -261,7 +311,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                           print(consoleMessage);
                         },
                         onDownloadStart: (controller, url) async {
-                          download(url, context, null);
+                          // download(url, context, null);
                         },
                       ),
                     )
