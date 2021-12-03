@@ -92,6 +92,9 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                                             .contains('I_SCO_')
                                         ? ElevatedButton(
                                             onPressed: () async {
+                                              setState(() {
+                                                setWebViewVisibility = true;
+                                              });
                                               shouldDownload = true;
                                               await webViewController!
                                                   .evaluateJavascript(
@@ -136,10 +139,29 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                           if (uri.toString().contains(
                                   'https://eschool.niu.edu.tw/base/') &&
                               shouldDownload) {
-                            //download(uri, context, null);
+                            download(uri, context, null);
                             return NavigationActionPolicy.ALLOW;
                           }
-                          return NavigationActionPolicy.CANCEL;
+
+                          if (![
+                                "http",
+                                "https",
+                                "file",
+                                "chrome",
+                                "data",
+                                "javascript",
+                                "about"
+                              ].contains(uri.scheme) ||
+                              !uri.toString().contains("eschool.niu.edu.tw")) {
+                            if (await canLaunch(uri.toString())) {
+                              await launch(
+                                uri.toString(),
+                              );
+                              return NavigationActionPolicy.CANCEL;
+                            }
+                          }
+
+                          return NavigationActionPolicy.ALLOW;
                         },
                         onLoadStop: (controller, url) async {
                           print("onLoadStop $url");
