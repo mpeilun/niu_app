@@ -1,14 +1,11 @@
 import 'dart:async';
-import 'dart:developer';
-import 'dart:io' as dartCookies;
+
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/toast.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../advanced_tiles.dart';
 import '../e_school.dart';
@@ -135,12 +132,12 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                           print('shouldOverrideUrlLoading: ' +
                               navigationAction.request.toString());
 
-                          //for ios
+                          //IOS Fix 檔案下載用
                           if (uri.toString().contains(
                                   'https://eschool.niu.edu.tw/base/') &&
                               shouldDownload) {
                             download(uri, context, null);
-                            return NavigationActionPolicy.ALLOW;
+                            return NavigationActionPolicy.CANCEL;
                           }
 
                           if (![
@@ -153,15 +150,10 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                                 "about"
                               ].contains(uri.scheme) ||
                               !uri.toString().contains("eschool.niu.edu.tw")) {
-                            if (await canLaunch(uri.toString())) {
-                              await launch(
-                                uri.toString(),
-                              );
-                              return NavigationActionPolicy.CANCEL;
-                            }
+                            return NavigationActionPolicy.CANCEL;
+                          } else {
+                            return NavigationActionPolicy.ALLOW;
                           }
-
-                          return NavigationActionPolicy.ALLOW;
                         },
                         onLoadStop: (controller, url) async {
                           print("onLoadStop $url");
