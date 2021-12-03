@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io' as dartCookies;
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,53 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
   late String url;
   late bool loadState = false;
   double progress = 0;
+
+  getData() async {
+    for (int i = 0; i < 30; i++) {
+      await Future.delayed(Duration(seconds: 1));
+      print('讀取資料: ' + i.toString());
+      String rawText = await webViewController!.evaluateJavascript(source: '''
+                                        document
+                                        .getElementById('s_catalog').contentDocument
+                                        .getElementById('pathtree').contentDocument
+                                        .body.outerText;
+                                    ''');
+      String rawHTML = await webViewController!.evaluateJavascript(source: '''
+                                        document
+                                        .getElementById('s_catalog').contentDocument
+                                        .getElementById('pathtree').contentDocument
+                                        .body.innerHTML;
+                                    ''');
+      List listTitle = rawText.split('''\n''');
+      List listJs = [];
+      List tempHTML = rawHTML.split('<li id="I_SCO_');
+
+      tempHTML.forEach((element) {
+        if (element.toString().contains('onclick="return ')) {
+          listJs.add(element
+              .toString()
+              .split('nclick="return ')[1]
+              .toString()
+              .split(';')[0]);
+        } else {
+          listJs.add('null');
+        }
+      });
+
+      listTitle.removeLast();
+      listJs.removeAt(0);
+
+      if (rawText.length > 1) {
+        print(listTitle.length);
+        print(listJs.length);
+        for (int i = 0; i < listTitle.length; i++) {
+          print('title:' + listTitle[i] + ' js:' + listJs[i]);
+        }
+        print('讀取完畢');
+        break;
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -177,6 +225,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                                         source:
                                             'document.querySelector("#envStudent").rows = \'0,*\'');
                                   });
+                                  await getData();
                                   setState(() {
                                     loadState = true;
                                   });
