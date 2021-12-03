@@ -51,6 +51,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
   late String url;
   late List<Map> learningData = [];
   bool loadState = false;
+  bool shouldDownload = false;
   bool setWebViewVisibility = false;
   double progress = 0;
 
@@ -115,7 +116,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
           }
         }
 
-        listTitle.removeLast();
+        // listTitle.removeLast();
         listJs.removeAt(0);
 
         for (int i = 0; i < listTitle.length; i++) {
@@ -161,21 +162,40 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                         visible: !loadState, child: NiuIconLoading(size: 80)),
                     Visibility(
                         visible: loadState,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            setState(() {
-                              setWebViewVisibility = true;
-                            });
-                            await webViewController
-                                ?.evaluateJavascript(source: '''
-                                document
-                                .getElementById('s_catalog').contentDocument
-                                .getElementById('pathtree').contentDocument
-								                .querySelector("#I_SCO_10035390_1569589497393449 > span > a").onclick()
-                                ''');
+                        child: Center(
+                            child: ListView.builder(
+                          itemCount: learningData.length,
+                          itemBuilder: (context, index) {
+                            return learningData.first.containsKey('no_data') ||
+                                    learningData.first.containsKey('timeout')
+                                ? Text('無資料 or 讀取失敗')
+                                : ListTile(
+                                    leading: Icon(Icons.fifteen_mp),
+                                    title:
+                                        Text('${learningData[index]['title']}'),
+                                    subtitle: learningData[index]['content']
+                                            .toString()
+                                            .contains('I_SCO_')
+                                        ? ElevatedButton(
+                                            onPressed: () async {
+                                              shouldDownload = true;
+                                              await webViewController!
+                                                  .evaluateJavascript(
+                                                      source: '''
+                                              document
+                                              .getElementById('s_catalog').contentDocument
+                                              .getElementById('pathtree').contentDocument
+								                              .querySelector("#''' +
+                                                          learningData[index]
+                                                              ['content'] +
+                                                          ''' > span > a").onclick()
+                                              ''');
+                                            },
+                                            child: Text('下載'))
+                                        : null,
+                                  );
                           },
-                          child: Text('showWebView'),
-                        )),
+                        ))),
                     Visibility(
                       visible: setWebViewVisibility,
                       maintainState: true,
@@ -209,7 +229,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                           if (uri
                               .toString()
                               .contains('https://eschool.niu.edu.tw/base/')) {
-                            if (setWebViewVisibility) {
+                            if (shouldDownload) {
                               download(uri, context, null);
                             }
                             return NavigationActionPolicy.ALLOW;
@@ -275,7 +295,8 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                                             'document.querySelector("#envStudent").rows = \'0,*\'');
                                   });
                                 });
-                                log((await getData()).toString());
+                                learningData = await getData();
+                                print(learningData);
                                 setState(() {
                                   loadState = true;
                                 });
@@ -310,7 +331,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                           print(consoleMessage);
                         },
                         onDownloadStart: (controller, url) async {
-                          if (setWebViewVisibility) {
+                          if (shouldDownload) {
                             download(url, context, null);
                           }
                         },
