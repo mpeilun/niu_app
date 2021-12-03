@@ -154,196 +154,195 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
   @override
   Widget build(BuildContext context) {
     return ConditionalWillPopScope(
-        child: Container(
-          child: Scaffold(
-            body: SafeArea(
-                child: Column(children: <Widget>[
+        child: Scaffold(
+          body: SafeArea(
+            child: Column(children: <Widget>[
               Expanded(
-                child: Stack(
-                  children: [
-                    Visibility(
-                        visible: !loadState, child: NiuIconLoading(size: 80)),
-                    Visibility(
-                        visible: loadState,
-                        child: Center(
-                            child: ListView.builder(
-                          itemCount: learningData.length,
-                          itemBuilder: (context, index) {
-                            return learningData.first.containsKey('no_data') ||
-                                    learningData.first.containsKey('timeout')
-                                ? Text('無資料 or 讀取失敗')
-                                : ListTile(
-                                    leading: Icon(Icons.fifteen_mp),
-                                    title:
-                                        Text('${learningData[index]['title']}'),
-                                    subtitle: learningData[index]['content']
-                                            .toString()
-                                            .contains('I_SCO_')
-                                        ? ElevatedButton(
-                                            onPressed: () async {
-                                              shouldDownload = true;
-                                              await webViewController!
-                                                  .evaluateJavascript(
-                                                      source: '''
-                                              document
-                                              .getElementById('s_catalog').contentDocument
-                                              .getElementById('pathtree').contentDocument
+            child: Stack(
+              children: [
+                Visibility(
+                    visible: !loadState, child: NiuIconLoading(size: 80)),
+                Visibility(
+                    visible: loadState,
+                    child: Center(
+                        child: ListView.builder(
+                      itemCount: learningData.length,
+                      itemBuilder: (context, index) {
+                        return learningData.first.containsKey('no_data') ||
+                                learningData.first.containsKey('timeout')
+                            ? Text('無資料 or 讀取失敗')
+                            : ListTile(
+                                leading: Icon(Icons.fifteen_mp),
+                                title:
+                                    Text('${learningData[index]['title']}'),
+                                subtitle: learningData[index]['content']
+                                        .toString()
+                                        .contains('I_SCO_')
+                                    ? ElevatedButton(
+                                        onPressed: () async {
+                                          shouldDownload = true;
+                                          await webViewController!
+                                              .evaluateJavascript(
+                                                  source: '''
+                                          document
+                                          .getElementById('s_catalog').contentDocument
+                                          .getElementById('pathtree').contentDocument
 								                              .querySelector("#''' +
-                                                          learningData[index]
-                                                              ['content'] +
-                                                          ''' > span > a").onclick()
-                                              ''');
-                                            },
-                                            child: Text('下載'))
-                                        : null,
-                                  );
-                          },
-                        ))),
-                    Visibility(
-                      visible: setWebViewVisibility,
-                      maintainState: true,
-                      child: InAppWebView(
-                        key: eSchoolLearning,
-                        initialUrlRequest: URLRequest(
-                            url: Uri.parse(
-                                "https://eschool.niu.edu.tw/learn/index.php")),
-                        initialOptions: options,
-                        onWebViewCreated: (controller) {
-                          webViewController = controller;
-                        },
-                        onLoadStart: (controller, url) async {
-                          print("onLoadStart $url");
-                          setState(() {
-                            this.url = url.toString();
-                          });
-                        },
-                        androidOnPermissionRequest:
-                            (controller, origin, resources) async {
-                          return PermissionRequestResponse(
-                              resources: resources,
-                              action: PermissionRequestResponseAction.GRANT);
-                        },
-                        shouldOverrideUrlLoading:
-                            (controller, navigationAction) async {
-                          print('shouldOverrideUrlLoading: ' +
-                              navigationAction.request.toString());
-                          var uri = navigationAction.request.url!;
-
-                          if (uri
-                              .toString()
-                              .contains('https://eschool.niu.edu.tw/base/')) {
-                            if (shouldDownload) {
-                              download(uri, context, null);
-                            }
-                            return NavigationActionPolicy.ALLOW;
-                          }
-
-                          if (![
-                                "http",
-                                "https",
-                                "file",
-                                "chrome",
-                                "data",
-                                "javascript",
-                                "about"
-                              ].contains(uri.scheme) ||
-                              !uri.toString().contains("eschool.niu.edu.tw")) {
-                            if (await canLaunch(uri.toString())) {
-                              await launch(
-                                uri.toString(),
+                                                      learningData[index]
+                                                          ['content'] +
+                                                      ''' > span > a").onclick()
+                                          ''');
+                                        },
+                                        child: Text('下載'))
+                                    : null,
                               );
-                              return NavigationActionPolicy.CANCEL;
-                            }
-                          }
+                      },
+                    ))),
+                Visibility(
+                  visible: setWebViewVisibility,
+                  maintainState: true,
+                  child: InAppWebView(
+                    key: eSchoolLearning,
+                    initialUrlRequest: URLRequest(
+                        url: Uri.parse(
+                            "https://eschool.niu.edu.tw/learn/index.php")),
+                    initialOptions: options,
+                    onWebViewCreated: (controller) {
+                      webViewController = controller;
+                    },
+                    onLoadStart: (controller, url) async {
+                      print("onLoadStart $url");
+                      setState(() {
+                        this.url = url.toString();
+                      });
+                    },
+                    androidOnPermissionRequest:
+                        (controller, origin, resources) async {
+                      return PermissionRequestResponse(
+                          resources: resources,
+                          action: PermissionRequestResponseAction.GRANT);
+                    },
+                    shouldOverrideUrlLoading:
+                        (controller, navigationAction) async {
+                      print('shouldOverrideUrlLoading: ' +
+                          navigationAction.request.toString());
+                      var uri = navigationAction.request.url!;
 
-                          return NavigationActionPolicy.ALLOW;
-                        },
-                        onLoadStop: (controller, url) async {
-                          print("onLoadStop $url");
-                          setState(() {
-                            this.url = url.toString();
-                          });
-                          if (url
-                              .toString()
-                              .contains('eschool.niu.edu.tw/base')) {
-                            print('getUrl ' + url.toString());
-                          }
-                          if (url.toString() ==
-                              'https://eschool.niu.edu.tw/mooc/login.php') {
+                      if (uri
+                          .toString()
+                          .contains('https://eschool.niu.edu.tw/base/')) {
+                        if (shouldDownload) {
+                          download(uri, context, null);
+                        }
+                        return NavigationActionPolicy.ALLOW;
+                      }
+
+                      if (![
+                            "http",
+                            "https",
+                            "file",
+                            "chrome",
+                            "data",
+                            "javascript",
+                            "about"
+                          ].contains(uri.scheme) ||
+                          !uri.toString().contains("eschool.niu.edu.tw")) {
+                        if (await canLaunch(uri.toString())) {
+                          await launch(
+                            uri.toString(),
+                          );
+                          return NavigationActionPolicy.CANCEL;
+                        }
+                      }
+
+                      return NavigationActionPolicy.ALLOW;
+                    },
+                    onLoadStop: (controller, url) async {
+                      print("onLoadStop $url");
+                      setState(() {
+                        this.url = url.toString();
+                      });
+                      if (url
+                          .toString()
+                          .contains('eschool.niu.edu.tw/base')) {
+                        print('getUrl ' + url.toString());
+                      }
+                      if (url.toString() ==
+                          'https://eschool.niu.edu.tw/mooc/login.php') {
+                        globalAdvancedTile = [];
+                        Navigator.pop(context);
+                        showToast('登入逾時，重新登入中！');
+                      }
+                      if (url.toString() ==
+                          'https://eschool.niu.edu.tw/learn/index.php') {
+                        for (int i = 1; i <= 30; i++) {
+                          await Future.delayed(
+                              Duration(milliseconds: 1000), () {});
+                          print('讀取資料 $i');
+                          var raw = await controller.evaluateJavascript(
+                              source:
+                                  'window.frames["s_main"].document.body.innerText');
+                          print('rawData $raw');
+                          if (raw != null || raw != '') {
+                            await Future.delayed(
+                                Duration(milliseconds: 200), () async {
+                              await controller.evaluateJavascript(
+                                  source: 'parent.chgCourse(' +
+                                      widget.courseId +
+                                      ', 1, 1,\'SYS_04_01_002\')');
+                              await Future.delayed(
+                                  Duration(milliseconds: 200), () async {
+                                await controller.evaluateJavascript(
+                                    source:
+                                        'document.querySelector("#envStudent").rows = \'0,*\'');
+                              });
+                            });
+                            learningData = await getData();
+                            print(learningData);
+                            setState(() {
+                              loadState = true;
+                            });
+                            break;
+                          } else if (i == 30) {
                             globalAdvancedTile = [];
                             Navigator.pop(context);
-                            showToast('登入逾時，重新登入中！');
+                            showToast('網路異常');
+                            break;
                           }
-                          if (url.toString() ==
-                              'https://eschool.niu.edu.tw/learn/index.php') {
-                            for (int i = 1; i <= 30; i++) {
-                              await Future.delayed(
-                                  Duration(milliseconds: 1000), () {});
-                              print('讀取資料 $i');
-                              var raw = await controller.evaluateJavascript(
-                                  source:
-                                      'window.frames["s_main"].document.body.innerText');
-                              print('rawData $raw');
-                              if (raw != null || raw != '') {
-                                await Future.delayed(
-                                    Duration(milliseconds: 200), () async {
-                                  await controller.evaluateJavascript(
-                                      source: 'parent.chgCourse(' +
-                                          widget.courseId +
-                                          ', 1, 1,\'SYS_04_01_002\')');
-                                  await Future.delayed(
-                                      Duration(milliseconds: 200), () async {
-                                    await controller.evaluateJavascript(
-                                        source:
-                                            'document.querySelector("#envStudent").rows = \'0,*\'');
-                                  });
-                                });
-                                learningData = await getData();
-                                print(learningData);
-                                setState(() {
-                                  loadState = true;
-                                });
-                                break;
-                              } else if (i == 30) {
-                                globalAdvancedTile = [];
-                                Navigator.pop(context);
-                                showToast('網路異常');
-                                break;
-                              }
-                            }
-                          }
-                        },
-                        onLoadResource: (InAppWebViewController controller,
-                            LoadedResource resource) async {
-                          print('onLoadResource: $resource');
-                        },
-                        onLoadError: (controller, url, code, message) {},
-                        onProgressChanged: (controller, progress) {
-                          setState(() {
-                            this.progress = progress / 100;
-                          });
-                        },
-                        onUpdateVisitedHistory:
-                            (controller, url, androidIsReload) {
-                          setState(() {
-                            this.url = url.toString();
-                          });
-                          print(url.toString());
-                        },
-                        onConsoleMessage: (controller, consoleMessage) {
-                          print(consoleMessage);
-                        },
-                        onDownloadStart: (controller, url) async {
-                          if (shouldDownload) {
-                            download(url, context, null);
-                          }
-                        },
-                      ),
-                    )
-                  ],
-                ),
+                        }
+                      }
+                    },
+                    onLoadResource: (InAppWebViewController controller,
+                        LoadedResource resource) async {
+                      print('onLoadResource: $resource');
+                    },
+                    onLoadError: (controller, url, code, message) {},
+                    onProgressChanged: (controller, progress) {
+                      setState(() {
+                        this.progress = progress / 100;
+                      });
+                    },
+                    onUpdateVisitedHistory:
+                        (controller, url, androidIsReload) {
+                      setState(() {
+                        this.url = url.toString();
+                      });
+                      print(url.toString());
+                    },
+                    onConsoleMessage: (controller, consoleMessage) {
+                      print(consoleMessage);
+                    },
+                    onDownloadStart: (controller, url) async {
+                      if (shouldDownload) {
+                        download(url, context, null);
+                      }
+                    },
+                  ),
+                )
+              ],
+            ),
               ),
-            ])),
+            ]),
           ),
         ),
         onWillPop: () async {
