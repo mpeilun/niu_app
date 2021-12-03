@@ -116,8 +116,11 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
           }
         }
 
-        // listTitle.removeLast();
+        if (listTitle.last.toString() == '') {
+          listTitle.removeLast();
+        }
         listJs.removeAt(0);
+        // listJs.add('null');
 
         for (int i = 0; i < listTitle.length; i++) {
           result.add({'title': listTitle[i], 'content': listJs[i]});
