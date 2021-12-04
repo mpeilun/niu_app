@@ -1,8 +1,8 @@
 import 'dart:ui';
+
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
 class Styles {
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
@@ -19,7 +19,7 @@ class Styles {
       ),
       textSelectionTheme: TextSelectionThemeData(
         selectionHandleColor: isDarkTheme ? Colors.grey[600] : Colors.blue[800],
-        cursorColor: isDarkTheme ? Color(0xff212121) : Colors.blue,
+        cursorColor: isDarkTheme ? Color(0xff212121) : Colors.blue[600],
       ),
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: TextStyle(

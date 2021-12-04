@@ -1,4 +1,3 @@
-import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -10,6 +9,7 @@ import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:provider/provider.dart';
 
+import 'anim_search.dart';
 import 'custom_list_info.dart';
 
 class Event {

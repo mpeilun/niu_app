@@ -1,15 +1,12 @@
-import 'dart:convert';
 import 'dart:io' as dartCookies;
-import 'dart:typed_data';
+
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
-import 'package:niu_app/components/toast.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:provider/provider.dart';
 
 class Bus extends StatefulWidget {
   const Bus({
@@ -146,6 +143,18 @@ class _BusState extends State<Bus> {
                               await controller.evaluateJavascript(
                                   source: element);
                             });
+                            if (Provider.of<DarkThemeProvider>(context,
+                                    listen: false)
+                                .darkTheme) {
+                              await controller.evaluateJavascript(source: '''
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `html {filter: invert(0.90) !important}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `video {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `img {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.image {filter: invert(100%);}`;
+                                  
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.bus-header-section {filter: invert(100%);}`;
+                                  ''');
+                            }
                             setState(() {
                               loadState = true;
                             });
