@@ -139,11 +139,43 @@ class _ZuvioState extends State<Zuvio> {
                                     .toString()
                                     .contains('irs.zuvio.com.tw/student5')) {
                               Alert(
+                                closeIcon:
+                                    Icon(Icons.close, color: Colors.grey),
                                 context: context,
                                 type: AlertType.warning,
-                                title: "是否開啟外部連結?",
-                                desc: uri.toString(),
+                                // title: "是否開啟外部連結?",
+                                // desc: uri.toString(),
+                                content: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                    Text(
+                                      "是否開啟外部連結？",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                    Text(
+                                      uri.toString(),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
                                 buttons: [
+                                  DialogButton(
+                                    child: Text(
+                                      "否",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 18),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    color: Colors.pinkAccent,
+                                  ),
                                   DialogButton(
                                     child: Text(
                                       "是",
@@ -163,17 +195,6 @@ class _ZuvioState extends State<Zuvio> {
                                     },
                                     color: Colors.blueAccent,
                                   ),
-                                  DialogButton(
-                                    child: Text(
-                                      "否",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 18),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    color: Colors.pinkAccent,
-                                  )
                                 ],
                               ).show();
                               return NavigationActionPolicy.CANCEL;
@@ -192,10 +213,33 @@ class _ZuvioState extends State<Zuvio> {
                               loginState = true;
                               await controller.evaluateJavascript(
                                   source:
+                                      'document.querySelector("#content > div.chicken-pm-chat-box > div.c-pm-c-chat-bottom-wrapper > div.c-pm-c-chat-topic-card-list").style.display = \'none\'');
+                              await controller.evaluateJavascript(
+                                  source:
                                       'document.querySelector("#content > div.irs-main-page > div.i-m-p-wisdomhall-area").style = \'display: none;\'');
                               await controller.evaluateJavascript(
                                   source:
                                       'document.querySelector("#content > div.private-message-list > div > div.p-m-download-app-box").style = \'display: none;\'');
+                              await controller.evaluateJavascript(source: '''
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `html {filter: invert(0.90) !important}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `video {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `img {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.image {filter: invert(100%);}`;
+                                  
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.s-i-t-b-wrapper {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.i-c-l-reload-button {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.g-f-button-box {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.i-a-c-q-t-q-b-top-box {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.button {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.i-f-f-f-a-post-feedback-button {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.i-m-p-c-a-c-l-c-b-green-block {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.i-m-p-c-a-c-l-c-b-t-star {filter: invert(100%) opacity(30%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.s-i-top-box {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.s-i-t-b-i-b-icon {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.p-m-c-icon-box {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.user-icon-switch {filter: invert(100%);}`
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.c-pm-c-chat-wrapper.message-box{filter: invert(100%);}`;
+                                  ''');
                               for (int i = 1; i < 7; i++) {
                                 var raw = await controller.evaluateJavascript(
                                     source:
@@ -208,8 +252,11 @@ class _ZuvioState extends State<Zuvio> {
                                           'document.querySelector("#footer > div > div:nth-child($i)").style.display=\'none\'');
                                 }
                               }
-                              setState(() {
-                                loadState = true;
+                              Future.delayed(Duration(milliseconds: 200),
+                                  () async {
+                                setState(() {
+                                  loadState = true;
+                                });
                               });
                             }
                           },
