@@ -44,7 +44,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
         allowsPictureInPictureMediaPlayback: true,
       ));
 
-  late List<Map> learningData = [];
+  late List learningData = [];
   bool loadState = false;
   bool shouldDownload = false;
   bool setWebViewVisibility = false;
@@ -71,45 +71,45 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                   children: [
                     Visibility(
                         visible: !loadState, child: NiuIconLoading(size: 80)),
-                    Visibility(
-                        visible: loadState,
-                        child: Center(
-                            child: ListView.builder(
-                          itemCount: learningData.length,
-                          itemBuilder: (context, index) {
-                            return learningData.first.containsKey('no_data') ||
-                                    learningData.first.containsKey('timeout')
-                                ? Text('無資料 or 讀取失敗')
-                                : ListTile(
-                                    leading: Icon(Icons.fifteen_mp),
-                                    title:
-                                        Text('${learningData[index]['title']}'),
-                                    subtitle: learningData[index]['content']
-                                            .toString()
-                                            .contains('I_SCO_')
-                                        ? ElevatedButton(
-                                            onPressed: () async {
-                                              setState(() {
-                                                setWebViewVisibility = true;
-                                              });
-                                              shouldDownload = true;
-                                              await webViewController!
-                                                  .evaluateJavascript(
-                                                      source: '''
-                                          document
-                                          .getElementById('s_catalog').contentDocument
-                                          .getElementById('pathtree').contentDocument
-								                              .querySelector("#''' +
-                                                          learningData[index]
-                                                              ['content'] +
-                                                          ''' > span > a").onclick()
-                                          ''');
-                                            },
-                                            child: Text('下載'))
-                                        : null,
-                                  );
-                          },
-                        ))),
+                    // Visibility(
+                    //     visible: loadState,
+                    //     child: Center(
+                    //         child: ListView.builder(
+                    //       itemCount: learningData.length,
+                    //       itemBuilder: (context, index) {
+                    //         return learningData.first.containsKey('no_data') ||
+                    //                 learningData.first.containsKey('timeout')
+                    //             ? Text('無資料 or 讀取失敗')
+                    //             : ListTile(
+                    //                 leading: Icon(Icons.fifteen_mp),
+                    //                 title:
+                    //                     Text('${learningData[index]['title']}'),
+                    //                 subtitle: learningData[index]['content']
+                    //                         .toString()
+                    //                         .contains('I_SCO_')
+                    //                     ? ElevatedButton(
+                    //                         onPressed: () async {
+                    //                           setState(() {
+                    //                             setWebViewVisibility = true;
+                    //                           });
+                    //                           shouldDownload = true;
+                    //                           await webViewController!
+                    //                               .evaluateJavascript(
+                    //                                   source: '''
+                    //                       document
+                    //                       .getElementById('s_catalog').contentDocument
+                    //                       .getElementById('pathtree').contentDocument
+                    //                           .querySelector("#''' +
+                    //                                       learningData[index]
+                    //                                           ['content'] +
+                    //                                       ''' > span > a").onclick()
+                    //                       ''');
+                    //                         },
+                    //                         child: Text('下載'))
+                    //                     : null,
+                    //               );
+                    //       },
+                    //     ))),
                     Visibility(
                       visible: setWebViewVisibility,
                       maintainState: true,
@@ -158,7 +158,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                         onLoadStop: (controller, url) async {
                           print("onLoadStop $url");
                           if (await login(url.toString())) {
-                            learningData = await getData();
+                            learningData = sortData(await getData());
                             setState(() {
                               loadState = true;
                             });
@@ -235,6 +235,31 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
     return true;
   }
 
+  List sortData(List<Map> input) {
+    List result = [];
+
+    for (int i = 0; i < input.length; i++) {
+      List temp = [];
+      if (input[i]['content'] == 'directory' ||
+          input[i]['content'] == 'directory_no_content') {
+        temp.add(input[i]);
+        if (i + 1 != input.length) {
+          for (int j = i + 1;
+              !(input[j]['content'] == 'directory' ||
+                  input[j]['content'] == 'directory_no_content');
+              j++) {
+            temp.add(input[j]);
+            i++;
+          }
+        }
+      }
+      result.addAll(temp);
+      print(temp);
+    }
+
+    return result;
+  }
+
   Future<List<Map>> getData() async {
     for (int i = 0; i < 60; i++) {
       await Future.delayed(Duration(milliseconds: 1000));
@@ -272,9 +297,6 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
           continue;
         }
 
-        print(listTitle.length);
-        print(tempHTML.length);
-
         for (int i = 0; i < tempHTML.length; i++) {
           if (tempHTML[i].toString().contains('onclick="return ')) {
             listJs.add(tempHTML[i]
@@ -301,7 +323,6 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
 
         for (int i = 0; i < listTitle.length; i++) {
           result.add({'title': listTitle[i], 'content': listJs[i]});
-          print(result[i]);
         }
         return result;
       }

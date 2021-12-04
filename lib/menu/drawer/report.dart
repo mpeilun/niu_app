@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,6 @@ import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io' show Platform;
 
 class ReportPage extends StatefulWidget {
   ReportPage({Key? key}) : super(key: key);
@@ -117,8 +118,8 @@ class _PageRecruit extends State<PageRecruit> {
                 ),
               ),
             ),
-            Container(
-              width: 300,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
               child: Column(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -149,9 +150,6 @@ class _PageRecruit extends State<PageRecruit> {
                     height: 10,
                   ),
                   Row(children: [
-                    SizedBox(
-                      width: 10,
-                    ),
                     Transform.scale(
                       scale: 1.4,
                       child: Checkbox(
@@ -314,8 +312,8 @@ class _PageFeedback extends State<PageFeedback> {
                       ),
                     ),
                   ),
-                  Container(
-                    width: 300,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
                     child: Column(
                       // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -346,9 +344,6 @@ class _PageFeedback extends State<PageFeedback> {
                           height: 10,
                         ),
                         Row(children: [
-                          SizedBox(
-                            width: 10,
-                          ),
                           Transform.scale(
                             scale: 1.4,
                             child: Checkbox(
@@ -477,42 +472,37 @@ class _PageBugReport extends State<PageBugReport> {
                       ),
                     ),
                   ),
-                  Center(
-                    child: Container(
-                      width: 300,
-                      child: Row(children: [
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Checkbox(
-                            value: _canReproducible,
-                            onChanged: (value) {
-                              setState(() {
-                                _canReproducible = true;
-                              });
-                            }),
-                        Text(
-                          '可再現',
-                          style: TextStyle(fontSize: 12),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Checkbox(
-                            value: !_canReproducible,
-                            onChanged: (value) {
-                              setState(() {
-                                _canReproducible = false;
-                              });
-                            }),
-                        Text(
-                          '不可再現',
-                          style: TextStyle(fontSize: 12),
-                          textAlign: TextAlign.center,
-                        )
-                      ]),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Row(children: [
+                      Checkbox(
+                          value: _canReproducible,
+                          onChanged: (value) {
+                            setState(() {
+                              _canReproducible = true;
+                            });
+                          }),
+                      Text(
+                        '可再現',
+                        style: TextStyle(fontSize: 12),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Checkbox(
+                          value: !_canReproducible,
+                          onChanged: (value) {
+                            setState(() {
+                              _canReproducible = false;
+                            });
+                          }),
+                      Text(
+                        '不可再現',
+                        style: TextStyle(fontSize: 12),
+                        textAlign: TextAlign.center,
+                      )
+                    ]),
                   ),
                   SizedBox(
                     height: 10,

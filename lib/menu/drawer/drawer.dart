@@ -1,17 +1,12 @@
 import 'package:animate_icons/animate_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:niu_app/e_school/e_school.dart';
-import 'package:niu_app/graduation/graduation.dart';
-import 'package:niu_app/login/login_method.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
 import 'package:niu_app/menu/satisfaction_survey/form.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:niu_app/provider/drawer_provider.dart';
 import 'package:niu_app/provider/info_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:niu_app/provider/drawer_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerPage extends StatefulWidget {
@@ -182,17 +177,19 @@ class _DrawerPageState extends State<DrawerPage> {
                         borderRadius: BorderRadius.circular(100.0),
                         border: Border.all(
                           width: 2,
-                          color: change.darkTheme ? Colors.grey.shade600 : Color(0xcb228EE5),
+                          color: change.darkTheme
+                              ? Colors.grey.shade600
+                              : Color(0xcb228EE5),
                         ),
                       ),
                       child: AnimateIcons(
-                        duration: Duration(milliseconds: 500),
+                        duration: Duration(milliseconds: 250),
                         startIconColor: Theme.of(context).iconTheme.color,
                         endIconColor: Theme.of(context).iconTheme.color,
                         startIcon: Icons.light_mode,
                         endIcon: Icons.dark_mode,
                         controller: controller.controller,
-                        size: 45.0,
+                        size: 40.0,
                         onEndIconPress: () {
                           controller.controller.animateToStart();
                           change.darkTheme = !change.darkTheme;

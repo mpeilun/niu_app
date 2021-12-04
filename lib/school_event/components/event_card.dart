@@ -1,3 +1,4 @@
+import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -7,7 +8,6 @@ import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
 import 'package:niu_app/school_event/school_event.dart';
-import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:provider/provider.dart';
 
 import 'custom_list_info.dart';
@@ -416,7 +416,8 @@ class _CustomEventCardState extends State<CustomEventCard> {
               padding: EdgeInsets.only(right: screenSizeWidth * 0.05),
               child: AnimSearchBar(
                 //浮動搜尋按鈕
-                color: Theme.of(context).cardColor,
+                style: TextStyle(color: Colors.white),
+                color: Theme.of(context).primaryColor,
                 rtl: true,
                 helpText: '輸入名稱或編號...',
                 width: screenSizeWidth * 0.8,

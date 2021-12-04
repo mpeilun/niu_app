@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/e_school/advanced_tiles.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'e_school_announcement.dart';
 import 'e_school_grade.dart';
@@ -100,8 +98,11 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                             alignment: Alignment.topRight,
                             child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
+                                  SizedBox(
+                                    width: 15.0,
+                                  ),
                                   Tooltip(
                                     showDuration: Duration(milliseconds: 500),
                                     message: '前往課程公告',
@@ -112,13 +113,15 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                           //       BorderRadius.circular(18.0),
                                           // ),
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 18.0, vertical:8.0),
+                                              horizontal: 18.0, vertical: 8.0),
                                           minimumSize: Size(0.0, 0.0),
                                         ),
                                         child: Text("課程公告",
                                             style: TextStyle(
                                                 fontSize: 14,
-                                                color: themeChange.darkTheme ? Colors.grey[200] : Colors.white)),
+                                                color: themeChange.darkTheme
+                                                    ? Colors.grey[200]
+                                                    : Colors.white)),
                                         onPressed: () {
                                           Navigator.push(
                                               context,
@@ -135,6 +138,8 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                   // SizedBox(
                                   //   width: 16.0,
                                   // ),
+                                  Expanded(flex: 2, child: SizedBox()),
+
                                   Tooltip(
                                     showDuration: Duration(milliseconds: 500),
                                     message: '前往開始上課',
@@ -152,7 +157,9 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                         child: Text("開始上課",
                                             style: TextStyle(
                                                 fontSize: 14,
-                                                color: themeChange.darkTheme ? Colors.grey[200] : Colors.white)),
+                                                color: themeChange.darkTheme
+                                                    ? Colors.grey[200]
+                                                    : Colors.white)),
                                         onPressed: () {
                                           Navigator.push(
                                               context,
@@ -169,6 +176,8 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                   // SizedBox(
                                   //   width: 16.0,
                                   // ),
+                                  Expanded(flex: 2, child: SizedBox()),
+
                                   Tooltip(
                                     showDuration: Duration(milliseconds: 500),
                                     message: '前往成績資訊',
@@ -186,7 +195,9 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                         child: Text("成績資訊",
                                             style: TextStyle(
                                                 fontSize: 14,
-                                                color: themeChange.darkTheme ? Colors.grey[200] : Colors.white)),
+                                                color: themeChange.darkTheme
+                                                    ? Colors.grey[200]
+                                                    : Colors.white)),
                                         onPressed: () {
                                           Navigator.push(
                                               context,
@@ -199,6 +210,9 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                                               widget.tile),
                                                   maintainState: false));
                                         }),
+                                  ),
+                                  SizedBox(
+                                    width: 15.0,
                                   ),
                                 ]),
                           ),

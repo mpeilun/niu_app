@@ -24,10 +24,11 @@ class ListInfo extends StatelessWidget {
         ),
         child: Row(
           children: [
+            Expanded(flex: 3, child: SizedBox()),
             Expanded(
-              flex: 6,
+              flex: 12,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Icon(icon),
                   SizedBox(
@@ -43,8 +44,9 @@ class ListInfo extends StatelessWidget {
             // SizedBox(
             //   width: screenSizeWidth * 0.1,
             // ),
+            Expanded(flex: 3, child: SizedBox()),
             Expanded(
-              flex: 7,
+              flex: 13,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,

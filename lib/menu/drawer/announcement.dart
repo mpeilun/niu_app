@@ -1,15 +1,17 @@
 import 'dart:async';
-
-import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'dart:io' as dartCookies;
+
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/pdfviwer.dart';
 import 'package:niu_app/components/toast.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:niu_app/provider/announcenment_provider.dart';
+import 'package:provider/src/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AnnouncementPage extends StatefulWidget {
   @override
@@ -17,7 +19,7 @@ class AnnouncementPage extends StatefulWidget {
 }
 
 class _AnnouncementPageState extends State<AnnouncementPage> {
-  List data = [];
+  late List data;
   int page = 1;
   bool enablePullUp = true;
   late HeadlessInAppWebView headlessWebView;
@@ -27,23 +29,29 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
 
   void _onLoading() async {
     if (page < 86) {
-      setState(() {
-        page++;
-      });
+      await getPost(++page);
+      _refreshController.loadComplete();
     } else {
       showToast('已經滑到最底囉!');
       _refreshController.loadNoData();
     }
   }
 
+  late Future _future;
+
   @override
   void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      data = context.read<AnnouncementProvider>().contents;
+    });
+    _future = getPost(page);
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
+    data.clear();
     headlessWebView.webViewController
         .loadUrl(urlRequest: URLRequest(url: Uri.parse('about:blank')));
   }
@@ -51,8 +59,8 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getPost(
-            page), // the function to get your data from firebase or firestore
+        future:
+            _future, // the function to get your data from firebase or firestore
         builder: (BuildContext context, AsyncSnapshot snap) {
           if (snap.data == null) {
             return NiuIconLoading(size: 80);
@@ -66,10 +74,11 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                 controller: _refreshController,
                 child: ListView.builder(
                   controller: _controller,
-                  itemCount: data.length,
+                  itemCount:
+                      context.watch<AnnouncementProvider>().contents.length,
                   itemBuilder: (context, index) {
                     // print(page);
-                    // print(contents.length);
+                    // print(data.length);
                     // print(index);
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(3.0, 4.0, 3.0, 0.0),
@@ -81,9 +90,13 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 12.0, vertical: 6.0),
                           //leading: Icon(Icons.event_seat),
-                          title: Text(data[index]['title']),
+                          title: Text(context
+                              .watch<AnnouncementProvider>()
+                              .contents[index]['title']),
                           subtitle: Text(
-                            data[index]['date'],
+                            context
+                                .watch<AnnouncementProvider>()
+                                .contents[index]['date'],
                             style: TextStyle(color: Colors.grey),
                             textAlign: TextAlign.right,
                           ),
@@ -175,9 +188,11 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
             )()
             ''';
           print('---page:$page---');
-          data.addAll(await controller.evaluateJavascript(source: js));
+          // data.addAll(await controller.evaluateJavascript(source: js));
+          context
+              .read<AnnouncementProvider>()
+              .setListContents(await controller.evaluateJavascript(source: js));
           callBack.complete(true);
-          _refreshController.loadComplete();
         }
       },
     );
