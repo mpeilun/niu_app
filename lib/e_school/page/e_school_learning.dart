@@ -159,7 +159,6 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                           print("onLoadStop $url");
                           if (await login(url.toString())) {
                             learningData = await getData();
-                            print(learningData);
                             setState(() {
                               loadState = true;
                             });
@@ -302,6 +301,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
 
         for (int i = 0; i < listTitle.length; i++) {
           result.add({'title': listTitle[i], 'content': listJs[i]});
+          print(result[i]);
         }
         return result;
       }
