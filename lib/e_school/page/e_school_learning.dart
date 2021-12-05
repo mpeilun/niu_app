@@ -8,6 +8,7 @@ import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:provider/src/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../e_school.dart';
 
@@ -188,15 +189,6 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                               navigationAction.request.toString());
 
                           //IOS Fix 檔案下載用
-                          if (uri.toString().contains(
-                                  'https://eschool.niu.edu.tw/base/') &&
-                              shouldDownload) {
-                            download(uri, context, null);
-                            isDownLoad = true;
-                            setWebViewVisibility = false;
-                            return NavigationActionPolicy.CANCEL;
-                          }
-
                           if (![
                                 "http",
                                 "https",
@@ -207,10 +199,29 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                                 "about"
                               ].contains(uri.scheme) ||
                               !uri.toString().contains("eschool.niu.edu.tw")) {
+                            if (await canLaunch(uri.toString()) &&
+                                shouldDownload) {
+                              isDownLoad = true;
+                              setState(() {
+                                setWebViewVisibility = false;
+                              });
+                              launch(uri.toString());
+                            }
                             return NavigationActionPolicy.CANCEL;
-                          } else {
-                            return NavigationActionPolicy.ALLOW;
                           }
+
+                          if (uri.toString().contains(
+                                  'https://eschool.niu.edu.tw/base/') &&
+                              shouldDownload) {
+                            download(uri, context, null);
+                            isDownLoad = true;
+                            setState(() {
+                              setWebViewVisibility = false;
+                            });
+                            return NavigationActionPolicy.CANCEL;
+                          }
+
+                          return NavigationActionPolicy.ALLOW;
                         },
                         onLoadStop: (controller, url) async {
                           print("onLoadStop $url");
