@@ -42,10 +42,12 @@ class CustomEventSignedCard extends StatefulWidget {
 
 class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
   ScrollController _scrollController = ScrollController();
+  late List<EventSigned> data;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) => data = context.watch()<SchoolEventProvider>().data);
     _scrollController.addListener(() {
       schoolEventScrollController.jumpTo(_scrollController.offset);
     });
@@ -54,7 +56,6 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
-    final data = Provider.of<SchoolEventProvider>(context).data;
     var screenSizeWidth = MediaQuery.of(context).size.width;
     var screenSizeHeight = MediaQuery.of(context).size.height;
     return ListView.separated(
