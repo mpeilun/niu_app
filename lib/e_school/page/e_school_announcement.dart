@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:io' as dartCookies;
+
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/toast.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../advanced_tiles.dart';
@@ -207,9 +210,22 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
                           });
                           if (url.toString() ==
                               'https://eschool.niu.edu.tw/forum/m_node_list.php') {
-                            await controller.evaluateJavascript(
-                                source:
-                                    'document.querySelector("body > div.box1.navbar-fixed-top > div.operate").style = \'display: none\'');
+                            await controller.evaluateJavascript(source: '''
+                                    document.querySelector("body > div.box1.navbar-fixed-top > div.operate").style = 'display: none');
+                                    ''');
+                          }
+                          if (Provider.of<DarkThemeProvider>(context,
+                                  listen: false)
+                              .darkTheme) {
+                            await controller.evaluateJavascript(source: '''
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `html {filter: invert(0.90) !important}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `video {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `img {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.image {filter: invert(100%);}`;
+
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.icon-blue-info {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.title-bar {filter: invert(100%);}`;
+                                  ''');
                           }
                         },
                         onLoadResource: (InAppWebViewController controller,

@@ -237,9 +237,10 @@ class _ZuvioState extends State<Zuvio> {
                                   document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.g-f-button-box {filter: invert(100%);}`;
                                   document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.i-a-c-q-t-q-b-top-box {filter: invert(100%);}`;
                                   document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.button {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.i-r-reload-button {filter: invert(100%);}`;
                                   document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.i-f-f-f-a-post-feedback-button {filter: invert(100%);}`;
                                   document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.i-m-p-c-a-c-l-c-b-green-block {filter: invert(100%);}`;
-                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.i-m-p-c-a-c-l-c-b-t-star {filter: invert(100%) opacity(30%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.i-m-p-c-a-c-l-c-b-t-star {filter: invert(100%) opacity(80%);}`;
                                   document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.s-i-top-box {filter: invert(100%);}`;
                                   document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.s-i-t-b-i-b-icon {filter: invert(100%);}`;
                                   document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.p-m-c-icon-box {filter: invert(100%);}`;

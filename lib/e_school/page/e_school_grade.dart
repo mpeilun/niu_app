@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:io' as dartCookies;
+
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/toast.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../advanced_tiles.dart';
@@ -206,6 +209,34 @@ class _ESchoolGradeState extends State<ESchoolGrade> {
                           setState(() {
                             this.url = url.toString();
                           });
+                          if (Provider.of<DarkThemeProvider>(context,
+                                  listen: false)
+                              .darkTheme) {
+                            await controller.evaluateJavascript(source: '''
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(1)").style.backgroundColor = 'rgb(35, 127, 217)';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(2)").style.backgroundColor = 'rgb(35, 127, 217)';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(3)").style.backgroundColor = 'rgb(35, 127, 217)';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(4)").style.backgroundColor = 'rgb(35, 127, 217)';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(5)").style.backgroundColor = 'rgb(35, 127, 217)';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(6)").style.backgroundColor = 'rgb(35, 127, 217)';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(7)").style.backgroundColor = 'rgb(35, 127, 217)';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(8)").style.backgroundColor = 'rgb(35, 127, 217)';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(1) > div").style.color = 'black';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(2) > div").style.color = 'black';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(3) > div").style.color = 'black';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(4) > div").style.color = 'black';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(5) > div").style.color = 'black';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(6) > div").style.color = 'black';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(7) > div").style.color = 'black';
+                                  document.querySelector("body > div > div.content > div > div.title-bar > div > table > tbody > tr > td:nth-child(8) > div").style.color = 'black';
+                                  ''');
+                            await controller.evaluateJavascript(source: '''
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `html {filter: invert(0.90) !important}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `video {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `img {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.image {filter: invert(100%);}`;             
+                                  ''');
+                          }
                         },
                         onLoadResource: (InAppWebViewController controller,
                             LoadedResource resource) {},
