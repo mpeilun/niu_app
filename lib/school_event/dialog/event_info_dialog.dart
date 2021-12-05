@@ -289,16 +289,15 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                   setState(() {
                     this.url = url.toString();
                   });
+
                   if (url.toString() ==
                           'https://syscc.niu.edu.tw/Activity/ApplyList.aspx' &&
-                      !dataLoaded)
+                      !dataLoaded) {
                     getEventInfo(widget.eventJS);
-                  else if (url.toString().contains(
-                      'https://syscc.niu.edu.tw/Activity/SignManagement/AddStdSignData.aspx'))
+                  } else if (url.toString().contains(
+                      'https://syscc.niu.edu.tw/Activity/SignManagement/AddStdSignData.aspx')) {
                     print('填寫資料');
-                  await controller.evaluateJavascript(source: '''
-                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `html {filter: sepia(40%) grayscale(50%) brightness(80%) !important}`;
-                  ''');
+                  }
                 },
                 onLoadResource: (InAppWebViewController controller,
                     LoadedResource resource) {},
