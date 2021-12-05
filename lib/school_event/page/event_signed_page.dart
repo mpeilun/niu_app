@@ -195,6 +195,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
           child: refreshLoaded
               ? CustomEventSignedCard(
                   key: PageStorageKey<String>('event'),
+                  data: data,
                 )
               : Container());
 }

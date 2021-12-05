@@ -176,23 +176,23 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
         cleanJS.forEach((element) async {
           await webViewController!.evaluateJavascript(source: element);
         });
-        webViewController!.zoomBy(zoomFactor: 3.0);
+
         print('載入完成');
         setState(() {
           dataLoaded = true;
           opacity = 1;
         });
 
-        await webViewController?.evaluateJavascript(source: '''
+        await webViewController!.evaluateJavascript(source: '''
                   document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign_btnSignDel").style.visibility = 'hidden'
                   ''');
-        await webViewController?.evaluateJavascript(source: '''
+        await webViewController!.evaluateJavascript(source: '''
                   document.querySelector("#ctl00_MainContentPlaceholder_plBase > table:nth-child(2) > tbody > tr > td:nth-child(2)").style.visibility = 'hidden';
                   document.querySelector("#ctl00_MainContentPlaceholder_btnClose").style.visibility = 'hidden';
                   ''');
 
         if (context.read<DarkThemeProvider>().darkTheme) {
-          await webViewController?.evaluateJavascript(source: '''
+          await webViewController!.evaluateJavascript(source: '''
           document.lastElementChild.appendChild(document.createElement('style')).textContent = `label {filter: invert(1) !important}`;
                         
           document.querySelector("html").style.backgroundColor = 'rgb(48,48,48)'
@@ -222,11 +222,9 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
           document.querySelector("#ctl00_MainContentPlaceholder_plBase > table:nth-child(1) > tbody > tr:nth-child(10) > td:nth-child(2)").style.color = 'white'
           document.querySelector("#ctl00_MainContentPlaceholder_plBase > table:nth-child(1) > tbody > tr:nth-child(11) > td:nth-child(2)").style.color = 'white'
           document.querySelector("#ctl00_MainContentPlaceholder_lblMemo").style.color = 'rgb(200,200,200)'
-          document.querySelector("#ctl00_MainContentPlaceholder_lblMemo").style.fontWeight = 'n
           document.lastElementChild.appendChild(document.createElement('style')).textContent = `label.ctl00_MainContentPlaceholder_txtMemo {filter: invert(1) !important}`;
           ''');
         }
-
         break;
       } else if (i == 30) {
         print('網路異常，連線超時！');
