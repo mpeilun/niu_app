@@ -323,10 +323,10 @@ class _ZuvioState extends State<Zuvio> {
               child: Padding(
                 padding: EdgeInsets.only(right: 14, bottom: 20),
                 child: Opacity(
-                  opacity: 0.5,
+                  opacity: 0.7,
                   child: Container(
-                    height: 40,
-                    width: 40,
+                    height: 45,
+                    width: 45,
                     child: FloatingActionButton(
                       child: Icon(Icons.home),
                       onPressed: () {

@@ -14,7 +14,7 @@ class Styles {
       indicatorColor: isDarkTheme ? Colors.grey[800] : null,
       toggleableActiveColor: isDarkTheme ? Colors.grey[600] : null,
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: isDarkTheme ? Color(0xff212121) : Colors.blue[900],
+        backgroundColor: isDarkTheme ? Colors.grey[700] : Colors.blue[900],
         foregroundColor: Colors.grey[200],
       ),
       textSelectionTheme: TextSelectionThemeData(

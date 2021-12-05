@@ -30,6 +30,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   void _onLoading() async {
     if (page < 86) {
       await getPost(++page);
+      Future.delayed(Duration(milliseconds: 1000));
       _refreshController.loadComplete();
     } else {
       showToast('已經滑到最底囉!');
