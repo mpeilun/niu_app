@@ -180,6 +180,48 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
           dataLoaded = true;
           opacity = 1;
         });
+
+        await webViewController?.evaluateJavascript(source: '''
+                  document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign_btnSignDel").style.visibility = 'hidden'
+                  ''');
+        await webViewController?.evaluateJavascript(source: '''
+                  document.querySelector("#ctl00_MainContentPlaceholder_plBase > table:nth-child(2) > tbody > tr > td:nth-child(2)").style.visibility = 'hidden';
+                  document.querySelector("#ctl00_MainContentPlaceholder_btnClose").style.visibility = 'hidden';
+                  ''');
+        await webViewController?.evaluateJavascript(source: '''
+                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `label {filter: invert(1) !important}`;
+                  
+                  document.querySelector("html").style.backgroundColor = 'rgb(48,48,48)'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtName").style.backgroundColor = 'rgb(66,66,66)'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtEmail").style.backgroundColor = 'rgb(66,66,66)'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtTel").style.backgroundColor = 'rgb(66,66,66)'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtIdNo").style.backgroundColor = 'rgb(66,66,66)'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtBirthday").style.backgroundColor = 'rgb(66,66,66)'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtEName").style.backgroundColor = 'rgb(66,66,66)'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtSHistory").style.backgroundColor = 'rgb(66,66,66)'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtHope").style.backgroundColor = 'rgb(66,66,66)'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtMemo").style.backgroundColor = 'rgb(66,66,66)'
+                  
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtName").style.color = 'white'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtEmail").style.color = 'white'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtTel").style.color = 'white'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtIdNo").style.color = 'white'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtBirthday").style.color = 'white'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtEName").style.color = 'white'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtSHistory").style.color = 'white'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtHope").style.color = 'white'
+                  document.querySelector("#ctl00_MainContentPlaceholder_txtMemo").style.color = 'white'
+                  
+                  document.querySelector("#ctl00_MainContentPlaceholder_lblActTitle").style.color = 'white'
+                  document.querySelector("#ctl00_MainContentPlaceholder_lblRegsNo").style.color = 'white'
+                  document.querySelector("#ctl00_MainContentPlaceholder_lblClassName").style.color = 'white'
+                  document.querySelector("#ctl00_MainContentPlaceholder_plBase > table:nth-child(1) > tbody > tr:nth-child(10) > td:nth-child(2)").style.color = 'white'
+                  document.querySelector("#ctl00_MainContentPlaceholder_plBase > table:nth-child(1) > tbody > tr:nth-child(11) > td:nth-child(2)").style.color = 'white'
+                  document.querySelector("#ctl00_MainContentPlaceholder_lblMemo").style.color = 'rgb(200,200,200)'
+                  document.querySelector("#ctl00_MainContentPlaceholder_lblMemo").style.fontWeight = 'normal';
+
+                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `label.ctl00_MainContentPlaceholder_txtMemo {filter: invert(1) !important}`;
+                  ''');
         break;
       } else if (i == 30) {
         print('網路異常，連線超時！');
@@ -237,8 +279,10 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                 onPressed: () {
                   Navigator.pop(context, true);
                 },
-                icon: Icon(Icons.close,
-                color: Colors.grey,)),
+                icon: Icon(
+                  Icons.close,
+                  color: Colors.grey,
+                )),
           ],
         ),
         Expanded(
@@ -287,13 +331,15 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                   setState(() {
                     this.url = url.toString();
                   });
+
                   if (url.toString() ==
                           'https://syscc.niu.edu.tw/Activity/ApplyList.aspx' &&
-                      !dataLoaded)
+                      !dataLoaded) {
                     getEventInfo(widget.eventJS);
-                  else if (url.toString().contains(
-                      'https://syscc.niu.edu.tw/Activity/SignManagement/AddStdSignData.aspx'))
+                  } else if (url.toString().contains(
+                      'https://syscc.niu.edu.tw/Activity/SignManagement/AddStdSignData.aspx')) {
                     print('填寫資料');
+                  }
                 },
                 onLoadResource: (InAppWebViewController controller,
                     LoadedResource resource) {},
