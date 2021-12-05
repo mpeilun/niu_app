@@ -237,8 +237,10 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                 onPressed: () {
                   Navigator.pop(context, true);
                 },
-                icon: Icon(Icons.close,
-                color: Colors.grey,)),
+                icon: Icon(
+                  Icons.close,
+                  color: Colors.grey,
+                )),
           ],
         ),
         Expanded(
@@ -294,6 +296,9 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                   else if (url.toString().contains(
                       'https://syscc.niu.edu.tw/Activity/SignManagement/AddStdSignData.aspx'))
                     print('填寫資料');
+                  await controller.evaluateJavascript(source: '''
+                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `html {filter: sepia(40%) grayscale(50%) brightness(80%) !important}`;
+                  ''');
                 },
                 onLoadResource: (InAppWebViewController controller,
                     LoadedResource resource) {},

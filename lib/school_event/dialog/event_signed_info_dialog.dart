@@ -231,8 +231,10 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                 onPressed: () {
                   Navigator.pop(context, true);
                 },
-                icon: Icon(Icons.close,
-                color: Colors.grey,)),
+                icon: Icon(
+                  Icons.close,
+                  color: Colors.grey,
+                )),
           ],
         ),
         Expanded(
@@ -288,6 +290,9 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                     print('TEST LOGINNNNNNNNNNNNNNNNNNNNNNNN');
                     _login();
                   }
+                  await controller.evaluateJavascript(source: '''
+                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `html {filter: sepia(40%) grayscale(50%) brightness(80%) !important}`;
+                  ''');
                 },
                 onLoadResource: (InAppWebViewController controller,
                     LoadedResource resource) {},
