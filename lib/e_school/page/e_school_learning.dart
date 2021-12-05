@@ -87,26 +87,46 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                                       Theme(
                                         data: Theme.of(context).copyWith(
                                             dividerColor: Colors.transparent),
-                                        child: ExpansionTile(
-                                            childrenPadding:
-                                                const EdgeInsets.fromLTRB(
-                                                    .0, .0, .0, 18.0),
-                                            backgroundColor: Theme.of(context)
-                                                .scaffoldBackgroundColor,
-                                            title: Text(
-                                              trimTitle(learningData[index][0]
-                                                  ['title']),
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                // height: .1,
+                                        //learningData[index].length > 1
+                                        child: AbsorbPointer(
+                                          absorbing:
+                                              (learningData[index].length < 2 &&
+                                                  !learningData[index][0]
+                                                          ['content']
+                                                      .toString()
+                                                      .contains('I_SCO')),
+                                          child: ExpansionTile(
+                                              childrenPadding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      .0, .0, .0, 18.0),
+                                              backgroundColor: Theme.of(context)
+                                                  .scaffoldBackgroundColor,
+                                              title: Text(
+                                                trimTitle(learningData[index][0]
+                                                    ['title']),
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  // height: .1,
+                                                ),
                                               ),
-                                            ),
-                                            children:
-                                                getList(learningData, index)
-                                            //
-                                            //             bool contain = tile.content
-                                            // .contains('I_SCO');
-                                            ),
+                                              trailing: !(learningData[index]
+                                                              .length <
+                                                          2 &&
+                                                      !learningData[index][0]
+                                                              ['content']
+                                                          .toString()
+                                                          .contains('I_SCO'))
+                                                  ? null
+                                                  : Icon(
+                                                      Icons.remove,
+                                                    ),
+                                              children:
+                                                  getList(learningData, index)
+                                              //
+                                              //             bool contain = tile.content
+                                              // .contains('I_SCO');
+                                              ),
+                                        ),
                                       ),
                                       Divider(
                                         height: .0,
@@ -247,7 +267,10 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
 
   List<Widget> getList(List<List<Map>> tile, int index) {
     List<Widget> result = [];
-    for (int i = 0; i < tile[index].length; i++) {
+    late int i;
+    for (tile[index][0]['content'].toString().contains('I_SCO') ? i = 0 : i = 1;
+        i < tile[index].length;
+        i++) {
       result.add(createTitle(tile[index], i));
     }
 
