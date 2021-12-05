@@ -11,6 +11,7 @@ import 'package:niu_app/components/login_loading.dart';
 import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/e_school/e_school.dart';
+import 'package:niu_app/e_school/page/learning_page.dart';
 import 'package:niu_app/grades/grades.dart';
 import 'package:niu_app/graduation/graduation.dart';
 import 'package:niu_app/login/login_method.dart';
@@ -203,7 +204,8 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                                                       ),
                                                       centerTitle: true,
                                                     ),
-                                                    body: ReportPage(),
+                                                    // body: ReportPage(),
+                                                body: LearningPage(),
                                                   ),
                                               maintainState: false));
                                     },

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class AdvancedTile {
   final String title;
@@ -14,6 +13,26 @@ class AdvancedTile {
     required this.semester,
     this.workCount = '0',
     this.submitCount = '0',
+    this.isExpanded = false,
+  });
+}
+
+class LearningTile {
+  final String title;
+  final String contents;
+
+  LearningTile({
+    required this.title,
+    required this.contents,
+  });
+}
+
+class LearningTiles {
+  final List<LearningTile> tiles;
+  bool isExpanded;
+
+  LearningTiles({
+    required this.tiles,
     this.isExpanded = false,
   });
 }
