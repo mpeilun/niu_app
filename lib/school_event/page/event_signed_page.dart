@@ -102,8 +102,8 @@ class _EventSignedPageState extends State<EventSignedPage> {
       ));
     }
     await Future.delayed(Duration(milliseconds: 500));
-      data = temp;
-      refreshLoaded = true;
+    data = temp;
+    refreshLoaded = true;
   }
 
   Future<void> refresh() async {
@@ -123,7 +123,8 @@ class _EventSignedPageState extends State<EventSignedPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) => data = context.read<SchoolEventProvider>().data);
+    WidgetsBinding.instance!.addPostFrameCallback(
+        (_) => data = context.read<SchoolEventProvider>().data);
     headlessWebView = new HeadlessInAppWebView(
       initialUrlRequest: URLRequest(
           url: Uri.parse(
@@ -172,30 +173,31 @@ class _EventSignedPageState extends State<EventSignedPage> {
   }
 
   @override
-  Widget build(BuildContext context) => data.isEmpty
-      ? Container(
-          child: Column(
-            children: [
-              Expanded(child: NiuIconLoading(size: 80)),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                child: Text(
-                  '僅顯示前15筆報名資料',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              )
-            ],
-          ),
-        )
-      : RefreshWidget(
-          keyRefresh: keyRefresh,
-          onRefresh: refresh,
-          child: refreshLoaded
-              ? CustomEventSignedCard(
-                  key: PageStorageKey<String>('event'),
-                )
-              : Container());
+  Widget build(BuildContext context) =>
+      context.watch<SchoolEventProvider>().data.isEmpty
+          ? Container(
+              child: Column(
+                children: [
+                  Expanded(child: NiuIconLoading(size: 80)),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    child: Text(
+                      '僅顯示前15筆報名資料',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          : RefreshWidget(
+              keyRefresh: keyRefresh,
+              onRefresh: refresh,
+              child: refreshLoaded
+                  ? CustomEventSignedCard(
+                      key: PageStorageKey<String>('event'),
+                    )
+                  : Container());
 }
