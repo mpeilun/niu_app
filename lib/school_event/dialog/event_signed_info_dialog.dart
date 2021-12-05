@@ -297,10 +297,30 @@ document.querySelector(
               child: TextButton(
                 onPressed: () {
                   Alert(
+                    closeIcon: Icon(Icons.close, color: Colors.grey),
                     context: context,
                     type: AlertType.warning,
-                    title: '是否要取消報名此活動',
-                    desc: '活動名稱:' + data[0][1],
+                    // title: '是否要取消報名此活動',
+                    // desc: '活動名稱:' + data[0][1],
+                    content: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
+                          '是否要取消報名此活動',
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
+                          '活動名稱:' + data[0][1],
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                     buttons: [
                       DialogButton(
                         child: Text(
