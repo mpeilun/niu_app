@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:niu_app/provider/dark_mode_provider.dart';
-import 'package:provider/provider.dart';
 
 class AnimSearchBar extends StatefulWidget {
   ///  width - double ,isRequired : Yes
@@ -104,7 +102,6 @@ class _AnimSearchBarState extends State<AnimSearchBar>
 
   @override
   Widget build(BuildContext context) {
-    final themeChange = Provider.of<DarkThemeProvider>(context);
     return Container(
       height: 100.0,
 
@@ -221,7 +218,7 @@ class _AnimSearchBarState extends State<AnimSearchBar>
                     style: widget.style != null
                         ? widget.style
                         : TextStyle(color: Colors.black),
-                    cursorColor: themeChange.darkTheme ? Colors.white : Colors.black,
+                    cursorColor: Colors.white,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.only(bottom: 5),
                       isDense: true,

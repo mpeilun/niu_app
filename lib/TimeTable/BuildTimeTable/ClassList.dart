@@ -66,7 +66,7 @@ class ClassList {
     }
     putTime(time);
     for (int i = 0; i < _classList.length; i++) {
-      print(_classList[i].save());
+      //print(_classList[i].save());
       if (endTime < _classList[i].endTime) endTime = _classList[i].endTime;
       //換行
       while (time != _classList[i].startTime) {

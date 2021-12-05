@@ -7,7 +7,7 @@ class TimeCard extends StatefulWidget {
   TimeCard.build({
     required this.thisTime,
   });
-  final int thisTime;
+  int thisTime;
 
   @override
   _TimeCardState createState() => _TimeCardState();
@@ -30,13 +30,10 @@ class _TimeCardState extends State<TimeCard> {
           state = !state;
           print("Tap");
         },
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            context.watch<TimeCardClickProvider>().getTime[widget.thisTime],
-            style: TextStyle(
-              fontSize: 12,
-            ),
+        child: Text(
+          context.watch<TimeCardClickProvider>().getTime[widget.thisTime],
+          style: TextStyle(
+            fontSize: 12,
           ),
         ),
       ),
@@ -45,20 +42,20 @@ class _TimeCardState extends State<TimeCard> {
 }
 
 List<String> timeRange = <String>[
-  "07:10-\n08:00", //0
-  "08:10-\n09:00", //1
-  "09:10-\n10:00", //2
-  "10:10-\n11:00", //3
-  "11:10-\n12:00", //4
-  "13:10-\n14:00", //5
-  "14:10-\n15:00", //6
-  "15:10-\n16:00", //7
-  "16:10-\n17:00", //8
-  "17:10-\n18:00", //9
-  "18:20-\n19:10", //a
-  "19:15-\n20:05", //b
-  "20:10-\n21:00", //c
-  "21:05-\n21:55", //d
+  "07:10-08:00", //0
+  "08:10-09:00", //1
+  "09:10-10:00", //2
+  "10:10-11:00", //3
+  "11:10-12:00", //4
+  "13:10-14:00", //5
+  "14:10-15:00", //6
+  "15:10-16:00", //7
+  "16:10-17:00", //8
+  "17:10-18:00", //9
+  "18:20-19:10", //a
+  "19:15-20:05", //b
+  "20:10-21:00", //c
+  "21:05-21:55", //d
 ];
 
 List<String> timeName = <String>[
