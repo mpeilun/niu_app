@@ -36,7 +36,7 @@ class _LearningPageState extends State<LearningPage> {
     LearningTile(title: '標題4', contents: 'I_SCO_65163'),
     LearningTile(title: '標題5', contents: 'test5')
   ];
-  late final List<LearningTiles> tiles = [
+  late final List tiles = [
     LearningTiles(tiles: tile1),
     LearningTiles(tiles: tile2),
     LearningTiles(tiles: tile3)
