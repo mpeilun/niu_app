@@ -42,7 +42,7 @@ class Styles {
         ),
       ),
       iconTheme: IconThemeData(
-        color: isDarkTheme ? Color(0xe0ffffff) : Colors.white,
+        color: isDarkTheme ? Color(0xe0ffffff) : null,
       ),
       // backgroundColor: isDarkTheme ? Color(0xff121212) : Colors.grey[200],
       // cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,

@@ -12,38 +12,6 @@ import 'package:provider/provider.dart';
 import 'anim_search.dart';
 import 'custom_list_info.dart';
 
-class Event {
-  final String name;
-  final String department;
-  final String signTimeStart;
-  final String signTimeEnd;
-  final String eventTimeStart;
-  final String eventTimeEnd;
-  final String status;
-  final String positive;
-  final String positiveLimit;
-  final String wait;
-  final String waitLimit;
-  final String signUpJS;
-  final String eventSerialNum;
-
-  Event({
-    required this.name,
-    required this.department,
-    required this.signTimeStart,
-    required this.signTimeEnd,
-    required this.eventTimeStart,
-    required this.eventTimeEnd,
-    required this.status,
-    required this.positive,
-    required this.positiveLimit,
-    required this.wait,
-    required this.waitLimit,
-    required this.signUpJS,
-    required this.eventSerialNum,
-  });
-}
-
 class CustomEventCard extends StatefulWidget {
   final List<dynamic> data;
   final List<dynamic> dataCanSignUp;
@@ -416,8 +384,8 @@ class _CustomEventCardState extends State<CustomEventCard> {
               padding: EdgeInsets.only(right: screenSizeWidth * 0.05),
               child: AnimSearchBar(
                 //浮動搜尋按鈕
-                style: TextStyle(color: Colors.white),
-                color: Theme.of(context).primaryColor,
+                style: TextStyle(color: themeChange.darkTheme ? Colors.white : Colors.black),
+                color: themeChange.darkTheme ? Color(0xff212121) : Colors.white,
                 rtl: true,
                 helpText: '輸入名稱或編號...',
                 width: screenSizeWidth * 0.8,

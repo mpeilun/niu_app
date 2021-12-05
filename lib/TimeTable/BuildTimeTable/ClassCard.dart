@@ -147,7 +147,7 @@ class _ClassCard extends State<ClassCard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ToggleButtons(
-                          borderRadius: BorderRadius.circular(12.0),
+                          borderRadius: BorderRadius.circular(16.0),
                           children: <Widget>[
                             Container(
                                 width:
@@ -187,7 +187,7 @@ class _ClassCard extends State<ClassCard> {
                             initialValue: calendarName,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(32.0),
                               ),
                               labelText: '名稱',
                               hintText: '請輸入名稱',
@@ -208,7 +208,7 @@ class _ClassCard extends State<ClassCard> {
                               obscureText: false,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderRadius: BorderRadius.circular(32.0),
                                 ),
                                 labelText: '內容',
                                 hintText: "請輸入內容",
@@ -226,7 +226,7 @@ class _ClassCard extends State<ClassCard> {
                           children: [
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.red,
+                                primary: Colors.red.shade400,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 30, vertical: 5),
                               ),
@@ -241,6 +241,7 @@ class _ClassCard extends State<ClassCard> {
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
+                                primary: Colors.blue[800],
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 30, vertical: 5),
                               ),

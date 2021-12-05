@@ -22,6 +22,7 @@ class _ViewPage extends State<ViewPage> {
   int week = -1;
   bool select = false;
   Map<Class,Calendar> calendarMap = {};
+
   @override
   Widget build(BuildContext context) {
     if(!select){
@@ -123,9 +124,10 @@ class _ViewPage extends State<ViewPage> {
   weekNumText(int num){
     if(num == -1)
       return Text("寒暑假",style: TextStyle(fontSize: 12));
-    List<String> chineseNum = <String>[
+    final List<String> chineseNum = <String>[
       "一","二","三","四","五","六","七","八","九","十","十一","十二","十三","十四","十五","十六","十七","十八"
     ];
+    print("num : " + num.toString());
     return Text('第' + chineseNum[num] + "週" ,style: TextStyle(fontSize: num < 10 ? 14 : 12),);
   }
   void clean(BuildContext context) async{

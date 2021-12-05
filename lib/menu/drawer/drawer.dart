@@ -184,7 +184,7 @@ class _DrawerPageState extends State<DrawerPage> {
                       ),
                       child: AnimateIcons(
                         duration: Duration(milliseconds: 250),
-                        startIconColor: Theme.of(context).iconTheme.color,
+                        startIconColor: Colors.white,
                         endIconColor: Theme.of(context).iconTheme.color,
                         startIcon: Icons.light_mode,
                         endIcon: Icons.dark_mode,

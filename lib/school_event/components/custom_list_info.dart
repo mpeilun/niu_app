@@ -30,7 +30,9 @@ class ListInfo extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(icon),
+                  Icon(
+                    icon,
+                  ),
                   SizedBox(
                     width: screenSizeWidth * 0.01,
                   ),

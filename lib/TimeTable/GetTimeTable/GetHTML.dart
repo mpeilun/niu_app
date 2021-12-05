@@ -32,6 +32,7 @@ class GetHTML {
       //await Future.delayed(const Duration(milliseconds: 1000), (){});
     }
     print("HTML load finish!");
+    await Future.delayed(const Duration(milliseconds: 100), (){});
     return true;
   }
 
