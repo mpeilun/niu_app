@@ -6,18 +6,21 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/toast.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:provider/src/provider.dart';
 
-import '../advanced_tiles.dart';
 import '../e_school.dart';
 
+bool isDownLoad = false;
+
 class ESchoolLearning extends StatefulWidget {
+  final courseName;
   final courseId;
-  final List<AdvancedTile> advancedTile;
 
   const ESchoolLearning({
     Key? key,
+    required this.courseName,
     required this.courseId,
-    required this.advancedTile,
   }) : super(key: key);
 
   @override
@@ -64,6 +67,31 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
   Widget build(BuildContext context) {
     return ConditionalWillPopScope(
         child: Scaffold(
+          floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+          floatingActionButton: setWebViewVisibility
+              ? Opacity(
+                  opacity: 0.5,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: FloatingActionButton(
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          size: 20,
+                        ),
+                        onPressed: () async {
+                          await goBack();
+                        },
+                      ),
+                    ),
+                  ),
+                )
+              : null,
+          appBar: setWebViewVisibility
+              ? null
+              : AppBar(title: Text(widget.courseName)),
           body: SafeArea(
             child: Column(children: <Widget>[
               Expanded(
@@ -132,35 +160,6 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                                         height: .0,
                                         thickness: 1.5,
                                       ),
-                                      // ListTile(
-                                      //   leading: Icon(Icons.fifteen_mp),
-                                      //   title: Text(
-                                      //       '${learningData[index]['title']}'),
-                                      //   subtitle: learningData[index]['content']
-                                      //           .toString()
-                                      //           .contains('I_SCO_')
-                                      //       ? ElevatedButton(
-                                      //           onPressed: () async {
-                                      //             setState(() {
-                                      //               setWebViewVisibility = true;
-                                      //             });
-                                      //             shouldDownload = true;
-                                      //             await webViewController!
-                                      //                 .evaluateJavascript(
-                                      //                     source: '''
-                                      //         document
-                                      //         .getElementById('s_catalog').contentDocument
-                                      //         .getElementById('pathtree').contentDocument
-                                      //             .querySelector("#''' +
-                                      //                         learningData[
-                                      //                                 index]
-                                      //                             ['content'] +
-                                      //                         ''' > span > a").onclick()
-                                      //         ''');
-                                      //           },
-                                      //           child: Text('下載'))
-                                      //       : null,
-                                      // ),
                                     ],
                                   );
                           },
@@ -192,6 +191,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                                   'https://eschool.niu.edu.tw/base/') &&
                               shouldDownload) {
                             download(uri, context, null);
+                            isDownLoad = true;
                             return NavigationActionPolicy.CANCEL;
                           }
 
@@ -233,6 +233,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                         onDownloadStart: (controller, url) async {
                           if (shouldDownload) {
                             download(url, context, null);
+                            isDownLoad = true;
                           }
                         },
                         androidOnPermissionRequest:
@@ -250,10 +251,24 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
           ),
         ),
         onWillPop: () async {
-          Navigator.pop(context);
+          if (setWebViewVisibility) {
+            await goBack();
+          } else {
+            Navigator.pop(context);
+          }
           return false;
         },
         shouldAddCallbacks: true);
+  }
+
+  Future<void> goBack() async {
+    isDownLoad = false;
+    await webViewController?.evaluateJavascript(
+        source:
+            'document.getElementById(\'s_main\').contentDocument.querySelector("body").remove()');
+    setState(() {
+      setWebViewVisibility = false;
+    });
   }
 
   String trimTitle(String s) {
@@ -285,7 +300,46 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
           leading: Icon(Icons.calculate),
           title: Text(tile[index]['title']),
           subtitle: contain
-              ? ElevatedButton(onPressed: () {}, child: Text('進入教材'))
+              ? ElevatedButton(
+                  onPressed: () async {
+                    shouldDownload = true;
+                    await webViewController!.evaluateJavascript(
+                        source: '''
+                    document
+                    .getElementById('s_catalog').contentDocument
+                    .getElementById('pathtree').contentDocument
+                    .querySelector("#''' +
+                            tile[index]['content'] +
+                            ''' > span > a").onclick()
+                    ''');
+                    await Future.delayed(Duration(milliseconds: 200), () async {
+                      if (isDownLoad == true) {
+                        isDownLoad = false;
+                      } else {
+                        await webViewController!.evaluateJavascript(source: '''
+                        document.querySelector("#envMooc").cols = '0,*'
+                        document.querySelector("#envStudent").rows = '0,*';
+                        document.querySelector("#envClassRoom").cols = '0,*';
+                        ''');
+                        await webViewController!.evaluateJavascript(source: '''
+                        document.getElementById('s_main').contentDocument.querySelector("body > iframe").style = 'position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;'
+                        ''');
+                        if (context.read<DarkThemeProvider>().darkTheme) {
+                          await webViewController!.evaluateJavascript(
+                              source:
+                                  'document.getElementById(\'s_main\').contentDocument.body.style.backgroundColor = \'rgb(48,48,48)');
+                        } else {
+                          await webViewController!.evaluateJavascript(
+                              source:
+                                  'document.getElementById(\'s_main\').contentDocument.body.style.backgroundColor = \'rgb(238,238,238)');
+                        }
+                        setState(() {
+                          setWebViewVisibility = true;
+                        });
+                      }
+                    });
+                  },
+                  child: Text('進入教材'))
               : null),
     );
   }
@@ -373,6 +427,10 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
         if (rawHTML
             .toString()
             .contains('''\<h4 style="text-align: center;">尚未有任何課程</h4>''')) {
+          Navigator.pop(context);
+          await Future.delayed(Duration(milliseconds: 200), () async {
+            showToast('尚無資料');
+          });
           return [
             [
               {'no_data': ''}
@@ -426,6 +484,10 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
         return sortData(result);
       }
     }
+    Navigator.pop(context);
+    await Future.delayed(Duration(milliseconds: 200), () async {
+      showToast('網路異常');
+    });
     return [
       [
         {'timeout': ''}

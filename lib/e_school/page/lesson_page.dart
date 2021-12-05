@@ -168,8 +168,8 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                                       ESchoolLearning(
                                                           courseId:
                                                               tile.courseId,
-                                                          advancedTile:
-                                                              widget.tile),
+                                                          courseName:
+                                                              tile.title),
                                                   maintainState: false));
                                         }),
                                   ),
