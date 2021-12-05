@@ -94,7 +94,8 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                                             backgroundColor: Theme.of(context)
                                                 .scaffoldBackgroundColor,
                                             title: Text(
-                                              learningData[index][0]['title'],
+                                              trimTitle(learningData[index][0]
+                                                  ['title']),
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 // height: .1,
@@ -233,6 +234,15 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
           return false;
         },
         shouldAddCallbacks: true);
+  }
+
+  String trimTitle(String s) {
+    if (!(s.split('週')[0]).contains('第')) {
+      s = '　' + s;
+      return s;
+    } else {
+      return s;
+    }
   }
 
   List<Widget> getList(List<List<Map>> tile, int index) {
@@ -374,6 +384,10 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
           } else {
             listJs.add('null');
           }
+        }
+
+        for (int i = 0; i < listTitle.length; i++) {
+          listTitle[i] = listTitle[i].toString().replaceFirst(' ', '');
         }
 
         if (listTitle.last.toString() == '') {

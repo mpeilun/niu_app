@@ -148,127 +148,124 @@ javascript: (
         title: Text('滿意度調查'),
       ),
       body: SafeArea(
-          child: Column(children: <Widget>[
-        Expanded(
           child: Stack(
-            children: [
-              Visibility(
-                visible: !loadState,
-                child: Center(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            elevation: 4,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  12.0, 12.0, 12.0, 18.0),
-                              child: Center(
-                                  child: HtmlWidget(
-                                      '''<p style="text-align: left;">您好:</p>
+        children: [
+          SingleChildScrollView(
+            child: Visibility(
+              visible: !loadState,
+              child: Container(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          elevation: 4,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                12.0, 12.0, 12.0, 18.0),
+                            child: Center(
+                                child: HtmlWidget(
+                                    '''<p style="text-align: left;">您好:</p>
 <p style="text-align: justify;">　這是一份宜大學生APP滿意度願調查問卷，請您仔細閱讀，並在適當的答案欄中勾選，本問卷僅供APP內部開發使用，您所填答的資料絕對不會對外公開，請您放心作答，您的寶貴意見將有助於我們早日完成上架，感謝您的參與。</p>
 <p style="text-align: left;">　國立宜蘭大學資訊工程學系二年級學生</p>
 <p style="text-align: right;line-height:5px">章沛倫、呂紹誠、賴宥蓁、周楷崴</p>
 <p style="text-align: left;">　指導教授</p>
 <p style="text-align: right;line-height:5px">黃朝曦 副教授</p>''')),
-                            ),
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    loadState = true;
-                                  });
-                                },
-                                child: Text(
-                                  '了解',
-                                  style: TextStyle(fontSize: 14),
-                                ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  loadState = true;
+                                });
+                              },
+                              child: Text(
+                                '了解',
+                                style: TextStyle(fontSize: 14),
                               ),
                             ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
               ),
-              Visibility(
-                visible: loadState,
-                maintainState: true,
-                child: InAppWebView(
-                  key: satisfactionSurvey,
-                  initialUrlRequest: URLRequest(url: Uri.parse(getGoogleUrl())),
-                  initialOptions: options,
-                  onWebViewCreated: (controller) async {
-                    webViewController = controller;
-                  },
-                  onLoadStart: (controller, url) async {
-                    setState(() {
-                      this.url = url.toString();
-                    });
-                  },
-                  onLoadStop: (controller, url) async {
-                    print("onLoadStop $url");
-                    setState(() {
-                      this.url = url.toString();
-                    });
-                    await controller.evaluateJavascript(source: js);
-                    if (url.toString().contains('formResponse') &&
-                        await controller.evaluateJavascript(
-                                source:
-                                    'document.querySelector("body > div.freebirdFormviewerViewFormContentWrapper > div:nth-child(2) > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewResponseConfirmationMessage")') !=
-                            null &&
-                        submitCount != 2) {
-                      submitCount++;
-                      print('--- submitCount ---' + submitCount.toString());
-                    } else if (submitCount == 2) {
-                      print('--- 成功送出 ---');
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.setBool('isDoneForm', true);
-                      context.read<DarkThemeProvider>().asyncDoneForm();
-                      Navigator.pop(context);
-                      Future.delayed(Duration(milliseconds: 500), () async {
-                        showToast('成功送出 (並成功解鎖黑色主題，可在設定中開啟)');
-                      });
-                    }
-                  },
-                  onLoadError: (controller, url, code, message) {},
-                  onUpdateVisitedHistory:
-                      (controller, url, androidIsReload) async {
-                    setState(() {
-                      this.url = url.toString();
-                    });
-                    print('onUpdateVisitedHistory:' + url.toString());
-                  },
-                  onConsoleMessage: (controller, consoleMessage) {
-                    print(consoleMessage);
-                  },
-                ),
-              )
-            ],
+            ),
           ),
-        ),
-      ])),
+          Visibility(
+            visible: loadState,
+            maintainState: true,
+            child: InAppWebView(
+              key: satisfactionSurvey,
+              initialUrlRequest: URLRequest(url: Uri.parse(getGoogleUrl())),
+              initialOptions: options,
+              onWebViewCreated: (controller) async {
+                webViewController = controller;
+              },
+              onLoadStart: (controller, url) async {
+                setState(() {
+                  this.url = url.toString();
+                });
+              },
+              onLoadStop: (controller, url) async {
+                print("onLoadStop $url");
+                setState(() {
+                  this.url = url.toString();
+                });
+                await controller.evaluateJavascript(source: js);
+                if (url.toString().contains('formResponse') &&
+                    await controller.evaluateJavascript(
+                            source:
+                                'document.querySelector("body > div.freebirdFormviewerViewFormContentWrapper > div:nth-child(2) > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewResponseConfirmationMessage")') !=
+                        null &&
+                    submitCount != 2) {
+                  submitCount++;
+                  print('--- submitCount ---' + submitCount.toString());
+                } else if (submitCount == 2) {
+                  print('--- 成功送出 ---');
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool('isDoneForm', true);
+                  context.read<DarkThemeProvider>().asyncDoneForm();
+                  Navigator.pop(context);
+                  Future.delayed(Duration(milliseconds: 500), () async {
+                    showToast('成功送出 (並成功解鎖黑色主題，可在設定中開啟)');
+                  });
+                }
+              },
+              onLoadError: (controller, url, code, message) {},
+              onUpdateVisitedHistory: (controller, url, androidIsReload) async {
+                setState(() {
+                  this.url = url.toString();
+                });
+                print('onUpdateVisitedHistory:' + url.toString());
+              },
+              onConsoleMessage: (controller, consoleMessage) {
+                print(consoleMessage);
+              },
+            ),
+          )
+        ],
+      )),
     );
   }
 }
