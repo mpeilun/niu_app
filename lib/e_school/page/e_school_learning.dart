@@ -36,6 +36,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
             'Mozilla/5.0 (compatible; Google AppsViewer; http://drive.google.com)',
         useOnDownloadStart: true,
         useShouldOverrideUrlLoading: true,
+        useOnLoadResource: true,
         mediaPlaybackRequiresUserGesture: true,
       ),
       android: AndroidInAppWebViewOptions(
@@ -192,6 +193,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                               shouldDownload) {
                             download(uri, context, null);
                             isDownLoad = true;
+                            setWebViewVisibility = false;
                             return NavigationActionPolicy.CANCEL;
                           }
 
@@ -234,6 +236,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                           if (shouldDownload) {
                             download(url, context, null);
                             isDownLoad = true;
+                            setWebViewVisibility = false;
                           }
                         },
                         androidOnPermissionRequest:
@@ -312,7 +315,10 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                             tile[index]['content'] +
                             ''' > span > a").onclick()
                     ''');
-                    await Future.delayed(Duration(milliseconds: 200), () async {
+                    setState(() {
+                      loadState = false;
+                    });
+                    await Future.delayed(Duration(milliseconds: 500), () async {
                       if (isDownLoad == true) {
                         isDownLoad = false;
                       } else {
@@ -337,6 +343,9 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                           setWebViewVisibility = true;
                         });
                       }
+                      setState(() {
+                        loadState = true;
+                      });
                     });
                   },
                   child: Text('進入教材'))
