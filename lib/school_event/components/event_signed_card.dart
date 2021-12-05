@@ -2,13 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
-import 'package:niu_app/provider/school_event_provider.dart';
-import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
 import 'package:niu_app/school_event/dialog/event_signed_info_dialog.dart';
 import 'package:provider/provider.dart';
 
-import 'custom_list_info.dart';
 import '../school_event.dart';
+import 'custom_list_info.dart';
 
 class EventSigned {
   final String name;
@@ -31,7 +29,6 @@ class EventSigned {
 }
 
 class CustomEventSignedCard extends StatefulWidget {
-
   const CustomEventSignedCard({
     Key? key,
   }) : super(key: key);
@@ -42,12 +39,11 @@ class CustomEventSignedCard extends StatefulWidget {
 
 class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
   ScrollController _scrollController = ScrollController();
-  late List<EventSigned> data;
+  List<EventSigned> data = [];
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) => data = context.watch()<SchoolEventProvider>().data);
     _scrollController.addListener(() {
       schoolEventScrollController.jumpTo(_scrollController.offset);
     });
@@ -136,11 +132,11 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                             fontSize: 12.0,
                             color: themeChange.darkTheme
                                 ? data[index].status == '未開始'
-                                ? Color(0xff1E88E5)
-                                : Color(0xffE53935)
+                                    ? Color(0xff1E88E5)
+                                    : Color(0xffE53935)
                                 : data[index].status == '未開始'
-                                ? Color(0xff2364aa)
-                                : Color(0xFF954242),
+                                    ? Color(0xff2364aa)
+                                    : Color(0xFF954242),
                           ),
                           textAlign: TextAlign.center,
                         )),

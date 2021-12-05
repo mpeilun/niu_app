@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,17 +6,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:niu_app/menu/menu_page.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter/services.dart';
 import 'package:niu_app/provider/announcenment_provider.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 import 'package:niu_app/provider/info_provider.dart';
 import 'package:niu_app/provider/notification_provider.dart';
-import 'package:niu_app/provider/school_event_provider.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dark_mode/dark_theme.dart';
 import 'provider/timetable_button_provider.dart';
@@ -86,7 +80,6 @@ void main() async {
     ChangeNotifierProvider(create: (_) => InfoProvider()),
     ChangeNotifierProvider(create: (_) => AnnouncementProvider()),
     ChangeNotifierProvider(create: (_) => DarkThemeProvider()),
-    ChangeNotifierProvider(create: (_) => SchoolEventProvider()),
   ], child: MyApp()));
 }
 
