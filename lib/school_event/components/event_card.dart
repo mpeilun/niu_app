@@ -65,7 +65,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
   TextEditingController _textEditingController = TextEditingController();
   List<bool> _isSelected = [true, false, false];
   late List<dynamic> display = widget.data;
-  List<Event> tmp = [];
+  List<dynamic> tmp = [];
 
   void search() {
     tmp.clear();
