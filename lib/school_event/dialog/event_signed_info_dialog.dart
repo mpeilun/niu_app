@@ -139,105 +139,104 @@ document.querySelector("#ctl00_MainContentPlaceholder_mdlPopup_backgroundElement
 document.querySelector("#ctl00_MainContentPlaceholder_mdlPopup_backgroundElement").style.opacity = '100%';
 ''');
         await webViewController!.evaluateJavascript(source: '''
-javascript: (function () {
-document.querySelector(
-"#ctl00_MainContentPlaceholder_btnClose"
-).style.visibility = "hidden";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign > caption"
-).style.visibility = "hidden";
-
-document.querySelector(
-"#ctl00_MainContentPlaceholder_pnlPopup"
-).style.backgroundColor = "rgb(48,48,48)";
-
-
-for (i = 2; i < 22; i++) {
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(" +
-i +
-") > td:nth-child(2)"
-).style.color = "white";
-if (i % 2 == 0) {
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(" +
-i +
-") > td:nth-child(2)"
-).style.color = "white";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(" +
-i +
-") > td:nth-child(2)"
-).style.backgroundColor = "rgb(68,68,68)";
-}
-}
-
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(17) > td:nth-child(2)"
-).style.backgroundColor = "rgb(68,68,68)";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(19) > td:nth-child(2)"
-).style.backgroundColor = "rgb(68,68,68)";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(21) > td:nth-child(2)"
-).style.backgroundColor = "rgb(68,68,68)";
-
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtIdNo"
-).style.color = "white";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtBirthday"
-).style.color = "white";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtEmail"
-).style.color = "white";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtTel"
-).style.color = "white";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_TextBox15"
-).style.color = "white";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtSHistory"
-).style.color = "white";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtHope"
-).style.color = "white";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtMemo"
-).style.color = "white";
-
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtIdNo"
-).style.backgroundColor = "rgb(48,48,48)";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtBirthday"
-).style.backgroundColor = "rgb(48,48,48)";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtEmail"
-).style.backgroundColor = "rgb(48,48,48)";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtTel"
-).style.backgroundColor = "rgb(48,48,48)";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_TextBox15"
-).style.backgroundColor = "rgb(48,48,48)";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtSHistory"
-).style.backgroundColor = "rgb(48,48,48)";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtHope"
-).style.backgroundColor = "rgb(48,48,48)";
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign_txtMemo"
-).style.backgroundColor = "rgb(48,48,48)";
-
-document.querySelector(
-"#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(18) > td:nth-child(2)"
-).style.backgroundColor = "rgb(48,48,48)";
-})();
-
-''');
+        javascript: (function () {
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_btnClose"
+        ).style.visibility = "hidden";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign > caption"
+        ).style.visibility = "hidden";
+        
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_pnlPopup"
+        ).style.backgroundColor = "rgb(48,48,48)";
+        
+        
+        for (i = 2; i < 22; i++) {
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(" +
+        i +
+        ") > td:nth-child(2)"
+        ).style.color = "white";
+        if (i % 2 == 0) {
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(" +
+        i +
+        ") > td:nth-child(2)"
+        ).style.color = "white";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(" +
+        i +
+        ") > td:nth-child(2)"
+        ).style.backgroundColor = "rgb(68,68,68)";
+        }
+        }
+        
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(17) > td:nth-child(2)"
+        ).style.backgroundColor = "rgb(68,68,68)";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(19) > td:nth-child(2)"
+        ).style.backgroundColor = "rgb(68,68,68)";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(21) > td:nth-child(2)"
+        ).style.backgroundColor = "rgb(68,68,68)";
+        
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtIdNo"
+        ).style.color = "white";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtBirthday"
+        ).style.color = "white";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtEmail"
+        ).style.color = "white";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtTel"
+        ).style.color = "white";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_TextBox15"
+        ).style.color = "white";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtSHistory"
+        ).style.color = "white";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtHope"
+        ).style.color = "white";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtMemo"
+        ).style.color = "white";
+        
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtIdNo"
+        ).style.backgroundColor = "rgb(48,48,48)";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtBirthday"
+        ).style.backgroundColor = "rgb(48,48,48)";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtEmail"
+        ).style.backgroundColor = "rgb(48,48,48)";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtTel"
+        ).style.backgroundColor = "rgb(48,48,48)";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_TextBox15"
+        ).style.backgroundColor = "rgb(48,48,48)";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtSHistory"
+        ).style.backgroundColor = "rgb(48,48,48)";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtHope"
+        ).style.backgroundColor = "rgb(48,48,48)";
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign_txtMemo"
+        ).style.backgroundColor = "rgb(48,48,48)";
+        
+        document.querySelector(
+        "#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child(18) > td:nth-child(2)"
+        ).style.backgroundColor = "rgb(48,48,48)";
+        })();
+        ''');
         break;
       } else if (i == 30) {
         print('網路異常，連線超時！');

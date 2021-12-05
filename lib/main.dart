@@ -15,6 +15,7 @@ import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 import 'package:niu_app/provider/info_provider.dart';
 import 'package:niu_app/provider/notification_provider.dart';
+import 'package:niu_app/provider/school_event_provider.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -85,6 +86,7 @@ void main() async {
     ChangeNotifierProvider(create: (_) => InfoProvider()),
     ChangeNotifierProvider(create: (_) => AnnouncementProvider()),
     ChangeNotifierProvider(create: (_) => DarkThemeProvider()),
+    ChangeNotifierProvider(create: (_) => SchoolEventProvider()),
   ], child: MyApp()));
 }
 
