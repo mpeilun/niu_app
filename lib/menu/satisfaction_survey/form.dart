@@ -1,12 +1,7 @@
-import 'dart:developer';
-
-import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:provider/provider.dart';
@@ -23,22 +18,27 @@ void toDoFormAlert(BuildContext context, bool isDark) {
     image: SizedBox(
       height: 150,
       width: 150,
-      child: Image.asset(isDark ? 'assets/satisfaction_white.png' : 'assets/satisfaction_black.png'),
+      child: Image.asset(isDark
+          ? 'assets/satisfaction_white.png'
+          : 'assets/satisfaction_black.png'),
     ),
     content: Column(
       children: [
         Text(
           '是否願意幫我們填寫意願表單呢？',
-          style: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.w200),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w200),
           textAlign: TextAlign.center,
         ),
         SizedBox(
           height: 10,
         ),
         Text(
-          ' 填寫完成將解鎖黑色主題哦！',
-          style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey.shade600, fontSize: 16),
+          Provider.of<DarkThemeProvider>(context, listen: false).darkTheme
+              ? ''
+              : ' 填寫完成將解鎖黑色主題哦！',
+          style: TextStyle(
+              color: isDark ? Colors.grey[400] : Colors.grey.shade600,
+              fontSize: 16),
         ),
       ],
     ),
@@ -170,7 +170,8 @@ javascript: (
                             ),
                             elevation: 4,
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 18.0),
+                              padding: const EdgeInsets.fromLTRB(
+                                  12.0, 12.0, 12.0, 18.0),
                               child: Center(
                                   child: HtmlWidget(
                                       '''<p style="text-align: left;">您好:</p>
