@@ -16,23 +16,3 @@ class AdvancedTile {
     this.isExpanded = false,
   });
 }
-
-class LearningTile {
-  final String title;
-  final String contents;
-
-  LearningTile({
-    required this.title,
-    required this.contents,
-  });
-}
-
-class LearningTiles {
-  final List<LearningTile> tiles;
-  bool isExpanded;
-
-  LearningTiles({
-    required this.tiles,
-    this.isExpanded = false,
-  });
-}
