@@ -26,7 +26,7 @@ class ListInfo extends StatelessWidget {
           children: [
             Expanded(flex: 3, child: SizedBox()),
             Expanded(
-              flex: 12,
+              flex: 10,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -46,7 +46,7 @@ class ListInfo extends StatelessWidget {
             // ),
             Expanded(flex: 3, child: SizedBox()),
             Expanded(
-              flex: 13,
+              flex: 15,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
