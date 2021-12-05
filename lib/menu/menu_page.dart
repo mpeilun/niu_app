@@ -19,7 +19,7 @@ import 'package:niu_app/menu/drawer/about.dart';
 import 'package:niu_app/menu/drawer/announcement.dart';
 import 'package:niu_app/menu/drawer/drawer.dart';
 import 'package:niu_app/menu/drawer/report.dart';
-import 'package:niu_app/menu/drawer/school%EF%BC%BFschedule.dart';
+import 'package:niu_app/menu/drawer/school_schedule.dart';
 import 'package:niu_app/menu/drawer/setting.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/menu/notification/notification_page.dart';

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:niu_app/components/keep_alive.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/refresh.dart';
+import 'package:niu_app/provider/school_event_provider.dart';
 import 'package:niu_app/school_event/components/event_signed_card.dart';
+import 'package:provider/src/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EventSignedPage extends StatefulWidget {
@@ -17,7 +18,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
   HeadlessInAppWebView? headlessWebView;
   String url = "";
 
-  List<EventSigned> data = [];
+  late List<EventSigned> data;
 
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
 
@@ -101,10 +102,8 @@ class _EventSignedPageState extends State<EventSignedPage> {
       ));
     }
     await Future.delayed(Duration(milliseconds: 500));
-    setState(() {
-      this.data = temp;
-      refreshLoaded = true;
-    });
+    data = temp;
+    refreshLoaded = true;
   }
 
   Future<void> refresh() async {
@@ -124,6 +123,8 @@ class _EventSignedPageState extends State<EventSignedPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback(
+        (_) => data = context.read<SchoolEventProvider>().data);
     headlessWebView = new HeadlessInAppWebView(
       initialUrlRequest: URLRequest(
           url: Uri.parse(
@@ -163,7 +164,6 @@ class _EventSignedPageState extends State<EventSignedPage> {
         });
       },
     );
-
     headlessWebView?.run();
   }
 
@@ -173,8 +173,8 @@ class _EventSignedPageState extends State<EventSignedPage> {
   }
 
   @override
-  Widget build(BuildContext context) => KeepAlivePage(
-      child: data.isEmpty
+  Widget build(BuildContext context) =>
+      context.watch<SchoolEventProvider>().data.isEmpty
           ? Container(
               child: Column(
                 children: [
@@ -198,7 +198,6 @@ class _EventSignedPageState extends State<EventSignedPage> {
               child: refreshLoaded
                   ? CustomEventSignedCard(
                       key: PageStorageKey<String>('event'),
-                      data: data,
                     )
-                  : Container()));
+                  : Container());
 }
