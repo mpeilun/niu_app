@@ -237,7 +237,8 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                 onPressed: () {
                   Navigator.pop(context, true);
                 },
-                icon: Icon(Icons.close)),
+                icon: Icon(Icons.close,
+                color: Colors.grey,)),
           ],
         ),
         Expanded(
@@ -335,7 +336,7 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                 visible: dataLoaded && !signUpClicked,
                 child: data.isNotEmpty
                     ? Container(
-                        color: Colors.grey.shade200,
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         child: ListView.separated(
                             itemCount: data.length,
                             separatorBuilder:

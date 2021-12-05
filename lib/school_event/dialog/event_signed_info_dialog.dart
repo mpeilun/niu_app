@@ -194,6 +194,16 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                     buttons: [
                       DialogButton(
                         child: Text(
+                          "否",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        color: Colors.pinkAccent,
+                      ),
+                      DialogButton(
+                        child: Text(
                           '是',
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
@@ -206,16 +216,6 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                         },
                         color: Colors.blueAccent,
                       ),
-                      DialogButton(
-                        child: Text(
-                          "否",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        color: Colors.pinkAccent,
-                      )
                     ],
                   ).show();
                 },
@@ -231,7 +231,8 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                 onPressed: () {
                   Navigator.pop(context, true);
                 },
-                icon: Icon(Icons.close)),
+                icon: Icon(Icons.close,
+                color: Colors.grey,)),
           ],
         ),
         Expanded(
@@ -326,7 +327,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                 visible: dataLoaded && !buttonClicked,
                 child: dataLoaded
                     ? Container(
-                        color: Colors.grey.shade200,
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         child: ListView.separated(
                             itemCount: 4,
                             separatorBuilder:
