@@ -35,6 +35,7 @@ import '../bus.dart';
 import '../course＿select.dart';
 import '../zuvio.dart';
 import 'Satisfaction_survey/form.dart';
+import 'drawer/tutorial.dart';
 import 'notification/notification_webview.dart';
 
 Route _createRoute() {
@@ -98,7 +99,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
     final themeChange = Provider.of<DarkThemeProvider>(context);
-    final title = ['首頁', '公告', '行事曆', '設定', '關於', '聯絡我們'];
+    final title = ['首頁', '公告', '行事曆', '設定', '關於', '聯絡我們', '使用教學'];
     final pages = [
       LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -292,7 +293,8 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
       SchoolSchedule(),
       SettingPage(),
       AboutPage(),
-      ReportPage()
+      ReportPage(),
+      TutorialPage(),
     ];
 
     if (loginState) {
