@@ -7,11 +7,9 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/pdfviwer.dart';
-import 'package:niu_app/components/toast.dart';
-import 'package:niu_app/provider/announcenment_provider.dart';
-import 'package:provider/src/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+List data = [];
 
 class AnnouncementPage extends StatefulWidget {
   @override
@@ -19,40 +17,19 @@ class AnnouncementPage extends StatefulWidget {
 }
 
 class _AnnouncementPageState extends State<AnnouncementPage> {
-  late List data;
-  int page = 1;
-  bool enablePullUp = true;
   late HeadlessInAppWebView headlessWebView;
   ScrollController _controller = ScrollController();
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-
-  void _onLoading() async {
-    if (page < 86) {
-      await getPost(++page);
-      Future.delayed(Duration(milliseconds: 1000));
-      _refreshController.loadComplete();
-    } else {
-      showToast('已經滑到最底囉!');
-      _refreshController.loadNoData();
-    }
-  }
 
   late Future _future;
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      data = context.read<AnnouncementProvider>().contents;
-    });
-    _future = getPost(page);
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
-    data.clear();
     headlessWebView.webViewController
         .loadUrl(urlRequest: URLRequest(url: Uri.parse('about:blank')));
   }
@@ -60,64 +37,47 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future:
-            _future, // the function to get your data from firebase or firestore
+        future: getPost(),
         builder: (BuildContext context, AsyncSnapshot snap) {
           if (snap.data == null) {
             return NiuIconLoading(size: 80);
-            //return loading widget
           } else {
             return Scaffold(
-              body: SmartRefresher(
-                enablePullDown: false,
-                enablePullUp: true,
-                onLoading: _onLoading,
-                controller: _refreshController,
-                child: ListView.builder(
-                  controller: _controller,
-                  itemCount:
-                      context.watch<AnnouncementProvider>().contents.length,
-                  itemBuilder: (context, index) {
-                    // print(page);
-                    // print(data.length);
-                    // print(index);
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(3.0, 4.0, 3.0, 0.0),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 12.0, vertical: 6.0),
-                          //leading: Icon(Icons.event_seat),
-                          title: Text(context
-                              .watch<AnnouncementProvider>()
-                              .contents[index]['title']),
-                          subtitle: Text(
-                            context
-                                .watch<AnnouncementProvider>()
-                                .contents[index]['date'],
-                            style: TextStyle(color: Colors.grey),
-                            textAlign: TextAlign.right,
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AnnouncementWebView(
-                                          announcementUrl: data[index]['link'],
-                                          announcementTitle: data[index]
-                                              ['title'],
-                                        ),
-                                    maintainState: false));
-                          },
-                          //subtitle: Text('${content[index].price}'),
-                        ),
+              body: ListView.builder(
+                controller: _controller,
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(3.0, 4.0, 3.0, 0.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
-                    );
-                  },
-                ),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 6.0),
+                        //leading: Icon(Icons.event_seat),
+                        title: Text(data[index]['title']),
+                        subtitle: Text(
+                          data[index]['date'],
+                          style: TextStyle(color: Colors.grey),
+                          textAlign: TextAlign.right,
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AnnouncementWebView(
+                                        announcementUrl: data[index]['link'],
+                                        announcementTitle: data[index]['title'],
+                                      ),
+                                  maintainState: false));
+                        },
+                        //subtitle: Text('${content[index].price}'),
+                      ),
+                    ),
+                  );
+                },
               ),
               floatingActionButton: Container(
                 width: 40.0,
@@ -148,12 +108,14 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
         });
   }
 
-  Future<bool> getPost(int page) async {
+  Future<bool> getPost() async {
     Completer<bool> callBack = new Completer<bool>();
+    int i = 1;
     headlessWebView = new HeadlessInAppWebView(
       initialUrlRequest: URLRequest(
-          url: Uri.parse(
-              'https://www.niu.edu.tw/files/501-1000-1019-$page.php?Lang=zh-tw')),
+          url: Uri.parse('https://www.niu.edu.tw/files/501-1000-1019-' +
+              i.toString() +
+              '.php?Lang=zh-tw')),
       initialOptions: InAppWebViewGroupOptions(
         crossPlatform: InAppWebViewOptions(
           useOnLoadResource: true,
@@ -188,16 +150,28 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
               }
             )()
             ''';
-          print('---page:$page---');
-          // data.addAll(await controller.evaluateJavascript(source: js));
-          context
-              .read<AnnouncementProvider>()
-              .setListContents(await controller.evaluateJavascript(source: js));
-          callBack.complete(true);
+          if (i < 4) {
+            i++;
+            List temp = await controller.evaluateJavascript(source: js);
+            print(temp);
+            data.addAll(temp);
+            await headlessWebView.webViewController.loadUrl(
+                urlRequest: URLRequest(
+                    url: Uri.parse(
+                        'https://www.niu.edu.tw/files/501-1000-1019-' +
+                            i.toString() +
+                            '.php?Lang=zh-tw')));
+          } else {
+            callBack.complete(true);
+          }
         }
       },
     );
-    await headlessWebView.run();
+    if (data.isEmpty) {
+      await headlessWebView.run();
+    } else {
+      callBack.complete(true);
+    }
     return callBack.future;
   }
 }

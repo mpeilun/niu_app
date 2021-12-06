@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:niu_app/menu/menu_page.dart';
-import 'package:niu_app/provider/announcenment_provider.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 import 'package:niu_app/provider/info_provider.dart';
@@ -78,7 +77,6 @@ void main() async {
     ChangeNotifierProvider(create: (_) => TimeCardClickProvider()),
     ChangeNotifierProvider(create: (_) => NotificationProvider()),
     ChangeNotifierProvider(create: (_) => InfoProvider()),
-    ChangeNotifierProvider(create: (_) => AnnouncementProvider()),
     ChangeNotifierProvider(create: (_) => DarkThemeProvider()),
   ], child: MyApp()));
 }
