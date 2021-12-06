@@ -250,7 +250,7 @@ Widget createDrawerItem(
   return InkWell(
     onTap: onTap,
     child: Container(
-      height: 70.0,
+      height: 75.0,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
