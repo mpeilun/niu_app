@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Styles {
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
@@ -63,9 +64,9 @@ class Styles {
                 isDarkTheme ? Brightness.dark : Brightness.light,
             statusBarColor: isDarkTheme ? Color(0xff000000) : Colors.blue[900]),
       ),
-      // textTheme: GoogleFonts.notoSansTextTheme(
-      //   Theme.of(context).textTheme,
-      // ),
+      textTheme: GoogleFonts.notoSansTextTheme(
+        Theme.of(context).textTheme,
+      ),
 
       pageTransitionsTheme: PageTransitionsTheme(
         builders: {

@@ -115,24 +115,6 @@ class _DrawerPageState extends State<DrawerPage> {
                 context.read<DrawerProvider>().closeDrawer();
                 context.read<DrawerProvider>().onclick(2);
               }),
-          // Divider(),
-          // createDrawerItem(
-          //     context: context,
-          //     icon: Icons.settings_outlined,
-          //     text: '設定',
-          //     onTap: () {
-          //       context.read<DrawerProvider>().closeDrawer();
-          //       context.read<DrawerProvider>().onclick(3);
-          //     }),
-          Divider(),
-          createDrawerItem(
-              context: context,
-              icon: Icons.info_outline_rounded,
-              text: '關於',
-              onTap: () {
-                context.read<DrawerProvider>().closeDrawer();
-                context.read<DrawerProvider>().onclick(4);
-              }),
           Divider(),
           // createDrawerItem(
           //     context: context,
@@ -153,6 +135,34 @@ class _DrawerPageState extends State<DrawerPage> {
                     MaterialPageRoute(
                         builder: (context) => SatisfactionSurvey(),
                         maintainState: false));
+              }),
+          // Divider(),
+          // createDrawerItem(
+          //     context: context,
+          //     icon: Icons.settings_outlined,
+          //     text: '設定',
+          //     onTap: () {
+          //       context.read<DrawerProvider>().closeDrawer();
+          //       context.read<DrawerProvider>().onclick(3);
+          //     }),
+
+          Divider(),
+          createDrawerItem(
+              context: context,
+              icon: Icons.help_outline,
+              text: '說明',
+              onTap: () {
+                context.read<DrawerProvider>().closeDrawer();
+                context.read<DrawerProvider>().onclick(6);
+              }),
+          Divider(),
+          createDrawerItem(
+              context: context,
+              icon: Icons.info_outline_rounded,
+              text: '關於',
+              onTap: () {
+                context.read<DrawerProvider>().closeDrawer();
+                context.read<DrawerProvider>().onclick(4);
               }),
           Divider(),
           createDrawerItem(
