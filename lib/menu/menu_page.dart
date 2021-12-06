@@ -463,9 +463,9 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(12.0, 18.0, 12.0, .0),
                   child: GridView.count(
+                    addRepaintBoundaries: false,
                     mainAxisSpacing: 0,
-                    // shrinkWrap: true,
-                    // childAspectRatio: 1,
+                    shrinkWrap: true,
                     crossAxisCount: orientation == Orientation.portrait ? 3 : 5,
                     // children: [
                     //   Container(color: Colors.amber),
