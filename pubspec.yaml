@@ -76,6 +76,8 @@ dependencies:
   flutter_widget_from_html: ^0.8.2
   animations: ^2.0.2
   animate_icons: ^2.0.0
+  intro_slider: ^3.0.2
+
 
 dev_dependencies:
   flutter_test:
