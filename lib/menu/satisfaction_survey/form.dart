@@ -23,6 +23,7 @@ void toDoFormAlert(BuildContext context, bool isDark) {
           : 'assets/satisfaction_black.png'),
     ),
     content: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           '是否願意幫我們填寫意願表單呢？',
@@ -35,10 +36,11 @@ void toDoFormAlert(BuildContext context, bool isDark) {
         Text(
           Provider.of<DarkThemeProvider>(context, listen: false).darkTheme
               ? ''
-              : ' 填寫完成將解鎖黑色主題哦！',
+              : '填寫完成將解鎖黑色主題哦！',
           style: TextStyle(
               color: isDark ? Colors.grey[400] : Colors.grey.shade600,
               fontSize: 16),
+          textAlign: TextAlign.center,
         ),
       ],
     ),

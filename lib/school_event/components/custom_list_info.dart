@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:provider/provider.dart';
 
 class ListInfo extends StatelessWidget {
   final IconData icon;
@@ -16,6 +18,7 @@ class ListInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     var screenSizeWidth = MediaQuery.of(context).size.width;
     var screenSizeHeight = MediaQuery.of(context).size.height;
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return Container(
       alignment: Alignment.center,
       child: Container(
@@ -30,7 +33,12 @@ class ListInfo extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(icon),
+                  Icon(
+                    icon,
+                    color: themeChange.darkTheme
+                        ? Color(0xe0ffffff)
+                        : Colors.black,
+                  ),
                   SizedBox(
                     width: screenSizeWidth * 0.01,
                   ),

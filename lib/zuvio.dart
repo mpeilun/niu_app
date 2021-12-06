@@ -323,7 +323,7 @@ class _ZuvioState extends State<Zuvio> {
               child: Padding(
                 padding: EdgeInsets.only(right: 14, bottom: 20),
                 child: Opacity(
-                  opacity: 0.7,
+                  opacity: 0.5,
                   child: Container(
                     height: 45,
                     width: 45,

@@ -201,7 +201,10 @@ class _DrawerPageState extends State<DrawerPage> {
                     ),
                   ])
                 : SizedBox();
-          })
+          }),
+          SizedBox(
+            height: 28.0,
+          )
         ],
       ),
     );

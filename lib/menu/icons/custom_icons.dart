@@ -21,6 +21,7 @@ class CustomIcons extends StatelessWidget {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // SizedBox(
         //   child: CustomPaint(
@@ -51,7 +52,7 @@ class CustomIcons extends StatelessWidget {
             icon: Icon(
               icon,
               color: themeChange.darkTheme ? Color(0xe0ffffff) : Colors.black,
-    ),
+            ),
             onPressed: press,
           )
         ]),
@@ -60,7 +61,10 @@ class CustomIcons extends StatelessWidget {
         ),
         Text(
           title,
-          style: TextStyle(fontSize: 14.0, fontWeight: themeChange.darkTheme ? FontWeight.normal : FontWeight.bold),
+          style: TextStyle(
+              fontSize: 14.0,
+              fontWeight:
+                  themeChange.darkTheme ? FontWeight.normal : FontWeight.bold),
         ),
       ],
     );
