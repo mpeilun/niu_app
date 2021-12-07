@@ -123,7 +123,12 @@ class ClassList {
       }
     });
     _tiles.add(
-        ClassCard.build(thisClass: thisClass, calendar: calendar, week: week));
+        Container(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            // color: Colors.white,
+            child: ClassCard.build(thisClass: thisClass, calendar: calendar, week: week)
+        )
+    );
     _staggeredTiles.add(StaggeredTile.count(
         2,
         (thisClass.endTime - thisClass.startTime + 1).toDouble() *

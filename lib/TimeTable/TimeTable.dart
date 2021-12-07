@@ -61,7 +61,8 @@ class _TimeTableState extends State<TimeTable> {
             List<Class> tempClassList = temp.classList(htmlCode);
             Map<Class, Calendar> calendarMap = b.calendarMap;
             return ViewPage.build(
-                myTable: tempClassList /*myTable*/,
+                myTable: tempClassList,
+                // myTable: myTable,
                 date: a,
                 calendarMap: calendarMap);
             //return the widget that you want to display after loading
