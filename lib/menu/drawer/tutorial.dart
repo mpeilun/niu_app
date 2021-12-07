@@ -248,11 +248,11 @@ class _TutorialPageState extends State<TutorialPage>
                             widget: Column(
                               children: [
                                 Text(
-                                  '2021/12/12 11:11111111 起',
+                                  '2021/12/12 11:11起',
                                   style: TextStyle(fontSize: 14),
                                 ),
                                 Text(
-                                  '2021/12/12 22:22 止',
+                                  '2021/12/12 22:22止',
                                   style: TextStyle(fontSize: 14),
                                 ),
                               ],
@@ -368,9 +368,6 @@ class _TutorialPageState extends State<TutorialPage>
 
       // Behavior
       scrollPhysics: BouncingScrollPhysics(),
-
-      // Show or hide status bar
-      hideStatusBar: true,
 
       // On tab change completed
       onTabChangeCompleted: this.onTabChangeCompleted,

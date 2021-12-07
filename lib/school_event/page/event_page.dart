@@ -34,7 +34,8 @@ class _EventPageState extends State<EventPage> {
     String js = '''javascript:(
 function() {
     var data = [];
-    for(i=2;document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child("+i+") > td:nth-child(9)")!=null;i++){
+    var count = document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody").childElementCount + 1;
+    for(i = 2; i < count; i++){
         var i_special = i.toString();
         if(i<10){i_special = "0" + i;}
         let name = document.querySelector("#ctl00_MainContentPlaceholder_gvGetApply > tbody > tr:nth-child("+i+") > td:nth-child(4) > div").innerText;
