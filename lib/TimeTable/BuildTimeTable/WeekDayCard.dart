@@ -8,10 +8,12 @@ class WeekDayCard extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(
-      child: Text(
-        weekDayName[thisDay],
-        style: TextStyle(
-          fontSize: 12,
+      child: Center(
+        child: Text(
+          weekDayName[thisDay],
+          style: TextStyle(
+            fontSize: 12,
+          ),
         ),
       ),
     );

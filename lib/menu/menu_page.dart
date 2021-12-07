@@ -316,370 +316,372 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
   }
 
   Widget menuPage() {
-    return OrientationBuilder(
-      builder: (BuildContext context, orientation) {
-        List<CustomIcons> icons = [
-          CustomIcons(
-            title: '數位園區',
-            icon: MenuIcon.icon_eschool,
-            press: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ESchool(), maintainState: false));
-            },
-          ),
-          CustomIcons(
-            title: '成績查詢',
-            icon: MenuIcon.icon_grades,
-            press: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Grades(
-                            title: '成績查詢',
-                          ),
-                      maintainState: false));
-            },
-          ),
-          CustomIcons(
-            title: '每週課表',
-            icon: MenuIcon.icon_timetable,
-            press: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TimeTable(), maintainState: false));
-            },
-          ),
-          CustomIcons(
-            title: '活動報名',
-            icon: MenuIcon.icon_event,
-            press: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SchoolEvent(
-                            title: '活動報名',
-                          ),
-                      maintainState: false));
-            },
-          ),
-          CustomIcons(
-            title: '聯絡我們',
-            icon: MenuIcon.icon_feedback,
-            size: 40.0,
-            press: () async {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Scaffold(
-                            appBar: AppBar(
-                              title: Text(
-                                '聯絡我們',
-                              ),
-                              centerTitle: true,
+    return Container(
+      child: OrientationBuilder(
+        builder: (BuildContext context, orientation) {
+          List<CustomIcons> icons = [
+            CustomIcons(
+              title: '數位園區',
+              icon: MenuIcon.icon_eschool,
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ESchool(), maintainState: false));
+              },
+            ),
+            CustomIcons(
+              title: '成績查詢',
+              icon: MenuIcon.icon_grades,
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Grades(
+                              title: '成績查詢',
                             ),
-                            body: ReportPage(),
-                          ),
-                      maintainState: false));
+                        maintainState: false));
+              },
+            ),
+            CustomIcons(
+              title: '每週課表',
+              icon: MenuIcon.icon_timetable,
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TimeTable(), maintainState: false));
+              },
+            ),
+            CustomIcons(
+              title: '活動報名',
+              icon: MenuIcon.icon_event,
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SchoolEvent(
+                              title: '活動報名',
+                            ),
+                        maintainState: false));
+              },
+            ),
+            CustomIcons(
+              title: '聯絡我們',
+              icon: MenuIcon.icon_feedback,
+              size: 40.0,
+              press: () async {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Scaffold(
+                              appBar: AppBar(
+                                title: Text(
+                                  '聯絡我們',
+                                ),
+                                centerTitle: true,
+                              ),
+                              body: ReportPage(),
+                            ),
+                        maintainState: false));
+              },
+            ),
+            CustomIcons(
+              title: '畢業門檻',
+              icon: MenuIcon.icon_graduation,
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Graduation(),
+                        maintainState: false));
+              },
+            ),
+            CustomIcons(
+              title: '選課系統',
+              icon: MenuIcon.icon_e_school,
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CourseSelect(),
+                        maintainState: false));
+              },
+            ),
+            CustomIcons(
+              title: '公車動態',
+              icon: MenuIcon.icon_bus,
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Bus(), maintainState: false));
+              },
+            ),
+            CustomIcons(
+              title: 'ZUVIO',
+              icon: MenuIcon.icon_zuvio,
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Zuvio(), maintainState: false));
+              },
+            ),
+          ];
+          final double screenHeight = MediaQuery.of(context).size.height;
+          final themeChange = Provider.of<DarkThemeProvider>(context);
+          bool smallScreen = false;
+          if (screenHeight < 500) {
+            smallScreen = true;
+          }
+          return GestureDetector(
+            onHorizontalDragStart: (details) {
+              isDragging = true;
             },
-          ),
-          CustomIcons(
-            title: '畢業門檻',
-            icon: MenuIcon.icon_graduation,
-            press: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Graduation(),
-                      maintainState: false));
-            },
-          ),
-          CustomIcons(
-            title: '選課系統',
-            icon: MenuIcon.icon_e_school,
-            press: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CourseSelect(),
-                      maintainState: false));
-            },
-          ),
-          CustomIcons(
-            title: '公車動態',
-            icon: MenuIcon.icon_bus,
-            press: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Bus(), maintainState: false));
-            },
-          ),
-          CustomIcons(
-            title: 'ZUVIO',
-            icon: MenuIcon.icon_zuvio,
-            press: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Zuvio(), maintainState: false));
-            },
-          ),
-        ];
-        final double screenHeight = MediaQuery.of(context).size.height;
-        final themeChange = Provider.of<DarkThemeProvider>(context);
-        bool smallScreen = false;
-        if (screenHeight < 500) {
-          smallScreen = true;
-        }
-        return GestureDetector(
-          onHorizontalDragStart: (details) {
-            isDragging = true;
-          },
-          onHorizontalDragUpdate: (details) {
-            if (!isDragging) return;
-            const delta = 1;
-            if (details.delta.dx > delta) {
-              context.read<DrawerProvider>().openDrawer();
-            }
-            if (details.delta.dx < -delta) {
-              if (context
-                      .read<NotificationProvider>()
-                      .notificationItemList
-                      .length ==
-                  0) {
-                context.read<NotificationProvider>().setIsEmpty(true);
+            onHorizontalDragUpdate: (details) {
+              if (!isDragging) return;
+              const delta = 1;
+              if (details.delta.dx > delta) {
+                context.read<DrawerProvider>().openDrawer();
               }
-              Navigator.of(context).push(_createRoute());
+              if (details.delta.dx < -delta) {
+                if (context
+                        .read<NotificationProvider>()
+                        .notificationItemList
+                        .length ==
+                    0) {
+                  context.read<NotificationProvider>().setIsEmpty(true);
+                }
+                Navigator.of(context).push(_createRoute());
 
-              isDragging = false;
-            }
-          },
-          child: Column(children: [
-            Expanded(
-              flex: 7,
-              child: Center(
-                child: ScrollConfiguration(
-                  behavior: MyBehavior(),
-                  child: GridView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount:
-                            orientation == Orientation.portrait ? 3 : 3,
-                        mainAxisExtent: 105.0,
-                      ),
-                      addRepaintBoundaries: false,
-                      itemCount: icons.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return icons[index];
-                      }
+                isDragging = false;
+              }
+            },
+            child: Column(children: [
+              Expanded(
+                flex: 7,
+                child: Center(
+                  child: ScrollConfiguration(
+                    behavior: MyBehavior(),
+                    child: GridView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount:
+                              orientation == Orientation.portrait ? 3 : 3,
+                          mainAxisExtent: 105.0,
+                        ),
+                        addRepaintBoundaries: false,
+                        itemCount: icons.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return icons[index];
+                        }
 
-                      // children: icons.map((icon) {
-                      //   return icon;
-                      // }).toList(),
-                      ),
+                        // children: icons.map((icon) {
+                        //   return icon;
+                        // }).toList(),
+                        ),
+                  ),
                 ),
               ),
-            ),
-            smallScreen
-                ? SizedBox()
-                : Flexible(
-                    flex: 4,
-                    child: Center(
-                      child: Image.asset(
-                        themeChange.darkTheme
-                            ? 'assets/black_background.png'
-                            : 'assets/niu_background.png',
+              smallScreen
+                  ? SizedBox()
+                  : Flexible(
+                      flex: 4,
+                      child: Center(
+                        child: Image.asset(
+                          themeChange.darkTheme
+                              ? 'assets/black_background.png'
+                              : 'assets/niu_background.png',
+                        ),
                       ),
                     ),
-                  ),
-          ]),
-        );
+            ]),
+          );
 
-        // return SingleChildScrollView(
-        //   scrollDirection: Axis.vertical,
-        //   child: ConstrainedBox(
-        //     constraints: BoxConstraints(
-        //       maxHeight: screenHeight - statusHeight - 56.0,
-        //       //minHeight: screenHeight - statusHeight - 56.0,
-        //     ),
-        //     child: Center(
-        //       child: Column(
-        //           mainAxisAlignment: MainAxisAlignment.center,
-        //           children: [
-        //             SizedBox(
-        //               height: 8.0,
-        //             ),
-        //             Expanded(
-        //               flex: 7,
-        //               child: Column(
-        //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //                 children: [
-        //                   ConstrainedBox(
-        //                     constraints: BoxConstraints(maxWidth: 1250.0),
-        //                     child: Row(
-        //                       mainAxisAlignment:
-        //                           MainAxisAlignment.spaceEvenly,
-        //                       children: [
-        //                         CustomIcons(
-        //                           title: '數位園區',
-        //                           icon: MenuIcon.icon_eschool,
-        //                           press: () {
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (context) => ESchool(),
-        //                                     maintainState: false));
-        //                           },
-        //                         ),
-        //                         CustomIcons(
-        //                           title: '成績查詢',
-        //                           icon: MenuIcon.icon_grades,
-        //                           press: () {
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (context) => Grades(
-        //                                           title: '成績查詢',
-        //                                         ),
-        //                                     maintainState: false));
-        //                           },
-        //                         ),
-        //                         CustomIcons(
-        //                           title: '每週課表',
-        //                           icon: MenuIcon.icon_timetable,
-        //                           press: () {
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (context) => TimeTable(),
-        //                                     maintainState: false));
-        //                           },
-        //                         ),
-        //                       ],
-        //                     ),
-        //                   ),
-        //                   ConstrainedBox(
-        //                     constraints: BoxConstraints(maxWidth: 1250.0),
-        //                     child: Row(
-        //                       mainAxisAlignment:
-        //                           MainAxisAlignment.spaceEvenly,
-        //                       children: [
-        //                         CustomIcons(
-        //                           title: '活動報名',
-        //                           icon: MenuIcon.icon_event,
-        //                           press: () {
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (context) => SchoolEvent(
-        //                                           title: '活動報名',
-        //                                         ),
-        //                                     maintainState: false));
-        //                           },
-        //                         ),
-        //                         CustomIcons(
-        //                           title: '聯絡我們',
-        //                           icon: MenuIcon.icon_feedback,
-        //                           size: 40.0,
-        //                           press: () async {
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (context) => Scaffold(
-        //                                           appBar: AppBar(
-        //                                             title: Text(
-        //                                               '聯絡我們',
-        //                                             ),
-        //                                             centerTitle: true,
-        //                                           ),
-        //                                           body: ReportPage(),
-        //                                         ),
-        //                                     maintainState: false));
-        //                           },
-        //                         ),
-        //                         CustomIcons(
-        //                           title: '畢業門檻',
-        //                           icon: MenuIcon.icon_graduation,
-        //                           press: () {
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (context) =>
-        //                                         Graduation(),
-        //                                     maintainState: false));
-        //                           },
-        //                         ),
-        //                       ],
-        //                     ),
-        //                   ),
-        //                   ConstrainedBox(
-        //                     constraints: BoxConstraints(maxWidth: 1250.0),
-        //                     child: Row(
-        //                       mainAxisAlignment:
-        //                           MainAxisAlignment.spaceEvenly,
-        //                       children: [
-        //                         CustomIcons(
-        //                           title: '選課系統',
-        //                           icon: MenuIcon.icon_e_school,
-        //                           press: () {
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (context) =>
-        //                                         CourseSelect(),
-        //                                     maintainState: false));
-        //                           },
-        //                         ),
-        //                         CustomIcons(
-        //                           title: '公車動態',
-        //                           icon: MenuIcon.icon_bus,
-        //                           press: () {
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (context) => Bus(),
-        //                                     maintainState: false));
-        //                           },
-        //                         ),
-        //                         CustomIcons(
-        //                           title: 'ZUVIO',
-        //                           icon: MenuIcon.icon_zuvio,
-        //                           press: () {
-        //                             Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                     builder: (context) => Zuvio(),
-        //                                     maintainState: false));
-        //                           },
-        //                         ),
-        //                       ],
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //             ),
-        //             SizedBox(
-        //               height: 12.0,
-        //             ),
-        //             smallScreen
-        //                 ? SizedBox()
-        //                 : Expanded(
-        //                     flex: 4,
-        //                     child: Image.asset(
-        //                       themeChange.darkTheme
-        //                           ? 'assets/black_background.png'
-        //                           : 'assets/niu_background.png',
-        //                     ),
-        //                   ),
-        //           ]),
-        //     ),
-        //   ),
-        // );
-      },
+          // return SingleChildScrollView(
+          //   scrollDirection: Axis.vertical,
+          //   child: ConstrainedBox(
+          //     constraints: BoxConstraints(
+          //       maxHeight: screenHeight - statusHeight - 56.0,
+          //       //minHeight: screenHeight - statusHeight - 56.0,
+          //     ),
+          //     child: Center(
+          //       child: Column(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: [
+          //             SizedBox(
+          //               height: 8.0,
+          //             ),
+          //             Expanded(
+          //               flex: 7,
+          //               child: Column(
+          //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //                 children: [
+          //                   ConstrainedBox(
+          //                     constraints: BoxConstraints(maxWidth: 1250.0),
+          //                     child: Row(
+          //                       mainAxisAlignment:
+          //                           MainAxisAlignment.spaceEvenly,
+          //                       children: [
+          //                         CustomIcons(
+          //                           title: '數位園區',
+          //                           icon: MenuIcon.icon_eschool,
+          //                           press: () {
+          //                             Navigator.push(
+          //                                 context,
+          //                                 MaterialPageRoute(
+          //                                     builder: (context) => ESchool(),
+          //                                     maintainState: false));
+          //                           },
+          //                         ),
+          //                         CustomIcons(
+          //                           title: '成績查詢',
+          //                           icon: MenuIcon.icon_grades,
+          //                           press: () {
+          //                             Navigator.push(
+          //                                 context,
+          //                                 MaterialPageRoute(
+          //                                     builder: (context) => Grades(
+          //                                           title: '成績查詢',
+          //                                         ),
+          //                                     maintainState: false));
+          //                           },
+          //                         ),
+          //                         CustomIcons(
+          //                           title: '每週課表',
+          //                           icon: MenuIcon.icon_timetable,
+          //                           press: () {
+          //                             Navigator.push(
+          //                                 context,
+          //                                 MaterialPageRoute(
+          //                                     builder: (context) => TimeTable(),
+          //                                     maintainState: false));
+          //                           },
+          //                         ),
+          //                       ],
+          //                     ),
+          //                   ),
+          //                   ConstrainedBox(
+          //                     constraints: BoxConstraints(maxWidth: 1250.0),
+          //                     child: Row(
+          //                       mainAxisAlignment:
+          //                           MainAxisAlignment.spaceEvenly,
+          //                       children: [
+          //                         CustomIcons(
+          //                           title: '活動報名',
+          //                           icon: MenuIcon.icon_event,
+          //                           press: () {
+          //                             Navigator.push(
+          //                                 context,
+          //                                 MaterialPageRoute(
+          //                                     builder: (context) => SchoolEvent(
+          //                                           title: '活動報名',
+          //                                         ),
+          //                                     maintainState: false));
+          //                           },
+          //                         ),
+          //                         CustomIcons(
+          //                           title: '聯絡我們',
+          //                           icon: MenuIcon.icon_feedback,
+          //                           size: 40.0,
+          //                           press: () async {
+          //                             Navigator.push(
+          //                                 context,
+          //                                 MaterialPageRoute(
+          //                                     builder: (context) => Scaffold(
+          //                                           appBar: AppBar(
+          //                                             title: Text(
+          //                                               '聯絡我們',
+          //                                             ),
+          //                                             centerTitle: true,
+          //                                           ),
+          //                                           body: ReportPage(),
+          //                                         ),
+          //                                     maintainState: false));
+          //                           },
+          //                         ),
+          //                         CustomIcons(
+          //                           title: '畢業門檻',
+          //                           icon: MenuIcon.icon_graduation,
+          //                           press: () {
+          //                             Navigator.push(
+          //                                 context,
+          //                                 MaterialPageRoute(
+          //                                     builder: (context) =>
+          //                                         Graduation(),
+          //                                     maintainState: false));
+          //                           },
+          //                         ),
+          //                       ],
+          //                     ),
+          //                   ),
+          //                   ConstrainedBox(
+          //                     constraints: BoxConstraints(maxWidth: 1250.0),
+          //                     child: Row(
+          //                       mainAxisAlignment:
+          //                           MainAxisAlignment.spaceEvenly,
+          //                       children: [
+          //                         CustomIcons(
+          //                           title: '選課系統',
+          //                           icon: MenuIcon.icon_e_school,
+          //                           press: () {
+          //                             Navigator.push(
+          //                                 context,
+          //                                 MaterialPageRoute(
+          //                                     builder: (context) =>
+          //                                         CourseSelect(),
+          //                                     maintainState: false));
+          //                           },
+          //                         ),
+          //                         CustomIcons(
+          //                           title: '公車動態',
+          //                           icon: MenuIcon.icon_bus,
+          //                           press: () {
+          //                             Navigator.push(
+          //                                 context,
+          //                                 MaterialPageRoute(
+          //                                     builder: (context) => Bus(),
+          //                                     maintainState: false));
+          //                           },
+          //                         ),
+          //                         CustomIcons(
+          //                           title: 'ZUVIO',
+          //                           icon: MenuIcon.icon_zuvio,
+          //                           press: () {
+          //                             Navigator.push(
+          //                                 context,
+          //                                 MaterialPageRoute(
+          //                                     builder: (context) => Zuvio(),
+          //                                     maintainState: false));
+          //                           },
+          //                         ),
+          //                       ],
+          //                     ),
+          //                   ),
+          //                 ],
+          //               ),
+          //             ),
+          //             SizedBox(
+          //               height: 12.0,
+          //             ),
+          //             smallScreen
+          //                 ? SizedBox()
+          //                 : Expanded(
+          //                     flex: 4,
+          //                     child: Image.asset(
+          //                       themeChange.darkTheme
+          //                           ? 'assets/black_background.png'
+          //                           : 'assets/niu_background.png',
+          //                     ),
+          //                   ),
+          //           ]),
+          //     ),
+          //   ),
+          // );
+        },
+      ),
     );
   }
 

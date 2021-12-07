@@ -187,7 +187,7 @@ class _ClassCard extends State<ClassCard> {
                             initialValue: calendarName,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(32.0),
                               ),
                               labelText: '名稱',
                               hintText: '請輸入名稱',
@@ -208,7 +208,7 @@ class _ClassCard extends State<ClassCard> {
                               obscureText: false,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderRadius: BorderRadius.circular(32.0),
                                 ),
                                 labelText: '內容',
                                 hintText: "請輸入內容",

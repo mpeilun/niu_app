@@ -56,9 +56,7 @@ function() {
     return data;
 }
 )()''';
-
-    readTemp =
-        await headlessWebView?.webViewController.evaluateJavascript(source: js);
+    readTemp = List.from(await headlessWebView?.webViewController.evaluateJavascript(source: js));
     log(readTemp.length.toString());
   }
 
