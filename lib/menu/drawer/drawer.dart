@@ -54,7 +54,6 @@ class _DrawerPageState extends State<DrawerPage> {
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
-    final controller = Provider.of<DarkThemeProvider>(context);
     return AnimatedContainer(
       transform: Matrix4.translationValues(widget.drawerXOffset, 0, 0),
       duration: Duration(milliseconds: 150),
@@ -198,10 +197,10 @@ class _DrawerPageState extends State<DrawerPage> {
                         endIconColor: Theme.of(context).iconTheme.color,
                         startIcon: Icons.light_mode,
                         endIcon: Icons.dark_mode,
-                        controller: controller.controller,
+                        controller: change.controller,
                         size: 40.0,
                         onEndIconPress: () {
-                          controller.controller.animateToStart();
+                          change.controller.animateToStart();
                           change.darkTheme = !change.darkTheme;
                           return true;
                         },

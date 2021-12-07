@@ -429,7 +429,6 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
           ),
         ];
         final double screenHeight = MediaQuery.of(context).size.height;
-        final double screenWidth = MediaQuery.of(context).size.width;
         final themeChange = Provider.of<DarkThemeProvider>(context);
         bool smallScreen = false;
         if (screenHeight < 500) {
@@ -464,36 +463,30 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
               child: Center(
                 child: ScrollConfiguration(
                   behavior: MyBehavior(),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 18.0, 12.0, .0),
-                    child: GridView.count(
+                  child: GridView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount:
+                            orientation == Orientation.portrait ? 3 : 5,
+                        mainAxisExtent: 100.0,
+                      ),
                       addRepaintBoundaries: false,
-                      mainAxisSpacing: 0,
+                      itemCount: icons.length,
                       shrinkWrap: true,
-                      crossAxisCount:
-                          orientation == Orientation.portrait ? 3 : 5,
-                      // children: [
-                      //   Container(color: Colors.amber),
-                      //   Container(color: Colors.black),
-                      //   Container(color: Colors.pink),
-                      //   Container(color: Colors.purple),
-                      //   Container(color: Colors.yellow),
-                      //   Container(color: Colors.red),
-                      //   Container(color: Colors.green),
-                      //   Container(color: Colors.blue),
-                      //   Container(color: Colors.amber),
-                      // ],
-                      children: icons.map((icon) {
-                        return icon;
-                      }).toList(),
-                    ),
-                  ),
+                      itemBuilder: (context, index) {
+                        return icons[index];
+                      }
+
+                      // children: icons.map((icon) {
+                      //   return icon;
+                      // }).toList(),
+                      ),
                 ),
               ),
             ),
             smallScreen
                 ? SizedBox()
-                : Expanded(
+                : Flexible(
                     flex: 4,
                     child: Center(
                       child: Image.asset(
