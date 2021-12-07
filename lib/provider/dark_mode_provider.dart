@@ -19,6 +19,7 @@ class DarkThemeProvider with ChangeNotifier {
     if(_darkTheme){
       _controller.animateToEnd();
     }
+    notifyListeners();
   }
 
   bool _doneForm = false;

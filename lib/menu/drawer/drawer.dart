@@ -30,8 +30,6 @@ class _DrawerPageState extends State<DrawerPage> {
   void initState() {
     super.initState();
     _checkInfo();
-    WidgetsBinding.instance!.addPostFrameCallback(
-        (_) => context.read<DarkThemeProvider>().isDark());
     // _controller = AnimationController(
     //   duration: const Duration(milliseconds: 150),
     //   vsync: this,
@@ -54,7 +52,6 @@ class _DrawerPageState extends State<DrawerPage> {
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
-    final controller = Provider.of<DarkThemeProvider>(context);
     return AnimatedContainer(
       transform: Matrix4.translationValues(widget.drawerXOffset, 0, 0),
       duration: Duration(milliseconds: 150),
@@ -193,15 +190,15 @@ class _DrawerPageState extends State<DrawerPage> {
                         ),
                       ),
                       child: AnimateIcons(
-                        duration: Duration(milliseconds: 250),
+                        duration: Duration(milliseconds: 350),
                         startIconColor: Theme.of(context).iconTheme.color,
                         endIconColor: Theme.of(context).iconTheme.color,
-                        startIcon: Icons.light_mode,
-                        endIcon: Icons.dark_mode,
-                        controller: controller.controller,
+                        startIcon: change.darkTheme ? Icons.dark_mode : Icons.light_mode,
+                        endIcon: change.darkTheme ? Icons.dark_mode : Icons.light_mode,
+                        controller: change.controller,
                         size: 40.0,
                         onEndIconPress: () {
-                          controller.controller.animateToStart();
+                          change.controller.animateToStart();
                           change.darkTheme = !change.darkTheme;
                           return true;
                         },
