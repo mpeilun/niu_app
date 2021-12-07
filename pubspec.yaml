@@ -101,12 +101,12 @@ flutter:
   fonts:
     - family: NotoSans
       fonts:
-        - asset: assets/fonts/NotoSansTC-Black.ttf
-        - asset: assets/fonts/NotoSansTC-Bold.ttf
-        - asset: assets/fonts/NotoSansTC-Light.ttf
-        - asset: assets/fonts/NotoSansTC-Medium.ttf
-        - asset: assets/fonts/NotoSansTC-Regular.ttf
-        - asset: assets/fonts/NotoSansTC-Thin.ttf
+        - asset: assets/fonts/NotoSansTC-Black.otf
+        - asset: assets/fonts/NotoSansTC-Bold.otf
+        - asset: assets/fonts/NotoSansTC-Light.otf
+        - asset: assets/fonts/NotoSansTC-Medium.otf
+        - asset: assets/fonts/NotoSansTC-Regular.otf
+        - asset: assets/fonts/NotoSansTC-Thin.otf
     - family: MenuIcon
       fonts:
         - asset: fonts/MenuIcon.ttf

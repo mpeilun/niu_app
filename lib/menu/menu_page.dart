@@ -128,16 +128,11 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                       isDragging = true;
                     },
                     onHorizontalDragUpdate: (details) {
-                      if (controller.index != 5 && controller.index != 4) {
-                        if (!isDragging) return;
-                        const delta = 1;
-                        if (details.delta.dx > delta) {
-                          controller.openDrawer();
-                        }
-                        if (details.delta.dx < -delta) {
-                          controller.closeDrawer();
-                          isDragging = false;
-                        }
+                      if (!isDragging) return;
+                      const delta = 1;
+                      if (details.delta.dx < -delta) {
+                        controller.closeDrawer();
+                        isDragging = false;
                       }
                     },
                     onTap: () {
@@ -464,9 +459,6 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
             }
           },
           child: Column(children: [
-            SizedBox(
-              height: 24.0,
-            ),
             Expanded(
               flex: 7,
               child: Center(
