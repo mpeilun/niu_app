@@ -95,10 +95,6 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final double statusHeight = MediaQuery.of(context).padding.top;
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final themeChange = Provider.of<DarkThemeProvider>(context);
     final title = ['首頁', '公告', '行事曆', '設定', '關於', '聯絡我們', '使用教學'];
     final pages = [
       menuPage(),
@@ -139,22 +135,9 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                           controller.openDrawer();
                         }
                         if (details.delta.dx < -delta) {
-                          if (context.read<DrawerProvider>().isDrawerOpen) {
-                            controller.closeDrawer();
-                          } else {
-                            if (context
-                                    .read<NotificationProvider>()
-                                    .notificationItemList
-                                    .length ==
-                                0) {
-                              context
-                                  .read<NotificationProvider>()
-                                  .setIsEmpty(true);
-                            }
-                            Navigator.of(context).push(_createRoute());
-                          }
+                          controller.closeDrawer();
+                          isDragging = false;
                         }
-                        isDragging = false;
                       }
                     },
                     onTap: () {
@@ -457,54 +440,79 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
         if (screenHeight < 500) {
           smallScreen = true;
         }
-        return Column(children: [
-          SizedBox(
-            height: 24.0,
-          ),
-          Expanded(
-            flex: 7,
-            child: Center(
-              child: ScrollConfiguration(
-                behavior: MyBehavior(),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12.0, 18.0, 12.0, .0),
-                  child: GridView.count(
-                    addRepaintBoundaries: false,
-                    mainAxisSpacing: 0,
-                    shrinkWrap: true,
-                    crossAxisCount: orientation == Orientation.portrait ? 3 : 5,
-                    // children: [
-                    //   Container(color: Colors.amber),
-                    //   Container(color: Colors.black),
-                    //   Container(color: Colors.pink),
-                    //   Container(color: Colors.purple),
-                    //   Container(color: Colors.yellow),
-                    //   Container(color: Colors.red),
-                    //   Container(color: Colors.green),
-                    //   Container(color: Colors.blue),
-                    //   Container(color: Colors.amber),
-                    // ],
-                    children: icons.map((icon) {
-                      return icon;
-                    }).toList(),
+        return GestureDetector(
+          onHorizontalDragStart: (details) {
+            isDragging = true;
+          },
+          onHorizontalDragUpdate: (details) {
+            if (!isDragging) return;
+            const delta = 1;
+            if (details.delta.dx > delta) {
+              context.read<DrawerProvider>().openDrawer();
+            }
+            if (details.delta.dx < -delta) {
+              if (context
+                      .read<NotificationProvider>()
+                      .notificationItemList
+                      .length ==
+                  0) {
+                context.read<NotificationProvider>().setIsEmpty(true);
+              }
+              Navigator.of(context).push(_createRoute());
+
+              isDragging = false;
+            }
+          },
+          child: Column(children: [
+            SizedBox(
+              height: 24.0,
+            ),
+            Expanded(
+              flex: 7,
+              child: Center(
+                child: ScrollConfiguration(
+                  behavior: MyBehavior(),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12.0, 18.0, 12.0, .0),
+                    child: GridView.count(
+                      addRepaintBoundaries: false,
+                      mainAxisSpacing: 0,
+                      shrinkWrap: true,
+                      crossAxisCount:
+                          orientation == Orientation.portrait ? 3 : 5,
+                      // children: [
+                      //   Container(color: Colors.amber),
+                      //   Container(color: Colors.black),
+                      //   Container(color: Colors.pink),
+                      //   Container(color: Colors.purple),
+                      //   Container(color: Colors.yellow),
+                      //   Container(color: Colors.red),
+                      //   Container(color: Colors.green),
+                      //   Container(color: Colors.blue),
+                      //   Container(color: Colors.amber),
+                      // ],
+                      children: icons.map((icon) {
+                        return icon;
+                      }).toList(),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          smallScreen
-              ? SizedBox()
-              : Expanded(
-                  flex: 4,
-                  child: Center(
-                    child: Image.asset(
-                      themeChange.darkTheme
-                          ? 'assets/black_background.png'
-                          : 'assets/niu_background.png',
+            smallScreen
+                ? SizedBox()
+                : Expanded(
+                    flex: 4,
+                    child: Center(
+                      child: Image.asset(
+                        themeChange.darkTheme
+                            ? 'assets/black_background.png'
+                            : 'assets/niu_background.png',
+                      ),
                     ),
                   ),
-                ),
-        ]);
+          ]),
+        );
 
         // return SingleChildScrollView(
         //   scrollDirection: Axis.vertical,

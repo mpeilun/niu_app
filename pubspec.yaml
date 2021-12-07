@@ -97,7 +97,16 @@ flutter:
   assets:
     - assets/
     - assets/sempleIMG/
+    - assets/fonts/
   fonts:
+    - family: NotoSans
+      fonts:
+        - asset: assets/fonts/NotoSansTC-Black.ttf
+        - asset: assets/fonts/NotoSansTC-Bold.ttf
+        - asset: assets/fonts/NotoSansTC-Light.ttf
+        - asset: assets/fonts/NotoSansTC-Medium.ttf
+        - asset: assets/fonts/NotoSansTC-Regular.ttf
+        - asset: assets/fonts/NotoSansTC-Thin.ttf
     - family: MenuIcon
       fonts:
         - asset: fonts/MenuIcon.ttf

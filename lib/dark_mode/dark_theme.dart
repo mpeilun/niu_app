@@ -64,9 +64,7 @@ class Styles {
                 isDarkTheme ? Brightness.dark : Brightness.light,
             statusBarColor: isDarkTheme ? Color(0xff000000) : Colors.blue[900]),
       ),
-      textTheme: GoogleFonts.notoSansTextTheme(
-        Theme.of(context).textTheme,
-      ),
+      fontFamily: 'NotoSans',
 
       pageTransitionsTheme: PageTransitionsTheme(
         builders: {
