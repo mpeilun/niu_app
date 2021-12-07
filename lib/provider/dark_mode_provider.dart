@@ -18,7 +18,6 @@ class DarkThemeProvider with ChangeNotifier {
   void isDark(){
     if(_darkTheme){
       _controller.animateToEnd();
-      print('darkmode');
     }
     notifyListeners();
   }

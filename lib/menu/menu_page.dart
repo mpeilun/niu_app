@@ -467,8 +467,8 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount:
-                            orientation == Orientation.portrait ? 3 : 5,
-                        mainAxisExtent: 100.0,
+                            orientation == Orientation.portrait ? 3 : 3,
+                        mainAxisExtent: 105.0,
                       ),
                       addRepaintBoundaries: false,
                       itemCount: icons.length,
