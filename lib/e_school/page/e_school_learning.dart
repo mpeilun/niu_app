@@ -7,6 +7,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/toast.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:provider/src/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../e_school.dart';
@@ -356,22 +358,24 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                         document.querySelector("#envMooc").cols = '0,*'
                         document.querySelector("#envStudent").rows = '0,*';
                         document.querySelector("#envClassRoom").cols = '0,*';
+                        document.querySelector("#envClassRoom").framespacing = '0';
+                        document.querySelector("#envClassRoom").frameborder = 'No';
+                        document.querySelector("#envClassRoom").border = '';
                         ''');
                         await webViewController!.evaluateJavascript(source: '''
                         document.getElementById('s_main').contentDocument.querySelector("body > iframe").style = 'position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;'
                         ''');
-                        await webViewController!.evaluateJavascript(
-                            source:
-                                'document.getElementById(\'s_main\').contentDocument.body.style.backgroundColor = \'black');
-                        // if (context.read<DarkThemeProvider>().darkTheme) {
-                        //   await webViewController!.evaluateJavascript(
-                        //       source:
-                        //           'document.getElementById(\'s_main\').contentDocument.body.style.backgroundColor = \'rgb(48,48,48)');
-                        // } else {
-                        //   await webViewController!.evaluateJavascript(
-                        //       source:
-                        //           'document.getElementById(\'s_main\').contentDocument.body.style.backgroundColor = \'rgb(238,238,238)');
-                        // }
+                        if (context.read<DarkThemeProvider>().darkTheme) {
+                          await webViewController!
+                              .evaluateJavascript(source: '''
+                                document.getElementById('s_main').contentDocument.querySelector("html").style.backgroundColor = 'rgb(48,48,48)';
+                                ''');
+                        } else {
+                          await webViewController!
+                              .evaluateJavascript(source: '''
+                                document.getElementById('s_main').contentDocument.querySelector("html").style.backgroundColor = 'rgb(238,238,238)';
+                                ''');
+                        }
                         setState(() {
                           setWebViewVisibility = true;
                         });
