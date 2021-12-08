@@ -53,6 +53,7 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
         initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
             useOnLoadResource: true,
+            useShouldOverrideUrlLoading: true,
             useOnDownloadStart: true,
             javaScriptCanOpenWindowsAutomatically: true,
           ),
@@ -62,6 +63,15 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
         },
         onConsoleMessage: (controller, consoleMessage) {
           print("CONSOLE MESSAGE: " + consoleMessage.message);
+        },
+        shouldOverrideUrlLoading: (InAppWebViewController controller,
+            NavigationAction navigationAction) async {
+          print(navigationAction.request);
+          if (navigationAction.request.url.toString() ==
+              'https://eschool.niu.edu.tw/') {
+            return NavigationActionPolicy.CANCEL;
+          }
+          return NavigationActionPolicy.ALLOW;
         },
         onLoadStart: (controller, url) async {
           print("onLoadStart $url");
@@ -91,39 +101,85 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
             await headlessWebView?.webViewController
                 .evaluateJavascript(source: 'parent.s_sysbar.goPersonal()');
             if (advancedTile.isEmpty) {
-              semester = (await headlessWebView?.webViewController
-                          .evaluateJavascript(
-                              source:
-                                  'window.frames[0].document.querySelector("#selcourse > option:nth-child(2)").innerText;')
-                      as String)
-                  .split('_')[0];
+              if (await headlessWebView?.webViewController.evaluateJavascript(
+                      source:
+                          'window.frames[0].document.querySelector("#selcourse > option:nth-child(2)").innerText;') !=
+                  null) {
+                //普通學生
+                semester = (await headlessWebView?.webViewController
+                            .evaluateJavascript(
+                                source:
+                                    'window.frames[0].document.querySelector("#selcourse > option:nth-child(2)").innerText;')
+                        as String)
+                    .split('_')[0];
 
-              for (int i = 2;
-                  (await headlessWebView?.webViewController.evaluateJavascript(
+                for (int i = 2;
+                    (await headlessWebView?.webViewController.evaluateJavascript(
+                                source:
+                                    'window.frames[0].document.querySelector("#selcourse > option:nth-child(' +
+                                        i.toString() +
+                                        ')").innerText;') as String)
+                            .split('_')[0] ==
+                        semester;
+                    i++) {
+                  String courseName = (await headlessWebView?.webViewController
+                          .evaluateJavascript(
                               source:
                                   'window.frames[0].document.querySelector("#selcourse > option:nth-child(' +
                                       i.toString() +
                                       ')").innerText;') as String)
-                          .split('_')[0] ==
-                      semester;
-                  i++) {
-                String courseName = (await headlessWebView?.webViewController
-                        .evaluateJavascript(
-                            source:
-                                'window.frames[0].document.querySelector("#selcourse > option:nth-child(' +
-                                    i.toString() +
-                                    ')").innerText;') as String)
-                    .split('_')[1]
-                    .split('(')[0];
-                String courseId = await headlessWebView?.webViewController
-                    .evaluateJavascript(
-                        source:
-                            'window.frames[0].document.querySelector("#selcourse > option:nth-child(' +
-                                i.toString() +
-                                ')").value;') as String;
-                advancedTile.add(AdvancedTile(
-                    title: courseName, courseId: courseId, semester: semester));
+                      .split('_')[1]
+                      .split('(')[0];
+                  String courseId = await headlessWebView?.webViewController
+                      .evaluateJavascript(
+                          source:
+                              'window.frames[0].document.querySelector("#selcourse > option:nth-child(' +
+                                  i.toString() +
+                                  ')").value;') as String;
+                  advancedTile.add(AdvancedTile(
+                      title: courseName,
+                      courseId: courseId,
+                      semester: semester));
+                }
+              } else {
+                //助教
+                semester = (await headlessWebView?.webViewController
+                            .evaluateJavascript(
+                                source:
+                                    'window.frames[0].document.querySelector("#selcourse > optgroup:nth-child(3) > option:nth-child(1)").innerText;')
+                        as String)
+                    .split('_')[0];
+
+                for (int i = 1;
+                    (await headlessWebView?.webViewController.evaluateJavascript(
+                                source:
+                                    'window.frames[0].document.querySelector("#selcourse > optgroup:nth-child(3) > option:nth-child(' +
+                                        i.toString() +
+                                        ')").innerText;') as String)
+                            .split('_')[0] ==
+                        semester;
+                    i++) {
+                  String courseName = (await headlessWebView?.webViewController
+                          .evaluateJavascript(
+                              source:
+                                  'window.frames[0].document.querySelector("#selcourse > optgroup:nth-child(3) > option:nth-child(' +
+                                      i.toString() +
+                                      ')").innerText;') as String)
+                      .split('_')[1]
+                      .split('(')[0];
+                  String courseId = await headlessWebView?.webViewController
+                      .evaluateJavascript(
+                          source:
+                              'window.frames[0].document.querySelector("#selcourse > optgroup:nth-child(3) > option:nth-child(' +
+                                  i.toString() +
+                                  ')").innerText;') as String;
+                  advancedTile.add(AdvancedTile(
+                      title: courseName,
+                      courseId: courseId,
+                      semester: semester));
+                }
               }
+
               globalAdvancedTile = advancedTile;
               setState(() {
                 loadState = true;
