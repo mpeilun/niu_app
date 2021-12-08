@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:niu_app/components/menuIcon.dart';
+import 'package:niu_app/menu/drawer/tutorial_page/event_tutorial.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -25,61 +26,66 @@ class _TutorialPageState extends State<TutorialPage>
     with SingleTickerProviderStateMixin {
   ScrollController _scrollController = ScrollController();
 
-  List<Tutorial> tutorials = [
-    Tutorial(
-      icon: MenuIcon.icon_eschool,
-      title: '數位學習園區',
-      content: '在手機上快速地檢視課程',
-      onTap: () {},
-    ),
-    Tutorial(
-      icon: MenuIcon.icon_grades,
-      title: '成績查詢',
-      content: '對自己的成績一目瞭然',
-      onTap: () {},
-    ),
-    Tutorial(
-      icon: MenuIcon.icon_timetable,
-      title: '每週課表',
-      content: '掌握每一門課程',
-      onTap: () {},
-    ),
-    Tutorial(
-      icon: MenuIcon.icon_event,
-      title: '活動報名',
-      content: '隨時隨地報名參與活動',
-      onTap: () {},
-    ),
-    Tutorial(
-      icon: MenuIcon.icon_graduation,
-      title: '畢業門檻',
-      content: '深入了解自己的畢業資格',
-      onTap: () {},
-    ),
-    Tutorial(
-      icon: MenuIcon.icon_e_school,
-      title: '選課系統',
-      content: 'Coming Soon',
-      onTap: () {},
-    ),
-    Tutorial(
-      icon: MenuIcon.icon_bus,
-      title: '公車動態',
-      content: '輕鬆查看宜大的即時大眾運輸資訊',
-      onTap: () {},
-    ),
-    Tutorial(
-      icon: MenuIcon.icon_zuvio,
-      title: 'Zuvio',
-      content: '上課點名、繳交作業的好助手',
-      onTap: () {},
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     var screenSizeWidth = MediaQuery.of(context).size.width;
     final themeChange = Provider.of<DarkThemeProvider>(context);
+    List<Tutorial> tutorials = [
+      Tutorial(
+        icon: MenuIcon.icon_eschool,
+        title: '數位學習園區',
+        content: '在手機上快速地檢視課程',
+        onTap: () {},
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_grades,
+        title: '成績查詢',
+        content: '對自己的成績一目瞭然',
+        onTap: () {},
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_timetable,
+        title: '每週課表',
+        content: '掌握每一門課程',
+        onTap: () {},
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_event,
+        title: '活動報名',
+        content: '隨時隨地報名參與活動',
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EventTutorialPage(),
+                  maintainState: false));
+        },
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_graduation,
+        title: '畢業門檻',
+        content: '深入了解自己的畢業資格',
+        onTap: () {},
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_e_school,
+        title: '選課系統',
+        content: 'Coming Soon',
+        onTap: () {},
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_bus,
+        title: '公車動態',
+        content: '輕鬆查看宜大的即時大眾運輸資訊',
+        onTap: () {},
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_zuvio,
+        title: 'Zuvio',
+        content: '上課點名、繳交作業的好助手',
+        onTap: () {},
+      ),
+    ];
     return ListView.separated(
       controller: _scrollController,
       itemCount: tutorials.length,
