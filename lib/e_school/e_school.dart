@@ -172,7 +172,7 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
                           source:
                               'window.frames[0].document.querySelector("#selcourse > optgroup:nth-child(3) > option:nth-child(' +
                                   i.toString() +
-                                  ')").innerText;') as String;
+                                  ')").value;') as String;
                   advancedTile.add(AdvancedTile(
                       title: courseName,
                       courseId: courseId,
@@ -269,7 +269,7 @@ class _ESchoolState extends State<ESchool> with SingleTickerProviderStateMixin {
         source: 'document.querySelector("#username").value=\'$id\';');
     await headlessWebView?.webViewController.evaluateJavascript(
         source: 'document.querySelector("#password").value=\'$pwd\';');
-    Future.delayed(Duration(milliseconds: 1000), () async {
+    Future.delayed(Duration(milliseconds: 200), () async {
       await headlessWebView?.webViewController.evaluateJavascript(
           source: 'document.querySelector("#btnSignIn").click();');
     });

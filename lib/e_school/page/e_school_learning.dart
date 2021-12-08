@@ -204,10 +204,12 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                               setState(() {
                                 setWebViewVisibility = false;
                               });
-                              SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
-                                SystemUiOverlay.top,
-                                SystemUiOverlay.bottom
-                              ]);
+                              SystemChrome.setEnabledSystemUIMode(
+                                  SystemUiMode.manual,
+                                  overlays: [
+                                    SystemUiOverlay.top,
+                                    SystemUiOverlay.bottom
+                                  ]);
                               launch(uri.toString());
                             }
                             return NavigationActionPolicy.CANCEL;
@@ -222,7 +224,11 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                               setWebViewVisibility = false;
                             });
                             SystemChrome.setEnabledSystemUIMode(
-                                SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+                                SystemUiMode.manual,
+                                overlays: [
+                                  SystemUiOverlay.top,
+                                  SystemUiOverlay.bottom
+                                ]);
                             return NavigationActionPolicy.CANCEL;
                           }
 
@@ -254,7 +260,11 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                             isDownLoad = true;
                             setWebViewVisibility = false;
                             SystemChrome.setEnabledSystemUIMode(
-                                SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+                                SystemUiMode.manual,
+                                overlays: [
+                                  SystemUiOverlay.top,
+                                  SystemUiOverlay.bottom
+                                ]);
                           }
                         },
                         androidOnPermissionRequest:
@@ -290,8 +300,8 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
     setState(() {
       setWebViewVisibility = false;
     });
-    SystemChrome.setEnabledSystemUIMode(
-        SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
   }
 
   String trimTitle(String s) {
@@ -365,8 +375,8 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                         setState(() {
                           setWebViewVisibility = true;
                         });
-                        SystemChrome.setEnabledSystemUIMode(
-                            SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
+                        SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+                            overlays: [SystemUiOverlay.bottom]);
                       }
                       setState(() {
                         loadState = true;
