@@ -76,43 +76,52 @@ Future<void> runNotificationWebViewWebView(
 
         if (url.toString() ==
             'https://eschool.niu.edu.tw/learn/mycourse/index.php') {
-          semester = (await _notificationWebView.webViewController
-                      .evaluateJavascript(
-                          source:
-                              'document.querySelector("body > div > div > div.box2 > div:nth-child(3) > div > table > tbody > tr:nth-child(1) > td.t4 > div > a").innerText')
-                  as String)
-              .split('_')[0];
-
-          for (int i = 1;
-              (await _notificationWebView.webViewController.evaluateJavascript(
-                              source:
-                                  'document.querySelector("body > div > div > div.box2 > div:nth-child(3) > div > table > tbody > tr:nth-child($i) > td.t4 > div > a").innerText')
-                          as String)
-                      .split('_')[0] ==
-                  semester;
-              i++) {
-            String courseName = (await _notificationWebView.webViewController
+          if (await _notificationWebView.webViewController.evaluateJavascript(
+                  source:
+                      'document.querySelector("body > div > div > div.box2 > div:nth-child(3) > div > table > tbody > tr:nth-child(1) > td:nth-child(5) > div > a").innerText') ==
+              null) {
+            await _notificationWebView.webViewController.evaluateJavascript(
+                source:
+                    'document.querySelector("#pager-switch > li.active > a").onclick(1)');
+          } else {
+            semester = (await _notificationWebView.webViewController
                         .evaluateJavascript(
                             source:
-                                'document.querySelector("body > div > div > div.box2 > div:nth-child(3) > div > table > tbody > tr:nth-child($i) > td.t4 > div > a").innerText')
+                                'document.querySelector("body > div > div > div.box2 > div:nth-child(3) > div > table > tbody > tr:nth-child(1) > td.t4 > div > a").innerText')
                     as String)
-                .split('_')[1]
-                .split('(')[0];
-            String announcementCount =
-                await _notificationWebView.webViewController.evaluateJavascript(
-                        source:
-                            'document.querySelector("body > div > div > div.box2 > div:nth-child(3) > div > table > tbody > tr:nth-child($i) > td:nth-child(4) > div").innerText')
-                    as String;
-            String workCount = await _notificationWebView.webViewController
-                    .evaluateJavascript(
-                        source:
-                            'document.querySelector("body > div > div > div.box2 > div:nth-child(3) > div > table > tbody > tr:nth-child($i) > td:nth-child(5) > div > a").innerText')
-                as String;
-            eschoolData.add(EschoolData(
-                courseName: courseName,
-                semester: semester,
-                announcementCount: announcementCount,
-                workCount: workCount));
+                .split('_')[0];
+            for (int i = 1;
+                (await _notificationWebView.webViewController.evaluateJavascript(
+                                source:
+                                    'document.querySelector("body > div > div > div.box2 > div:nth-child(3) > div > table > tbody > tr:nth-child($i) > td.t4 > div > a").innerText')
+                            as String)
+                        .split('_')[0] ==
+                    semester;
+                i++) {
+              String courseName = (await _notificationWebView.webViewController
+                          .evaluateJavascript(
+                              source:
+                                  'document.querySelector("body > div > div > div.box2 > div:nth-child(3) > div > table > tbody > tr:nth-child($i) > td.t4 > div > a").innerText')
+                      as String)
+                  .split('_')[1]
+                  .split('(')[0];
+              String announcementCount = await _notificationWebView
+                      .webViewController
+                      .evaluateJavascript(
+                          source:
+                              'document.querySelector("body > div > div > div.box2 > div:nth-child(3) > div > table > tbody > tr:nth-child($i) > td:nth-child(4) > div").innerText')
+                  as String;
+              String workCount = await _notificationWebView.webViewController
+                      .evaluateJavascript(
+                          source:
+                              'document.querySelector("body > div > div > div.box2 > div:nth-child(3) > div > table > tbody > tr:nth-child($i) > td:nth-child(5) > div > a").innerText')
+                  as String;
+              eschoolData.add(EschoolData(
+                  courseName: courseName,
+                  semester: semester,
+                  announcementCount: announcementCount,
+                  workCount: workCount));
+            }
           }
 
           _notificationWebView.webViewController
@@ -227,7 +236,7 @@ _login() async {
       source: 'document.querySelector("#username").value=\'$id\';');
   await _notificationWebView.webViewController.evaluateJavascript(
       source: 'document.querySelector("#password").value=\'$pwd\';');
-  Future.delayed(Duration(milliseconds: 1000), () async {
+  Future.delayed(Duration(milliseconds: 500), () async {
     await _notificationWebView.webViewController.evaluateJavascript(
         source: 'document.querySelector("#btnSignIn").click();');
   });
