@@ -56,8 +56,7 @@ class _AboutPageState extends State<AboutPage>
                         children: [
                           CircleAvatar(
                               radius: developerCircleSize,
-                              backgroundImage: NetworkImage(
-                                  'https://niu.ouo.tw/AboutUsImage/Peter.jpg')),
+                              backgroundImage: AssetImage('assets/memberPic/Peter.jpg'),),
                           SizedBox(
                             height: screenSizeHeight * 0.01,
                           ),
@@ -73,8 +72,7 @@ class _AboutPageState extends State<AboutPage>
                         children: [
                           CircleAvatar(
                               radius: developerCircleSize,
-                              backgroundImage: NetworkImage(
-                                  'https://niu.ouo.tw/AboutUsImage/Shao.jpg')),
+                              backgroundImage: AssetImage('assets/memberPic/Shao.jpg')),
                           SizedBox(
                             height: screenSizeHeight * 0.01,
                           ),
@@ -98,8 +96,7 @@ class _AboutPageState extends State<AboutPage>
                         children: [
                           CircleAvatar(
                               radius: developerCircleSize,
-                              backgroundImage: NetworkImage(
-                                  'https://niu.ouo.tw/AboutUsImage/Ken.jpg')),
+                              backgroundImage: AssetImage('assets/memberPic/Ken.jpg')),
                           SizedBox(
                             height: screenSizeHeight * 0.01,
                           ),
@@ -115,8 +112,7 @@ class _AboutPageState extends State<AboutPage>
                         children: [
                           CircleAvatar(
                               radius: developerCircleSize,
-                              backgroundImage: NetworkImage(
-                                  'https://niu.ouo.tw/AboutUsImage/David.jpg')),
+                              backgroundImage: AssetImage('assets/memberPic/David.jpg')),
                           SizedBox(
                             height: screenSizeHeight * 0.01,
                           ),
@@ -175,8 +171,7 @@ class _AboutPageState extends State<AboutPage>
                           ),
                           CircleAvatar(
                               radius: screenSizeWidth * 0.15,
-                              backgroundImage: NetworkImage(
-                                  'https://niu.ouo.tw/AboutUsImage/chhuang.jpg')),
+                              backgroundImage: AssetImage('assets/memberPic/chhuang.jpg')),
                           SizedBox(
                             height: screenSizeHeight * 0.015,
                           ),
