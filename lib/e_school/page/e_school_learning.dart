@@ -51,12 +51,12 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
       ));
 
   late List<List<Map>> learningData = [];
+  Offset position = Offset(10, 10);
   bool loadState = false;
   bool shouldDownload = false;
   bool setWebViewVisibility = false;
   double progress = 0;
 
-  Offset position = Offset(5, 5);
   Widget floatingButton() {
     return Opacity(
       opacity: 0.5,
@@ -186,10 +186,6 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                         shouldOverrideUrlLoading:
                             (controller, navigationAction) async {
                           var uri = navigationAction.request.url!;
-                          print('------------------------------');
-                          print('shouldOverrideUrlLoading: ' +
-                              navigationAction.request.toString());
-
                           //IOS Fix 檔案下載用
                           if (![
                                 "http",
@@ -396,6 +392,9 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                         }
                         setState(() {
                           setWebViewVisibility = true;
+                        });
+                        Future.delayed(Duration(milliseconds: 500), () {
+                          showToast('返回按鈕可以拖移');
                         });
                         SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
                             overlays: [SystemUiOverlay.bottom]);
