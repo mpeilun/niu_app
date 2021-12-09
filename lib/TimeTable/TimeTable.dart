@@ -15,8 +15,17 @@ class TimeTable extends StatefulWidget {
 }
 
 class _TimeTableState extends State<TimeTable> {
-  SemesterDate a = SemesterDate();
+  // SemesterDate a = SemesterDate();
+  late var a;
   late var b;
+
+  Future<bool> getIsFinish() async{
+    a = SemesterDate();
+    b = GetHTML(context);
+    await a.getIsFinish();
+    await b.getIsFinish();
+    return true;
+  }
 
   // List<Class> myTable = <Class>[
   //   Class("電子電路", "朱志明", "教416", 1, 2, 4),
@@ -37,15 +46,11 @@ class _TimeTableState extends State<TimeTable> {
   @override
   void initState() {
     super.initState();
-    b = GetHTML(context);
   }
-
   @override
   Widget build(BuildContext context) {
-    a.getIsFinish();
     return FutureBuilder(
-        future: b
-            .getIsFinish(), // the function to get your data from firebase or firestore
+        future: getIsFinish(), // the function to get your data from firebase or firestore
         builder: (BuildContext context, AsyncSnapshot snap) {
           if (snap.data == null) {
             return Scaffold(
