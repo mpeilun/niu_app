@@ -8,6 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:niu_app/menu/menu_page.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
+import 'package:niu_app/provider/event_signed_refresh_provider.dart';
 import 'package:niu_app/provider/info_provider.dart';
 import 'package:niu_app/provider/notification_provider.dart';
 import 'package:oktoast/oktoast.dart';
@@ -78,6 +79,7 @@ void main() async {
     ChangeNotifierProvider(create: (_) => NotificationProvider()),
     ChangeNotifierProvider(create: (_) => InfoProvider()),
     ChangeNotifierProvider(create: (_) => DarkThemeProvider()),
+    ChangeNotifierProvider(create: (_) => EventSignedRefreshProvider()),
   ], child: MyApp()));
 }
 

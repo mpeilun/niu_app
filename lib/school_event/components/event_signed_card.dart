@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
-import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
 import 'package:niu_app/school_event/dialog/event_signed_info_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -97,8 +96,6 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
               data: Theme.of(context).copyWith(
                 accentColor: Colors.black,
                 dividerColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
               ),
               child: ExpansionTile(
                 key: PageStorageKey('event_signed' + index.toString()),
@@ -121,12 +118,12 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                           border: Border.all(
                               width: 2.0,
                               color: themeChange.darkTheme
-                                  ? Color(widget.data[index].status == '未開始'
-                                      ? 0xff1E88E5
-                                      : 0xffE53935)
-                                  : Color(widget.data[index].status == '未開始'
-                                      ? 0xff2364aa
-                                      : 0xFF954242)),
+                                  ? widget.data[index].status == '未開始'
+                                  ? Color(0xff1E88E5)
+                                  : Color(0xffE53935)
+                                  : widget.data[index].status == '未開始'
+                                  ? Color(0xff2364aa)
+                                  : Color(0xFF954242)),
                           borderRadius: BorderRadius.all(Radius.circular(
                               10.0) //         <--- border radius here
                           ),
@@ -136,12 +133,12 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                           style: TextStyle(
                             fontSize: 12.0,
                             color: themeChange.darkTheme
-                                ? Color(widget.data[index].status == '未開始'
-                                    ? 0xff1E88E5
-                                    : 0xffE53935)
-                                : Color(widget.data[index].status == '未開始'
-                                    ? 0xff2364aa
-                                    : 0xFF954242),
+                                ? widget.data[index].status == '未開始'
+                                ? Color(0xff1E88E5)
+                                : Color(0xffE53935)
+                                : widget.data[index].status == '未開始'
+                                ? Color(0xff2364aa)
+                                : Color(0xFF954242),
                           ),
                           textAlign: TextAlign.center,
                         )),
@@ -184,27 +181,23 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                         widget: Text(widget.data[index].status,
                             style: TextStyle(fontSize: 14)),
                       ),
-                      Tooltip(
-                        showDuration: Duration(milliseconds: 500),
-                        message: '點此查看詳細資料或修改、取消報名',
-                        child: ElevatedButton(
-                          onPressed: () {
-                            print(widget.data[index].js);
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  EventSignedInfoDialog(
-                                js: widget.data[index].js,
-                              ),
-                            );
-                          },
-                          child: Text('詳細'),
-                          style: ButtonStyle(
-                            shape:
-                                MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                              ),
+                      ElevatedButton(
+                        onPressed: () {
+                          print(widget.data[index].js);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                EventSignedInfoDialog(
+                                  js: widget.data[index].js,
+                                ),
+                          );
+                        },
+                        child: Text('詳細'),
+                        style: ButtonStyle(
+                          shape:
+                          MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
                             ),
                           ),
                         ),

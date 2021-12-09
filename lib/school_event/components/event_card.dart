@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:niu_app/provider/event_signed_refresh_provider.dart';
 import 'package:niu_app/school_event/dialog/event_info_dialog.dart';
 import 'package:niu_app/school_event/school_event.dart';
 import 'package:provider/provider.dart';
@@ -328,10 +329,10 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                       ? '進入詳細資料頁面'
                                       : '此活動已額滿、過期或尚未開放',
                                   child: ElevatedButton(
-                                    onPressed: () {
+                                    onPressed: () async{
                                       if (display[index]['state'] == '報名中') {
                                         print(display[index]['signUpJs']);
-                                        showDialog(
+                                        var status = await showDialog(
                                           context: context,
                                           builder: (BuildContext context) =>
                                               EventInfoDialog(

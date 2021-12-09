@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:niu_app/components/keep_alive.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/refresh.dart';
+import 'package:niu_app/provider/event_signed_refresh_provider.dart';
 import 'package:niu_app/school_event/components/event_signed_card.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EventSignedPage extends StatefulWidget {
@@ -15,10 +18,13 @@ class EventSignedPage extends StatefulWidget {
 class _EventSignedPageState extends State<EventSignedPage> {
   HeadlessInAppWebView? headlessWebView;
   String url = "";
+  bool hasListener = false;
 
   List<EventSigned> data = [];
 
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
+  late final signedListChange =
+      Provider.of<EventSignedRefreshProvider>(context);
 
   bool refreshLoaded = true;
 
@@ -44,7 +50,6 @@ class _EventSignedPageState extends State<EventSignedPage> {
   }
 
   Future<void> getEventSignedList() async {
-    List<EventSigned> temp = [];
     var end = await headlessWebView?.webViewController.evaluateJavascript(
         source:
             'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody").childElementCount');
@@ -88,7 +93,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
       String js = await headlessWebView?.webViewController.evaluateJavascript(
           source:
               'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(1) > a").href');
-      temp.add(EventSigned(
+      data.add(EventSigned(
         name: name,
         eventTimeStart: eventTimeStart,
         eventTimeEnd: eventTimeEnd,
@@ -98,18 +103,12 @@ class _EventSignedPageState extends State<EventSignedPage> {
         js: js,
       ));
     }
-
-    setState(() {
-      data = temp;
-      refreshLoaded = true;
-    });
+    signedListChange.setData(data);
+    refreshLoaded = true;
   }
 
   Future<void> refresh() async {
-    setState(() {
-      refreshLoaded = false;
-    });
-
+    refreshLoaded = false;
     await headlessWebView?.webViewController.loadUrl(
         urlRequest: URLRequest(
             url: Uri.parse(
@@ -137,9 +136,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
       },
       onLoadStart: (controller, url) async {
         print("onLoadStart $url");
-        setState(() {
-          this.url = url.toString();
-        });
+        this.url = url.toString();
       },
       onLoadStop: (controller, url) async {
         print("onLoadStop $url");
@@ -148,7 +145,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
           print('Hello');
           print(await headlessWebView?.webViewController.evaluateJavascript(
               source: 'document.querySelector("body").innerHTML'));
-          getEventSignedList();
+          await getEventSignedList();
         } else {
           print('TEST LOGINNNNNNNNNNNNNNNNNNNNNNNN');
           _login();
@@ -156,9 +153,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
       },
       onUpdateVisitedHistory: (controller, url, androidIsReload) {
         print("onUpdateVisitedHistory $url");
-        setState(() {
-          this.url = url.toString();
-        });
+        this.url = url.toString();
       },
     );
     headlessWebView?.run();
@@ -170,31 +165,41 @@ class _EventSignedPageState extends State<EventSignedPage> {
   }
 
   @override
-  Widget build(BuildContext context) => data.isEmpty
-      ? Container(
-          child: Column(
-            children: [
-              Expanded(child: NiuIconLoading(size: 80)),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                child: Text(
-                  '僅顯示前15筆報名資料',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              )
-            ],
-          ),
-        )
-      : RefreshWidget(
-          keyRefresh: keyRefresh,
-          onRefresh: refresh,
-          child: refreshLoaded
-              ? CustomEventSignedCard(
-                  key: PageStorageKey<String>('event'),
-                  data: data,
-                )
-              : Container());
+  Widget build(BuildContext context) {
+    List<EventSigned> data = signedListChange.data;
+    if (signedListChange.data.isEmpty) {
+      print('需要刷新－－－－－－－－－－－－');
+      refresh();
+      data = signedListChange.data;
+    }
+    return KeepAlivePage(
+      child: data.isEmpty
+          ? Container(
+              child: Column(
+                children: [
+                  Expanded(child: NiuIconLoading(size: 80)),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    child: Text(
+                      '僅顯示前15筆報名資料',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          : RefreshWidget(
+              keyRefresh: keyRefresh,
+              onRefresh: refresh,
+              child: refreshLoaded
+                  ? CustomEventSignedCard(
+                      key: PageStorageKey<String>('event'),
+                      data: data,
+                    )
+                  : Container()),
+    );
+  }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:niu_app/provider/event_signed_refresh_provider.dart';
 import 'package:provider/src/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -280,6 +281,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final signedListChange = Provider.of<EventSignedRefreshProvider>(context,listen: false);
     return Dialog(
       child: Column(children: <Widget>[
         Row(
@@ -463,7 +465,8 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                 onJsAlert: (InAppWebViewController controller,
                     JsAlertRequest jsAlertRequest) async {
                   showToast(jsAlertRequest.message!);
-                  Navigator.pop(context, true);
+                  signedListChange.clearData();
+                  Navigator.pop(context);
                   print(jsAlertRequest.message!);
                   print("Logout and Clean cache");
                   return JsAlertResponse(

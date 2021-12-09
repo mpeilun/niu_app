@@ -5,7 +5,9 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/keep_alive.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/refresh.dart';
+import 'package:niu_app/provider/event_signed_refresh_provider.dart';
 import 'package:niu_app/school_event/components/event_card.dart';
+import 'package:provider/provider.dart';
 
 class EventPage extends StatefulWidget {
   const EventPage({Key? key}) : super(key: key);

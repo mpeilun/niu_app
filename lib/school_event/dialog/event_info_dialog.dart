@@ -4,6 +4,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:niu_app/provider/event_signed_refresh_provider.dart';
 import 'package:provider/src/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -248,6 +249,8 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final signedListChange = Provider.of<EventSignedRefreshProvider>(context,listen: false);
+
     return Dialog(
       child: Column(children: <Widget>[
         Row(
@@ -367,7 +370,8 @@ class _EventInfoDialogState extends State<EventInfoDialog> {
                       .replaceAll('報名資料維護可至「檢閱及修改個人報名資料」修改或取消報名!', '')
                       .replaceAll('填寫資料', '')
                       .replaceAll('\n', ''));
-                  Navigator.pop(context, true);
+                  signedListChange.clearData();
+                  Navigator.pop(context);
                   print(jsAlertRequest.message!);
                   print("Logout and Clean cache");
                   return JsAlertResponse(
