@@ -95,7 +95,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                           padding:
                               const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 24.0),
                           child: Align(
-                            alignment: Alignment.topRight,
+                            alignment: Alignment.topCenter,
                             child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -135,11 +135,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                                   maintainState: false));
                                         }),
                                   ),
-                                  // SizedBox(
-                                  //   width: 16.0,
-                                  // ),
-                                  Expanded(flex: 2, child: SizedBox()),
-
+                                  Spacer(),
                                   Tooltip(
                                     showDuration: Duration(milliseconds: 500),
                                     message: '前往開始上課',
@@ -173,11 +169,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                                   maintainState: false));
                                         }),
                                   ),
-                                  // SizedBox(
-                                  //   width: 16.0,
-                                  // ),
-                                  Expanded(flex: 2, child: SizedBox()),
-
+                                  Spacer(),
                                   Tooltip(
                                     showDuration: Duration(milliseconds: 500),
                                     message: '前往成績資訊',
