@@ -203,6 +203,8 @@ class _CustomEventCardState extends State<CustomEventCard> {
                         data: Theme.of(context).copyWith(
                           accentColor: Colors.black,
                           dividerColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
                         ),
                         child: ExpansionTile(
                           key: PageStorageKey('event' + index.toString()),
@@ -227,7 +229,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                       color: themeChange.darkTheme
                                           ? display[index]['state'] == '報名中'
                                               ? Color(0xff1E88E5)
-                                              : Color(0xffE53935)
+                                              : Color(0xffff4242)
                                           : display[index]['state'] == '報名中'
                                               ? Color(0xff2364aa)
                                               : Color(0xFF954242),
@@ -244,7 +246,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                       color: themeChange.darkTheme
                                           ? display[index]['state'] == '報名中'
                                               ? Color(0xff1E88E5)
-                                              : Color(0xffE53935)
+                                              : Color(0xffff4242)
                                           : display[index]['state'] == '報名中'
                                               ? Color(0xff2364aa)
                                               : Color(0xFF954242),
