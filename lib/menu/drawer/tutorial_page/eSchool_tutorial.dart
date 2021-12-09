@@ -48,7 +48,7 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
-        description: "　　進入數位學習園區即可，一覽所有我的課程，點即展開更多課程資訊，包含「課程公告」、「開始上課」、「成績資訊」。",
+        description: "進入數位學習園區即可一覽所有我的課程，點即展開更多課程資訊，包含「課程公告」、「開始上課」、「成績資訊」。",
         styleDescription: TextStyle(
           color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
           fontSize: 20.0,
@@ -60,20 +60,23 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: "MUSEUM",
+        title: "我的作業",
+        marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
         styleTitle: TextStyle(
-          color: Color(0xff3da4ab),
+          color: Colors.blue.shade200,
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
         description:
             "Ye indulgence unreserved connection alteration appearance",
         styleDescription: TextStyle(
-          color: Color(0xfffe9c8f),
+          color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
           fontSize: 20.0,
-          fontStyle: FontStyle.italic,
         ),
-        pathImage: "assets/ic_launcher_niu.png",
+        pathImage: themeChange.darkTheme
+            ? "assets/tutorial/e_school/work_black.png"
+            : "assets/tutorial/e_school/work_white.png",
+        heightImage: 300.0,
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
