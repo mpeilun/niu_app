@@ -50,9 +50,9 @@ class _GraduationPageState extends State<GraduationPage> {
                 padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                 minimumSize: Size(0.0, 0.0),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(15.0),
                 ),
-                elevation: 5.0,
+                elevation: 10,
               ),
               child: Text(
                 '查詢畢業門檻',
