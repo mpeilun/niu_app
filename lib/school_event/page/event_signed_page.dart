@@ -18,15 +18,15 @@ class EventSignedPage extends StatefulWidget {
 class _EventSignedPageState extends State<EventSignedPage> {
   HeadlessInAppWebView? headlessWebView;
   String url = "";
-  bool hasListener = false;
-
+  bool dataLoaded = false;
+  bool refreshLoaded = true;
   List<EventSigned> data = [];
 
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
   late final signedListChange =
       Provider.of<EventSignedRefreshProvider>(context);
 
-  bool refreshLoaded = true;
+
 
   Future<void> _login() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -104,6 +104,8 @@ class _EventSignedPageState extends State<EventSignedPage> {
       ));
     }
     signedListChange.setData(data);
+
+      dataLoaded = true;
     refreshLoaded = true;
   }
 
@@ -173,8 +175,17 @@ class _EventSignedPageState extends State<EventSignedPage> {
       data = signedListChange.data;
     }
     return KeepAlivePage(
-      child: data.isEmpty
-          ? Container(
+      child: dataLoaded
+            ? RefreshWidget(
+        keyRefresh: keyRefresh,
+        onRefresh: refresh,
+        child: refreshLoaded
+            ? CustomEventSignedCard(
+          key: PageStorageKey<String>('event'),
+          data: data,
+        )
+            : Container())
+          : Container(
               child: Column(
                 children: [
                   Expanded(child: NiuIconLoading(size: 80)),
@@ -191,15 +202,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
                 ],
               ),
             )
-          : RefreshWidget(
-              keyRefresh: keyRefresh,
-              onRefresh: refresh,
-              child: refreshLoaded
-                  ? CustomEventSignedCard(
-                      key: PageStorageKey<String>('event'),
-                      data: data,
-                    )
-                  : Container()),
+
     );
   }
 }
