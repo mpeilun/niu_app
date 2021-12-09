@@ -350,7 +350,8 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TimeTable(), maintainState: false));
+                        builder: (context) => TimeTable(),
+                        maintainState: false));
               },
             ),
             CustomIcons(
@@ -535,7 +536,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
           print(DateTime.now().difference(firstLoginTime).inDays);
         } else {
           //Debug
-          toDoFormAlert(context, context.read<DarkThemeProvider>().darkTheme);
+          // toDoFormAlert(context, context.read<DarkThemeProvider>().darkTheme);
           //
           print('---time not yet to do form---');
           print(DateTime.now().difference(firstLoginTime).inDays);
