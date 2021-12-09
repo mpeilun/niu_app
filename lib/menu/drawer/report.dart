@@ -364,8 +364,6 @@ class _PageFeedback extends State<PageFeedback> {
                           Expanded(
                               flex: 4,
                               child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    primary: Theme.of(context).primaryColor),
                                 onPressed: () async {
                                   if (_contact != '') {
                                     SharedPreferences prefs =
@@ -556,8 +554,6 @@ class _PageBugReport extends State<PageBugReport> {
                           Expanded(
                               flex: 4,
                               child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    primary: Theme.of(context).primaryColor),
                                 onPressed: () async {
                                   if (_contact != '' &&
                                       _checkboxSelected != false) {
