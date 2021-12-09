@@ -85,7 +85,7 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                     offset: Offset(1.0, 1.0), //陰影y軸偏移量
                     blurRadius: 0, //陰影模糊程度
                     spreadRadius: 0 //陰影擴散程度
-                    )
+                )
               ],
             ),
             margin: EdgeInsets.fromLTRB(
@@ -121,27 +121,27 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                           border: Border.all(
                               width: 2.0,
                               color: themeChange.darkTheme
-                                  ? widget.data[index].status == '未開始'
-                                      ? Color(0xff1E88E5)
-                                      : Color(0xffff4242)
-                                  : widget.data[index].status == '未開始'
-                                      ? Color(0xff2364aa)
-                                      : Color(0xFF954242)),
+                                  ? Color(widget.data[index].status == '未開始'
+                                      ? 0xff1E88E5
+                                      : 0xffE53935)
+                                  : Color(widget.data[index].status == '未開始'
+                                      ? 0xff2364aa
+                                      : 0xFF954242)),
                           borderRadius: BorderRadius.all(Radius.circular(
-                                  10.0) //         <--- border radius here
-                              ),
+                              10.0) //         <--- border radius here
+                          ),
                         ),
                         child: Text(
                           widget.data[index].status,
                           style: TextStyle(
                             fontSize: 12.0,
                             color: themeChange.darkTheme
-                                ? widget.data[index].status == '未開始'
-                                    ? Color(0xff1e88e5)
-                                    : Color(0xffff4242)
-                                : widget.data[index].status == '未開始'
-                                    ? Color(0xff2364aa)
-                                    : Color(0xFF954242),
+                                ? Color(widget.data[index].status == '未開始'
+                                    ? 0xff1E88E5
+                                    : 0xffE53935)
+                                : Color(widget.data[index].status == '未開始'
+                                    ? 0xff2364aa
+                                    : 0xFF954242),
                           ),
                           textAlign: TextAlign.center,
                         )),
@@ -184,23 +184,27 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                         widget: Text(widget.data[index].status,
                             style: TextStyle(fontSize: 14)),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          print(widget.data[index].js);
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                EventSignedInfoDialog(
-                              js: widget.data[index].js,
-                            ),
-                          );
-                        },
-                        child: Text('詳細'),
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all<
-                              RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
+                      Tooltip(
+                        showDuration: Duration(milliseconds: 500),
+                        message: '點此查看詳細資料或修改、取消報名',
+                        child: ElevatedButton(
+                          onPressed: () {
+                            print(widget.data[index].js);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  EventSignedInfoDialog(
+                                js: widget.data[index].js,
+                              ),
+                            );
+                          },
+                          child: Text('詳細'),
+                          style: ButtonStyle(
+                            shape:
+                                MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
                             ),
                           ),
                         ),

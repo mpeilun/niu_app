@@ -273,31 +273,6 @@ class _EventTutorialPageState extends State<EventTutorialPage> {
                   ),
                 ),
               ),
-              // GestureDetector(
-              //     child: Image.asset(
-              //   'assets/ic_launcher_niu.png',
-              //   width: 200.0,
-              //   height: 200.0,
-              //   fit: BoxFit.contain,
-              // )),
-              // Container(
-              //   child: Text(
-              //     'assets/ic_launcher_niu.png',
-              //     style: currentSlide.styleTitle,
-              //     textAlign: TextAlign.center,
-              //   ),
-              //   margin: EdgeInsets.only(top: 20.0),
-              // ),
-              // Container(
-              //   child: Text(
-              //     'currentSlide.description',
-              //     style: currentSlide.styleDescription,
-              //     textAlign: TextAlign.center,
-              //     maxLines: 5,
-              //     overflow: TextOverflow.ellipsis,
-              //   ),
-              //   margin: EdgeInsets.only(top: 20.0),
-              // ),
             ],
           ),
         ),
