@@ -99,6 +99,8 @@ flutter:
     - assets/sempleIMG/
     - assets/fonts/
     - assets/memberPic/
+    - assets/tutorial/e_school/
+
   fonts:
     - family: NotoSans
       fonts:
