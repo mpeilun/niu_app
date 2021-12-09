@@ -245,7 +245,16 @@ class _ZuvioState extends State<Zuvio> {
                                   document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.s-i-t-b-i-b-icon {filter: invert(100%);}`;
                                   document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.p-m-c-icon-box {filter: invert(100%);}`;
                                   document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.user-icon-switch {filter: invert(100%);}`
-                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.c-pm-c-chat-wrapper.message-box{filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.c-pm-c-chat-wrapper.message-box {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.c-pm-c-send-message {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.c-pm-c-receive-message {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.c-pm-c-r-text {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.c-pm-c-s-text {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.c-pm-c-r-icon {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.c-pm-c-r-redirect {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.c-pm-c-chat-topic-card-list {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.i-h-r-rollcall-row.i-h-r-r-r-nonarrival {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.i-h-r-rollcall-row.i-h-r-r-r-punctual {filter: invert(100%);}`;
                                   ''');
                               }
                               for (int i = 1; i < 7; i++) {

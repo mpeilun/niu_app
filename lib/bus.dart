@@ -39,7 +39,7 @@ class _BusState extends State<Bus> {
 
   double progress = 0;
 
-  List<String> cleanJs = [
+  List<String> Js = [
     'document.querySelector(\"#topNav\").style.display=\'none\'',
     'document.querySelector(\"head\").style.display=\'none\'',
     'document.querySelector(\"#main > div.container > nav\").style.display=\'none\'',
@@ -139,7 +139,7 @@ class _BusState extends State<Bus> {
                           if (url
                               .toString()
                               .contains('www.taiwanbus.tw/eBUSPage/')) {
-                            cleanJs.forEach((element) async {
+                            Js.forEach((element) async {
                               await controller.evaluateJavascript(
                                   source: element);
                             });

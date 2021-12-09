@@ -13,10 +13,11 @@ class DarkThemeProvider with ChangeNotifier {
     darkThemePreference.setDarkTheme(value);
     notifyListeners();
   }
+
   AnimateIconController _controller = AnimateIconController();
   AnimateIconController get controller => _controller;
-  void isDark(){
-    if(_darkTheme){
+  void isDark() {
+    if (_darkTheme) {
       _controller.animateToEnd();
     }
     notifyListeners();
