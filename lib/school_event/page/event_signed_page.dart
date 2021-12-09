@@ -45,12 +45,10 @@ class _EventSignedPageState extends State<EventSignedPage> {
 
   Future<void> getEventSignedList() async {
     List<EventSigned> temp = [];
-    for (int i = 2;
-        await headlessWebView?.webViewController.evaluateJavascript(
-                source:
-                    'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(4)").innerText') !=
-            null;
-        i++) {
+    var end = await headlessWebView?.webViewController.evaluateJavascript(
+        source:
+            'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody").childElementCount');
+    for (int i = 2; i < end; i++) {
       print(i);
       String name = ((await headlessWebView?.webViewController.evaluateJavascript(
                   source:
@@ -60,6 +58,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
       String status = await headlessWebView?.webViewController.evaluateJavascript(
           source:
               'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(2)").innerText');
+      if (status == ' ') status = '未知';
       String signedStatus = await headlessWebView?.webViewController
           .evaluateJavascript(
               source:

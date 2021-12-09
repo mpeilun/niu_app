@@ -44,8 +44,8 @@ class _CustomEventCardState extends State<CustomEventCard> {
       if (widget.data[i]['name']
               .toLowerCase()
               .contains(_textEditingController.text.toLowerCase()) ||
-          widget.data[i]['eventSerialNum'].contains(_textEditingController.text))
-        tmp.add(widget.data[i]);
+          widget.data[i]['eventSerialNum']
+              .contains(_textEditingController.text)) tmp.add(widget.data[i]);
     }
     setState(() {
       display = tmp;
@@ -320,46 +320,44 @@ class _CustomEventCardState extends State<CustomEventCard> {
                                     ],
                                   ),
                                 ),
-                                display[index]['state'] == "報名中"
-                                    ? ElevatedButton(
-                                        onPressed: () {
-                                          print(display[index]['signUpJs']);
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                EventInfoDialog(
-                                                    eventJS: display[index]
-                                                        ['signUpJs']),
-                                          );
-                                        },
-                                        child: Text('我要報名'),
-                                        style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(18.0),
-                                            ),
+                                Tooltip(
+                                  showDuration: Duration(milliseconds: 500),
+                                  message: display[index]['state'] == '報名中'
+                                      ? '進入詳細資料頁面'
+                                      : '此活動已額滿、過期或尚未開放',
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (display[index]['state'] == '報名中') {
+                                        print(display[index]['signUpJs']);
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              EventInfoDialog(
+                                                  eventJS: display[index]
+                                                      ['signUpJs']),
+                                        );
+                                      } else {
+                                        showToast('無法報名');
+                                      }
+                                    },
+                                    child: Text(display[index]['state'] == '報名中'
+                                        ? '前往報名'
+                                        : '無法報名'),
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
                                           ),
                                         ),
-                                      )
-                                    : ElevatedButton(
-                                        onPressed: () {
-                                          showToast('無法報名');
-                                        },
-                                        child: Text('不可報名'),
-                                        style: ButtonStyle(
-                                            shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(18.0),
-                                              ),
-                                            ),
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
+                                        backgroundColor:
+                                            display[index]['state'] == '報名中'
+                                                ? null
+                                                : MaterialStateProperty.all(
                                                     Colors.grey)),
-                                      ),
+                                  ),
+                                ),
                                 SizedBox(
                                   height: screenSizeHeight * 0.015,
                                 )

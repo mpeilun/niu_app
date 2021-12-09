@@ -63,13 +63,10 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
         cancelDisable = await webViewController!.evaluateJavascript(
             source:
                 'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign_btnSignDel").disabled');
-
-        for (int i = 2;
-            await webViewController!.evaluateJavascript(
-                    source:
-                        'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody > tr:nth-child($i) > td:nth-child(1)").innerText') !=
-                null;
-            i++) {
+        var end = await webViewController!.evaluateJavascript(
+            source:
+                'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign > tbody").childElementCount');
+        for (int i = 2; i <= end; i++) {
           print(i);
           data.add([
             await webViewController!.evaluateJavascript(
@@ -278,7 +275,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
     });
     await webViewController!.evaluateJavascript(
         source:
-        'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign_Button1").click()');
+            'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign_Button1").click()');
   }
 
   @override
@@ -293,18 +290,17 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
             Visibility(
               child: TextButton(
                 onPressed: () {
-                  if(buttonClicked){
+                  if (buttonClicked) {
                     submitEdit();
-                  }else{
+                  } else {
                     editEvent();
                   }
                   setState(() {
                     buttonClicked = true;
                   });
-
                 },
                 child: Text(
-                  buttonClicked?'送出':'修改資料',
+                  buttonClicked ? '送出' : '修改資料',
                   style: TextStyle(fontSize: 16.0),
                 ),
               ),
@@ -521,7 +517,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                                                         children: [
                                                           ListTile(
                                                             leading: Text(
-                                                              data[index][0],
+                                                              data[index+3][0],
                                                               style: TextStyle(
                                                                   fontSize:
                                                                       16.0,
@@ -530,7 +526,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                                                                           .bold),
                                                             ),
                                                             title: Text(
-                                                              data[index][1],
+                                                              data[index+3][1],
                                                               textAlign:
                                                                   TextAlign.end,
                                                               style: TextStyle(
