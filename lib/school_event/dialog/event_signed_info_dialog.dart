@@ -491,8 +491,7 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
                                     ? ExpansionTile(
                                         key: PageStorageKey(
                                             'event_signed' + index.toString()),
-                                        title: Text(
-                                          '其他資料',
+                                        title: Text('其他資料',
                                           style: TextStyle(
                                               fontSize: 16.0,
                                               fontWeight: FontWeight.bold),
