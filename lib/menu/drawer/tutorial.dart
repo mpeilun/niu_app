@@ -97,7 +97,7 @@ class _TutorialPageState extends State<TutorialPage>
       separatorBuilder: (BuildContext context, int index) => Divider(
         height: 0.0,
         thickness: 1.5,
-        indent: screenSizeWidth * 0.025 + 100,
+        indent: screenSizeWidth * 0.025 + 110,
         endIndent: screenSizeWidth * 0.025,
       ),
       itemBuilder: (BuildContext context, int index) => TutorialItem(
