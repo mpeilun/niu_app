@@ -154,6 +154,8 @@ class _BusState extends State<Bus> {
                                   
                                   document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.bus-header-section {filter: invert(100%);}`;
                                   document.lastElementChild.appendChild(document.createElement('style')).textContent = `div.div.bus-title.mb-1.mb-md-3 {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `i.fas.fa-bus::before  {filter: invert(100%);}`;
+                                  document.lastElementChild.appendChild(document.createElement('style')).textContent = `i.fas.fa-wheelchair::before  {filter: invert(100%);}`;
                                   ''');
                               await controller.evaluateJavascript(source: '''
                                   document.querySelector("#main > div.bus-header.container-md > div:nth-child(1) > div.bus-title.mb-1.mb-md-3 > h2").style.color = 'white'
