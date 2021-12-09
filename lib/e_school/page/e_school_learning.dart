@@ -56,6 +56,29 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
   bool setWebViewVisibility = false;
   double progress = 0;
 
+  Offset position = Offset(5, 5);
+  Widget floatingButton() {
+    return Opacity(
+      opacity: 0.5,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: SizedBox(
+          width: 40,
+          height: 40,
+          child: FloatingActionButton(
+            child: Icon(
+              Icons.arrow_back_ios,
+              size: 20,
+            ),
+            onPressed: () async {
+              await goBack();
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -70,28 +93,6 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
   Widget build(BuildContext context) {
     return ConditionalWillPopScope(
         child: Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-          floatingActionButton: setWebViewVisibility
-              ? Opacity(
-                  opacity: 0.5,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: SizedBox(
-                      width: 40,
-                      height: 40,
-                      child: FloatingActionButton(
-                        child: Icon(
-                          Icons.arrow_back_ios,
-                          size: 20,
-                        ),
-                        onPressed: () async {
-                          await goBack();
-                        },
-                      ),
-                    ),
-                  ),
-                )
-              : null,
           appBar: setWebViewVisibility
               ? null
               : AppBar(title: Text(widget.courseName)),
@@ -276,7 +277,24 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
                               action: PermissionRequestResponseAction.GRANT);
                         },
                       ),
-                    )
+                    ),
+                    Visibility(
+                        visible: setWebViewVisibility,
+                        child: Positioned(
+                            left: position.dx,
+                            top: position.dy,
+                            child: Draggable(
+                                feedback: floatingButton(),
+                                child: floatingButton(),
+                                childWhenDragging: Container(),
+                                onDragEnd: (details) {
+                                  setState(() {
+                                    position = details.offset;
+                                  });
+                                  print(position);
+                                  print(position.dx);
+                                  print(position.dy);
+                                }))),
                   ],
                 ),
               ),
