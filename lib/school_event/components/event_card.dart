@@ -12,38 +12,6 @@ import 'package:provider/provider.dart';
 import 'anim_search.dart';
 import 'custom_list_info.dart';
 
-class Event {
-  final String name;
-  final String department;
-  final String signTimeStart;
-  final String signTimeEnd;
-  final String eventTimeStart;
-  final String eventTimeEnd;
-  final String status;
-  final String positive;
-  final String positiveLimit;
-  final String wait;
-  final String waitLimit;
-  final String signUpJS;
-  final String eventSerialNum;
-
-  Event({
-    required this.name,
-    required this.department,
-    required this.signTimeStart,
-    required this.signTimeEnd,
-    required this.eventTimeStart,
-    required this.eventTimeEnd,
-    required this.status,
-    required this.positive,
-    required this.positiveLimit,
-    required this.wait,
-    required this.waitLimit,
-    required this.signUpJS,
-    required this.eventSerialNum,
-  });
-}
-
 class CustomEventCard extends StatefulWidget {
   final List<dynamic> data;
   final List<dynamic> dataCanSignUp;
@@ -73,10 +41,10 @@ class _CustomEventCardState extends State<CustomEventCard> {
       _isSelected = [true, false, false];
     });
     for (int i = 0; i < widget.data.length; i++) {
-      if (widget.data[i].name
+      if (widget.data[i]['name']
               .toLowerCase()
               .contains(_textEditingController.text.toLowerCase()) ||
-          widget.data[i].eventSerialNum.contains(_textEditingController.text))
+          widget.data[i]['eventSerialNum'].contains(_textEditingController.text))
         tmp.add(widget.data[i]);
     }
     setState(() {

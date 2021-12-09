@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:intro_slider/dot_animation_enum.dart';
-import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
-import 'package:niu_app/school_event/components/custom_list_info.dart';
+import 'package:niu_app/components/menuIcon.dart';
+import 'package:niu_app/menu/drawer/tutorial_page/event_tutorial.dart';
+import 'package:niu_app/provider/dark_mode_provider.dart';
+import 'package:provider/provider.dart';
+
+class Tutorial {
+  Tutorial(
+      {required this.icon,
+      required this.title,
+      required this.content,
+      required this.onTap});
+
+  final IconData icon;
+  final String title;
+  final String content;
+  final VoidCallback onTap;
+}
 
 class TutorialPage extends StatefulWidget {
   @override
@@ -11,366 +24,177 @@ class TutorialPage extends StatefulWidget {
 
 class _TutorialPageState extends State<TutorialPage>
     with SingleTickerProviderStateMixin {
-  List<Slide> slides = [];
-  late var screenSizeWidth = MediaQuery.of(context).size.width;
-  late var screenSizeHeight = MediaQuery.of(context).size.height;
-  late Function goToTab;
-
-  @override
-  void initState() {
-    super.initState();
-
-    slides.add(
-      new Slide(
-        title: "SCHOOL",
-        styleTitle: TextStyle(
-          color: Color(0xff3da4ab),
-          fontSize: 30.0,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'RobotoMono',
-        ),
-        description:
-            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
-        styleDescription: TextStyle(
-            color: Color(0xfffe9c8f),
-            fontSize: 20.0,
-            fontStyle: FontStyle.italic,
-            fontFamily: 'Raleway'),
-        pathImage: "images/photo_school.png",
-      ),
-    );
-    slides.add(
-      new Slide(
-        title: "MUSEUM",
-        styleTitle: TextStyle(
-            color: Color(0xff3da4ab),
-            fontSize: 30.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'RobotoMono'),
-        description:
-            "Ye indulgence unreserved connection alteration appearance",
-        styleDescription: TextStyle(
-            color: Color(0xfffe9c8f),
-            fontSize: 20.0,
-            fontStyle: FontStyle.italic,
-            fontFamily: 'Raleway'),
-        pathImage: "images/photo_museum.png",
-      ),
-    );
-    slides.add(
-      new Slide(
-        title: "COFFEE SHOP",
-        styleTitle: TextStyle(
-            color: Color(0xff3da4ab),
-            fontSize: 30.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'RobotoMono'),
-        description:
-            "Much evil soon high in hope do view. Out may few northward believing attempted. Yet timed being songs marry one defer men our. Although finished blessing do of",
-        styleDescription: TextStyle(
-            color: Color(0xfffe9c8f),
-            fontSize: 20.0,
-            fontStyle: FontStyle.italic,
-            fontFamily: 'Raleway'),
-        pathImage: "images/photo_coffee_shop.png",
-      ),
-    );
-  }
-
-  void onDonePress() {
-    // Back to the first tab
-    this.goToTab(0);
-  }
-
-  void onTabChangeCompleted(index) {
-    // Index of current tab is focused
-    print(index);
-  }
-
-  Widget renderNextBtn() {
-    return Icon(
-      Icons.navigate_next,
-      color: Color(0xffffcc5c),
-      size: 35.0,
-    );
-  }
-
-  Widget renderDoneBtn() {
-    return Icon(
-      Icons.done,
-      color: Color(0xffffcc5c),
-    );
-  }
-
-  Widget renderSkipBtn() {
-    return Icon(
-      Icons.skip_next,
-      color: Color(0xffffcc5c),
-    );
-  }
-
-  ButtonStyle myButtonStyle() {
-    return ButtonStyle(
-      shape: MaterialStateProperty.all<OutlinedBorder>(StadiumBorder()),
-      backgroundColor: MaterialStateProperty.all<Color>(Color(0x33ffcc5c)),
-      overlayColor: MaterialStateProperty.all<Color>(Color(0x33ffcc5c)),
-    );
-  }
-
-  List<Widget> renderListCustomTabs() {
-    List<Widget> tabs = [];
-    for (int i = 0; i < 5; i++) {
-      // Slide currentSlide = slides[i];
-      tabs.add(Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Container(
-          margin: EdgeInsets.only(bottom: 60.0, top: 60.0),
-          child: ListView(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(screenSizeWidth * 0.05,
-                    screenSizeHeight * 0.01, screenSizeWidth * 0.05, 0.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: Container(
-                        child: Text(
-                          '測試',
-                          style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: screenSizeWidth * 0.05,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        child: Text(
-                          '很厲害呦',
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.grey[600],
-                          ),
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade50,
-                  borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(1.0, 1.0), //陰影y軸偏移量
-                        blurRadius: 0, //陰影模糊程度
-                        spreadRadius: 0 //陰影擴散程度
-                        )
-                  ],
-                ),
-                margin: EdgeInsets.fromLTRB(
-                    screenSizeWidth * 0.05,
-                    screenSizeHeight * 0.01,
-                    screenSizeWidth * 0.05,
-                    screenSizeHeight * 0.01),
-                child: Theme(
-                  data: Theme.of(context).copyWith(
-                    accentColor: Colors.black,
-                    dividerColor: Colors.transparent,
-                  ),
-                  child: ExpansionTile(
-                    key: PageStorageKey('tutorial'),
-                    title: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: screenSizeWidth * 0.04,
-                        ),
-                        Text(
-                          '詳細資料',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Expanded(child: SizedBox()),
-                        Container(
-                            height: 25.0,
-                            width: 55.0,
-                            padding: EdgeInsets.all(2.0),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 2.0, color: Color(0xff1E88E5)),
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                      10.0) //         <--- border radius here
-                                  ),
-                            ),
-                            child: Text(
-                              '報名中',
-                              style: TextStyle(
-                                  fontSize: 12.0, color: Color(0xff1E88E5)),
-                              textAlign: TextAlign.center,
-                            )),
-                      ],
-                    ),
-                    children: [
-                      Column(
-                        children: [
-                          ListInfo(
-                            icon: Icons.info,
-                            title: '活動編號',
-                            widget:
-                                Text('12345', style: TextStyle(fontSize: 14)),
-                          ),
-                          ListInfo(
-                            icon: Icons.calendar_today,
-                            title: '活動時間',
-                            widget: Column(
-                              children: [
-                                Text(
-                                  '2021/11/11 11:11起',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                                Text(
-                                  '2021/11/11 22:22止',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                              ],
-                            ),
-                          ),
-                          ListInfo(
-                            icon: Icons.access_time,
-                            title: '報名時間',
-                            widget: Column(
-                              children: [
-                                Text(
-                                  '2021/12/12 11:11起',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                                Text(
-                                  '2021/12/12 22:22止',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                              ],
-                            ),
-                          ),
-                          ListInfo(
-                            icon: Icons.groups,
-                            title: '報名人數',
-                            widget: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '正取: 0/12人',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                                Text(
-                                  '備取: 0/0人',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                              ],
-                            ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              // showDialog(
-                              //   context: context,
-                              //   builder: (BuildContext context) =>
-                              //       EventInfoDialog(
-                              //           eventJS: display[index]
-                              //               ['signUpJs']),
-                              // );
-                            },
-                            child: Text('我要報名'),
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: screenSizeHeight * 0.015,
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // GestureDetector(
-              //     child: Image.asset(
-              //   'assets/ic_launcher_niu.png',
-              //   width: 200.0,
-              //   height: 200.0,
-              //   fit: BoxFit.contain,
-              // )),
-              // Container(
-              //   child: Text(
-              //     'assets/ic_launcher_niu.png',
-              //     style: currentSlide.styleTitle,
-              //     textAlign: TextAlign.center,
-              //   ),
-              //   margin: EdgeInsets.only(top: 20.0),
-              // ),
-              // Container(
-              //   child: Text(
-              //     'currentSlide.description',
-              //     style: currentSlide.styleDescription,
-              //     textAlign: TextAlign.center,
-              //     maxLines: 5,
-              //     overflow: TextOverflow.ellipsis,
-              //   ),
-              //   margin: EdgeInsets.only(top: 20.0),
-              // ),
-            ],
-          ),
-        ),
-      ));
-    }
-    return tabs;
-  }
+  ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    return new IntroSlider(
-      // Skip button
-      renderSkipBtn: this.renderSkipBtn(),
-      skipButtonStyle: myButtonStyle(),
+    var screenSizeWidth = MediaQuery.of(context).size.width;
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+    List<Tutorial> tutorials = [
+      Tutorial(
+        icon: MenuIcon.icon_eschool,
+        title: '數位學習園區',
+        content: '在手機上快速地檢視課程',
+        onTap: () {},
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_grades,
+        title: '成績查詢',
+        content: '對自己的成績一目瞭然',
+        onTap: () {},
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_timetable,
+        title: '每週課表',
+        content: '掌握每一門課程',
+        onTap: () {},
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_event,
+        title: '活動報名',
+        content: '隨時隨地報名參與活動',
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EventTutorialPage(),
+                  maintainState: false));
+        },
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_graduation,
+        title: '畢業門檻',
+        content: '深入了解自己的畢業資格',
+        onTap: () {},
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_e_school,
+        title: '選課系統',
+        content: 'Coming Soon',
+        onTap: () {},
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_bus,
+        title: '公車動態',
+        content: '輕鬆查看宜大的即時大眾運輸資訊',
+        onTap: () {},
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_zuvio,
+        title: 'Zuvio',
+        content: '上課點名、繳交作業的好助手',
+        onTap: () {},
+      ),
+    ];
+    return ListView.separated(
+      controller: _scrollController,
+      itemCount: tutorials.length,
+      separatorBuilder: (BuildContext context, int index) => Divider(
+        height: 0.0,
+        thickness: 1.5,
+        indent: screenSizeWidth * 0.025 + 100,
+        endIndent: screenSizeWidth * 0.025,
+      ),
+      itemBuilder: (BuildContext context, int index) => TutorialItem(
+        icon: tutorials[index].icon,
+        title: tutorials[index].title,
+        content: tutorials[index].content,
+        onTap: tutorials[index].onTap,
+      ),
+    );
+  }
+}
 
-      // Next button
-      renderNextBtn: this.renderNextBtn(),
-      nextButtonStyle: myButtonStyle(),
+class TutorialItem extends StatelessWidget {
+  const TutorialItem(
+      {Key? key,
+      required this.icon,
+      required this.title,
+      required this.content,
+      required this.onTap,})
+      : super(key: key);
+  final IconData icon;
+  final String title;
+  final String content;
+  final VoidCallback onTap;
 
-      // Done button
-      renderDoneBtn: this.renderDoneBtn(),
-      onDonePress: this.onDonePress,
-      doneButtonStyle: myButtonStyle(),
+  @override
+  Widget build(BuildContext context) {
+    var screenSizeWidth = MediaQuery.of(context).size.width;
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+    return InkWell(
+      onTap: onTap,
+      focusColor: Colors.grey.shade500,
+      child: Container(
+        margin: EdgeInsets.symmetric(
+            vertical: screenSizeWidth * 0.025,
+            horizontal: screenSizeWidth * 0.025),
+        child: Row(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: themeChange.darkTheme
+                    ? Theme.of(context).cardColor
+                    : Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              padding: EdgeInsets.all(10.0),
+              child: RadiantGradientMask(
+                child: Icon(
+                  icon,
+                  size: 70.0,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: screenSizeWidth * 0.05,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                ),
+                Text(content),
+              ],
+            ),
+            Expanded(
+                child: Container(
+              child: Icon(
+                Icons.keyboard_arrow_right,
+                color: themeChange.darkTheme
+                    ? Color(0xe0ffffff)
+                    : Colors.grey.shade600,
+              ),
+              alignment: Alignment.centerRight,
+            ))
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-      // Dot indicator
-      colorDot: Color(0xffffcc5c),
-      sizeDot: 13.0,
-      typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
+class RadiantGradientMask extends StatelessWidget {
+  RadiantGradientMask({required this.child});
 
-      // Tabs
-      listCustomTabs: this.renderListCustomTabs(),
-      // slides: slides,
-      backgroundColorAllSlides: Colors.white,
-      refFuncGoToTab: (refFunc) {
-        this.goToTab = refFunc;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+    return ShaderMask(
+      shaderCallback: (Rect bounds) {
+        return RadialGradient(
+          center: Alignment.bottomLeft,
+          radius: 0.5,
+          colors: themeChange.darkTheme?<Color>[Colors.white,Colors.white]:<Color>[Colors.pink, Colors.blue],
+          tileMode: TileMode.mirror,
+        ).createShader(bounds);
       },
-
-      // Behavior
-      scrollPhysics: BouncingScrollPhysics(),
-
-      // On tab change completed
-      onTabChangeCompleted: this.onTabChangeCompleted,
+      child: child,
     );
   }
 }

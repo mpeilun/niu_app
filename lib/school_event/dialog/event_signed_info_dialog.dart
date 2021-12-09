@@ -272,6 +272,15 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
             'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign_ButtonOk").click()');
   }
 
+  void submitEdit() async {
+    setState(() {
+      dataLoaded = false;
+    });
+    await webViewController!.evaluateJavascript(
+        source:
+        'document.querySelector("#ctl00_MainContentPlaceholder_dvGetDetailSign_Button1").click()');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -284,17 +293,22 @@ class _EventSignedInfoDialogState extends State<EventSignedInfoDialog> {
             Visibility(
               child: TextButton(
                 onPressed: () {
+                  if(buttonClicked){
+                    submitEdit();
+                  }else{
+                    editEvent();
+                  }
                   setState(() {
                     buttonClicked = true;
                   });
-                  editEvent();
+
                 },
                 child: Text(
-                  '修改資料',
+                  buttonClicked?'送出':'修改資料',
                   style: TextStyle(fontSize: 16.0),
                 ),
               ),
-              visible: dataLoaded && !buttonClicked,
+              visible: dataLoaded,
             ),
             Visibility(
               child: Container(

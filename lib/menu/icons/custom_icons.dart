@@ -23,16 +23,6 @@ class CustomIcons extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // SizedBox(
-        //   child: CustomPaint(
-        //     painter: CirclePainter(),
-        //     child: IconButton(
-        //       iconSize: size,
-        //       icon: Icon(icon,),
-        //       onPressed: press,
-        //     ),
-        //   ),
-        // ),
         Stack(alignment: Alignment.center, children: [
           Container(
             width: 65.0,
