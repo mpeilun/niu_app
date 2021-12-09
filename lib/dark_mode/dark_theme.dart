@@ -33,6 +33,9 @@ class Styles {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color?>(
+            Color(0x54bdbdbd),
+          ),
           backgroundColor: MaterialStateProperty.all<Color?>(
               isDarkTheme ? Color(0xff212121) : Colors.blue[700]),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
