@@ -23,21 +23,20 @@ class CustomIcons extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // SizedBox(
-        //   child: CustomPaint(
-        //     painter: CirclePainter(),
-        //     child: IconButton(
-        //       iconSize: size,
-        //       icon: Icon(icon,),
-        //       onPressed: press,
-        //     ),
-        //   ),
-        // ),
         Stack(alignment: Alignment.center, children: [
           Container(
             width: 65.0,
             height: 65.0,
             decoration: BoxDecoration(
+              boxShadow: [
+              BoxShadow(
+              color: themeChange.darkTheme
+                  ? Colors.black : Colors.transparent,
+              spreadRadius: -5,
+              blurRadius: 10,
+              offset: Offset(1, 1),
+            ),
+        ],
               color: themeChange.darkTheme ? Color(0xff212121) : null,
               shape: BoxShape.circle,
               border: Border.all(

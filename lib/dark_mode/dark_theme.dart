@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Styles {
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {

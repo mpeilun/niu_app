@@ -37,24 +37,27 @@ class _ViewPage extends State<ViewPage> {
         title: Text("課表"),
         centerTitle: true,
         actions: [
-          PopupMenuButton<String>(
-            padding: const EdgeInsets.all(.0),
-            itemBuilder: (context) => weekGetPopupMenu(context),
-            onSelected: (String value) async{
-              print('Week Selected : ' + value);
-              week = int.parse(value)-1;
-              calendarMap = await WeekCalendar().getCalendar(week);
-              await WeekCalendar().setWeek(week);
-              setState(() {
-                select = true;
-              });
-            },
-            onCanceled: () {
-              print('onCanceled');
-            },
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: PopupMenuButton<String>(
+              padding: const EdgeInsets.all(.0),
+              itemBuilder: (context) => weekGetPopupMenu(context),
+              onSelected: (String value) async{
+                print('Week Selected : ' + value);
+                week = int.parse(value)-1;
+                calendarMap = await WeekCalendar().getCalendar(week);
+                await WeekCalendar().setWeek(week);
+                setState(() {
+                  select = true;
+                });
+              },
+              onCanceled: () {
+                print('onCanceled');
+              },
 //      child: RaisedButton(onPressed: (){},child: Text('选择'),),
-            icon: weekNumText(week),
-            iconSize : 36,
+              icon: weekNumText(week),
+              iconSize : 36,
+            ),
           ),
           PopupMenuButton<String>(
             shape: RoundedRectangleBorder(
@@ -77,18 +80,15 @@ class _ViewPage extends State<ViewPage> {
           ),
         ],
       ),
-      body: Padding(
-          padding: const EdgeInsets.all(12),  //2*5課表+1時間
-          child: StaggeredGridView.count(
-            crossAxisCount: 11,
-            mainAxisSpacing: 0,
-            crossAxisSpacing: 0,
-            staggeredTiles: _re.getStaggeredTile(),
-            //staggeredTiles: _staggeredTiles,
-            //size
-            children: _re.getTiles(), //物件
-            //children: _tiles, //物件
-          )
+      body: StaggeredGridView.count(
+        crossAxisCount: 11,
+        mainAxisSpacing: 0,
+        crossAxisSpacing: 0,
+        staggeredTiles: _re.getStaggeredTile(),
+        //staggeredTiles: _staggeredTiles,
+        //size
+        children: _re.getTiles(), //物件
+        //children: _tiles, //物件
       ),
     );
   }
@@ -118,7 +118,7 @@ class _ViewPage extends State<ViewPage> {
     List<String> chineseNum = <String>[
       "一","二","三","四","五","六","七","八","九","十","十一","十二","十三","十四","十五","十六","十七","十八"
     ];
-    return Text('第' + chineseNum[num] + "週" ,style: TextStyle(fontSize: 16));
+    return Text('第' + chineseNum[num] + "週" ,);
   }
   weekNumText(int num){
     if(num == -1)
@@ -126,7 +126,9 @@ class _ViewPage extends State<ViewPage> {
     List<String> chineseNum = <String>[
       "一","二","三","四","五","六","七","八","九","十","十一","十二","十三","十四","十五","十六","十七","十八"
     ];
-    return Text('第' + chineseNum[num] + "週" ,style: TextStyle(fontSize: num < 10 ? 14 : 12),);
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+        child: Text('第' + chineseNum[num] + "週" ,style: TextStyle(fontSize: num < 10 ? 14 : 12),));
   }
   void clean(BuildContext context) async{
     SemesterDate date = SemesterDate();

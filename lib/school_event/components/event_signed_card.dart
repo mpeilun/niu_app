@@ -85,7 +85,7 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                     offset: Offset(1.0, 1.0), //陰影y軸偏移量
                     blurRadius: 0, //陰影模糊程度
                     spreadRadius: 0 //陰影擴散程度
-                    )
+                )
               ],
             ),
             margin: EdgeInsets.fromLTRB(
@@ -97,6 +97,8 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
               data: Theme.of(context).copyWith(
                 accentColor: Colors.black,
                 dividerColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
               ),
               child: ExpansionTile(
                 key: PageStorageKey('event_signed' + index.toString()),
@@ -126,8 +128,8 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                                       ? 0xff2364aa
                                       : 0xFF954242)),
                           borderRadius: BorderRadius.all(Radius.circular(
-                                  10.0) //         <--- border radius here
-                              ),
+                              10.0) //         <--- border radius here
+                          ),
                         ),
                         child: Text(
                           widget.data[index].status,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:niu_app/components/menuIcon.dart';
+import 'package:niu_app/menu/drawer/tutorial_page/eSchool_tutorial.dart';
 import 'package:niu_app/menu/drawer/tutorial_page/event_tutorial.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +36,11 @@ class _TutorialPageState extends State<TutorialPage>
         icon: MenuIcon.icon_eschool,
         title: '數位學習園區',
         content: '在手機上快速地檢視課程',
-        onTap: () {},
+        onTap: () {Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ESchoolTutorialPage(),
+                maintainState: false));},
       ),
       Tutorial(
         icon: MenuIcon.icon_grades,
@@ -157,7 +162,7 @@ class TutorialItem extends StatelessWidget {
                   title,
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                 ),
-                Text(content),
+                Text(content, style: TextStyle(color: themeChange.darkTheme ? Colors.grey.shade400 : Colors.grey[600]),),
               ],
             ),
             Expanded(
