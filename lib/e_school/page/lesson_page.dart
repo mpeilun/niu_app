@@ -96,14 +96,13 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                               const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 24.0),
                           child: Align(
                             alignment: Alignment.topCenter,
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Tooltip(
-                                    showDuration: Duration(milliseconds: 500),
-                                    message: '前往課程公告',
-                                    child: ElevatedButton(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           // shape: RoundedRectangleBorder(
                                           //   borderRadius:
@@ -131,12 +130,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                                               widget.tile),
                                                   maintainState: false));
                                         }),
-                                  ),
-                                  Spacer(),
-                                  Tooltip(
-                                    showDuration: Duration(milliseconds: 500),
-                                    message: '前往開始上課',
-                                    child: ElevatedButton(
+                                    ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           // primary: Theme.of(context).primaryColor,
                                           // shape: RoundedRectangleBorder(
@@ -165,12 +159,7 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                                               tile.title),
                                                   maintainState: false));
                                         }),
-                                  ),
-                                  Spacer(),
-                                  Tooltip(
-                                    showDuration: Duration(milliseconds: 500),
-                                    message: '前往成績資訊',
-                                    child: ElevatedButton(
+                                    ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           // primary: Theme.of(context).primaryColor,
                                           // shape: RoundedRectangleBorder(
@@ -199,8 +188,8 @@ class _CustomLessonCardState extends State<CustomLessonCard> {
                                                               widget.tile),
                                                   maintainState: false));
                                         }),
-                                  ),
-                                ]),
+                                  ]),
+                            ),
                           ),
                         )))
                     .toList(),
