@@ -137,7 +137,7 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
         pathImage: themeChange.darkTheme
             ? "assets/tutorial/e_school/grade_black.png"
             : "assets/tutorial/e_school/grade_white.png",
-      heightImage: 250.0,
+      heightImage: 300.0,
       ),
     ];
 
