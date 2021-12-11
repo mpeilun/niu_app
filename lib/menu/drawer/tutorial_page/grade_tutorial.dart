@@ -42,7 +42,7 @@ class _GradeTutorialPageState extends State<GradeTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "期中成績",
-        marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
@@ -62,7 +62,7 @@ class _GradeTutorialPageState extends State<GradeTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "期末成績",
-        marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
@@ -81,7 +81,7 @@ class _GradeTutorialPageState extends State<GradeTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "學期預警",
-        marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,

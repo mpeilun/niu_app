@@ -42,7 +42,7 @@ class _TimeTableTutorialPageState extends State<TimeTableTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "週週課表",
-        marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
@@ -61,7 +61,7 @@ class _TimeTableTutorialPageState extends State<TimeTableTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "重要事項",
-        marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,

@@ -42,7 +42,7 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "多元時數",
-        marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
@@ -61,7 +61,7 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "各類門檻",
-        marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,

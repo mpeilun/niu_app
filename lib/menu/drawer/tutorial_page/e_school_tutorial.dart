@@ -42,7 +42,7 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "我的課程",
-        marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color:
           themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
@@ -62,7 +62,7 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "我的作業",
-        marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
@@ -82,7 +82,7 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "課程公告",
-        marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
@@ -102,7 +102,7 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "開始上課",
-        marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
@@ -122,7 +122,7 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "成績資訊",
-        marginTitle: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.025),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
