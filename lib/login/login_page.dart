@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:niu_app/components/login_loading.dart';
+import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/login/studio_info.dart';
 import 'package:niu_app/menu/notification/notification_webview.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
 import 'package:niu_app/provider/info_provider.dart';
 import 'package:provider/src/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login_method.dart';
@@ -60,6 +62,9 @@ class _LoginPageState extends State<LoginPage> {
             loadDataFormPrefs(context);
             runNotificationWebViewWebView(context, null);
             Navigator.pop(context);
+            Future.delayed(Duration(milliseconds: 500), () {
+              showToast('左上抽屜下滑，可查看使用「說明」！');
+            });
           },
           theme: LoginTheme(
             buttonTheme: LoginButtonTheme(splashColor: Colors.grey),

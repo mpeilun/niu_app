@@ -177,7 +177,7 @@ class _DrawerPageState extends State<DrawerPage> {
             height: 20,
           ),
           Consumer<DarkThemeProvider>(builder: (context, change, child) {
-            return true //change.doneForm
+            return change.doneForm
                 ? Stack(alignment: Alignment.center, children: [
                     Container(
                       decoration: BoxDecoration(
@@ -193,8 +193,12 @@ class _DrawerPageState extends State<DrawerPage> {
                         duration: Duration(milliseconds: 350),
                         startIconColor: Theme.of(context).iconTheme.color,
                         endIconColor: Theme.of(context).iconTheme.color,
-                        startIcon: change.darkTheme ? Icons.dark_mode : Icons.light_mode,
-                        endIcon: change.darkTheme ? Icons.dark_mode : Icons.light_mode,
+                        startIcon: change.darkTheme
+                            ? Icons.dark_mode
+                            : Icons.light_mode,
+                        endIcon: change.darkTheme
+                            ? Icons.dark_mode
+                            : Icons.light_mode,
                         controller: change.controller,
                         size: 40.0,
                         onEndIconPress: () {
