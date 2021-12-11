@@ -234,15 +234,11 @@ javascript: (
                   this.url = url.toString();
                 });
                 await controller.evaluateJavascript(source: js);
-                if (url.toString().contains('formResponse') &&
-                    await controller.evaluateJavascript(
-                            source:
-                                'document.querySelector("body > div.freebirdFormviewerViewFormContentWrapper > div:nth-child(2) > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewResponseConfirmationMessage")') !=
-                        null &&
-                    submitCount != 2) {
+                if (url.toString().contains('formResponse')) {
                   submitCount++;
                   print('--- submitCount ---' + submitCount.toString());
-                } else if (submitCount == 2) {
+                }
+                if (submitCount == 2) {
                   print('--- 成功送出 ---');
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
