@@ -7,6 +7,7 @@ import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io' show Platform;
 
 void toDoFormAlert(BuildContext context, bool isDark) {
   Alert(
@@ -238,16 +239,30 @@ javascript: (
                   submitCount++;
                   print('--- submitCount ---' + submitCount.toString());
                 }
-                if (submitCount == 2) {
-                  print('--- 成功送出 ---');
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.setBool('isDoneForm', true);
-                  context.read<DarkThemeProvider>().asyncDoneForm();
-                  Navigator.pop(context);
-                  Future.delayed(Duration(milliseconds: 500), () async {
-                    showToast('成功送出 (並成功解鎖黑色主題，可在左上方抽屜，滑至最下方開啟(太陽ICON))');
-                  });
+                if (Platform.isIOS) {
+                  if (submitCount == 2) {
+                    print('--- 成功送出 ---');
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setBool('isDoneForm', true);
+                    context.read<DarkThemeProvider>().asyncDoneForm();
+                    Navigator.pop(context);
+                    Future.delayed(Duration(milliseconds: 500), () async {
+                      showToast('成功送出 (並成功解鎖黑色主題，可在左上方抽屜，滑至最下方開啟(太陽ICON))');
+                    });
+                  }
+                } else {
+                  if (submitCount == 3) {
+                    print('--- 成功送出 ---');
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setBool('isDoneForm', true);
+                    context.read<DarkThemeProvider>().asyncDoneForm();
+                    Navigator.pop(context);
+                    Future.delayed(Duration(milliseconds: 500), () async {
+                      showToast('成功送出 (並成功解鎖黑色主題，可在左上方抽屜，滑至最下方開啟(太陽ICON))');
+                    });
+                  }
                 }
               },
               onLoadError: (controller, url, code, message) {},
