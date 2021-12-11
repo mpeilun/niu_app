@@ -235,11 +235,11 @@ javascript: (
                   this.url = url.toString();
                 });
                 await controller.evaluateJavascript(source: js);
-                if (url.toString().contains('formResponse')) {
-                  submitCount++;
-                  print('--- submitCount ---' + submitCount.toString());
-                }
                 if (Platform.isIOS) {
+                  if (url.toString().contains('formResponse')) {
+                    submitCount++;
+                    print('--- submitCount ---' + submitCount.toString());
+                  }
                   if (submitCount == 2) {
                     print('--- 成功送出 ---');
                     SharedPreferences prefs =
@@ -252,6 +252,14 @@ javascript: (
                     });
                   }
                 } else {
+                  if (await controller.evaluateJavascript(source: '''
+                document.querySelector("body > div.freebirdFormviewerViewFormContentWrapper > div:nth-child(2) > div.freebirdFormviewerViewFormCard.exportFormCard > div > div.freebirdFormviewerViewResponseConfirmationMessage")
+                    ''') != null) {
+                    if (url.toString().contains('formResponse')) {
+                      submitCount++;
+                      print('--- submitCount ---' + submitCount.toString());
+                    }
+                  }
                   if (submitCount == 3) {
                     print('--- 成功送出 ---');
                     SharedPreferences prefs =
