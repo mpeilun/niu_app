@@ -194,33 +194,31 @@ class TutorialItem extends StatelessWidget {
             SizedBox(
               width: screenSizeWidth * 0.05,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  content,
-                  style: TextStyle(
-                      color: themeChange.darkTheme
-                          ? Colors.grey.shade400
-                          : Colors.grey[600]),
-                ),
-              ],
-            ),
             Expanded(
-                child: Container(
-              child: Icon(
-                Icons.keyboard_arrow_right,
-                color: themeChange.darkTheme
-                    ? Color(0xe0ffffff)
-                    : Colors.grey.shade600,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    title,
+                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    content,
+                    style: TextStyle(
+                        color: themeChange.darkTheme
+                            ? Colors.grey.shade400
+                            : Colors.grey[600]),
+                  ),
+                ],
               ),
-              alignment: Alignment.centerRight,
-            ))
+            ),
+            Icon(
+            Icons.keyboard_arrow_right,
+            color: themeChange.darkTheme
+              ? Color(0xe0ffffff)
+              : Colors.grey.shade600,
+            )
           ],
         ),
       ),
