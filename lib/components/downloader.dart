@@ -37,12 +37,16 @@ Future<void> download(Uri uri, BuildContext context, String? title) async {
       content: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 10.0,),
+          SizedBox(
+            height: 10.0,
+          ),
           Text(
             "是否要下載此檔案至裝置？",
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 10.0,),
+          SizedBox(
+            height: 10.0,
+          ),
           Text(
             '$title',
             textAlign: TextAlign.center,
@@ -151,10 +155,26 @@ Future<void> download(Uri uri, BuildContext context, String? title) async {
     ).show();
   } else if (await Permission.storage.isDenied) {
     Alert(
+      closeIcon: Icon(Icons.close, color: Colors.grey),
       context: context,
       type: AlertType.error,
-      title: "無權限存取，無法使用此功能",
-      desc: "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
+      // title: "無權限存取，無法使用此功能",
+      // desc: "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 10.0,),
+          Text(
+            "無權限存取，無法使用此功能",
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 10.0,),
+          Text(
+            "請在設定中點選 => 權限  => 允許\"檔案和媒體\"權限",
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
       buttons: [
         DialogButton(
           child: Text(
