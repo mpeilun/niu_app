@@ -177,7 +177,7 @@ class _DrawerPageState extends State<DrawerPage> {
             height: 20,
           ),
           Consumer<DarkThemeProvider>(builder: (context, change, child) {
-            return true //change.doneForm
+            return change.doneForm
                 ? Stack(alignment: Alignment.center, children: [
                     Container(
                       decoration: BoxDecoration(
