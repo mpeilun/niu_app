@@ -112,7 +112,7 @@ class _TutorialPageState extends State<TutorialPage>
       ),
       Tutorial(
         icon: MenuIcon.icon_zuvio,
-        title: 'Zuvio',
+        title: 'ZUVIO',
         content: '上課點名、繳交作業的好助手',
         onTap: () {
           Navigator.push(

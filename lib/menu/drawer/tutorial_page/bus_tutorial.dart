@@ -85,7 +85,7 @@ class _BusTutorialPageState extends State<BusTutorialPage> {
     ];
     return Scaffold(
       appBar: AppBar(
-        title: Text('活動報名'),
+        title: Text('公車動態'),
       ),
       body: SafeArea(
         child: new IntroSlider(
