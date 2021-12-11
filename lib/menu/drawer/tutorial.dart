@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:niu_app/components/menuIcon.dart';
+import 'package:niu_app/graduation/graduation_page.dart';
 import 'package:niu_app/menu/drawer/tutorial_page/e_school_tutorial.dart';
 import 'package:niu_app/menu/drawer/tutorial_page/event_tutorial.dart';
+import 'package:niu_app/menu/drawer/tutorial_page/grade_tutorial.dart';
+import 'package:niu_app/menu/drawer/tutorial_page/graduation.dart';
+import 'package:niu_app/menu/drawer/tutorial_page/timetable_tutorial.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -48,13 +52,25 @@ class _TutorialPageState extends State<TutorialPage>
         icon: MenuIcon.icon_grades,
         title: '成績查詢',
         content: '對自己的成績一目瞭然',
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => GradeTutorialPage(),
+                  maintainState: false));
+        },
       ),
       Tutorial(
         icon: MenuIcon.icon_timetable,
         title: '每週課表',
         content: '掌握每一門課程',
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TimeTableTutorialPage(),
+                  maintainState: false));
+        },
       ),
       Tutorial(
         icon: MenuIcon.icon_event,
@@ -72,13 +88,13 @@ class _TutorialPageState extends State<TutorialPage>
         icon: MenuIcon.icon_graduation,
         title: '畢業門檻',
         content: '深入了解自己的畢業資格',
-        onTap: () {},
-      ),
-      Tutorial(
-        icon: MenuIcon.icon_e_school,
-        title: '選課系統',
-        content: 'Coming Soon',
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => GraduationTourPage(),
+                  maintainState: false));
+        },
       ),
       Tutorial(
         icon: MenuIcon.icon_bus,
@@ -90,6 +106,12 @@ class _TutorialPageState extends State<TutorialPage>
         icon: MenuIcon.icon_zuvio,
         title: 'Zuvio',
         content: '上課點名、繳交作業的好助手',
+        onTap: () {},
+      ),
+      Tutorial(
+        icon: MenuIcon.icon_e_school,
+        title: '選課系統',
+        content: 'Coming Soon',
         onTap: () {},
       ),
     ];
