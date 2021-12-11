@@ -4,7 +4,7 @@ import 'package:niu_app/graduation/graduation_page.dart';
 import 'package:niu_app/menu/drawer/tutorial_page/e_school_tutorial.dart';
 import 'package:niu_app/menu/drawer/tutorial_page/event_tutorial.dart';
 import 'package:niu_app/menu/drawer/tutorial_page/grade_tutorial.dart';
-import 'package:niu_app/menu/drawer/tutorial_page/graduation.dart';
+import 'package:niu_app/menu/drawer/tutorial_page/graduation_tutorial.dart';
 import 'package:niu_app/menu/drawer/tutorial_page/timetable_tutorial.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:provider/provider.dart';
