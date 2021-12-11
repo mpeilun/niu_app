@@ -250,7 +250,7 @@ javascript: (
                   context.read<DarkThemeProvider>().asyncDoneForm();
                   Navigator.pop(context);
                   Future.delayed(Duration(milliseconds: 500), () async {
-                    showToast('成功送出 (並成功解鎖黑色主題，可在設定中開啟)');
+                    showToast('成功送出 (並成功解鎖黑色主題，可在左上方抽屜，滑至最下方開啟(太陽ICON))');
                   });
                 }
               },
