@@ -7,13 +7,12 @@ class EventSignedRefreshProvider with ChangeNotifier {
   List<EventSigned> get data => _data;
 
   void setData(List<EventSigned> data) {
-    _data = data;
+    _data.clear();
+    _data = List.from(data);
     notifyListeners();
   }
   void clearData(){
     _data.clear();
-    print(_data);
-    print("123456789");
     notifyListeners();
   }
 }

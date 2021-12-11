@@ -6,16 +6,17 @@ import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/school_event/components/custom_list_info.dart';
 import 'package:provider/provider.dart';
 
-class GraduationTourPage extends StatefulWidget {
-  const GraduationTourPage({Key? key}) : super(key: key);
+class ZuvioTutorialPage extends StatefulWidget {
+  const ZuvioTutorialPage({Key? key}) : super(key: key);
 
   @override
-  _GraduationTourPageState createState() => _GraduationTourPageState();
+  _ZuvioTutorialPageState createState() => _ZuvioTutorialPageState();
 }
 
-class _GraduationTourPageState extends State<GraduationTourPage> {
+class _ZuvioTutorialPageState extends State<ZuvioTutorialPage> {
   late var screenSizeWidth = MediaQuery.of(context).size.width;
   late var screenSizeHeight = MediaQuery.of(context).size.height;
+  late Function goToTab;
 
   @override
   void initState() {
@@ -37,56 +38,54 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
 
   @override
   Widget build(BuildContext context) {
+    Color? iconColor = Theme.of(context).iconTheme.color;
     final themeChange = Provider.of<DarkThemeProvider>(context);
     List<Slide> slides = [
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: "多元時數",
+        title: 'Zuvio',
         marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
-        description: "圖形化顯示，在校之多元時數，想了解時數登記的完整細項，可點選右方「詳細」查看。",
+        description: '進入Zuvio後可以在下方選擇學習(課程列表)、訊息、我的(個人資訊)三個分頁，在「學習」分頁中可點選欲查看的課程。',
+        marginDescription: EdgeInsets.fromLTRB(20.0, screenSizeHeight*0.05, 20.0, .0),
         styleDescription: TextStyle(
           color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
           fontSize: 20.0,
         ),
         pathImage: themeChange.darkTheme
-            ? "assets/tutorial/graduation/graduation_black.png"
-            : "assets/tutorial/graduation/graduation_white.png",
+            ? "assets/tutorial/zuvio/zuvio_black.png"
+            : "assets/tutorial/zuvio/zuvio_white.png",
         heightImage: 300.0,
-        marginDescription:
-        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: "各類門檻",
+        title: 'Zuvio',
         marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
-        description: "顯示畢業所需的各類門檻目標，快速掌握通過狀態",
+        description:
+        '進入課程後，下方有五個分頁，可以根據自己的需求進行操作，右下角房子圖案的按鈕可以回到主畫面。',
+        marginDescription: EdgeInsets.fromLTRB(20.0, screenSizeHeight*0.05, 20.0, .0),
         styleDescription: TextStyle(
           color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
           fontSize: 20.0,
         ),
         pathImage: themeChange.darkTheme
-            ? "assets/tutorial/graduation/graduation2_black.png"
-            : "assets/tutorial/graduation/graduation2_white.png",
+            ? "assets/tutorial/zuvio/zuvio2_black.png"
+            : "assets/tutorial/zuvio/zuvio2_white.png",
         heightImage: 300.0,
-        marginDescription:
-        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
     ];
-
-    Color? iconColor = Theme.of(context).iconTheme.color;
     return Scaffold(
       appBar: AppBar(
-        title: Text('成績查詢'),
+        title: Text('活動報名'),
       ),
       body: SafeArea(
         child: new IntroSlider(
@@ -124,6 +123,9 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
           // Tabs
           // listCustomTabs: this.renderListCustomTabs(),
           slides: slides,
+          refFuncGoToTab: (refFunc) {
+            this.goToTab = refFunc;
+          },
 
           // Behavior
           scrollPhysics: BouncingScrollPhysics(),

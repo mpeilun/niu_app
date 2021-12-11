@@ -6,16 +6,17 @@ import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/school_event/components/custom_list_info.dart';
 import 'package:provider/provider.dart';
 
-class GraduationTourPage extends StatefulWidget {
-  const GraduationTourPage({Key? key}) : super(key: key);
+class BusTutorialPage extends StatefulWidget {
+  const BusTutorialPage({Key? key}) : super(key: key);
 
   @override
-  _GraduationTourPageState createState() => _GraduationTourPageState();
+  _BusTutorialPageState createState() => _BusTutorialPageState();
 }
 
-class _GraduationTourPageState extends State<GraduationTourPage> {
+class _BusTutorialPageState extends State<BusTutorialPage> {
   late var screenSizeWidth = MediaQuery.of(context).size.width;
   late var screenSizeHeight = MediaQuery.of(context).size.height;
+  late Function goToTab;
 
   @override
   void initState() {
@@ -37,56 +38,54 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
 
   @override
   Widget build(BuildContext context) {
+    Color? iconColor = Theme.of(context).iconTheme.color;
     final themeChange = Provider.of<DarkThemeProvider>(context);
     List<Slide> slides = [
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: "多元時數",
+        title: '公車動態',
         marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
-        description: "圖形化顯示，在校之多元時數，想了解時數登記的完整細項，可點選右方「詳細」查看。",
+        description: '在這個頁面可以輕鬆取得所有經過宜大的公車路線，點擊其中之一即可查看即時資訊。',
+        marginDescription: EdgeInsets.fromLTRB(20.0, screenSizeHeight*0.05, 20.0, .0),
         styleDescription: TextStyle(
           color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
           fontSize: 20.0,
         ),
         pathImage: themeChange.darkTheme
-            ? "assets/tutorial/graduation/graduation_black.png"
-            : "assets/tutorial/graduation/graduation_white.png",
+            ? "assets/tutorial/bus/bus_black.png"
+            : "assets/tutorial/bus/bus_white.png",
         heightImage: 300.0,
-        marginDescription:
-        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: "各類門檻",
+        title: '公車動態',
         marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
-        description: "顯示畢業所需的各類門檻目標，快速掌握通過狀態",
+        description:
+        '這個頁面可以查看該條路線的即時動態、票價、時刻表與路線簡圖。',
+        marginDescription: EdgeInsets.fromLTRB(20.0, screenSizeHeight*0.05, 20.0, .0),
         styleDescription: TextStyle(
           color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
           fontSize: 20.0,
         ),
         pathImage: themeChange.darkTheme
-            ? "assets/tutorial/graduation/graduation2_black.png"
-            : "assets/tutorial/graduation/graduation2_white.png",
+            ? "assets/tutorial/bus/bus2_black.png"
+            : "assets/tutorial/bus/bus2_white.png",
         heightImage: 300.0,
-        marginDescription:
-        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
     ];
-
-    Color? iconColor = Theme.of(context).iconTheme.color;
     return Scaffold(
       appBar: AppBar(
-        title: Text('成績查詢'),
+        title: Text('活動報名'),
       ),
       body: SafeArea(
         child: new IntroSlider(
@@ -124,6 +123,9 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
           // Tabs
           // listCustomTabs: this.renderListCustomTabs(),
           slides: slides,
+          refFuncGoToTab: (refFunc) {
+            this.goToTab = refFunc;
+          },
 
           // Behavior
           scrollPhysics: BouncingScrollPhysics(),

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:niu_app/components/menuIcon.dart';
-import 'package:niu_app/graduation/graduation_page.dart';
+import 'package:niu_app/components/toast.dart';
+import 'package:niu_app/menu/drawer/tutorial_page/bus_tutorial.dart';
 import 'package:niu_app/menu/drawer/tutorial_page/e_school_tutorial.dart';
 import 'package:niu_app/menu/drawer/tutorial_page/event_tutorial.dart';
 import 'package:niu_app/menu/drawer/tutorial_page/grade_tutorial.dart';
 import 'package:niu_app/menu/drawer/tutorial_page/graduation_tutorial.dart';
 import 'package:niu_app/menu/drawer/tutorial_page/timetable_tutorial.dart';
+import 'package:niu_app/menu/drawer/tutorial_page/zuvio_tutorial.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -100,19 +102,33 @@ class _TutorialPageState extends State<TutorialPage>
         icon: MenuIcon.icon_bus,
         title: '公車動態',
         content: '輕鬆查看宜大的即時大眾運輸資訊',
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BusTutorialPage(),
+                  maintainState: false));
+        },
       ),
       Tutorial(
         icon: MenuIcon.icon_zuvio,
         title: 'Zuvio',
         content: '上課點名、繳交作業的好助手',
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ZuvioTutorialPage(),
+                  maintainState: false));
+        },
       ),
       Tutorial(
         icon: MenuIcon.icon_e_school,
         title: '選課系統',
         content: 'Coming Soon',
-        onTap: () {},
+        onTap: () {
+          showToast('Coming Soon');
+        },
       ),
     ];
     return ListView.separated(
@@ -227,7 +243,7 @@ class RadiantGradientMask extends StatelessWidget {
           radius: 0.5,
           colors: themeChange.darkTheme
               ? <Color>[Colors.white, Colors.white]
-              : <Color>[Colors.pink, Colors.blue],
+              : <Color>[Colors.indigo, Colors.lightBlue.shade400],
           tileMode: TileMode.mirror,
         ).createShader(bounds);
       },

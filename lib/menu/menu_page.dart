@@ -95,7 +95,7 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final title = ['首頁', '公告', '行事曆', '設定', '關於', '聯絡我們', '使用教學'];
+    final title = ['首頁', '公告', '行事曆', '設定', '關於', '聯絡我們', '使用說明'];
     final pages = [
       menuPage(),
       AnnouncementPage(),

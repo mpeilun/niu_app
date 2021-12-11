@@ -20,7 +20,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
   String url = "";
   bool dataLoaded = false;
   bool refreshLoaded = true;
-  List<EventSigned> data = [];
+  List<EventSigned> tmp = [];
 
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
   late final signedListChange =
@@ -50,6 +50,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
   }
 
   Future<void> getEventSignedList() async {
+    tmp.clear();
     var end = await headlessWebView?.webViewController.evaluateJavascript(
         source:
             'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody").childElementCount');
@@ -93,7 +94,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
       String js = await headlessWebView?.webViewController.evaluateJavascript(
           source:
               'document.querySelector("#ctl00_MainContentPlaceholder_gvGetSign > tbody > tr:nth-child($i) > td:nth-child(1) > a").href');
-      data.add(EventSigned(
+      tmp.add(EventSigned(
         name: name,
         eventTimeStart: eventTimeStart,
         eventTimeEnd: eventTimeEnd,
@@ -103,9 +104,9 @@ class _EventSignedPageState extends State<EventSignedPage> {
         js: js,
       ));
     }
-    signedListChange.setData(data);
+    signedListChange.setData(tmp);
 
-      dataLoaded = true;
+    dataLoaded = true;
     refreshLoaded = true;
   }
 
@@ -168,11 +169,9 @@ class _EventSignedPageState extends State<EventSignedPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<EventSigned> data = signedListChange.data;
     if (signedListChange.data.isEmpty) {
       print('需要刷新－－－－－－－－－－－－');
       refresh();
-      data = signedListChange.data;
     }
     return KeepAlivePage(
       child: dataLoaded
@@ -182,7 +181,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
         child: refreshLoaded
             ? CustomEventSignedCard(
           key: PageStorageKey<String>('event'),
-          data: data,
+          data: signedListChange.data,
         )
             : Container())
           : Container(

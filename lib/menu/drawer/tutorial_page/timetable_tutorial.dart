@@ -57,6 +57,8 @@ class _TimeTableTutorialPageState extends State<TimeTableTutorialPage> {
             ? "assets/tutorial/timetable/timetable_black.png"
             : "assets/tutorial/timetable/timetable_white.png",
         heightImage: 300.0,
+        marginDescription:
+        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -77,6 +79,8 @@ class _TimeTableTutorialPageState extends State<TimeTableTutorialPage> {
             ? "assets/tutorial/timetable/timetableSce_black.png"
             : "assets/tutorial/timetable/timetableSce_white.png",
         heightImage: 300.0,
+        marginDescription:
+        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
     ];
 
