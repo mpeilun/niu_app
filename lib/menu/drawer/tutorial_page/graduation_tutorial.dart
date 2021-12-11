@@ -86,7 +86,7 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
     Color? iconColor = Theme.of(context).iconTheme.color;
     return Scaffold(
       appBar: AppBar(
-        title: Text('成績查詢'),
+        title: Text('畢業門檻'),
       ),
       body: SafeArea(
         child: new IntroSlider(

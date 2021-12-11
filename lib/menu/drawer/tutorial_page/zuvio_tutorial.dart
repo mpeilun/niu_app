@@ -43,14 +43,14 @@ class _ZuvioTutorialPageState extends State<ZuvioTutorialPage> {
     List<Slide> slides = [
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: 'Zuvio',
+        title: 'ZUVIO',
         marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
-        description: '進入Zuvio後可以在下方選擇學習(課程列表)、訊息、我的(個人資訊)三個分頁，在「學習」分頁中可點選欲查看的課程。',
+        description: '進入ZUVIO後可以在下方選擇學習(課程列表)、訊息、我的(個人資訊)三個分頁，在「學習」分頁中可點選欲查看的課程。',
         marginDescription: EdgeInsets.fromLTRB(20.0, screenSizeHeight*0.05, 20.0, .0),
         styleDescription: TextStyle(
           color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
@@ -85,7 +85,7 @@ class _ZuvioTutorialPageState extends State<ZuvioTutorialPage> {
     ];
     return Scaffold(
       appBar: AppBar(
-        title: Text('活動報名'),
+        title: Text('ZUVIO'),
       ),
       body: SafeArea(
         child: new IntroSlider(
