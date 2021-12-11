@@ -243,7 +243,7 @@ class RadiantGradientMask extends StatelessWidget {
           radius: 0.5,
           colors: themeChange.darkTheme
               ? <Color>[Colors.white, Colors.white]
-              : <Color>[Colors.pink, Colors.blue],
+              : <Color>[Colors.indigo, Colors.lightBlue.shade400],
           tileMode: TileMode.mirror,
         ).createShader(bounds);
       },
