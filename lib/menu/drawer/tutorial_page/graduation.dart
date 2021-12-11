@@ -44,7 +44,7 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
         title: "多元時數",
         marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
         styleTitle: TextStyle(
-          color: Colors.blue.shade200,
+          color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
@@ -63,7 +63,7 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
         title: "各類門檻",
         marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
         styleTitle: TextStyle(
-          color: Colors.blue.shade200,
+          color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),

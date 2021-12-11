@@ -44,7 +44,7 @@ class _TimeTableTutorialPageState extends State<TimeTableTutorialPage> {
         title: "週週課表",
         marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
         styleTitle: TextStyle(
-          color: Colors.blue.shade200,
+          color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
@@ -63,7 +63,7 @@ class _TimeTableTutorialPageState extends State<TimeTableTutorialPage> {
         title: "重要事項",
         marginTitle: const EdgeInsets.symmetric(vertical: 24.0),
         styleTitle: TextStyle(
-          color: Colors.blue.shade200,
+          color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
