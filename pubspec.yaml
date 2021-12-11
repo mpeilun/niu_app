@@ -103,6 +103,9 @@ flutter:
     - assets/tutorial/bus/
     - assets/tutorial/zuvio/
     - assets/tutorial/event/
+    - assets/tutorial/timetable/
+    - assets/tutorial/grade/
+    - assets/tutorial/graduation/
 
   fonts:
     - family: NotoSans
