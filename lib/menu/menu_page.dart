@@ -467,7 +467,9 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount:
                               orientation == Orientation.portrait ? 3 : 3,
-                          mainAxisExtent: smallScreen ? 105 : MediaQuery.of(context).size.height * 0.175,
+                          mainAxisExtent: smallScreen
+                              ? 105
+                              : MediaQuery.of(context).size.height * 0.175,
                         ),
                         addRepaintBoundaries: false,
                         itemCount: icons.length,
@@ -503,6 +505,9 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
   }
 
   _checkAccount() async {
+    //DEBUG
+    loginFinished();
+    return null;
     prefs = await SharedPreferences.getInstance();
     if (prefs.get('id') == null || prefs.get('pwd') == null) {
       Future.delayed(Duration(milliseconds: 1000), () async {
