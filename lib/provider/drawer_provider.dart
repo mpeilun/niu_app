@@ -31,7 +31,7 @@ class DrawerProvider with ChangeNotifier {
 
   void closeDrawer() {
     xOffset = 0;
-    drawerXOffset = -115.0;
+    drawerXOffset = -110.0;
     isDrawerOpen = false;
     _controller.reverse();
     notifyListeners();
