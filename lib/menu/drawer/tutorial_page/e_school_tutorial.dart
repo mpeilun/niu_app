@@ -78,23 +78,6 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
             : "assets/tutorial/e_school/work_white.png",
         heightImage: 300.0,
       ),
-      Slide(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: "COFFEE SHOP",
-        styleTitle: TextStyle(
-          color: Color(0xff3da4ab),
-          fontSize: 30.0,
-          fontWeight: FontWeight.bold,
-        ),
-        description:
-            "Much evil soon high in hope do view. Out may few northward believing attempted. Yet timed being songs marry one defer men our. Although finished blessing do of",
-        styleDescription: TextStyle(
-          color: Color(0xfffe9c8f),
-          fontSize: 20.0,
-          fontStyle: FontStyle.italic,
-        ),
-        pathImage: "assets/ic_launcher_niu.png",
-      ),
     ];
 
     Color? iconColor = Theme.of(context).iconTheme.color;
