@@ -57,6 +57,8 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
             ? "assets/tutorial/graduation/graduation_black.png"
             : "assets/tutorial/graduation/graduation_white.png",
         heightImage: 300.0,
+        marginDescription:
+        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -76,6 +78,8 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
             ? "assets/tutorial/graduation/graduation2_black.png"
             : "assets/tutorial/graduation/graduation2_white.png",
         heightImage: 300.0,
+        marginDescription:
+        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
     ];
 

@@ -58,6 +58,8 @@ class _GradeTutorialPageState extends State<GradeTutorialPage> {
             ? "assets/tutorial/grade/gradeMid_black.png"
             : "assets/tutorial/grade/gradeMid_white.png",
         heightImage: 300.0,
+        marginDescription:
+        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -77,6 +79,8 @@ class _GradeTutorialPageState extends State<GradeTutorialPage> {
             ? "assets/tutorial/grade/gradeFin_black.png"
             : "assets/tutorial/grade/gradeFin_white.png",
         heightImage: 300.0,
+        marginDescription:
+        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -96,6 +100,8 @@ class _GradeTutorialPageState extends State<GradeTutorialPage> {
             ? "assets/tutorial/grade/gradeWarm_black.png"
             : "assets/tutorial/grade/gradeWarm_white.png",
         heightImage: 300.0,
+        marginDescription:
+        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
     ];
 
