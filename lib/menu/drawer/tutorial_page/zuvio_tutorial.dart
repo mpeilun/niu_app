@@ -63,7 +63,7 @@ class _ZuvioTutorialPageState extends State<ZuvioTutorialPage> {
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: 'Zuvio',
+        title: 'ZUVIO',
         marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
         styleTitle: TextStyle(
           color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
