@@ -180,7 +180,7 @@ class _EventSignedPageState extends State<EventSignedPage> {
         onRefresh: refresh,
         child: refreshLoaded
             ? CustomEventSignedCard(
-          key: PageStorageKey<String>('event'),
+          key: PageStorageKey<String>('event_signed'),
           data: signedListChange.data,
         )
             : Container())
@@ -201,7 +201,6 @@ class _EventSignedPageState extends State<EventSignedPage> {
                 ],
               ),
             )
-
     );
   }
 }
