@@ -225,7 +225,7 @@ class _CourseSelectState extends State<CourseSelect> {
           }
           return false;
         },
-        shouldAddCallbacks: true);
+        shouldAddCallback: true);
   }
 
   void _shouldRunWebView() async {

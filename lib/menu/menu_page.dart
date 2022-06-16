@@ -303,13 +303,13 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
             }
             return isOpen;
           },
-          shouldAddCallbacks: true);
+          shouldAddCallback: true);
     } else {
       return ConditionalWillPopScope(
         onWillPop: () async {
           return false;
         },
-        shouldAddCallbacks: true,
+        shouldAddCallback: true,
         child: Loading(),
       );
     }

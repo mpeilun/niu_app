@@ -269,6 +269,6 @@ class _ESchoolHomeWorkState extends State<ESchoolHomeWork> {
           }
           return false;
         },
-        shouldAddCallbacks: true);
+        shouldAddCallback: true);
   }
 }

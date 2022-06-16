@@ -227,6 +227,6 @@ class _BusState extends State<Bus> {
           }
           return false;
         },
-        shouldAddCallbacks: true);
+        shouldAddCallback: true);
   }
 }

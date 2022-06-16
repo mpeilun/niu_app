@@ -370,6 +370,6 @@ class _ZuvioState extends State<Zuvio> {
           }
           return false;
         },
-        shouldAddCallbacks: true);
+        shouldAddCallback: true);
   }
 }

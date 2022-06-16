@@ -87,6 +87,6 @@ class _TestLoginWebViewState extends State<TestLoginWebView> {
         onWillPop: () async {
           return true;
         },
-        shouldAddCallbacks: true);
+        shouldAddCallback: true);
   }
 }

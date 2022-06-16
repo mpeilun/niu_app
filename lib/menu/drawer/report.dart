@@ -1,13 +1,11 @@
 import 'dart:io' show Platform;
 
-import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/menu/icons/custom_icons.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
-import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -567,27 +565,27 @@ class _PageBugReport extends State<PageBugReport> {
                                     );
                                     Dio dio = new Dio(options);
 
-                                    DeviceInfoPlugin deviceInfo =
-                                        DeviceInfoPlugin();
-                                    PackageInfo info =
-                                        await PackageInfo.fromPlatform();
+                                    // DeviceInfoPlugin deviceInfo =
+                                    //     DeviceInfoPlugin();
+                                    // PackageInfo info =
+                                    //     await PackageInfo.fromPlatform();
 
                                     String hardware = '';
                                     String osVersion = '';
-                                    String appVersion = info.version;
+                                    // String appVersion = info.version;
 
-                                    if (Platform.isAndroid) {
-                                      AndroidDeviceInfo android =
-                                          await deviceInfo.androidInfo;
-                                      hardware = android.model;
-                                      osVersion =
-                                          android.version.sdkInt.toString();
-                                    } else if (Platform.isIOS) {
-                                      IosDeviceInfo ios =
-                                          await deviceInfo.iosInfo;
-                                      hardware = ios.utsname.machine;
-                                      osVersion = ios.systemVersion;
-                                    }
+                                    // if (Platform.isAndroid) {
+                                    //   AndroidDeviceInfo android =
+                                    //       await deviceInfo.androidInfo;
+                                    //   hardware = android.model;
+                                    //   osVersion =
+                                    //       android.version.sdkInt.toString();
+                                    // } else if (Platform.isIOS) {
+                                    //   IosDeviceInfo ios =
+                                    //       await deviceInfo.iosInfo;
+                                    //   hardware = ios.utsname.machine;
+                                    //   osVersion = ios.systemVersion;
+                                    // }
 
                                     FormData formData = new FormData.fromMap({
                                       'entry.664827657':
@@ -595,7 +593,7 @@ class _PageBugReport extends State<PageBugReport> {
                                       'entry.1169887801': _contact, //內容
                                       'entry.1770154643': hardware, //系統
                                       'entry.240297325': osVersion, //系統版本
-                                      'entry.155630872': appVersion, //app版本
+                                      // 'entry.155630872': appVersion, //app版本
                                     });
 
                                     try {

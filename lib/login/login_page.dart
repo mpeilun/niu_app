@@ -84,6 +84,6 @@ class _LoginPageState extends State<LoginPage> {
         onWillPop: () async {
           return false;
         },
-        shouldAddCallbacks: true);
+        shouldAddCallback: true);
   }
 }

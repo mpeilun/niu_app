@@ -1,5 +1,6 @@
 import 'package:animate_icons/animate_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/login/login_page.dart';
 import 'package:niu_app/menu/icons/my_flutter_app_icons.dart';
 import 'package:niu_app/menu/satisfaction_survey/form.dart';
@@ -99,8 +100,9 @@ class _DrawerPageState extends State<DrawerPage> {
               icon: MyFlutterApp.megaphone,
               text: '公告',
               onTap: () {
-                context.read<DrawerProvider>().closeDrawer();
-                context.read<DrawerProvider>().onclick(1);
+                showToast('發生異常，維修中');
+                // context.read<DrawerProvider>().closeDrawer();
+                // context.read<DrawerProvider>().onclick(1);
               }),
           Divider(),
           createDrawerItem(

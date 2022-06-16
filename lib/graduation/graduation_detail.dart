@@ -164,7 +164,7 @@ class _GraduationDetailState extends State<GraduationDetail> {
           Navigator.pop(context);
           return true;
         },
-        shouldAddCallbacks: true);
+        shouldAddCallback: true);
   }
 
   void _shouldRunWebView() async {

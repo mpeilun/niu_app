@@ -237,6 +237,6 @@ class _GraduationHourState extends State<GraduationHour> {
           }
           return false;
         },
-        shouldAddCallbacks: true);
+        shouldAddCallback: true);
   }
 }

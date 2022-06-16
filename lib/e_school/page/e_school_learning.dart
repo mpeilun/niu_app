@@ -305,7 +305,7 @@ class _ESchoolLearningState extends State<ESchoolLearning> {
           }
           return false;
         },
-        shouldAddCallbacks: true);
+        shouldAddCallback: true);
   }
 
   Future<void> goBack() async {

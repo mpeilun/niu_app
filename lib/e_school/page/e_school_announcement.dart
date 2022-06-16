@@ -270,6 +270,6 @@ class _ESchoolAnnouncementState extends State<ESchoolAnnouncement> {
           }
           return false;
         },
-        shouldAddCallbacks: true);
+        shouldAddCallback: true);
   }
 }
