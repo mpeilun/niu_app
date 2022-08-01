@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intro_slider/dot_animation_enum.dart';
 import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/school_event/components/custom_list_info.dart';
 import 'package:provider/provider.dart';
@@ -42,9 +40,10 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "多元時數",
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
         styleTitle: TextStyle(
-          color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+          color:
+              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
@@ -57,15 +56,16 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
             ? "assets/tutorial/graduation/graduation_black.png"
             : "assets/tutorial/graduation/graduation_white.png",
         heightImage: 300.0,
-        marginDescription:
-        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+        marginDescription: EdgeInsets.fromLTRB(
+            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "各類門檻",
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
         styleTitle: TextStyle(
-          color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+          color:
+              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
@@ -78,8 +78,8 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
             ? "assets/tutorial/graduation/graduation2_black.png"
             : "assets/tutorial/graduation/graduation2_white.png",
         heightImage: 300.0,
-        marginDescription:
-        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+        marginDescription: EdgeInsets.fromLTRB(
+            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
     ];
 
@@ -119,7 +119,7 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
           // Dot indicator
           colorDot: Colors.grey,
           sizeDot: 10,
-          typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
+          typeDotAnimation: DotSliderAnimation.SIZE_TRANSITION,
 
           // Tabs
           // listCustomTabs: this.renderListCustomTabs(),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intro_slider/dot_animation_enum.dart';
 import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/school_event/components/custom_list_info.dart';
 import 'package:provider/provider.dart';
@@ -58,8 +56,8 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
             ? "assets/tutorial/e_school/lesson_black.png"
             : "assets/tutorial/e_school/lesson_white.png",
         heightImage: 300.0,
-        marginDescription:
-            EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+        marginDescription: EdgeInsets.fromLTRB(
+            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -80,8 +78,8 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
             ? "assets/tutorial/e_school/work_black.png"
             : "assets/tutorial/e_school/work_white.png",
         heightImage: 300.0,
-        marginDescription:
-            EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+        marginDescription: EdgeInsets.fromLTRB(
+            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -124,8 +122,8 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
             ? "assets/tutorial/e_school/class_black.png"
             : "assets/tutorial/e_school/class_white.png",
         heightImage: 300.0,
-        marginDescription:
-            EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+        marginDescription: EdgeInsets.fromLTRB(
+            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -146,8 +144,8 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
             ? "assets/tutorial/e_school/grade_black.png"
             : "assets/tutorial/e_school/grade_white.png",
         heightImage: 300.0,
-        marginDescription:
-            EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+        marginDescription: EdgeInsets.fromLTRB(
+            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
     ];
 
@@ -187,7 +185,7 @@ class _ESchoolTutorialPageState extends State<ESchoolTutorialPage> {
           // Dot indicator
           colorDot: Colors.grey,
           sizeDot: 10,
-          typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
+          typeDotAnimation: DotSliderAnimation.SIZE_TRANSITION,
 
           // Tabs
           // listCustomTabs: this.renderListCustomTabs(),

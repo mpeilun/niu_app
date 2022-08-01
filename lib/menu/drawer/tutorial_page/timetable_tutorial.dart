@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intro_slider/dot_animation_enum.dart';
 import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/school_event/components/custom_list_info.dart';
 import 'package:provider/provider.dart';
@@ -42,9 +40,10 @@ class _TimeTableTutorialPageState extends State<TimeTableTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "週週課表",
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
         styleTitle: TextStyle(
-          color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+          color:
+              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
@@ -57,15 +56,16 @@ class _TimeTableTutorialPageState extends State<TimeTableTutorialPage> {
             ? "assets/tutorial/timetable/timetable_black.png"
             : "assets/tutorial/timetable/timetable_white.png",
         heightImage: 300.0,
-        marginDescription:
-        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+        marginDescription: EdgeInsets.fromLTRB(
+            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "重要事項",
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
         styleTitle: TextStyle(
-          color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+          color:
+              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
@@ -79,8 +79,8 @@ class _TimeTableTutorialPageState extends State<TimeTableTutorialPage> {
             ? "assets/tutorial/timetable/timetableSce_black.png"
             : "assets/tutorial/timetable/timetableSce_white.png",
         heightImage: 300.0,
-        marginDescription:
-        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+        marginDescription: EdgeInsets.fromLTRB(
+            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
     ];
 
@@ -120,7 +120,7 @@ class _TimeTableTutorialPageState extends State<TimeTableTutorialPage> {
           // Dot indicator
           colorDot: Colors.grey,
           sizeDot: 10,
-          typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
+          typeDotAnimation: DotSliderAnimation.SIZE_TRANSITION,
 
           // Tabs
           // listCustomTabs: this.renderListCustomTabs(),

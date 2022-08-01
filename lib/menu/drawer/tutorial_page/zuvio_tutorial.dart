@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intro_slider/dot_animation_enum.dart';
 import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/school_event/components/custom_list_info.dart';
 import 'package:provider/provider.dart';
@@ -44,14 +42,17 @@ class _ZuvioTutorialPageState extends State<ZuvioTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: 'ZUVIO',
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
         styleTitle: TextStyle(
-          color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+          color:
+              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
-        description: '進入ZUVIO後可以在下方選擇學習(課程列表)、訊息、我的(個人資訊)三個分頁，在「學習」分頁中可點選欲查看的課程。',
-        marginDescription: EdgeInsets.fromLTRB(20.0, screenSizeHeight*0.05, 20.0, .0),
+        description:
+            '進入ZUVIO後可以在下方選擇學習(課程列表)、訊息、我的(個人資訊)三個分頁，在「學習」分頁中可點選欲查看的課程。',
+        marginDescription:
+            EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, .0),
         styleDescription: TextStyle(
           color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
           fontSize: 20.0,
@@ -64,15 +65,16 @@ class _ZuvioTutorialPageState extends State<ZuvioTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: 'ZUVIO',
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
         styleTitle: TextStyle(
-          color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+          color:
+              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
-        description:
-        '進入課程後，下方有五個分頁，可以根據自己的需求進行操作，右下角房子圖案的按鈕可以回到主畫面。',
-        marginDescription: EdgeInsets.fromLTRB(20.0, screenSizeHeight*0.05, 20.0, .0),
+        description: '進入課程後，下方有五個分頁，可以根據自己的需求進行操作，右下角房子圖案的按鈕可以回到主畫面。',
+        marginDescription:
+            EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, .0),
         styleDescription: TextStyle(
           color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
           fontSize: 20.0,
@@ -118,7 +120,7 @@ class _ZuvioTutorialPageState extends State<ZuvioTutorialPage> {
           // Dot indicator
           colorDot: Colors.grey,
           sizeDot: 10,
-          typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
+          typeDotAnimation: DotSliderAnimation.SIZE_TRANSITION,
 
           // Tabs
           // listCustomTabs: this.renderListCustomTabs(),

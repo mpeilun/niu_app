@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niu_app/service/LocalNotification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-class TestPage extends StatefulWidget {
 
+class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
 
   @override
@@ -35,10 +35,7 @@ class _TestPageState extends State<TestPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           LocalNotification.set(
-                DateTime.now().add(Duration(seconds: 3)),
-                "Test",
-                "Test Message"
-              );
+              DateTime.now().add(Duration(seconds: 3)), "Test", "Test Message");
         },
         child: Icon(Icons.add),
       ),
@@ -91,28 +88,25 @@ class _TestPageState extends State<TestPage> {
               },
             ),
           ),
-          OutlineButton(
+          OutlinedButton(
             child: Text("---通知---"),
-            onPressed: () async{
-              LocalNotification.set(
-                  _dateTime,
-                  title,
-                  body
-              );
+            onPressed: () async {
+              LocalNotification.set(_dateTime, title, body);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("通知發佈在 : ${_dateTime.hour}:${_dateTime.minute}:${_dateTime.second}"),
+                content: Text(
+                    "通知發佈在 : ${_dateTime.hour}:${_dateTime.minute}:${_dateTime.second}"),
               ));
             },
           ),
           SizedBox(
             height: 10,
           ),
-          OutlineButton(
+          OutlinedButton(
             child: Text("---FireBase---"),
-            onPressed: () async{
+            onPressed: () async {
               FirebaseFirestore.instance
                   .collection("testing")
-                  .add({'timestamp' : Timestamp.fromDate(DateTime.now())});
+                  .add({'timestamp': Timestamp.fromDate(DateTime.now())});
             },
           ),
         ],

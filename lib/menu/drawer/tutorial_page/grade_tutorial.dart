@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intro_slider/dot_animation_enum.dart';
 import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/school_event/components/custom_list_info.dart';
 import 'package:provider/provider.dart';
@@ -42,9 +40,10 @@ class _GradeTutorialPageState extends State<GradeTutorialPage> {
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "期中成績",
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
         styleTitle: TextStyle(
-          color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+          color:
+              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
@@ -58,15 +57,16 @@ class _GradeTutorialPageState extends State<GradeTutorialPage> {
             ? "assets/tutorial/grade/gradeMid_black.png"
             : "assets/tutorial/grade/gradeMid_white.png",
         heightImage: 300.0,
-        marginDescription:
-        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+        marginDescription: EdgeInsets.fromLTRB(
+            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "期末成績",
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
         styleTitle: TextStyle(
-          color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+          color:
+              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
@@ -79,15 +79,16 @@ class _GradeTutorialPageState extends State<GradeTutorialPage> {
             ? "assets/tutorial/grade/gradeFin_black.png"
             : "assets/tutorial/grade/gradeFin_white.png",
         heightImage: 300.0,
-        marginDescription:
-        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+        marginDescription: EdgeInsets.fromLTRB(
+            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
       Slide(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: "學期預警",
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight*0.025),
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
         styleTitle: TextStyle(
-          color: themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+          color:
+              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
           fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
@@ -100,8 +101,8 @@ class _GradeTutorialPageState extends State<GradeTutorialPage> {
             ? "assets/tutorial/grade/gradeWarm_black.png"
             : "assets/tutorial/grade/gradeWarm_white.png",
         heightImage: 300.0,
-        marginDescription:
-        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+        marginDescription: EdgeInsets.fromLTRB(
+            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
       ),
     ];
 
@@ -141,7 +142,7 @@ class _GradeTutorialPageState extends State<GradeTutorialPage> {
           // Dot indicator
           colorDot: Colors.grey,
           sizeDot: 10,
-          typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
+          typeDotAnimation: DotSliderAnimation.SIZE_TRANSITION,
 
           // Tabs
           // listCustomTabs: this.renderListCustomTabs(),
