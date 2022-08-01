@@ -12,7 +12,8 @@ class SchoolSchedule extends StatefulWidget {
 }
 
 class _SchoolScheduleState extends State<SchoolSchedule> {
-  String pdfUrl = 'http://pws.niu.edu.tw/~b0943034/110_school_timetable.pdf';
+  String pdfUrl =
+      'https://github.com/mpeilun/111_timetable/raw/main/niu_schedule.pdf';
   Future<bool> getScheduleUrl() async {
     //TODO 自動搜尋行事曆網址
     // Dio dio = new Dio();
