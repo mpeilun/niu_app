@@ -95,16 +95,16 @@ class _DrawerPageState extends State<DrawerPage> {
                 context.read<DrawerProvider>().onclick(0);
               }),
           Divider(),
-          createDrawerItem(
-              context: context,
-              icon: MyFlutterApp.megaphone,
-              text: '公告',
-              onTap: () {
-                showToast('發生異常，維修中');
-                // context.read<DrawerProvider>().closeDrawer();
-                // context.read<DrawerProvider>().onclick(1);
-              }),
-          Divider(),
+          // createDrawerItem(
+          //     context: context,
+          //     icon: MyFlutterApp.megaphone,
+          //     text: '公告',
+          //     onTap: () {
+          //       showToast('發生異常，維修中');
+          //       // context.read<DrawerProvider>().closeDrawer();
+          //       // context.read<DrawerProvider>().onclick(1);
+          //     }),
+          // Divider(),
           createDrawerItem(
               context: context,
               size: 40.0,
