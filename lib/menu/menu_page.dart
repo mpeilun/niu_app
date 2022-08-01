@@ -80,8 +80,8 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     context.read<DarkThemeProvider>().asyncDoneForm();
-    WidgetsBinding.instance!.addPostFrameCallback((_) => _checkAccount());
-    WidgetsBinding.instance!.addPostFrameCallback(
+    WidgetsBinding.instance?.addPostFrameCallback((_) => _checkAccount());
+    WidgetsBinding.instance?.addPostFrameCallback(
         (_) => context.read<DrawerProvider>().setController(AnimationController(
               duration: const Duration(milliseconds: 150),
               vsync: this,
