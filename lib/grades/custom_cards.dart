@@ -179,7 +179,7 @@ class _CustomFinalCardState extends State<CustomFinalCard> {
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "期末平均：${widget.avg}",
+                            "學期平均：${widget.avg}",
                             textAlign: TextAlign.left,
                             style: TextStyle(fontSize: 18.0, color: Colors.white),
                           ),

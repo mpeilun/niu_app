@@ -25,7 +25,7 @@ class _GradesState extends State<Grades> {
       icon: Icons.grading_rounded,
     ),
     CustomTabBar(
-      title: '期末成績',
+      title: '學期成績',
       icon: Icons.whatshot_rounded,
     ),
     CustomTabBar(
