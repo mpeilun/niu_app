@@ -13,9 +13,11 @@ class ViewPage extends StatefulWidget {
     required this.date,
     required this.calendarMap,
   });
+
   final List<Class> myTable;
   final SemesterDate date;
   final Map<Class, Calendar> calendarMap;
+
   @override
   _ViewPage createState() => new _ViewPage();
 }
@@ -24,6 +26,7 @@ class _ViewPage extends State<ViewPage> {
   int week = -1;
   bool select = false;
   Map<Class, Calendar> calendarMap = {};
+
   @override
   Widget build(BuildContext context) {
     if (!select) {
@@ -80,16 +83,16 @@ class _ViewPage extends State<ViewPage> {
           ),
         ],
       ),
-      body: StaggeredGridView.count(
-        crossAxisCount: 11,
-        mainAxisSpacing: 0,
-        crossAxisSpacing: 0,
-        staggeredTiles: _re.getStaggeredTile(),
-        //staggeredTiles: _staggeredTiles,
-        //size
-        children: _re.getTiles(), //物件
-        //children: _tiles, //物件
-      ),
+      // body: StaggeredGridView.count(
+      //   crossAxisCount: 11,
+      //   mainAxisSpacing: 0,
+      //   crossAxisSpacing: 0,
+      //   staggeredTiles: _re.getStaggeredTile(),
+      //   //staggeredTiles: _staggeredTiles,
+      //   //size
+      //   children: _re.getTiles(), //物件
+      //   //children: _tiles, //物件
+      // ),
     );
   }
 

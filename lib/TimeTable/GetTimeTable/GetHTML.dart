@@ -19,23 +19,22 @@ class GetHTML {
     // calendarMap =
     //     await WeekCalendar().getCalendar(await date.getSemesterWeek());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await getFromWeb("111");
-    // if (prefs.getStringList(
-    //         prefs.getString("id").toString() + "TimeTable" + "111") ==
-    //     null) {
-    //   print("Get from web");
-    //   await getFromWeb("111");
-    // } else {
-    //   print("Get from mem");
-    //   htmlCode = saveListToList(prefs.getStringList(
-    //       prefs.getString("id").toString() + "TimeTable" + "111"));
-    //   //await Future.delayed(const Duration(milliseconds: 1000), (){});
-    // }
+    if (prefs.getStringList(
+            prefs.getString("id").toString() + "TimeTable" + "111") ==
+        null) {
+      print("Get from web");
+      await getFromWeb("111");
+    } else {
+      print("Get from mem");
+      htmlCode = saveListToList(prefs.getStringList(
+          prefs.getString("id").toString() + "TimeTable" + "111"));
+      //await Future.delayed(const Duration(milliseconds: 1000), (){});
+    }
     print("HTML load finish!");
     return true;
   }
 
-  int weekDayNum = 5;
+  int weekDayNum = 6;
   int classNum = 14;
   // arr[classNum][weekDayNum]
   List<List<String?>> htmlCode = <List<String?>>[];

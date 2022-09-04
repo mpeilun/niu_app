@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:niu_app/class_timetable/timetable.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
 import 'package:niu_app/service/SemesterDate.dart';
 import 'ViewPage.dart';
@@ -65,28 +66,15 @@ class _TimeTableState extends State<TimeTable> {
             var temp = HtmlToClassList();
             List<Class> tempClassList = temp.classList(htmlCode);
             Map<Class, Calendar> calendarMap = b.calendarMap;
-            return ViewPage.build(
-                myTable: tempClassList,
-                // myTable: myTable,
-                date: a,
-                calendarMap: calendarMap);
+            return Timetable();
+              // ViewPage.build(
+              //   myTable: tempClassList,
+              //   // myTable: myTable,
+              //   date: a,
+              //   calendarMap: calendarMap);
             //return the widget that you want to display after loading
           }
         });
   }
 
-  void printClassList(List<Class> classList) {
-    for (int i = 0; i < classList.length; i++)
-      print(classList[i].name.toString() +
-          " " +
-          classList[i].teacher.toString() +
-          " " +
-          classList[i].classroom.toString() +
-          " " +
-          classList[i].weekDay.toString() +
-          " " +
-          classList[i].startTime.toString() +
-          " " +
-          classList[i].endTime.toString());
-  }
 }

@@ -1,12 +1,12 @@
 import 'package:niu_app/TimeTable/BuildTimeTable/Class.dart';
 class HtmlToClassList{
   HtmlToClassList();
-  int weekDayNum = 5;
+  int weekDayNum = 6;
   int classNum = 14;
   List<List<bool>> haveClass = [];
   List<Class> classList(List<List<String?>> htmlCode) {// arr[classNum][weekDayNum]
     for(int i = 0; i < 14; i++)
-      haveClass.add([false,false,false,false,false]);
+      haveClass.add([false,false,false,false,false,false]);
     List<Class> _classList = <Class>[];
     for(int i = 0; i < classNum; i++){
       for(int j = 0; j < weekDayNum; j++){

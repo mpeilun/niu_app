@@ -26,5 +26,6 @@ List<String> weekDayName = <String> [
   "星期三",
   "星期四",
   "星期五",
+  "星期六"
 ];
 

@@ -14,10 +14,10 @@ class ClassList {
   int week;
   List<dynamic> _classList;
   Map<Class, Calendar> calendarMap;
-  List<StaggeredTile> _staggeredTiles = [];
-  List<StaggeredTile> getStaggeredTile() {
-    return _staggeredTiles;
-  }
+  // List<StaggeredTile> _staggeredTiles = [];
+  // List<StaggeredTile> getStaggeredTile() {
+  //   return _staggeredTiles;
+  // }
 
   List<Widget> _tiles = [];
   List<Widget> getTiles() {
@@ -35,7 +35,7 @@ class ClassList {
     _classList.sort((left, right) => left.weekDay.compareTo(right.weekDay));
     _classList.sort((left, right) => left.startTime.compareTo(right.startTime));
     //tableInfo的初始化
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 7; i++) {
       tableInfo.add([
         false,
         false,
@@ -60,8 +60,8 @@ class ClassList {
     int endTime = 0;
     //星期
     _tiles.add(NullClassCard.build());
-    _staggeredTiles.add(StaggeredTile.count(1, 1.1));
-    for (int i = 0; i < 5; i++) {
+    // _staggeredTiles.add(StaggeredTile.count(1, 1.1));
+    for (int i = 0; i < 6; i++) {
       putWeekDay(i);
     }
     putTime(time);
@@ -70,7 +70,7 @@ class ClassList {
       if (endTime < _classList[i].endTime) endTime = _classList[i].endTime;
       //換行
       while (time != _classList[i].startTime) {
-        for (int j = weekDay; j <= 5; j++) {
+        for (int j = weekDay; j <= 6; j++) {
           if (!tableInfo[j][time]) {
             putNullClass();
           }
@@ -95,11 +95,11 @@ class ClassList {
       }
       //最後一節偵測 補完時間
       if (i == _classList.length - 1) {
-        for (int j = _classList[i].weekDay + 1; j <= 5; j++)
+        for (int j = _classList[i].weekDay + 1; j <= 6; j++)
           if (!tableInfo[j][time]) putNullClass();
         for (int j = time + 1; j <= endTime; j++) {
           putTime(j);
-          for (int k = 1; k <= 5; k++) if (!tableInfo[k][j]) putNullClass();
+          for (int k = 1; k <= 6; k++) if (!tableInfo[k][j]) putNullClass();
         }
       }
     }
@@ -129,26 +129,26 @@ class ClassList {
             child: ClassCard.build(thisClass: thisClass, calendar: calendar, week: week)
         )
     );
-    _staggeredTiles.add(StaggeredTile.count(
-        2,
-        (thisClass.endTime - thisClass.startTime + 1).toDouble() *
-            2.1)); //*2ㄉ寬 *2.1高
+    // _staggeredTiles.add(StaggeredTile.count(
+    //     2,
+    //     (thisClass.endTime - thisClass.startTime + 1).toDouble() *
+    //         2.1)); //*2ㄉ寬 *2.1高
   }
 
   ///<--沒課程新增NullClassCard到list裡-->///
   void putNullClass() {
     _tiles.add(NullClassCard.build());
-    _staggeredTiles.add(StaggeredTile.count(2, 2.1)); //*2ㄉ寬 *2.1高
+    // _staggeredTiles.add(StaggeredTile.count(2, 2.1)); //*2ㄉ寬 *2.1高
   }
 
   void putTime(int time) {
     _tiles.add(TimeCard.build(thisTime: time));
-    _staggeredTiles.add(StaggeredTile.count(1, 2.1)); //*2.1高
+    // _staggeredTiles.add(StaggeredTile.count(1, 2.1)); //*2.1高
   }
 
   void putWeekDay(int day) {
     _tiles.add(WeekDayCard.build(thisDay: day));
-    _staggeredTiles.add(StaggeredTile.count(2, 1.1)); //*2.1高
+    // _staggeredTiles.add(StaggeredTile.count(2, 1.1)); //*2.1高
   }
 }
 
