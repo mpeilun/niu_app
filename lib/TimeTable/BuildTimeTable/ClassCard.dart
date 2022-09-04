@@ -111,7 +111,7 @@ class _ClassCard extends State<ClassCard> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                RaisedButton(
+                                ElevatedButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },

@@ -2,14 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:week_of_year/week_of_year.dart';
 import 'dart:convert';
 
-class SemesterDate{
-
-  Future<bool> getIsFinish() async{
+class SemesterDate {
+  Future<bool> getIsFinish() async {
     DateTime now = DateTime.now();
     nowYear = now.year;
     nowMonths = now.month;
     nowDay = now.day;
-    await semester();
+    // await semester();
     return true;
   }
 
@@ -47,25 +46,27 @@ class SemesterDate{
 
   int semesterWeek = -2;
   Future<int> getSemesterWeek() async {
-    if(semesterWeek == -2)
-      await semester();
+    if (semesterWeek == -2) await semester();
     return semesterWeek;
   }
 
-  SemesterDate(){
+  SemesterDate() {
     DateTime now = DateTime.now();
     nowYear = now.year;
     nowMonths = now.month;
     nowDay = now.day;
-    semester();
+    // semester();
   }
-  Future<void> semester() async{
-    var jsonString = await Dio().get('https://my-json-server.typicode.com/ken6078/NiuSemesterJSON/db');
+  Future<void> semester() async {
+    var jsonString = await Dio()
+        .get('https://my-json-server.typicode.com/ken6078/NiuSemesterJSON/db');
     Map<String, dynamic> semesterJSON = json.decode(jsonString.toString());
-    await getNowWeek(semesterJSON,109,1);
+    await getNowWeek(semesterJSON, 109, 1);
     //print(semesterWeek);
   }
-  Future<void> getNowWeek(Map<String, dynamic> semesterJSON,int year,int semester) async{
+
+  Future<void> getNowWeek(
+      Map<String, dynamic> semesterJSON, int year, int semester) async {
     if (semester == 3) {
       getNowWeek(semesterJSON, year + 1, 1);
       return;
@@ -79,9 +80,12 @@ class SemesterDate{
     int endDay = int.parse(semesterJSON[thisSemester][index[5]]);
     DateTime now = DateTime.now();
     //DateTime now = DateTime.utc(2020,09,15);
-    DateTime semesterStartTime = DateTime.utc(startYear,startMonth,startDay);
-    DateTime semesterEndTime = DateTime.utc(endYear,endMonth,endDay);
-    if( (now.isAfter(semesterStartTime) || now.isAtSameMomentAs(semesterStartTime) )  && ( semesterEndTime.isAfter(now) || now.isAtSameMomentAs(semesterStartTime) ) ){
+    DateTime semesterStartTime = DateTime.utc(startYear, startMonth, startDay);
+    DateTime semesterEndTime = DateTime.utc(endYear, endMonth, endDay);
+    if ((now.isAfter(semesterStartTime) ||
+            now.isAtSameMomentAs(semesterStartTime)) &&
+        (semesterEndTime.isAfter(now) ||
+            now.isAtSameMomentAs(semesterStartTime))) {
       semesterStartYear = startYear;
       semesterStartMonths = startMonth;
       semesterStartDay = startDay;
@@ -89,18 +93,18 @@ class SemesterDate{
       semesterEndMonths = endMonth;
       semesterEndDay = endDay;
       semesterWeek = now.weekOfYear - semesterStartTime.weekOfYear + 1;
-      if(semesterWeek < 0)
-        semesterWeek += 52;
-    }else if( now.isBefore(semesterStartTime) ){
+      if (semesterWeek < 0) semesterWeek += 52;
+    } else if (now.isBefore(semesterStartTime)) {
       outOfSemester();
-    }else if( semesterJSON[thisSemester][index[6]] == "false" ){
-      getNowWeek(semesterJSON, year, semester+1);
-    }else{
+    } else if (semesterJSON[thisSemester][index[6]] == "false") {
+      getNowWeek(semesterJSON, year, semester + 1);
+    } else {
       outOfSemester();
     }
     return;
   }
-  void outOfSemester(){
+
+  void outOfSemester() {
     semesterStartYear = -1;
     semesterStartMonths = -1;
     semesterStartDay = -1;

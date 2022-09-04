@@ -14,21 +14,20 @@ class GetHTML {
   }
   Map<Class, Calendar> calendarMap = {};
   Future<bool> getIsFinish() async {
-    SemesterDate date = SemesterDate();
-    await date.getIsFinish();
-    calendarMap =
-        await WeekCalendar().getCalendar(await date.getSemesterWeek());
+    // SemesterDate date = SemesterDate();
+    // await date.getIsFinish();
+    // calendarMap =
+    //     await WeekCalendar().getCalendar(await date.getSemesterWeek());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getStringList(prefs.getString("id").toString() +
-            "TimeTable" +
-            date.nowSemester) ==
+    if (prefs.getStringList(
+            prefs.getString("id").toString() + "TimeTable" + "111") ==
         null) {
       print("Get from web");
-      await getFromWeb(date);
+      await getFromWeb("111");
     } else {
       print("Get from mem");
       htmlCode = saveListToList(prefs.getStringList(
-          prefs.getString("id").toString() + "TimeTable" + date.nowSemester));
+          prefs.getString("id").toString() + "TimeTable" + "111"));
       //await Future.delayed(const Duration(milliseconds: 1000), (){});
     }
     print("HTML load finish!");
@@ -42,7 +41,7 @@ class GetHTML {
 
   late HeadlessInAppWebView headlessWebView;
 
-  Future<void> getFromWeb(SemesterDate date) async {
+  Future<void> getFromWeb(String semester) async {
     String? _url;
     headlessWebView = new HeadlessInAppWebView(
         initialUrlRequest: URLRequest(
@@ -116,7 +115,7 @@ class GetHTML {
       htmlCode.add(tempHtmlCode);
     }
     await prefs.setStringList(
-        prefs.getString("id").toString() + "TimeTable" + date.nowSemester,
+        prefs.getString("id").toString() + "TimeTable" + semester,
         listToSaveList(htmlCode));
     return;
   }
