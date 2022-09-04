@@ -19,17 +19,18 @@ class GetHTML {
     // calendarMap =
     //     await WeekCalendar().getCalendar(await date.getSemesterWeek());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getStringList(
-            prefs.getString("id").toString() + "TimeTable" + "111") ==
-        null) {
-      print("Get from web");
-      await getFromWeb("111");
-    } else {
-      print("Get from mem");
-      htmlCode = saveListToList(prefs.getStringList(
-          prefs.getString("id").toString() + "TimeTable" + "111"));
-      //await Future.delayed(const Duration(milliseconds: 1000), (){});
-    }
+    await getFromWeb("111");
+    // if (prefs.getStringList(
+    //         prefs.getString("id").toString() + "TimeTable" + "111") ==
+    //     null) {
+    //   print("Get from web");
+    //   await getFromWeb("111");
+    // } else {
+    //   print("Get from mem");
+    //   htmlCode = saveListToList(prefs.getStringList(
+    //       prefs.getString("id").toString() + "TimeTable" + "111"));
+    //   //await Future.delayed(const Duration(milliseconds: 1000), (){});
+    // }
     print("HTML load finish!");
     return true;
   }
@@ -114,6 +115,11 @@ class GetHTML {
       }
       htmlCode.add(tempHtmlCode);
     }
+
+    htmlCode.forEach((element) {
+      print(element);
+    });
+
     await prefs.setStringList(
         prefs.getString("id").toString() + "TimeTable" + semester,
         listToSaveList(htmlCode));
