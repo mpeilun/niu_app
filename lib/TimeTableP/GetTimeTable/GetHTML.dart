@@ -2,47 +2,46 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/login/login_method.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:niu_app/service/SemesterDate.dart';
-
-import '../BuildTimeTable/Class.dart';
-import '../Calendar/Calendar.dart';
 
 class GetHTML {
   final BuildContext context;
-  GetHTML(this.context) {
-    //get();
-  }
-  Map<Class, Calendar> calendarMap = {};
+
+  GetHTML(this.context);
+
   Future<bool> getIsFinish() async {
-    // SemesterDate date = SemesterDate();
-    // await date.getIsFinish();
-    // calendarMap =
-    //     await WeekCalendar().getCalendar(await date.getSemesterWeek());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getStringList(
-            prefs.getString("id").toString() + "TimeTable" + "111") ==
-        null) {
-      print("Get from web");
-      await getFromWeb("111");
-    } else {
-      print("Get from mem");
-      htmlCode = saveListToList(prefs.getStringList(
-          prefs.getString("id").toString() + "TimeTable" + "111"));
-      //await Future.delayed(const Duration(milliseconds: 1000), (){});
-    }
-    print("HTML load finish!");
+    // if (prefs.getStringList(
+    //         prefs.getString("id").toString() + "TimeTableP") ==
+    //     null) {
+    //   print("Get from web");
+    //   await getFromWeb('111');
+    // } else {
+    //   print("Get from local");
+    //   htmlCode = saveListToList(prefs.getStringList(
+    //       prefs.getString("id").toString() + "TimeTableP"));
+    //   //await Future.delayed(const Duration(milliseconds: 1000), (){});
+    // }
+    await getFromWeb();
+
+
+    timetable.forEach((element) {
+      print(element);
+    });
+    print("Load finish!");
     return true;
   }
 
-  int weekDayNum = 6;
+  int weekDayNum = 7;
   int classNum = 14;
-  // arr[classNum][weekDayNum]
-  List<List<String?>> htmlCode = <List<String?>>[];
-
+  List<List<String?>> timetable = <List<String?>>[];
   late HeadlessInAppWebView headlessWebView;
 
-  Future<void> getFromWeb(String semester) async {
-    String? _url;
+  Future<void> getFromWeb() async {
+    var _url;
+    var loadWeb;
+    var loadTimetable;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     headlessWebView = new HeadlessInAppWebView(
         initialUrlRequest: URLRequest(
             url: Uri.parse(
@@ -77,29 +76,30 @@ class GetHTML {
     while (_url !=
         "https://acade.niu.edu.tw/NIU/Application/TKE/TKE22/TKE2240_01.aspx")
       await Future.delayed(Duration(milliseconds: 100));
-    print(_url);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var result;
-    var buttonResult;
-    //等待網頁載入結束
+    print("載入：" + _url);
+
+    // 等待網頁載入結束
     do {
-      result = await headlessWebView.webViewController.evaluateJavascript(
+      loadWeb = await headlessWebView.webViewController.evaluateJavascript(
           source: 'document.querySelector("#Span2").innerText;');
-      if (result == "目前學期") break;
+      if (loadWeb == "目前學期") break;
       await Future.delayed(Duration(milliseconds: 100));
-    } while (result != "目前學期");
-    //按下按鈕
+    } while (loadWeb != "目前學期");
+
+    // 按下按鈕
     await headlessWebView.webViewController.evaluateJavascript(
         source: 'document.querySelector("#QUERY_BTN3").click();');
+
     //等待課表載入結束
     do {
-      buttonResult = await headlessWebView.webViewController.evaluateJavascript(
+      loadTimetable = await headlessWebView.webViewController.evaluateJavascript(
           source:
               'document.querySelector("#table2 > tbody > tr:nth-child(1) > td:nth-child(2)").innerText;');
-      if (buttonResult == "星期一") break;
+      if (loadTimetable == "星期一") break;
       await Future.delayed(Duration(milliseconds: 100));
-    } while (buttonResult != "星期一");
-    //讀取課表
+    } while (loadTimetable != "星期一");
+
+    // 讀取課表
     for (int i = 0; i < classNum; i++) {
       List<String?> tempHtmlCode = [];
       for (int j = 0; j < weekDayNum; j++) {
@@ -112,17 +112,12 @@ class GetHTML {
                 ') > a").innerHTML');
         tempHtmlCode.add(thisBlock);
       }
-      htmlCode.add(tempHtmlCode);
+      timetable.add(tempHtmlCode);
     }
 
-    htmlCode.forEach((element) {
-      print(element);
-    });
-
     await prefs.setStringList(
-        prefs.getString("id").toString() + "TimeTable" + semester,
-        listToSaveList(htmlCode));
-    return;
+        prefs.getString("id").toString() + "TimeTableP",
+        listToSaveList(timetable));
   }
 
   List<String> listToSaveList(List<List<String?>> list) {
@@ -130,8 +125,8 @@ class GetHTML {
     for (int i = 0; i < classNum; i++) {
       String temp = "";
       for (int j = 0; j < weekDayNum; j++) {
-        if (htmlCode[i][j] != null)
-          temp += htmlCode[i][j].toString();
+        if (timetable[i][j] != null)
+          temp += timetable[i][j].toString();
         else
           temp += "&sp"; // space
         temp += "\\";

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:niu_app/TimeTable/Calendar/Calendar.dart';
-import 'package:niu_app/TimeTable/BuildTimeTable/Class.dart';
+import 'package:niu_app/TimeTableP/Calendar/Calendar.dart';
+import 'package:niu_app/TimeTableP/BuildTimeTable/Class.dart';
 import 'package:niu_app/components/toast.dart';
 import 'package:niu_app/service/SemesterDate.dart';
 

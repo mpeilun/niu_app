@@ -6,7 +6,7 @@ import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:niu_app/TimeTable/timetable.dart';
+import 'package:niu_app/timetable/timetable.dart';
 import 'package:niu_app/components/login_loading.dart';
 import 'package:niu_app/components/menuIcon.dart';
 import 'package:niu_app/components/toast.dart';

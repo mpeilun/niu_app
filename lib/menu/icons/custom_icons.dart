@@ -29,14 +29,14 @@ class CustomIcons extends StatelessWidget {
             height: 65.0,
             decoration: BoxDecoration(
               boxShadow: [
-              BoxShadow(
-              color: themeChange.darkTheme
-                  ? Colors.black : Colors.transparent,
-              spreadRadius: -5,
-              blurRadius: 10,
-              offset: Offset(1, 1),
-            ),
-        ],
+                BoxShadow(
+                  color:
+                      themeChange.darkTheme ? Colors.black : Colors.transparent,
+                  spreadRadius: -5,
+                  blurRadius: 10,
+                  offset: Offset(1, 1),
+                ),
+              ],
               color: themeChange.darkTheme ? Color(0xff212121) : null,
               shape: BoxShape.circle,
               border: Border.all(

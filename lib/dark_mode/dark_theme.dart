@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 class Styles {
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
     return ThemeData(
+
       brightness: isDarkTheme ? Brightness.dark : Brightness.light,
       primaryColor: isDarkTheme ? Color(0xff212121) : Colors.blue[900],
       scaffoldBackgroundColor:

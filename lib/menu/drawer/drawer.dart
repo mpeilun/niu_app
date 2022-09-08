@@ -57,23 +57,26 @@ class _DrawerPageState extends State<DrawerPage> {
       transform: Matrix4.translationValues(widget.drawerXOffset, 0, 0),
       duration: Duration(milliseconds: 150),
       width: 110.0,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            themeChange.darkTheme
-                ? Color(0xff212121)
-                : Color.fromARGB(255, 13, 71, 161),
-            themeChange.darkTheme
-                ? Color(0xff212121)
-                : Color.fromARGB(255, 14, 69, 156),
-            themeChange.darkTheme
-                ? Color(0xff212121)
-                : Color.fromARGB(255, 9, 47, 108),
-          ],
-        ),
-      ),
+      color: themeChange.darkTheme
+                   ? Color(0xff212121)
+                   : Colors.blue[900],
+      // decoration: BoxDecoration(
+      //   gradient: LinearGradient(
+      //     begin: Alignment.topLeft,
+      //     end: Alignment.bottomRight,
+      //     colors: [
+      //       themeChange.darkTheme
+      //           ? Color(0xff212121)
+      //           : Color.fromARGB(255, 13, 71, 161),
+      //       themeChange.darkTheme
+      //           ? Color(0xff212121)
+      //           : Color.fromARGB(255, 14, 69, 156),
+      //       themeChange.darkTheme
+      //           ? Color(0xff212121)
+      //           : Color.fromARGB(255, 9, 47, 108),
+      //     ],
+      //   ),
+      // ),
       child: ListView(
         children: <Widget>[
           SizedBox(height: 16.0),

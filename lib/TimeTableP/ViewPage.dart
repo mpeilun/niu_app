@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:niu_app/service/SemesterDate.dart';
-import 'package:niu_app/TimeTable/TimeTable.dart';
+import 'package:niu_app/TimeTableP/TimeTable.dart';
 import 'BuildTimeTable/ClassList.dart';
 import 'BuildTimeTable/Class.dart';
 import 'Calendar/Calendar.dart';
@@ -179,11 +179,11 @@ class _ViewPage extends State<ViewPage> {
     await date.getIsFinish();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(
-        prefs.getString("id").toString() + "TimeTable" + date.nowSemester);
+        prefs.getString("id").toString() + "TimeTableP" + date.nowSemester);
     Navigator.pop(context);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => TimeTable(), maintainState: false));
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => TimeTableP(), maintainState: false));
   }
 }
