@@ -1,6 +1,7 @@
 # Niu App
-flutter version:3.3
-Application For National Ilan University
+flutter version:3.3Application For National Ilan University
+
+
 <img width="64" src="https://user-images.githubusercontent.com/86880683/225522817-7192b99f-c9b1-4824-854d-3b98fab0f984.png" align="left" />
 
 這是一個給宜大學生使用的APP，整合了大部分宜大學生使用的功能，
