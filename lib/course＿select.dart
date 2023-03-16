@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:niu_app/components/downloader.dart';
 import 'package:niu_app/components/niu_icon_loading.dart';
+import 'package:niu_app/testcode/test_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,8 +23,8 @@ class CourseSelect extends StatefulWidget {
 
 class _CourseSelectState extends State<CourseSelect> {
   final GlobalKey courseSelect = GlobalKey();
-  HeadlessInAppWebView? headlessWebView;
-  InAppWebViewController? webViewController;
+  late HeadlessInAppWebView headlessWebView;
+  late InAppWebViewController webViewController;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
         useOnDownloadStart: true,
@@ -51,7 +52,7 @@ class _CourseSelectState extends State<CourseSelect> {
     if (dartCookies.Platform.isAndroid) {
       AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
     }
-
+    // getFromWeb();
     _shouldRunWebView();
   }
 
@@ -239,5 +240,78 @@ class _CourseSelectState extends State<CourseSelect> {
                 "https://acade.niu.edu.tw/NIU/Application/TKE/TKE20/TKE2011_.aspx?progcd=TKE2011"
           }));
     }
+  }
+
+  late int num;
+  Future<void> getFromWeb() async {
+    var _url;
+    var loadWeb;
+    var loading;
+
+
+    headlessWebView = new HeadlessInAppWebView(
+        initialUrlRequest: URLRequest(
+            url: Uri.parse(
+                "https://acade.niu.edu.tw/NIU/Application/TKE/TKE34/TKE3420_01.aspx"),
+            headers: {
+              "Referer":
+                  "https://acade.niu.edu.tw/NIU/Application/TKE/TKE34/TKE3420_.aspx?progcd=TKE3420"
+            }),
+        initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(),
+        ),
+        onWebViewCreated: (controller) {
+          print('HeadlessInAppWebView created!');
+        },
+        onConsoleMessage: (controller, consoleMessage) {
+          print("CONSOLE MESSAGE: " + consoleMessage.message);
+        },
+        onLoadStart: (controller, url) async {
+          print("onLoadStart $url");
+        },
+        onLoadStop: (controller, url) async {
+          print("onLoadStop $url");
+        },
+        onUpdateVisitedHistory: (controller, url, androidIsReload) {
+          print("onUpdateVisitedHistory $url");
+          _url = url.toString();
+        });
+
+    await Future.delayed(Duration(milliseconds: 500));
+    while (_url !=
+        "https://acade.niu.edu.tw/NIU/Application/TKE/TKE34/TKE3420_01.aspx")
+      await Future.delayed(Duration(milliseconds: 100));
+    print("載入：" + _url);
+
+    // 等待網頁載入結束
+    do {
+      loadWeb = await headlessWebView.webViewController.evaluateJavascript(
+          source:
+              'document.querySelector("#Span2").innerText.replace(/^\\s*|\\s*\$/g,"");');
+      if (loadWeb == "查詢學年期") break;
+      await Future.delayed(Duration(milliseconds: 100));
+    } while (loadWeb != "查詢學年期");
+
+    // 按下按鈕
+    await headlessWebView.webViewController.evaluateJavascript(
+        source:
+            'document.querySelector("#Q_FACULTY_CODE").value = "LA";');
+    await headlessWebView.webViewController.evaluateJavascript(
+        source:
+            'document.getElementById("QUERY_BTN1").click();');
+
+    // 等待清單載入結束
+    do {
+      loading = await headlessWebView.webViewController.evaluateJavascript(
+          source:
+              'document.querySelector("#DataGrid > tbody > tr.mtbGreenBg > th:nth-child(1) > a").innerText.replace(/^\\s*|\\s*\$/g,"");');
+      if (loading == "開課系所") break;
+      await Future.delayed(Duration(milliseconds: 100));
+    } while (loading != "開課系所");
+
+    num = await headlessWebView.webViewController.evaluateJavascript(
+        source:
+            'document.querySelector("#DataGrid > tbody > tr:nth-child(9) > td:nth-child(10)").innerText;');
+    print(num);
   }
 }

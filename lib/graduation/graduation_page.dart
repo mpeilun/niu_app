@@ -97,47 +97,48 @@ class _GraduationPageState extends State<GraduationPage> {
                                       maintainState: false));
                             }),
                       ),
-                      columnChild: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Indicator(
-                              title: '服務奉獻',
-                              time: widget.time.service.split('/')[0],
-                              requiredTime: double.parse(
-                                  widget.time.service.split('/')[1]),
-                            ),
-                            SizedBox(
-                              width: 20.0,
-                            ),
-                            Indicator(
-                              title: '多元成長',
-                              time: widget.time.multiple.split('/')[0],
-                              requiredTime: double.parse(
-                                  widget.time.multiple.split('/')[1]),
-                            ),
-                            SizedBox(
-                              width: 20.0,
-                            ),
-                            Indicator(
-                              title: '專業進取',
-                              time: widget.time.profession.split('/')[0],
-                              requiredTime: double.parse(
-                                  widget.time.profession.split('/')[1]),
-                            ),
-                            SizedBox(
-                              width: 20.0,
-                            ),
-                            Indicator(
-                              title: '彈性綜合',
-                              time: widget.time.flex.split('/')[0],
-                              requiredTime:
-                                  double.parse(widget.time.flex.split('/')[1]),
-                            ),
-                          ],
-                        ),
-                      ),
+                      columnChild: SizedBox()
+                      // FittedBox(
+                      //   fit: BoxFit.scaleDown,
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       Indicator(
+                      //         title: '服務奉獻',
+                      //         time: widget.time.service.split('/')[0],
+                      //         requiredTime: double.parse(
+                      //             widget.time.service.split('/')[1]),
+                      //       ),
+                      //       SizedBox(
+                      //         width: 20.0,
+                      //       ),
+                      //       Indicator(
+                      //         title: '多元成長',
+                      //         time: widget.time.multiple.split('/')[0],
+                      //         requiredTime: double.parse(
+                      //             widget.time.multiple.split('/')[1]),
+                      //       ),
+                      //       SizedBox(
+                      //         width: 20.0,
+                      //       ),
+                      //       Indicator(
+                      //         title: '專業進取',
+                      //         time: widget.time.profession.split('/')[0],
+                      //         requiredTime: double.parse(
+                      //             widget.time.profession.split('/')[1]),
+                      //       ),
+                      //       SizedBox(
+                      //         width: 20.0,
+                      //       ),
+                      //       Indicator(
+                      //         title: '彈性綜合',
+                      //         time: widget.time.flex.split('/')[0],
+                      //         requiredTime:
+                      //             double.parse(widget.time.flex.split('/')[1]),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ),
                     SizedBox(
                       height: 20.0,
