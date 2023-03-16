@@ -7,6 +7,8 @@ Application For National Ilan University
 包含數位學習園區、分數查詢、課表、活動報名、畢業門檻查詢、選課
 並提供公動態查詢和Zuvio點名。
 
+透過flutter webview獲取網頁資料，使用內建API Javascript等爬蟲技巧擷取所需內容。
+
 
 # 畫面
 提供深色模式
