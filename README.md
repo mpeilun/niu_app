@@ -6,7 +6,11 @@
 ## 簡介
 這是一個給宜大學生使用的APP，整合了大部分常使用到的功能， 包含數位學習園區、分數查詢、課表、活動報名、畢業門檻查詢、選課 並提供公動態查詢和Zuvio點名。
 
-## 宜大學生 APP 開發前的調查結果
+## 安裝
+
+## 使用方式
+
+## 宜大學生 APP 開發前調查
 在開發這個「宜大學生 APP」之前，我們進行了問卷調查，  
 以了解學生對於手機瀏覽學校網頁的體驗和需求。  
 調查內容主要針對**教務行政系統、數位學習園區和校園活動報名系統**三個主要網站，並且包含了以下內容：  
@@ -56,10 +60,7 @@
 | **公車查詢**     | 查詢公車即時動態資訊                           |
 | **深色模式**     | 切換不同主題                                   |
 
-<table style="table-layout: fixed; width: 100%;">
-  <col style="width: 33.33%;">
-  <col style="width: 33.33%;">
-  <col style="width: 33.33%;">
+<table>
   <tr>
     <th colspan="3"> 
         使用範例
@@ -71,15 +72,15 @@
     </td>
   </tr>
   <tr>
-    <td style="text-align:center;"> 
-        登入
-    </td>
-    <td style="text-align:center;"> 
-        行事曆
-    </td>
-    <td style="text-align:center;"> 
-        公告
-    </td>
+    <th> 
+        登入頁面
+    </th>
+    <th> 
+        行事曆表
+    </th>
+    <th> 
+        公告系統
+    </th>
   </tr>
   <tr>
     <td colspan="3">
@@ -87,15 +88,15 @@
     </td>
   </tr>
    <tr>
-    <td style="text-align:center;"> 
+    <th> 
         畢業門檻
-    </td>
-    <td style="text-align:center;"> 
+    </th>
+    <th> 
         活動報名
-    </td>
-    <td style="text-align:center;"> 
+    </th>
+    <th> 
         成績查詢
-    </td>
+    </th>
   </tr>
   <tr>
     <td colspan="3">
@@ -103,15 +104,15 @@
     </td>
   </tr>
    <tr>
-    <td style="text-align:center;"> 
+    <th> 
         Zuvio
-    </td>
-    <td style="text-align:center;"> 
-        公車
-    </td>
-    <td style="text-align:center;"> 
-        課表
-    </td>
+    </th>
+    <th> 
+        公車動態
+    </th>
+    <th> 
+        課表查詢
+    </th>
   </tr>
   <tr>
     <td colspan="3">
@@ -119,37 +120,15 @@
     </td>
   </tr>
    <tr>
-    <td style="text-align:center;"> 
-        數位學習園區
-    </td>
-    <td style="text-align:center;"> 
-        使用說明
-    </td>
-    <td style="text-align:center;"> 
-        深色模式
-    </td>
-  </tr>
-</table>
-
-<table>
-  <tr>
     <th> 
-      <div style="padding: 10px;">
-        深色模式預覽 
-      </div>
+        數位園區
+    </th>
+    <th> 
+        使用說明
+    </th>
+    <th> 
+        深色模式
     </th>
   </tr>
-  <tr>
-    <td>
-      <img src="https://user-images.githubusercontent.com/86880683/225347718-579b2717-8fc6-499e-8298-9c8a3475259f.JPG" width="800">
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://user-images.githubusercontent.com/86880683/225347733-adff4129-46c9-4e5e-a612-215c6af38584.JPG" width="800">    
-    </td>
- 
 </table>
 
-# 目前問題
-目前學校改採用數位學習園區M部分功能已失效，故不提供下載點。
