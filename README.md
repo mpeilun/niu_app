@@ -9,7 +9,7 @@
 ## 目錄
 - [安裝](https://github.com/mpeilun/niu_app#安裝)
   - [Android Studio](https://github.com/mpeilun/niu_app#Android-studio)
-  - [Android APK]([https://github.com/mpeilun/niu_app#andoird-apk](https://github.com/mpeilun/niu_app#android-apk))
+  - [Android APK](https://github.com/mpeilun/niu_app#android-apk)
 - [使用方式](https://github.com/mpeilun/niu_app#使用方式)
 - [宜大學生 APP 開發前調查](https://github.com/mpeilun/niu_app#宜大學生-APP-開發前調查)
   - [調查結果](https://github.com/mpeilun/niu_app#調查結果)
