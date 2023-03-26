@@ -1,6 +1,6 @@
 <img width="64" src="https://user-images.githubusercontent.com/86880683/225522817-7192b99f-c9b1-4824-854d-3b98fab0f984.png" align="left" />
 
-# Niu App
+# NIU App
 > flutter version:3.3 Application For National Ilan University
 
 ## 簡介
