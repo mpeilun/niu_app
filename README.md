@@ -1,6 +1,6 @@
 <img width="64" src="https://user-images.githubusercontent.com/86880683/225522817-7192b99f-c9b1-4824-854d-3b98fab0f984.png" align="left" />
 
-# NIU App
+# Niu App
 > flutter version:3.3 Application For National Ilan University
 
 ## 簡介
@@ -9,7 +9,7 @@
 ## 宜大學生 APP 開發前的調查結果
 在開發這個「宜大學生 APP」之前，我們進行了問卷調查，  
 以了解學生對於手機瀏覽學校網頁的體驗和需求。  
-調查內容主要針對教務行政系統、數位學習園區和校園活動報名系統三個主要網站，並且包含了以下內容：  
+調查內容主要針對**教務行政系統、數位學習園區和校園活動報名系統**三個主要網站，並且包含了以下內容：  
 
 - 各平台網頁在手機上的體驗度
 - 各平台之常用功能與使用率
@@ -17,22 +17,139 @@
 
 ### 調查結果
 1. #### 各平台網頁在手機上的體驗度
-![宜大現有平台體驗度](https://user-images.githubusercontent.com/86880683/226528526-bfdea917-42bb-4b10-aeed-1061edc2cf0a.png)  
+<img src="https://user-images.githubusercontent.com/86880683/226528526-bfdea917-42bb-4b10-aeed-1061edc2cf0a.png" width="640">
 
 調查發現活動報名系統的體驗度最差，  
 非常不方便和不方便的比例總和佔 **74.7%**。  
 因此，我們完整地在手機 App 中實作了獨立的介面，  
 完全取代了此網頁的功能，徹底解決學生的困擾。  
 
+2. #### 各平台常見的功能及使用率
+<img src="https://user-images.githubusercontent.com/86880683/227753722-678d1318-10ff-4b9a-b897-4b2360515292.png">
 
-# 畫面
+統計學生在教務行政系統中常用的功能，此系統包含學校所有行政手續會使用到的功能，  
+由於功能種類繁多且系統複雜，因此只針對學生最常用的功能，如選課、成績查詢、畢業門檻等，開發手機介面以及網頁互動。
 
-![1](https://user-images.githubusercontent.com/86880683/225347718-579b2717-8fc6-499e-8298-9c8a3475259f.JPG)
-需使用學校帳號密碼登入才可以使用，左邊抽屜提供深色模式做選擇，  
+3. #### 使用宜大學生 APP 意願度調查
+<img src="https://user-images.githubusercontent.com/86880683/227756860-3d96dc5a-1dc8-404e-9ac9-b36c70f17f66.png" width="300">
 
+在問卷調查的最後，我們放上宜大學生 APP 的操作畫面，詢問學生的使用意願，  
+從學生的回饋中，可知學生非常需要這樣的 APP，且期待實際上架後使用的感受。
+所以我們開發了以下這些功能
 
-![2](https://user-images.githubusercontent.com/86880683/225347733-adff4129-46c9-4e5e-a612-215c6af38584.JPG)
-<a href='https://docs.google.com/presentation/d/1_tvyT416l8QQX9hi8ZehZg-c7-8cck3W/edit?usp=sharing&ouid=113524041780692344361&rtpof=true&sd=true'>詳細功能介紹</a>
+## 功能
+
+> 使用之前須使用宜大學生的帳號與密碼登入才能做使用！
+
+| 功能列表 | 功能概述                                          |
+| -------- | ------------------------------------------------ |
+| **數位學習園區** | 觀看上課教材、繳交作業                          |
+| **成績查詢系統** | 查詢期中、學期成績以及期中預警                  |
+| **當學期課表**   | 標示上課地點、時間、授課老師                    |
+| **活動報名**     | 報名宜大活動必備功能                           |
+| **校園公告**     | 查看校園公告                                   |
+| **學校行事曆**   | 查看學校行事曆                                 |
+| **畢業門檻**     | 詳細查詢畢業所需門檻                           |
+| **選課系統**     | 在選課期間跳轉學校選課頁面                      |
+| **Zuvio**       | 刪減原 APP 不常用功能，僅保留作業、簽到等常用功能 |
+| **使用說明**     | 提供宜大 APP 使用說明                          |
+| **公車查詢**     | 查詢公車即時動態資訊                           |
+| **深色模式**     | 切換不同主題                                   |
+
+<table style="table-layout: fixed; width: 100%;">
+  <col style="width: 33.33%;">
+  <col style="width: 33.33%;">
+  <col style="width: 33.33%;">
+  <tr>
+    <th colspan="3"> 
+        使用範例
+    </th>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <img src="https://user-images.githubusercontent.com/86880683/227759916-6b40d00c-698d-4945-b3d8-8f54d54cdf1b.gif" width="800">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;"> 
+        登入
+    </td>
+    <td style="text-align:center;"> 
+        行事曆
+    </td>
+    <td style="text-align:center;"> 
+        公告
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <img src="https://user-images.githubusercontent.com/86880683/227759925-5050a2f2-f5ba-4b8d-959a-671b01176cab.gif" width="800">    
+    </td>
+  </tr>
+   <tr>
+    <td style="text-align:center;"> 
+        畢業門檻
+    </td>
+    <td style="text-align:center;"> 
+        活動報名
+    </td>
+    <td style="text-align:center;"> 
+        成績查詢
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <img src="https://user-images.githubusercontent.com/86880683/227759947-42506615-2781-442f-88ef-8c3e016dbcfc.gif" width="800">    
+    </td>
+  </tr>
+   <tr>
+    <td style="text-align:center;"> 
+        Zuvio
+    </td>
+    <td style="text-align:center;"> 
+        公車
+    </td>
+    <td style="text-align:center;"> 
+        課表
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <img src="https://user-images.githubusercontent.com/86880683/227760348-2283d79d-c226-4bd3-b644-e2b8c982da6d.gif" width="800">    
+    </td>
+  </tr>
+   <tr>
+    <td style="text-align:center;"> 
+        數位學習園區
+    </td>
+    <td style="text-align:center;"> 
+        使用說明
+    </td>
+    <td style="text-align:center;"> 
+        深色模式
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th> 
+      <div style="padding: 10px;">
+        深色模式預覽 
+      </div>
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://user-images.githubusercontent.com/86880683/225347718-579b2717-8fc6-499e-8298-9c8a3475259f.JPG" width="800">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://user-images.githubusercontent.com/86880683/225347733-adff4129-46c9-4e5e-a612-215c6af38584.JPG" width="800">    
+    </td>
+ 
+</table>
 
 # 目前問題
 目前學校改採用數位學習園區M部分功能已失效，故不提供下載點。
