@@ -7,8 +7,22 @@
 這是一個給宜大學生使用的APP，整合了大部分常使用到的功能， 包含數位學習園區、分數查詢、課表、活動報名、畢業門檻查詢、選課 並提供公動態查詢和Zuvio點名。
 
 ## 安裝
+### Andoird Studio
+1. 安裝 [Flutter SDK](https://flutter.dev/docs/get-started/install)
+2. 使用以下指令將 repo clone 到本地：
+3. `git clone https://github.com/your_username/flutter-app.git`  
+4. `flutter pub get`
+5. `flutter run`
+
+### Android APK
+[- Release 安裝下載](https://github.com/mpeilun/niu_app/releases/tag/Android)
 
 ## 使用方式
+1. 下載並安裝應用程序
+2. 打開應用程序
+3. 輸入宜蘭大學的帳號和密碼登錄
+4. 在應用程式瀏覽不同的功能
+> 請注意，必須先擁有宜蘭大學的帳號和密碼才能登錄此應用程序
 
 ## 宜大學生 APP 開發前調查
 在開發這個「宜大學生 APP」之前，我們進行了問卷調查，  
@@ -42,9 +56,6 @@
 所以我們開發了以下這些功能
 
 ## 功能
-
-> 使用之前須使用宜大學生的帳號與密碼登入才能做使用！
-
 | 功能列表 | 功能概述                                          |
 | -------- | ------------------------------------------------ |
 | **數位學習園區** | 觀看上課教材、繳交作業                          |
