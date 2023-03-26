@@ -8,8 +8,8 @@
 
 ## 目錄
 - [安裝](https://github.com/mpeilun/niu_app#安裝)
-  - [Andoird Studio](https://github.com/mpeilun/niu_app#andoird-studio)
-  - [Android APK](https://github.com/mpeilun/niu_app#andoird-apk)
+  - [Android Studio](https://github.com/mpeilun/niu_app#Android-studio)
+  - [Android APK]([https://github.com/mpeilun/niu_app#andoird-apk](https://github.com/mpeilun/niu_app#android-apk))
 - [使用方式](https://github.com/mpeilun/niu_app#使用方式)
 - [宜大學生 APP 開發前調查](https://github.com/mpeilun/niu_app#宜大學生-APP-開發前調查)
   - [調查結果](https://github.com/mpeilun/niu_app#調查結果)
@@ -20,7 +20,7 @@
 
 
 ## 安裝
-### Andoird Studio
+### Android Studio
 1. 安裝 [Flutter SDK](https://flutter.dev/docs/get-started/install)
 2. 使用以下指令將 repo clone 到本地：
 3. `git clone https://github.com/your_username/flutter-app.git`  
