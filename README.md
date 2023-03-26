@@ -14,7 +14,7 @@
 - [宜大學生 APP 開發前調查](https://github.com/mpeilun/niu_app#宜大學生-APP-開發前調查)
   - [調查結果](https://github.com/mpeilun/niu_app#調查結果)
     - [各平台網頁在手機上的體驗度](https://github.com/mpeilun/niu_app#各平台網頁在手機上的體驗度)
-    - [使用宜大學生 APP 意願度調查](https://github.com/mpeilun/niu_app#使用宜大學生 APP 意願度調查)
+    - [使用宜大學生 APP 意願度調查](https://github.com/mpeilun/niu_app#使用宜大學生-APP-意願度調查)
 - [功能](https://github.com/mpeilun/niu_app#功能)
 - [問題](https://github.com/mpeilun/niu_app#問題)
 
