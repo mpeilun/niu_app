@@ -1,10 +1,23 @@
 <img width="64" src="https://user-images.githubusercontent.com/86880683/225522817-7192b99f-c9b1-4824-854d-3b98fab0f984.png" align="left" />
 
 # Niu App
-> flutter version:3.3 Application For National Ilan University
+> flutter version:3.3 Application For National Ilan University  
 
-## 簡介
 這是一個給宜大學生使用的APP，整合了大部分常使用到的功能， 包含數位學習園區、分數查詢、課表、活動報名、畢業門檻查詢、選課 並提供公動態查詢和Zuvio點名。
+
+
+## 目錄
+- [安裝](https://github.com/mpeilun/niu_app#安裝)
+  - [Andoird Studio](https://github.com/mpeilun/niu_app#andoird-studio)
+  - [Android APK](https://github.com/mpeilun/niu_app#andoird-apk)
+- [使用方式](https://github.com/mpeilun/niu_app#使用方式)
+- [宜大學生 APP 開發前調查](https://github.com/mpeilun/niu_app#宜大學生-APP-開發前調查)
+  - [調查結果](https://github.com/mpeilun/niu_app#調查結果)
+    - [各平台網頁在手機上的體驗度](https://github.com/mpeilun/niu_app#各平台網頁在手機上的體驗度)
+    - [使用宜大學生 APP 意願度調查](https://github.com/mpeilun/niu_app#使用宜大學生 APP 意願度調查)
+- [功能](https://github.com/mpeilun/niu_app#功能)
+- [問題](https://github.com/mpeilun/niu_app#問題)
+
 
 ## 安裝
 ### Andoird Studio
@@ -143,3 +156,6 @@
   </tr>
 </table>
 
+## 問題
+1. 公告已失效
+2. 數位園區即將廢棄改用數位園區M
