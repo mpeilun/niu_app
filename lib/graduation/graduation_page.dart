@@ -97,48 +97,48 @@ class _GraduationPageState extends State<GraduationPage> {
                                       maintainState: false));
                             }),
                       ),
-                      columnChild: SizedBox()
-                      // FittedBox(
-                      //   fit: BoxFit.scaleDown,
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: [
-                      //       Indicator(
-                      //         title: '服務奉獻',
-                      //         time: widget.time.service.split('/')[0],
-                      //         requiredTime: double.parse(
-                      //             widget.time.service.split('/')[1]),
-                      //       ),
-                      //       SizedBox(
-                      //         width: 20.0,
-                      //       ),
-                      //       Indicator(
-                      //         title: '多元成長',
-                      //         time: widget.time.multiple.split('/')[0],
-                      //         requiredTime: double.parse(
-                      //             widget.time.multiple.split('/')[1]),
-                      //       ),
-                      //       SizedBox(
-                      //         width: 20.0,
-                      //       ),
-                      //       Indicator(
-                      //         title: '專業進取',
-                      //         time: widget.time.profession.split('/')[0],
-                      //         requiredTime: double.parse(
-                      //             widget.time.profession.split('/')[1]),
-                      //       ),
-                      //       SizedBox(
-                      //         width: 20.0,
-                      //       ),
-                      //       Indicator(
-                      //         title: '彈性綜合',
-                      //         time: widget.time.flex.split('/')[0],
-                      //         requiredTime:
-                      //             double.parse(widget.time.flex.split('/')[1]),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
+                      columnChild: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Indicator(
+                              title: '服務奉獻',
+                              time: widget.time.service.split('/')[0],
+                              requiredTime: double.parse(
+                                  widget.time.service.split('/')[1]),
+                            ),
+                            SizedBox(
+                              width: 20.0,
+                            ),
+                            Indicator(
+                              title: '多元成長',
+                              time: widget.time.multiple.split('/')[0],
+                              requiredTime: double.parse(
+                                  widget.time.multiple.split('/')[1]),
+                            ),
+                            SizedBox(
+                              width: 20.0,
+                            ),
+                            Indicator(
+                              title: '專業進取',
+                              time: widget.time.profession.split('/')[0],
+                              requiredTime: double.parse(
+                                  widget.time.profession.split('/')[1]),
+                            ),
+                            SizedBox(
+                              width: 20.0,
+                            ),
+                            Indicator(
+                              title: '彈性綜合',
+                              time: widget.time.flex.split('/')[0],
+                              requiredTime:
+                              double.parse(widget.time.flex.split('/')[1]),
+                            ),
+                          ],
+                        ),
+                      ),
+
                     ),
                     SizedBox(
                       height: 20.0,
@@ -214,24 +214,27 @@ class Indicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     double times = double.parse('$time');
-    return Container(
+    if(times>40){
+      times = 40;
+    }
+    return SizedBox(
       child: CircularPercentIndicator(
           header: Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 4.0),
             child: Text(
               title,
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500),
             ),
           ),
           animation: true,
           animationDuration: 750,
           radius: 100.0,
-          lineWidth: 10.0,
+          lineWidth: 15.0,
           percent: times / requiredTime,
           center: Text(
             "$time/${requiredTime.toStringAsFixed(0)}",
             style: TextStyle(
-                fontSize: 16.0,
+                fontSize: 20.0,
                 color:
                     themeChange.darkTheme ? Colors.grey[400] : Colors.grey[600],
                 fontWeight: FontWeight.w500),
@@ -263,7 +266,7 @@ class CustomCard extends StatelessWidget {
       ),
       elevation: 1.5,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
