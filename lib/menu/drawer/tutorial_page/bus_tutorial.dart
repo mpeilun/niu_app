@@ -15,13 +15,30 @@ class _BusTutorialPageState extends State<BusTutorialPage> {
   late var screenSizeWidth = MediaQuery.of(context).size.width;
   late var screenSizeHeight = MediaQuery.of(context).size.height;
   late Function goToTab;
-  List<ContentConfig> slides = [];
 
   @override
   void initState() {
     super.initState();
+  }
+
+  void onDonePress() {
+    Navigator.pop(context);
+  }
+
+  void onTabChangeCompleted(index) {
+    // Index of current tab is focused
+    print(index);
+  }
+
+  ButtonStyle myButtonStyle() {
+    return (Theme.of(context).elevatedButtonTheme.style) as ButtonStyle;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Color? iconColor = Theme.of(context).iconTheme.color;
     final themeChange = Provider.of<DarkThemeProvider>(context);
-    slides.add(
+    List<ContentConfig> contentConfig = [
       ContentConfig(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: '公車動態',
@@ -44,8 +61,6 @@ class _BusTutorialPageState extends State<BusTutorialPage> {
             : "assets/tutorial/bus/bus_white.png",
         heightImage: 300.0,
       ),
-    );
-    slides.add(
       ContentConfig(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: '公車動態',
@@ -68,26 +83,7 @@ class _BusTutorialPageState extends State<BusTutorialPage> {
             : "assets/tutorial/bus/bus2_white.png",
         heightImage: 300.0,
       ),
-    );
-  }
-
-  void onDonePress() {
-    Navigator.pop(context);
-  }
-
-  void onTabChangeCompleted(index) {
-    // Index of current tab is focused
-    print(index);
-  }
-
-  ButtonStyle myButtonStyle() {
-    return (Theme.of(context).elevatedButtonTheme.style) as ButtonStyle;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Color? iconColor = Theme.of(context).iconTheme.color;
-    // final themeChange = Provider.of<DarkThemeProvider>(context);
+    ];
     return Scaffold(
       appBar: AppBar(
         title: Text('公車動態'),
@@ -129,7 +125,7 @@ class _BusTutorialPageState extends State<BusTutorialPage> {
 
           // Tabs
           // listCustomTabs: this.renderListCustomTabs(),
-          listContentConfig: slides,
+          listContentConfig: contentConfig,
           refFuncGoToTab: (refFunc) {
             this.goToTab = refFunc;
           },

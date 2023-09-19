@@ -153,6 +153,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.7.1"
+  chewie_audio:
+    dependency: "direct dev"
+    description:
+      name: chewie_audio
+      sha256: "73948a8b9841d050433af3498a1f8b11320bd5a2cd70b449bdbe16d4405e97c5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.0"
   cli_util:
     dependency: transitive
     description:

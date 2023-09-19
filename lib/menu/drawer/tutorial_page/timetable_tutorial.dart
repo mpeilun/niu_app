@@ -14,57 +14,10 @@ class TimeTableTutorialPage extends StatefulWidget {
 class _TimeTableTutorialPageState extends State<TimeTableTutorialPage> {
   late var screenSizeWidth = MediaQuery.of(context).size.width;
   late var screenSizeHeight = MediaQuery.of(context).size.height;
-  List<ContentConfig> slides = [];
 
   @override
   void initState() {
     super.initState();
-    final themeChange = Provider.of<DarkThemeProvider>(context);
-    slides.add(ContentConfig(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      title: "週週課表",
-      marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
-      styleTitle: TextStyle(
-        color:
-        themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
-        fontSize: 30.0,
-        fontWeight: FontWeight.bold,
-      ),
-      description: "以週次為單位的簡潔課表，點擊課表上的節次，可切換顯示節次時間，並且配合備註功能可在每週的課堂上記錄重要事項哦！",
-      styleDescription: TextStyle(
-        color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
-        fontSize: 20.0,
-      ),
-      pathImage: themeChange.darkTheme
-          ? "assets/tutorial/timetable/timetable_black.png"
-          : "assets/tutorial/timetable/timetable_white.png",
-      heightImage: 300.0,
-      marginDescription: EdgeInsets.fromLTRB(
-          20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
-    ),);
-    slides.add(ContentConfig(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      title: "重要事項",
-      marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
-      styleTitle: TextStyle(
-        color:
-        themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
-        fontSize: 30.0,
-        fontWeight: FontWeight.bold,
-      ),
-      description:
-      "點即需紀錄的課程，可填寫此課堂的重要事項，完成後課表會有紅框提醒，如需要完成的截止日，不在本週，可在右上角，點選週次，切換課表。",
-      styleDescription: TextStyle(
-        color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
-        fontSize: 20.0,
-      ),
-      pathImage: themeChange.darkTheme
-          ? "assets/tutorial/timetable/timetableSce_black.png"
-          : "assets/tutorial/timetable/timetableSce_white.png",
-      heightImage: 300.0,
-      marginDescription: EdgeInsets.fromLTRB(
-          20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
-    ),);
   }
 
   void onDonePress() {
@@ -83,7 +36,53 @@ class _TimeTableTutorialPageState extends State<TimeTableTutorialPage> {
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
-
+    List<ContentConfig> slides = [
+      ContentConfig(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: "週週課表",
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
+        styleTitle: TextStyle(
+          color:
+          themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+          fontSize: 30.0,
+          fontWeight: FontWeight.bold,
+        ),
+        description: "以週次為單位的簡潔課表，點擊課表上的節次，可切換顯示節次時間，並且配合備註功能可在每週的課堂上記錄重要事項哦！",
+        styleDescription: TextStyle(
+          color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
+          fontSize: 20.0,
+        ),
+        pathImage: themeChange.darkTheme
+            ? "assets/tutorial/timetable/timetable_black.png"
+            : "assets/tutorial/timetable/timetable_white.png",
+        heightImage: 300.0,
+        marginDescription: EdgeInsets.fromLTRB(
+            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+      ),
+      ContentConfig(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: "重要事項",
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
+        styleTitle: TextStyle(
+          color:
+          themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+          fontSize: 30.0,
+          fontWeight: FontWeight.bold,
+        ),
+        description:
+        "點即需紀錄的課程，可填寫此課堂的重要事項，完成後課表會有紅框提醒，如需要完成的截止日，不在本週，可在右上角，點選週次，切換課表。",
+        styleDescription: TextStyle(
+          color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
+          fontSize: 20.0,
+        ),
+        pathImage: themeChange.darkTheme
+            ? "assets/tutorial/timetable/timetableSce_black.png"
+            : "assets/tutorial/timetable/timetableSce_white.png",
+        heightImage: 300.0,
+        marginDescription: EdgeInsets.fromLTRB(
+            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+      ),
+    ];
     Color? iconColor = Theme.of(context).iconTheme.color;
     return Scaffold(
       appBar: AppBar(
