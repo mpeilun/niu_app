@@ -10,23 +10,23 @@ class LocalNotification{
       //sound: RawResourceAndroidNotificationSound("a_long_cold_sting"),
       largeIcon: DrawableResourceAndroidBitmap("niu_logo"),
     );
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
-      //sound: "a_long_cold_sting.wav",
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
-    var platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics,
-    );
-    await flutterLocalNotificationsPlugin.schedule(
-        0,
-        title,
-        body,
-        time,
-        platformChannelSpecifics
-    );
+    // var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+    //   //sound: "a_long_cold_sting.wav",
+    //   presentAlert: true,
+    //   presentBadge: true,
+    //   presentSound: true,
+    // );
+    // var platformChannelSpecifics = NotificationDetails(
+    //   android: androidPlatformChannelSpecifics,
+    //   iOS: iOSPlatformChannelSpecifics,
+    // );
+    // await flutterLocalNotificationsPlugin.schedule(
+    //     0,
+    //     title,
+    //     body,
+    //     time,
+    //     platformChannelSpecifics
+    // );
   }
   /*
   static void test() async{

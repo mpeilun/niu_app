@@ -175,8 +175,8 @@ class _PageRecruit extends State<PageRecruit> {
                             Response response;
                             BaseOptions options = new BaseOptions(
                               baseUrl: "https://docs.google.com",
-                              connectTimeout: 6000,
-                              receiveTimeout: 3000,
+                              connectTimeout: Duration(milliseconds: 6000),
+                              receiveTimeout: Duration(milliseconds: 3000),
                             );
                             Dio dio = new Dio(options);
 
@@ -369,8 +369,8 @@ class _PageFeedback extends State<PageFeedback> {
                                     Response response;
                                     BaseOptions options = new BaseOptions(
                                       baseUrl: "https://docs.google.com",
-                                      connectTimeout: 6000,
-                                      receiveTimeout: 3000,
+                                      connectTimeout: Duration(milliseconds: 6000),
+                                      receiveTimeout: Duration(milliseconds: 3000),
                                     );
                                     Dio dio = new Dio(options);
 
@@ -560,8 +560,8 @@ class _PageBugReport extends State<PageBugReport> {
                                     Response response;
                                     BaseOptions options = new BaseOptions(
                                       baseUrl: "https://docs.google.com",
-                                      connectTimeout: 6000,
-                                      receiveTimeout: 3000,
+                                      connectTimeout: Duration(milliseconds: 6000),
+                                      receiveTimeout: Duration(milliseconds: 3000),
                                     );
                                     Dio dio = new Dio(options);
 

@@ -15,10 +15,58 @@ class _ZuvioTutorialPageState extends State<ZuvioTutorialPage> {
   late var screenSizeWidth = MediaQuery.of(context).size.width;
   late var screenSizeHeight = MediaQuery.of(context).size.height;
   late Function goToTab;
+  List<ContentConfig> slides = [];
 
   @override
   void initState() {
     super.initState();
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+    slides.add(ContentConfig(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      title: 'ZUVIO',
+      marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
+      styleTitle: TextStyle(
+        color:
+        themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+        fontSize: 30.0,
+        fontWeight: FontWeight.bold,
+      ),
+      description:
+      '進入ZUVIO後可以在下方選擇學習(課程列表)、訊息、我的(個人資訊)三個分頁，在「學習」分頁中可點選欲查看的課程。',
+      marginDescription:
+      EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, .0),
+      styleDescription: TextStyle(
+        color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
+        fontSize: 20.0,
+      ),
+      pathImage: themeChange.darkTheme
+          ? "assets/tutorial/zuvio/zuvio_black.png"
+          : "assets/tutorial/zuvio/zuvio_white.png",
+      heightImage: 300.0,
+    ),);
+    slides.add(ContentConfig(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      title: 'ZUVIO',
+      marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
+      styleTitle: TextStyle(
+        color:
+        themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+        fontSize: 30.0,
+        fontWeight: FontWeight.bold,
+      ),
+      description: '進入課程後，下方有五個分頁，可以根據自己的需求進行操作，右下角房子圖案的按鈕可以回到主畫面。',
+      marginDescription:
+      EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, .0),
+      styleDescription: TextStyle(
+        color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
+        fontSize: 20.0,
+      ),
+      pathImage: themeChange.darkTheme
+          ? "assets/tutorial/zuvio/zuvio2_black.png"
+          : "assets/tutorial/zuvio/zuvio2_white.png",
+      heightImage: 300.0,
+    ),);
+
   }
 
   void onDonePress() {
@@ -38,60 +86,13 @@ class _ZuvioTutorialPageState extends State<ZuvioTutorialPage> {
   Widget build(BuildContext context) {
     Color? iconColor = Theme.of(context).iconTheme.color;
     final themeChange = Provider.of<DarkThemeProvider>(context);
-    List<Slide> slides = [
-      Slide(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: 'ZUVIO',
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
-        styleTitle: TextStyle(
-          color:
-              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
-          fontSize: 30.0,
-          fontWeight: FontWeight.bold,
-        ),
-        description:
-            '進入ZUVIO後可以在下方選擇學習(課程列表)、訊息、我的(個人資訊)三個分頁，在「學習」分頁中可點選欲查看的課程。',
-        marginDescription:
-            EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, .0),
-        styleDescription: TextStyle(
-          color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
-          fontSize: 20.0,
-        ),
-        pathImage: themeChange.darkTheme
-            ? "assets/tutorial/zuvio/zuvio_black.png"
-            : "assets/tutorial/zuvio/zuvio_white.png",
-        heightImage: 300.0,
-      ),
-      Slide(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: 'ZUVIO',
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
-        styleTitle: TextStyle(
-          color:
-              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
-          fontSize: 30.0,
-          fontWeight: FontWeight.bold,
-        ),
-        description: '進入課程後，下方有五個分頁，可以根據自己的需求進行操作，右下角房子圖案的按鈕可以回到主畫面。',
-        marginDescription:
-            EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, .0),
-        styleDescription: TextStyle(
-          color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
-          fontSize: 20.0,
-        ),
-        pathImage: themeChange.darkTheme
-            ? "assets/tutorial/zuvio/zuvio2_black.png"
-            : "assets/tutorial/zuvio/zuvio2_white.png",
-        heightImage: 300.0,
-      ),
-    ];
     return Scaffold(
       appBar: AppBar(
         title: Text('ZUVIO'),
       ),
       body: SafeArea(
         child: new IntroSlider(
-          showSkipBtn: false,
+          isShowSkipBtn: false,
           // Prev button
           renderPrevBtn: Icon(
             Icons.navigate_before,
@@ -118,13 +119,14 @@ class _ZuvioTutorialPageState extends State<ZuvioTutorialPage> {
           doneButtonStyle: myButtonStyle(),
 
           // Dot indicator
-          colorDot: Colors.grey,
-          sizeDot: 10,
-          typeDotAnimation: DotSliderAnimation.SIZE_TRANSITION,
-
+          indicatorConfig: IndicatorConfig(
+              colorIndicator: Colors.grey,
+              sizeIndicator: 10,
+              typeIndicatorAnimation: TypeIndicatorAnimation.sizeTransition
+          ),
           // Tabs
           // listCustomTabs: this.renderListCustomTabs(),
-          slides: slides,
+          listContentConfig: slides,
           refFuncGoToTab: (refFunc) {
             this.goToTab = refFunc;
           },

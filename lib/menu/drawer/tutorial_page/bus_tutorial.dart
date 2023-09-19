@@ -15,10 +15,60 @@ class _BusTutorialPageState extends State<BusTutorialPage> {
   late var screenSizeWidth = MediaQuery.of(context).size.width;
   late var screenSizeHeight = MediaQuery.of(context).size.height;
   late Function goToTab;
+  List<ContentConfig> slides = [];
 
   @override
   void initState() {
     super.initState();
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+    slides.add(
+      ContentConfig(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: '公車動態',
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
+        styleTitle: TextStyle(
+          color:
+          themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+          fontSize: 30.0,
+          fontWeight: FontWeight.bold,
+        ),
+        description: '在這個頁面可以輕鬆取得所有經過宜大的公車路線，點擊其中之一即可查看即時資訊。',
+        marginDescription:
+        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, .0),
+        styleDescription: TextStyle(
+          color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
+          fontSize: 20.0,
+        ),
+        pathImage: themeChange.darkTheme
+            ? "assets/tutorial/bus/bus_black.png"
+            : "assets/tutorial/bus/bus_white.png",
+        heightImage: 300.0,
+      ),
+    );
+    slides.add(
+      ContentConfig(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: '公車動態',
+        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
+        styleTitle: TextStyle(
+          color:
+          themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+          fontSize: 30.0,
+          fontWeight: FontWeight.bold,
+        ),
+        description: '這個頁面可以查看該條路線的即時動態、票價、時刻表與路線簡圖。',
+        marginDescription:
+        EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, .0),
+        styleDescription: TextStyle(
+          color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
+          fontSize: 20.0,
+        ),
+        pathImage: themeChange.darkTheme
+            ? "assets/tutorial/bus/bus2_black.png"
+            : "assets/tutorial/bus/bus2_white.png",
+        heightImage: 300.0,
+      ),
+    );
   }
 
   void onDonePress() {
@@ -37,60 +87,14 @@ class _BusTutorialPageState extends State<BusTutorialPage> {
   @override
   Widget build(BuildContext context) {
     Color? iconColor = Theme.of(context).iconTheme.color;
-    final themeChange = Provider.of<DarkThemeProvider>(context);
-    List<Slide> slides = [
-      Slide(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: '公車動態',
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
-        styleTitle: TextStyle(
-          color:
-              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
-          fontSize: 30.0,
-          fontWeight: FontWeight.bold,
-        ),
-        description: '在這個頁面可以輕鬆取得所有經過宜大的公車路線，點擊其中之一即可查看即時資訊。',
-        marginDescription:
-            EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, .0),
-        styleDescription: TextStyle(
-          color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
-          fontSize: 20.0,
-        ),
-        pathImage: themeChange.darkTheme
-            ? "assets/tutorial/bus/bus_black.png"
-            : "assets/tutorial/bus/bus_white.png",
-        heightImage: 300.0,
-      ),
-      Slide(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: '公車動態',
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
-        styleTitle: TextStyle(
-          color:
-              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
-          fontSize: 30.0,
-          fontWeight: FontWeight.bold,
-        ),
-        description: '這個頁面可以查看該條路線的即時動態、票價、時刻表與路線簡圖。',
-        marginDescription:
-            EdgeInsets.fromLTRB(20.0, screenSizeHeight * 0.05, 20.0, .0),
-        styleDescription: TextStyle(
-          color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
-          fontSize: 20.0,
-        ),
-        pathImage: themeChange.darkTheme
-            ? "assets/tutorial/bus/bus2_black.png"
-            : "assets/tutorial/bus/bus2_white.png",
-        heightImage: 300.0,
-      ),
-    ];
+    // final themeChange = Provider.of<DarkThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('公車動態'),
       ),
       body: SafeArea(
         child: new IntroSlider(
-          showSkipBtn: false,
+          isShowSkipBtn: false,
           // Prev button
           renderPrevBtn: Icon(
             Icons.navigate_before,
@@ -117,13 +121,15 @@ class _BusTutorialPageState extends State<BusTutorialPage> {
           doneButtonStyle: myButtonStyle(),
 
           // Dot indicator
-          colorDot: Colors.grey,
-          sizeDot: 10,
-          typeDotAnimation: DotSliderAnimation.SIZE_TRANSITION,
+          indicatorConfig: IndicatorConfig(
+              colorIndicator: Colors.grey,
+            sizeIndicator: 10,
+            typeIndicatorAnimation: TypeIndicatorAnimation.sizeTransition
+          ),
 
           // Tabs
           // listCustomTabs: this.renderListCustomTabs(),
-          slides: slides,
+          listContentConfig: slides,
           refFuncGoToTab: (refFunc) {
             this.goToTab = refFunc;
           },

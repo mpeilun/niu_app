@@ -94,7 +94,7 @@ class _CustomEventSignedCardState extends State<CustomEventSignedCard> {
                 screenSizeHeight * 0.01),
             child: Theme(
               data: Theme.of(context).copyWith(
-                accentColor: Colors.black,
+                // accentColor: Colors.black,
                 dividerColor: Colors.transparent,
               ),
               child: ExpansionTile(

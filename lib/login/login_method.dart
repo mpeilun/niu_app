@@ -19,12 +19,13 @@ class Login {
   Login(this.id, this.pwd);
 
   Login.origin();
+  CookieManager cookieManager = CookieManager.instance();
 
   Future<void> cleanAllData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     saveGraduationData = false;
     globalAdvancedTile = [];
-    await CookieManager().deleteAllCookies();
+    await cookieManager.deleteAllCookies();
     await prefs.clear();
   }
 

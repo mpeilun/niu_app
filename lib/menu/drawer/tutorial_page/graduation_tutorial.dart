@@ -14,10 +14,56 @@ class GraduationTourPage extends StatefulWidget {
 class _GraduationTourPageState extends State<GraduationTourPage> {
   late var screenSizeWidth = MediaQuery.of(context).size.width;
   late var screenSizeHeight = MediaQuery.of(context).size.height;
+  List<ContentConfig> slides = [];
 
   @override
   void initState() {
     super.initState();
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+    slides.add(ContentConfig(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      title: "多元時數",
+      marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
+      styleTitle: TextStyle(
+        color:
+        themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+        fontSize: 30.0,
+        fontWeight: FontWeight.bold,
+      ),
+      description: "圖形化顯示，在校之多元時數，想了解時數登記的完整細項，可點選右方「詳細」查看。",
+      styleDescription: TextStyle(
+        color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
+        fontSize: 20.0,
+      ),
+      pathImage: themeChange.darkTheme
+          ? "assets/tutorial/graduation/graduation_black.png"
+          : "assets/tutorial/graduation/graduation_white.png",
+      heightImage: 300.0,
+      marginDescription: EdgeInsets.fromLTRB(
+          20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+    ),);
+    slides.add(ContentConfig(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      title: "各類門檻",
+      marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
+      styleTitle: TextStyle(
+        color:
+        themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
+        fontSize: 30.0,
+        fontWeight: FontWeight.bold,
+      ),
+      description: "顯示畢業所需的各類門檻目標，快速掌握通過狀態",
+      styleDescription: TextStyle(
+        color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
+        fontSize: 20.0,
+      ),
+      pathImage: themeChange.darkTheme
+          ? "assets/tutorial/graduation/graduation2_black.png"
+          : "assets/tutorial/graduation/graduation2_white.png",
+      heightImage: 300.0,
+      marginDescription: EdgeInsets.fromLTRB(
+          20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
+    ),);
   }
 
   void onDonePress() {
@@ -35,53 +81,7 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
 
   @override
   Widget build(BuildContext context) {
-    final themeChange = Provider.of<DarkThemeProvider>(context);
-    List<Slide> slides = [
-      Slide(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: "多元時數",
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
-        styleTitle: TextStyle(
-          color:
-              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
-          fontSize: 30.0,
-          fontWeight: FontWeight.bold,
-        ),
-        description: "圖形化顯示，在校之多元時數，想了解時數登記的完整細項，可點選右方「詳細」查看。",
-        styleDescription: TextStyle(
-          color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
-          fontSize: 20.0,
-        ),
-        pathImage: themeChange.darkTheme
-            ? "assets/tutorial/graduation/graduation_black.png"
-            : "assets/tutorial/graduation/graduation_white.png",
-        heightImage: 300.0,
-        marginDescription: EdgeInsets.fromLTRB(
-            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
-      ),
-      Slide(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: "各類門檻",
-        marginTitle: EdgeInsets.symmetric(vertical: screenSizeHeight * 0.025),
-        styleTitle: TextStyle(
-          color:
-              themeChange.darkTheme ? Colors.blue.shade200 : Colors.blue[900],
-          fontSize: 30.0,
-          fontWeight: FontWeight.bold,
-        ),
-        description: "顯示畢業所需的各類門檻目標，快速掌握通過狀態",
-        styleDescription: TextStyle(
-          color: themeChange.darkTheme ? Color(0xffffffff) : Colors.black,
-          fontSize: 20.0,
-        ),
-        pathImage: themeChange.darkTheme
-            ? "assets/tutorial/graduation/graduation2_black.png"
-            : "assets/tutorial/graduation/graduation2_white.png",
-        heightImage: 300.0,
-        marginDescription: EdgeInsets.fromLTRB(
-            20.0, screenSizeHeight * 0.05, 20.0, screenSizeHeight * 0.05),
-      ),
-    ];
+    // final themeChange = Provider.of<DarkThemeProvider>(context);
 
     Color? iconColor = Theme.of(context).iconTheme.color;
     return Scaffold(
@@ -90,7 +90,7 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
       ),
       body: SafeArea(
         child: new IntroSlider(
-          showSkipBtn: false,
+          isShowSkipBtn: false,
           // Prev button
           renderPrevBtn: Icon(
             Icons.navigate_before,
@@ -117,13 +117,14 @@ class _GraduationTourPageState extends State<GraduationTourPage> {
           doneButtonStyle: myButtonStyle(),
 
           // Dot indicator
-          colorDot: Colors.grey,
-          sizeDot: 10,
-          typeDotAnimation: DotSliderAnimation.SIZE_TRANSITION,
-
+          indicatorConfig: IndicatorConfig(
+              colorIndicator: Colors.grey,
+              sizeIndicator: 10,
+              typeIndicatorAnimation: TypeIndicatorAnimation.sizeTransition
+          ),
           // Tabs
           // listCustomTabs: this.renderListCustomTabs(),
-          slides: slides,
+          listContentConfig: slides,
 
           // Behavior
           scrollPhysics: BouncingScrollPhysics(),

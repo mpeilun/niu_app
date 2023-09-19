@@ -31,21 +31,21 @@ void main() async {
   }
   print("kDebugMode : $kDebugMode");
   var initializationSettingAndroid = AndroidInitializationSettings("niu_logo");
-  var initializationSettingIOS = IOSInitializationSettings(
-    requestAlertPermission: true,
-    requestBadgePermission: true,
-    requestSoundPermission: true,
-    onDidReceiveLocalNotification:
-        (int id, String? title, String? body, String? payload) async {},
-  );
+  // var initializationSettingIOS = IOSInitializationSettings(
+  //   requestAlertPermission: true,
+  //   requestBadgePermission: true,
+  //   requestSoundPermission: true,
+  //   onDidReceiveLocalNotification:
+  //       (int id, String? title, String? body, String? payload) async {},
+  // );
   var initializationSettings = InitializationSettings(
     android: initializationSettingAndroid,
-    iOS: initializationSettingIOS,
+    // iOS: initializationSettingIOS,
   );
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: (String? payload) async {
-    if (payload != null) print("Notification Payload: " + payload);
-  });
+  // await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  //     onSelectNotification: (String? payload) async {
+  //   if (payload != null) print("Notification Payload: " + payload);
+  // });
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   await messaging.requestPermission(

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/cupertino.dart';
@@ -175,41 +175,41 @@ class _StartMenu extends State<StartMenu> with SingleTickerProviderStateMixin {
                               title: Text(title[controller.index]),
                               titleSpacing: 0.0,
                               actions: [
-                                Builder(
-                                  builder: (context) => Badge(
-                                    badgeColor: Colors.redAccent,
-                                    position:
-                                        BadgePosition.topEnd(top: 1, end: 2),
-                                    toAnimate: false,
-                                    badgeContent: Align(
-                                      alignment: Alignment.topCenter,
-                                      child: Text(
-                                        '${context.watch<NotificationProvider>().newNotificationsCount}',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                    child: IconButton(
-                                      icon: Icon(Icons.notifications_none),
-                                      onPressed: () {
-                                        if (context
-                                                .read<NotificationProvider>()
-                                                .notificationItemList
-                                                .length ==
-                                            0) {
-                                          context
-                                              .read<NotificationProvider>()
-                                              .setIsEmpty(true);
-                                        }
-                                        // context
-                                        //     .read<NotificationProvider>()
-                                        //     .setNewNotifications(false);
-                                        Navigator.of(context)
-                                            .push(_createRoute());
-                                        //context.read<OnNotifyClick>().newNotification(1); //refresh
-                                      },
-                                    ),
-                                  ),
-                                ),
+                                // Builder(
+                                //   builder: (context) => Badge(
+                                //     badgeColor: Colors.redAccent,
+                                //     position:
+                                //         BadgePosition.topEnd(top: 1, end: 2),
+                                //     toAnimate: false,
+                                //     badgeContent: Align(
+                                //       alignment: Alignment.topCenter,
+                                //       child: Text(
+                                //         '${context.watch<NotificationProvider>().newNotificationsCount}',
+                                //         style: TextStyle(color: Colors.white),
+                                //       ),
+                                //     ),
+                                //     child: IconButton(
+                                //       icon: Icon(Icons.notifications_none),
+                                //       onPressed: () {
+                                //         if (context
+                                //                 .read<NotificationProvider>()
+                                //                 .notificationItemList
+                                //                 .length ==
+                                //             0) {
+                                //           context
+                                //               .read<NotificationProvider>()
+                                //               .setIsEmpty(true);
+                                //         }
+                                //         // context
+                                //         //     .read<NotificationProvider>()
+                                //         //     .setNewNotifications(false);
+                                //         Navigator.of(context)
+                                //             .push(_createRoute());
+                                //         //context.read<OnNotifyClick>().newNotification(1); //refresh
+                                //       },
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                             body: pages[controller.index]),

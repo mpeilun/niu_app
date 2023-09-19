@@ -202,7 +202,7 @@ class _CustomEventCardState extends State<CustomEventCard> {
                           screenSizeHeight * 0.01),
                       child: Theme(
                         data: Theme.of(context).copyWith(
-                          accentColor: Colors.black,
+                          // secondaryHeaderColor: Colors.black,
                           dividerColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
