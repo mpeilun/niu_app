@@ -4,7 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:niu_app/menu/menu_page.dart';
 import 'package:niu_app/provider/dark_mode_provider.dart';
 import 'package:niu_app/provider/drawer_provider.dart';
@@ -17,8 +17,8 @@ import 'package:provider/provider.dart';
 import 'dark_mode/dark_theme.dart';
 import 'provider/timetable_button_provider.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+//     FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,22 +30,22 @@ void main() async {
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   }
   print("kDebugMode : $kDebugMode");
-  var initializationSettingAndroid = AndroidInitializationSettings("niu_logo");
-  var initializationSettingIOS = IOSInitializationSettings(
-    requestAlertPermission: true,
-    requestBadgePermission: true,
-    requestSoundPermission: true,
-    onDidReceiveLocalNotification:
-        (int id, String? title, String? body, String? payload) async {},
-  );
-  var initializationSettings = InitializationSettings(
-    android: initializationSettingAndroid,
-    iOS: initializationSettingIOS,
-  );
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: (String? payload) async {
-    if (payload != null) print("Notification Payload: " + payload);
-  });
+  // var initializationSettingAndroid = AndroidInitializationSettings("niu_logo");
+  // var initializationSettingIOS = IOSInitializationSettings(
+  //   requestAlertPermission: true,
+  //   requestBadgePermission: true,
+  //   requestSoundPermission: true,
+  //   onDidReceiveLocalNotification:
+  //       (int id, String? title, String? body, String? payload) async {},
+  // );
+  // var initializationSettings = InitializationSettings(
+  //   android: initializationSettingAndroid,
+  //   iOS: initializationSettingIOS,
+  // );
+  // await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  //     onSelectNotification: (String? payload) async {
+  //   if (payload != null) print("Notification Payload: " + payload);
+  // });
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   await messaging.requestPermission(

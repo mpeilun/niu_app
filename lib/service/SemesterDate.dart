@@ -58,8 +58,9 @@ class SemesterDate {
     // semester();
   }
   Future<void> semester() async {
-    var jsonString = await Dio()
-        .get('https://my-json-server.typicode.com/ken6078/NiuSemesterJSON/db');
+    // var jsonString = await Dio()
+    //     .get('https://my-json-server.typicode.com/ken6078/NiuSemesterJSON/db');
+    var jsonString = '{"d109-1":{"start_year":"2020","start_month":"09","start_day":"14","end_year":"2021","end_month":"01","end_day":"15","final_semester":"false"},"d109-2":{"start_year":"2021","start_month":"02","start_day":"22","end_year":"2021","end_month":"06","end_day":"25","final_semester":"false"},"d110-1":{"start_year":"2021","start_month":"09","start_day":"13","end_year":"2022","end_month":"01","end_day":"14","final_semester":"false"},"d110-2":{"start_year":"2022","start_month":"02","start_day":"21","end_year":"2022","end_month":"06","end_day":"24","final_semester":"true"}}';
     Map<String, dynamic> semesterJSON = json.decode(jsonString.toString());
     await getNowWeek(semesterJSON, 109, 1);
     //print(semesterWeek);
